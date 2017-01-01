@@ -1,5 +1,4 @@
 sudo: false
 install: pip install -U tox coveralls
 language: python
-script: tox
 after_success: coveralls
