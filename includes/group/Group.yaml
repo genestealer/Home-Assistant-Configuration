@@ -17,9 +17,10 @@
       - group.server_ilo_status
       - group.ups_data
       - group.all_automations
-      - group.node_status
+      - group.device_status
       - binary_sensor.rf_gateway_status
       - sensor.plex
+      - group.rf_gateway_info
 
   
   Bathroom:
@@ -47,11 +48,17 @@
     entities:
       - light.bedside_light
 
-  Node Status:
+  Device Status:
     - binary_sensor.bunny_shed_controller_status
     - binary_sensor.rf_gateway_status
     - binary_sensor.entryway_thermostat_online
 
+  RF Gateway Info:
+    - sensor.rf_gateway_ip_address
+    - sensor.rf_gateway_ip_host_name
+    - sensor.rf_gateway_mqtt_client_name
+    - sensor.rf_gateway_signal_strength
+    - sensor.rf_gateway_ssid
 
   Bunny Shed:
     - binary_sensor.bunny_shed_controller_status

@@ -6,12 +6,12 @@
 
 ############################################################
 #
-# Kitchen RF gatway Status
+# Lighting Gateway Status
 #
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/Kitchen/status"
+  state_topic: "HUISHS/LightingGateway/status"
   name: "RF Gateway Status"
   qos: 0
   payload_on: "online"

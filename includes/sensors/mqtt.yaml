@@ -57,13 +57,32 @@
   unit_of_measurement: '%'
 
 
+############################################################
+#
+# Lighting Gateway Status
+#
+############################################################
 
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/ClientName"
+  name: "RF Gateway MQTT Client Name"
+ 
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/IpAddress"
+  name: "RF Gateway IP Address "
 
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/SignalStrength"
+  name: "RF Gateway Signal Strength"
+  unit_of_measurement: "dBm"
 
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/HostName"
+  name: "RF Gateway IP Host Name"
 
-
-
-
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/SSID"
+  name: "RF Gateway SSID"
 
 
 
