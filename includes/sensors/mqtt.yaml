@@ -69,7 +69,7 @@
  
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/IpAddress"
-  name: "RF Gateway IP Address "
+  name: "RF Gateway IP Address"
 
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/SignalStrength"
