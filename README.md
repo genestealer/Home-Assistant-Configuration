@@ -22,3 +22,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Homemade 433Mhz switch contoller gateway: https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway
 - Homemade 433Mhz bunny shed heating contoller: https://github.com/Genestealer/Bunny-Shed-Climate-Control
 - Amazon Dash Button 
+
+
+## Example
+![Home Assistant](git_photos/example_screen.PNG)
