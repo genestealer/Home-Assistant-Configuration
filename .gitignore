@@ -4,6 +4,7 @@
 *.sqlite
 *.txt
 *.xml
+*.db_journal
 .HA_VERSION
 known_devices.yaml
 secrets.yaml
