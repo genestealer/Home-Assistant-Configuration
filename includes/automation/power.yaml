@@ -1,0 +1,55 @@
+############################################################
+#
+# Send Notification when Electricity Voltage is High
+#
+############################################################
+
+- alias: NOTIFY when Electricity Supply Voltage is HIGH
+  trigger: 
+    platform: numeric_state
+    entity_id: sensor.ups_input_voltage 
+    above: 253
+  action:
+    service: notify.notify
+    data_template:
+      title: 'Electricity Supply Voltage High'
+      message: >
+        Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts 
+
+############################################################
+#
+# Send Notification when Electricity Voltage is Low
+#
+############################################################
+
+- alias: NOTIFY when Electricity Supply Voltage is LOW
+  trigger: 
+    platform: numeric_state
+    entity_id: sensor.ups_input_voltage 
+    below: 230
+  action:
+    service: notify.notify
+    data_template:
+      title: 'Electricity Supply Voltage Low'
+      message: >
+        Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts 
+
+
+
+#############################################################
+##
+## Send Notification when UPS is about to shutdown (10 mins left)
+##
+#############################################################
+
+- alias: NOTIFY when POWER RETURNS  
+  trigger: 
+    platform: numeric_state
+    entity_id: sensor.ups_time_left 
+    below: 10
+  action:
+    service: notify.notify
+    data_template:
+      title: 'WARNING: UPS about to expire'
+      message: >
+        UPS is running low: {{ states('sensor.ups_time_left') }} minutes 

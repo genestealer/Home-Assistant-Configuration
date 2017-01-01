@@ -1,0 +1,11 @@
+############################################################
+#
+# Plex Sensor
+#
+############################################################
+- platform: plex
+  name: Plex
+  host: !secret plex_server_host
+  port: 32400
+  username: !secret plex_server_username
+  password: !secret plex_server_password

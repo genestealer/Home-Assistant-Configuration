@@ -1,0 +1,53 @@
+############################################################
+#
+# APC UPS Daemon Sensor
+#
+############################################################
+
+#   - platform: apcupsd
+#     resources:
+#       - itemp
+# #      - LASTXFER
+#       - bcharge
+#       - linev
+#       - loadpct
+#       - numxfers
+#       - outputv
+#       - status
+#       - timeleft
+#       - tonbatt
+
+
+
+- platform: apcupsd
+  resources:
+    - hostname
+    - upsname
+    - starttime
+    - model
+    - status
+    - linev
+    - loadpct
+    - bcharge
+    - timeleft
+    - mbattchg
+    - mintimel
+    - maxtime
+    - sense
+    - lotrans
+    - hitrans
+    - alarmdel
+    - battv
+    - lastxfer
+    - numxfers
+    - tonbatt
+    - cumonbatt
+    - xoffbatt
+    - selftest
+    - statflag
+    - serialno
+    - battdate
+    - nominv
+    - nombattv
+    - nompower
+    - firmware

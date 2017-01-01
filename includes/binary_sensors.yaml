@@ -1,0 +1,153 @@
+############################################################
+#
+# Home Assistant Binary Sensors
+#
+############################################################
+
+############################################################
+#
+# Kitchen RF gatway Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Kitchen/status"
+  name: "RF Gateway Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  sensor_class: connectivity
+
+
+############################################################
+#
+# Bunny Shed Heating Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/status"
+  name: "Bunny Shed Controller Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  sensor_class: connectivity
+
+
+############################################################
+#
+# Bunny Shed Heating Controller Heater Status
+#
+############################################################
+
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/outputState"
+  name: "Bunny Shed Heater"
+  payload_on: "1"
+  payload_off: "0"
+  sensor_class: heat #Classes https://home-assistant.io/components/binary_sensor/  
+
+
+
+############################################################
+#
+# Nest Thermostat
+#
+############################################################
+
+- platform: nest
+  monitored_conditions:
+    - 'online'
+    - 'has_leaf'
+
+
+
+
+#DASH test
+
+- platform: mqtt
+  state_topic: "HUISHS/dash"
+  name: "Dash Button"
+  payload_on: "on"
+  payload_off: "off"
+
+
+
+
+
+#From examples...
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Summer House"
+#   qos: 0
+#   payload_on: "2"
+#   payload_off: "2 off"
+#   sensor_class: motion
+
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Driveway"
+#   qos: 0
+#   payload_on: "6"
+#   payload_off: "6 off"
+#   sensor_class: motion
+
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Courtyard"
+#   qos: 0
+#   payload_on: "1"
+#   payload_off: "1 off"
+#   sensor_class: motion
+
+
+# ############################################################
+# #
+# # Doorbells
+# #
+# ############################################################
+
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Doorbell Gate"
+#   qos: 0
+#   payload_on: "3"
+#   payload_off: "3 off"
+#   sensor_class: "None" 
+
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Doorbell Door"
+#   qos: 0
+#   payload_on: "5"
+#   payload_off: "5 off"
+#   sensor_class: "None" 
+
+# - platform: trend
+#   sensors:
+#     solar_angle:
+#       friendly_name: 'Sun rising'
+#       entity_id: sun.sun
+#       sensor_class: light
+#       attribute: elevation
+
+#     solar_angle_invert:
+#       friendly_name: 'Sun setting'
+#       entity_id: sun.sun
+#       attribute: elevation
+#       sensor_class: light
+#       invert: Yes
+     
+#     power_trend:
+#       entity_id: sensor.energy_monitor 
+#       friendly_name: 'Power Rising'
+#       sensor_class: power
+
+#     power_trend_invert:
+#       entity_id: sensor.energy_monitor 
+#       friendly_name: 'Power Falling'
+#       sensor_class: power
+#       invert: Yes
+
+

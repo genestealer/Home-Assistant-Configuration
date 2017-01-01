@@ -1,0 +1,110 @@
+############################################################
+#
+# HP Server Integrated Lights Out Monitoring 
+#
+############################################################
+
+- platform: hp_ilo
+  name: Server
+  host: !secret hp_ilo_server
+  port: 443
+  username: !secret hp_ilo_username
+  password: !secret hp_ilo_password
+  monitored_variables:
+    - server_name
+    - server_fqdn
+    - server_host_data
+      #    - server_oa_info
+    - server_power_status
+      #    - server_power_readings
+    - server_power_on_time
+      #- server_asset_tag
+    - server_uid_status
+    - server_health
+    - network_settings
+
+
+############################################################
+#
+#  Server Templates
+#
+############################################################
+
+- platform: template
+  sensors:
+    server_fan:
+      value_template: '{{states.sensor.server_server_health.attributes.fans["Fan 1"]["speed"][0] }}'
+      unit_of_measurement: '%'
+      entity_id: sensor.server_server_health
+      friendly_name: "Fan Speed"
+
+    server_glance_power:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["power_supplies"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Power Supplies"
+
+    server_glance_processor:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["processor"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Processor"
+    
+    server_glance_storage:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["storage"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Storage"
+    
+    server_glance_memory:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["memory"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Memory"
+    
+    server_glance_temperature:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["temperature"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Temperature"
+    
+    server_glance_fans:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["fans"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Fans"
+    
+    server_glance_bios:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["bios_hardware"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "BIOS"
+    
+    server_glance_network:
+      value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["network"]["status"] }}'
+      entity_id: sensor.server_server_health
+      friendly_name: "Network"
+
+    server_temperature_exhaust:
+      value_template: '{{states.sensor.server_server_health.attributes.temperature["12-Sys Exhaust"]["currentreading"][0] }}'
+      unit_of_measurement: '°C'
+      entity_id: sensor.server_server_health
+      friendly_name: "Exhaust"
+
+    server_temperature_chipset:
+      value_template: '{{states.sensor.server_server_health.attributes.temperature["05-Chipset"]["currentreading"][0] }}'
+      unit_of_measurement: '°C'
+      entity_id: sensor.server_server_health
+      friendly_name: "Chipset"
+
+    server_temperature_memory:
+      value_template: '{{states.sensor.server_server_health.attributes.temperature["03-P1 DIMM 1-2"]["currentreading"][0] }}'
+      unit_of_measurement: '°C'
+      entity_id: sensor.server_server_health
+      friendly_name: "Memory"
+
+    server_temperature_processor:
+      value_template: '{{states.sensor.server_server_health.attributes.temperature["02-CPU"]["currentreading"][0] }}'
+      unit_of_measurement: '°C'
+      entity_id: sensor.server_server_health
+      friendly_name: "Processor"
+
+    server_temperature_ambient:
+      value_template: '{{states.sensor.server_server_health.attributes.temperature["01-Inlet Ambient"]["currentreading"][0] }}'
+      unit_of_measurement: '°C'
+      entity_id: sensor.server_server_health
+      friendly_name: "Ambient"
+

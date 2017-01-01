@@ -1,0 +1,38 @@
+############################################################
+#
+# Google Travel Time Sensors
+#
+############################################################
+
+- platform: google_travel_time
+  name: Home to Work
+  api_key: !secret googlemaps_api_key
+  origin: zone.home
+  destination: zone.work
+  options:
+    mode: driving
+
+- platform: google_travel_time
+  name: Work to Home
+  api_key: !secret googlemaps_api_key
+  origin: zone.work
+  destination: zone.home
+  options:
+    mode: driving
+
+- platform: google_travel_time
+  name: Richard to Home
+  api_key: !secret googlemaps_api_key
+  origin: device_tracker.richard_pixel
+  destination: zone.home
+  options:
+    mode: driving
+
+# - platform: google_travel_time2
+#   name: Richard to Home
+#   api_key: !secret googlemaps_api_key
+#   origin: device_tracker.Richard
+#   destination: zone.home
+#   options:
+#     mode: driving    
+

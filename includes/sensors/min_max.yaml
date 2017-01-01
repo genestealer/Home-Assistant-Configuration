@@ -1,0 +1,11 @@
+############################################################
+#
+# Min/max Sensor
+#
+############################################################
+
+- platform: min_max
+  unit_of_measurement: '°C'
+  name: "Bunny Shed Temperature Range"
+  entity_ids:
+    - sensor.bunny_shed_temperature

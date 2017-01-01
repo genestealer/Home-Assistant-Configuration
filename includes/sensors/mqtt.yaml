@@ -1,0 +1,98 @@
+############################################################
+#
+# mqtt Sensors Bunny Shed
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/temperature"
+  name: "Bunny Shed Temperature"
+  unit_of_measurement: '°C'
+
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/humidity"
+  name: "Bunny Shed Humidity"
+  unit_of_measurement: '%'
+
+
+
+
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/setTemperature"
+  name: "Bunny Shed Target Temperature"
+  unit_of_measurement: '°C'
+
+
+
+
+
+
+#     # Template Binary Sensor https://home-assistant.io/components/binary_sensor.template/
+#     # Because bunny_shed_heater_state is a 0 or 1 passed from MQTT and we want it to be binary
+#   # - platform: template
+#   #   sensors:
+#   #     bunny_shed_heater:
+#   #       # value_template: '{{ states.sensors.bunny_shed_heater_state | float > 0}}'
+#   #       value_template: '{{states.sensors.bunny_shed_heater_state.state > 0}}'
+#   #       friendly_name: 'Bunny Shed Heater On'
+
+
+############################################################
+#
+# mqtt Kitchen
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Kitchen/temperature"
+  name: "Kitchen Temperature"
+  unit_of_measurement: '°C'
+
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/Kitchen/humidity"
+  name: "Kitchen Humidity"
+  unit_of_measurement: '%'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# - platform: mqtt
+#   state_topic: "house/mainbedroom/temp"
+#   name: "Bedroom"
+#   qos: 0
+#   unit_of_measurement: "°C"
+
+# - platform: mqtt
+#   state_topic: "house/utilityroom/temp"
+#   name: "Utility Room"
+#   qos: 0
+#   unit_of_measurement: "°C"
+
+# - platform: mqtt
+#   state_topic: "house/energymonitor/1"
+#   name: "Energy Monitor"
+#   qos: 0
+#   unit_of_measurement: "W"
+
+# - platform: mqtt
+#   state_topic: "house/mainbedroom/humidity"
+#   name: "Bedroom Humidity"
+#   qos: 0
+#   unit_of_measurement: "%"

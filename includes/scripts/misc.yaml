@@ -1,0 +1,52 @@
+############################################################
+#
+# Misc
+#
+############################################################
+
+timed_heat_towel_rail:
+  alias: "Turn on heat and set timer"
+  sequence:
+    # Cancel ev. old timers
+    - service: script.turn_off
+      data:
+         entity_id: script.timer_off
+    - service: climate.set_temperature
+      data:
+         temperature: 27
+         entity_id: climate.hallway
+    # Set new timer
+    - service: script.turn_on
+      data:
+        entity_id: script.timer_off
+
+timer_off:
+  alias: "TIMER: Turn off heat after 60 minutes"
+  sequence:
+    #- delay: 
+    - delay: '00:{{ states.input_slider.minute_delay.state | int }}:00'
+    #https://community.home-assistant.io/t/issues-with-input-slider-together-with-in-automation/1152/5 and https://community.home-assistant.io/t/would-somebody-walk-me-through-an-automation-to-set-a-timer-for-a-fan/1922/8
+       # seconds: {{states("input_slider.slider1")}}
+        #seconds: '{{ states.input_slider.slider1.state }}'
+       # minutes: 60
+    - service: climate.set_temperature
+      data:
+         temperature: 10
+         entity_id: climate.hallway      
+    
+# restart_HA:
+#   alias: "Restart Home Assistant"
+#   sequence:
+#     - service: homeassistant.restart
+
+turn_off_heat_towel_rail:
+  alias: "Turn off heat to towel rail"
+  sequence:
+    - service: climate.set_temperature
+      data:
+         temperature: 10
+         entity_id: climate.hallway 
+    - service: script.turn_off
+      data:
+         entity_id: script.timer_off
+

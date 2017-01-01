@@ -1,0 +1,19 @@
+############################################################
+#
+# Nest Sensor
+#
+############################################################
+
+- platform: nest
+  monitored_conditions:
+    - 'temperature'
+    - 'target'
+    - 'weather_condition'
+
+#    - 'target'
+#    
+#     - 'weather_temperature'
+#     - 'weather_humidity'
+# #    - 'wind_speed'
+#     - 'wind_direction'
+#     #    - 'battery_level'

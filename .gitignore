@@ -1,0 +1,10 @@
+*.conf
+*.db
+*.log
+*.sqlite
+*.txt
+*.xml
+.HA_VERSION
+known_devices.yaml
+secrets.yaml
+deps

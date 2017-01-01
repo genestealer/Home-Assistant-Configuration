@@ -1,0 +1,10 @@
+############################################################
+#
+# Home Assistant Camera Configuration
+#
+############################################################
+
+- platform: mjpeg
+  mjpeg_url: !secret CCTV1
+  name: Front Door
+
