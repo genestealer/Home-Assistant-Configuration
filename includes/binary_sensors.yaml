@@ -11,7 +11,7 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/status"
+  state_topic: "HUISHS/LightingGateway/Status"
   name: "RF Gateway Status"
   qos: 0
   payload_on: "online"

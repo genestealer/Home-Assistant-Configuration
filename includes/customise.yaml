@@ -27,6 +27,10 @@ light.christmas_tree_bling:
   icon: mdi:pine-tree
 light.star_light:
   icon: mdi:star
+light.snowflake_lights:
+  icon: mdi:snowflake
+light.outside_lights:
+  icon: mdi:home
 
 sensor.entryway_thermostat_humidity:
   icon: mdi:water-percent

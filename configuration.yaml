@@ -20,6 +20,13 @@ homeassistant:
     
 # View all events in a logbook
 logbook:
+   exclude:
+    entities:
+      - binary_sensor.bunny_shed_heater
+      - sensor.dark_sky_summary
+      - sensor.dark_sky_hourly_summary
+      - sensor.dark_sky_daily_summary
+
 
 # Enables support for tracking state changes over time.
 history:
@@ -120,7 +127,7 @@ script: !include_dir_merge_named includes/scripts
 
 # Single Files
 zone: !include includes/zone.yaml
-#camera: !include includes/cameras.yaml
+camera: !include includes/cameras.yaml
 binary_sensor: !include includes/binary_sensors.yaml
 light: !include includes\light.yaml
 
