@@ -21,6 +21,9 @@
       - binary_sensor.rf_gateway_status
       - sensor.plex
       - group.rf_gateway_info
+      - group.bunny_shed_controller_info
+      - binary_sensor.doorbell_controller_status
+
 
   
   Bathroom:
@@ -52,6 +55,7 @@
     - binary_sensor.bunny_shed_controller_status
     - binary_sensor.rf_gateway_status
     - binary_sensor.entryway_thermostat_online
+    - binary_sensor.doorbell_controller_status
 
   RF Gateway Info:
     - sensor.rf_gateway_ip_address
@@ -68,6 +72,13 @@
     - sensor.bunny_shed_target_temperature
     - input_slider.shed_target_temp
     - sensor.bunny_shed_temperature_range_max
+  
+  Bunny Shed Controller Info:
+    - sensor.shed_controller_ip_address
+    - sensor.shed_controller_ip_host_name
+    - sensor.shed_controller_client_name
+    - sensor.shed_controller_signal_strength
+    - sensor.shed_controller_ssid  
 
   UPS Data:
    - sensor.ups_status
@@ -132,6 +143,9 @@
     - sensor.dark_sky_humidity
     - sensor.dark_sky_hourly_summary
     - sensor.dark_sky_daily_summary
+
+  Doorbell:
+    - binary_sensor.doorbell
 
 
 

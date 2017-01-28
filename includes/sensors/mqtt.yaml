@@ -84,7 +84,32 @@
   state_topic: "HUISHS/LightingGateway/SSID"
   name: "RF Gateway SSID"
 
+############################################################
+#
+# Bunny Shed Controller Status
+#
+############################################################
 
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/ClientName"
+  name: "Shed Controller Client Name"
+ 
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/IpAddress"
+  name: "Shed Controller IP Address"
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/SignalStrength"
+  name: "Shed Controller Signal Strength"
+  unit_of_measurement: "dBm"
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/HostName"
+  name: "Shed Controller IP Host Name"
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/SSID"
+  name: "Shed Controller SSID"
 
 
 

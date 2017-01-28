@@ -5,6 +5,9 @@
 *.txt
 *.xml
 *.db-journal
+*.crt
+*.key
+*.pem
 .HA_VERSION
 known_devices.yaml
 secrets.yaml

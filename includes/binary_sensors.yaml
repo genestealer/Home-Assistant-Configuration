@@ -36,6 +36,20 @@
 
 ############################################################
 #
+# Doorbell Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Doorbell/Status"
+  name: "Doorbell Controller Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  sensor_class: connectivity
+
+############################################################
+#
 # Bunny Shed Heating Controller Heater Status
 #
 ############################################################
@@ -73,7 +87,19 @@
   payload_off: "off"
 
 
+############################################################
+#
+# Doorbells
+#
+############################################################
 
+- platform: mqtt
+  state_topic: "HUISHS/Doorbell/Alert"
+  name: "Doorbell"
+  qos: 0
+  payload_on: "1"
+  payload_off: "0"
+  sensor_class: "None" 
 
 
 #From examples...
