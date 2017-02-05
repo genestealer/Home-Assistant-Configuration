@@ -1,0 +1,17 @@
+############################################################
+#
+# Track Mobile Battery Level
+#
+############################################################
+
+- platform: mqtt
+  state_topic: !secret owntracksMQTTRichard
+  name: "Richard Phone Battery"
+  unit_of_measurement: "%"
+  value_template: '{{ value_json.batt }}'
+
+- platform: mqtt
+  state_topic: !secret owntracksMQTTLucy
+  name: "Lucy Phone Battery"
+  unit_of_measurement: "%"
+  value_template: '{{ value_json.batt }}'

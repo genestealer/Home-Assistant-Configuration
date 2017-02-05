@@ -55,6 +55,12 @@
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.doorbell_controller_status
 
+  Mobiles:
+    - device_tracker.richard_pixel
+    - device_tracker.lucy_nexus5x
+    - sensor.richard_phone_battery
+    - sensor.lucy_phone_battery
+
   RF Gateway Info:
     - sensor.rf_gateway_ip_address
     - sensor.rf_gateway_ip_host_name
@@ -70,6 +76,28 @@
     - sensor.bunny_shed_target_temperature
     - input_slider.shed_target_temp
     - sensor.bunny_shed_temperature_range_max
+
+  Speed Test:
+   - sensor.speedtest_download
+   - sensor.speedtest_ping
+   - sensor.speedtest_upload
+
+  Kitchen Climate:
+   - sensor.kitchen_humidity
+   - sensor.kitchen_temperature
+
+  Nest Hall:
+    - climate.entryway
+    - sensor.entryway_thermostat_humidity
+    - sensor.entryway_thermostat_hvac_state
+    - sensor.entryway_thermostat_operation_mode
+
+  Outside Weather:
+    - sensor.dark_sky_summary
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_humidity
+    - sensor.dark_sky_hourly_summary
+    - sensor.dark_sky_daily_summary
   
   Bunny Shed Controller Info:
     - sensor.shed_controller_ip_address
@@ -114,10 +142,7 @@
     - sensor.server_temperature_memory
     - sensor.server_temperature_processor
 
-  Speed Test:
-   - sensor.speedtest_download
-   - sensor.speedtest_ping
-   - sensor.speedtest_upload
+
   
 
   Bathroom Towel Rail:
@@ -144,25 +169,13 @@
     - light.christmas_tree_bling
     - light.snowflake_lights
 
-  Kitchen Climate:
-    - sensor.kitchen_humidity
-    - sensor.kitchen_temperature
 
-  Nest Hall:
-    - climate.entryway
-    - sensor.entryway_thermostat_humidity
-    - sensor.entryway_thermostat_hvac_state
-    - sensor.entryway_thermostat_operation_mode
-
-  Outside Weather:
-    - sensor.dark_sky_summary
-    - sensor.dark_sky_temperature
-    - sensor.dark_sky_humidity
-    - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_daily_summary
 
   Doorbell:
     - binary_sensor.doorbell
+
+
+
 
 
 

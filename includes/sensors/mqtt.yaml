@@ -16,9 +16,6 @@
   unit_of_measurement: '%'
 
 
-
-
-
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/setTemperature"
   name: "Bunny Shed Target Temperature"
@@ -140,3 +137,6 @@
 #   name: "Bedroom Humidity"
 #   qos: 0
 #   unit_of_measurement: "%"
+
+
+

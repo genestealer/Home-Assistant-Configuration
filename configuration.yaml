@@ -40,8 +40,8 @@ updater:
 # Password
 http:
   api_password: !secret http_password
-  ssl_certificate: C:\Cert\StartSSL\server.richardhuish.com.pem
-  ssl_key: C:\Cert\StartSSL\My-Key-20170107.key
+  ssl_certificate: !secret SSL_cert 
+  ssl_key: !secret SSL_key
   server_port: 443
 
   #   ssl_certificate: !secret SSL_cert
@@ -89,9 +89,19 @@ media_player:
  - platform: cast
 
 notify:
-- platform: pushover
-  api_key:  !secret pushover_api_key
-  user_key:  !secret pushover_user_key
+  - platform: pushover
+    name: Pushover Notify
+    api_key:  !secret pushover_api_key
+    user_key:  !secret pushover_user_key
+
+  - platform: html5
+    name: Google Cloud Notify
+    gcm_api_key: !secret gcmKey
+    gcm_sender_id: !secret gcmID
+
+  - name: Facebook Notify
+    platform: facebook
+    page_access_token: !secret FB_Key    
 
 device_tracker:
   platform: owntracks

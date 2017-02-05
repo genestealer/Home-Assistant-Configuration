@@ -8,7 +8,7 @@
   trigger: 
     platform: numeric_state
     entity_id: sensor.ups_input_voltage 
-    above: 253
+    above: 254
   action:
     service: notify.notify
     data_template:
@@ -27,7 +27,7 @@
   trigger: 
     platform: numeric_state
     entity_id: sensor.ups_input_voltage 
-    below: 230
+    below: 220
   action:
     service: notify.notify
     data_template:
@@ -44,7 +44,7 @@
 ##
 #############################################################
 
-- alias: NOTIFY when POWER RETURNS  
+- alias: NOTIFY when UPS is close to being depleted 
   trigger: 
     platform: numeric_state
     entity_id: sensor.ups_time_left 
@@ -52,6 +52,8 @@
   action:
     service: notify.notify
     data_template:
-      title: 'WARNING: UPS about to expire'
+      title: 'WARNING: UPS close to being depleted'
       message: >
         UPS is running low: {{ states('sensor.ups_time_left') }} minutes 
+
+
