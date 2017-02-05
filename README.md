@@ -10,6 +10,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 
 - Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
 - MQTT: Locally hosted Mosquitto MQTT broker https://mosquitto.org/
+- HTTPS SSL Certificate generated via https://github.com/Lone-Coder/letsencrypt-win-simple (Temporally enable IIS server with 433 and 80 bindings and my host name)
 
 ## Devices
 
