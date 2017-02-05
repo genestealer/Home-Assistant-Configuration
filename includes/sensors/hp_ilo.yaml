@@ -11,17 +11,17 @@
   username: !secret hp_ilo_username
   password: !secret hp_ilo_password
   monitored_variables:
-    - server_name
-    - server_fqdn
-    - server_host_data
-      #    - server_oa_info
+    # - server_name
+    # - server_fqdn
+    # - server_host_data
+    #    - server_oa_info
     - server_power_status
-      #    - server_power_readings
-    - server_power_on_time
-      #- server_asset_tag
-    - server_uid_status
+    #    - server_power_readings
+    # - server_power_on_time
+    #- server_asset_tag
+    # - server_uid_status
     - server_health
-    - network_settings
+    # - network_settings
 
 
 ############################################################

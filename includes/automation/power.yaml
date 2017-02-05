@@ -16,6 +16,7 @@
       message: >
         Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts 
 
+
 ############################################################
 #
 # Send Notification when Electricity Voltage is Low

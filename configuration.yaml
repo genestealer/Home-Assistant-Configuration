@@ -111,10 +111,6 @@ tts:
 ifttt:
   key: !secret ifttt_key 
 
-emulated_hue:
-  # type: alexa
-  # host_ip: 192.168.1.20
-  # listen_port: 8300
 
 
 # rflink:
@@ -128,19 +124,19 @@ emulated_hue:
 ############################################################
 
 # Merge List
-automation: !include_dir_merge_list includes/automation 
-sensor: !include_dir_merge_list includes/sensors
-light: !include_dir_merge_named includes/lights/
-script: !include_dir_merge_named includes/scripts
+automation: !include_dir_merge_list includes\automation 
+sensor: !include_dir_merge_list includes\sensors
+light: !include_dir_merge_named includes\lights\
+script: !include_dir_merge_named includes\scripts
 
 # Single Files
-zone: !include includes/zone.yaml
-camera: !include includes/cameras.yaml
-binary_sensor: !include includes/binary_sensors.yaml
+zone: !include includes\zone.yaml
+camera: !include includes\cameras.yaml
+binary_sensor: !include includes\binary_sensors.yaml
 
 
 # Merge Named
-group: !include_dir_merge_named includes/group
+group: !include_dir_merge_named includes\group
 
 
 
@@ -193,13 +189,18 @@ alexa:
       action:
         service: notify.notify
         data_template:
-          message: The location of {{ User }} has been queried via Alexa.
+          message: "The location of {{ User }} has been queried via Alexa."
+          data:
+            title: "Home Assistant"
+            sound: falling
+            device: pixel
+            url: !secret web_address
       speech:
         type: plaintext
         text: >
           {%- for state in states.device_tracker -%}
             {%- if state.name.lower() == User.lower() -%}
-              {{ state.name }} is at {{ state.state }}
+              {{ state.name }} is currently at {{ state.state }}
             {%- endif -%}
           {%- else -%}
             I am sorry, I do not know where {{ User }} is.
@@ -208,3 +209,25 @@ alexa:
         type: simple
         title: Sample title
         content: Some more content
+
+  #       alexa:
+  # intents:
+  #   LocateIntent:
+  #     action:
+  #       service: notify.notify
+  #       data_template:
+  #         message: The location of {{ User }} has been queried via Alexa.
+  #     speech:
+  #       type: plaintext
+  #       text: >
+  #         {%- for state in states.device_tracker -%}
+  #           {%- if state.name.lower() == User.lower() -%}
+  #             {{ state.name }} is at {{ state.state }}
+  #           {%- endif -%}
+  #         {%- else -%}
+  #           I am sorry, I do not know where {{ User }} is.
+  #         {%- endfor -%}
+  #     card:
+  #       type: simple
+  #       title: Sample title
+  #       content: Some more content

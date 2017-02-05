@@ -21,22 +21,14 @@
 
 - platform: apcupsd
   resources:
-    - hostname
-    - upsname
-    - starttime
-    - model
+    # - model
     - status
     - linev
     - loadpct
     - bcharge
     - timeleft
-    - mbattchg
-    - mintimel
-    - maxtime
-    - sense
-    - lotrans
-    - hitrans
-    - alarmdel
+    # - lotrans
+    # - hitrans
     - battv
     - lastxfer
     - numxfers
@@ -44,10 +36,17 @@
     - cumonbatt
     - xoffbatt
     - selftest
-    - statflag
-    - serialno
-    - battdate
-    - nominv
-    - nombattv
-    - nompower
-    - firmware
+    # - statflag
+    # - serialno
+    # - battdate
+    # - firmware
+    # - nominv
+    # - nombattv
+    # - nompower
+    # - alarmdel
+    # - starttime
+    # - hostname
+    # - mintimel
+    # - maxtime
+    # - mbattchg
+    # - sense
