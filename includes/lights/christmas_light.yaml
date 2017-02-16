@@ -4,29 +4,29 @@
 #
 ############################################################
 
-  - platform: mqtt
-    command_topic: "HUISHS/LightingGateway/transmit"
-    payload_on: "2006508"
-    payload_off: "2006500"
-    name: "Christmas Tree Bling"
+  # - platform: mqtt
+  #   command_topic: "HUISHS/LightingGateway/transmit"
+  #   payload_on: "2006508"
+  #   payload_off: "2006500"
+  #   name: "Christmas Tree Bling"
 
-  - platform: mqtt
-    command_topic: "HUISHS/LightingGateway/transmit"
-    payload_on: "2006509"
-    payload_off: "2006501"
-    name: "Star Light"
+  # - platform: mqtt
+  #   command_topic: "HUISHS/LightingGateway/transmit"
+  #   payload_on: "2006509"
+  #   payload_off: "2006501"
+  #   name: "Star Light"
 
-  - platform: mqtt
-    command_topic: "HUISHS/LightingGateway/transmit"
-    payload_on: "2006510"
-    payload_off: "2006502"
-    name: "Outside Lights"
+  # - platform: mqtt
+  #   command_topic: "HUISHS/LightingGateway/transmit"
+  #   payload_on: "2006510"
+  #   payload_off: "2006502"
+  #   name: "Outside Lights"
 
-  - platform: mqtt
-    command_topic: "HUISHS/LightingGateway/transmit"
-    payload_on: "2006511"
-    payload_off: "2006503"
-    name: "Snowflake Lights"
+  # - platform: mqtt
+  #   command_topic: "HUISHS/LightingGateway/transmit"
+  #   payload_on: "2006511"
+  #   payload_off: "2006503"
+  #   name: "Snowflake Lights"
 
   - platform: mqtt
     command_topic: "HUISHS/LightingGateway/transmit"

@@ -1,8 +1,10 @@
 ############################################################
 #
-# RFLink
+# RFLink Lights
 #
 ############################################################
 
- - platform: rflink
-   new_devices_group: "New Rflink Sensors"
+  - platform: rflink
+    devices:
+      Maclean_0d82_01:
+        name: Test Light

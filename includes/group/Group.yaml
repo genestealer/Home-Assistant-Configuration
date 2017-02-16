@@ -61,6 +61,15 @@
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
+
+  CCTV:
+    - camera.front_door
+    - camera.other_camera
+
+
+  # Lights:
+  #   - group.all_lights
+       
   RF Gateway Info:
     - sensor.rf_gateway_ip_address
     - sensor.rf_gateway_ip_host_name
@@ -157,17 +166,17 @@
      - input_boolean.task_heat_towel_rail
 
 
-  Christmas Lights:
-    - light.star_light
-    - light.christmas_tree_bling
-    - light.outside_lights
-    - light.snowflake_lights
-  Outside Christmas Lights:
-    - light.outside_lights
-    - light.star_light
-  Inside Christmas Lights:
-    - light.christmas_tree_bling
-    - light.snowflake_lights
+  # Christmas Lights:
+  #   - light.star_light
+  #   - light.christmas_tree_bling
+  #   - light.outside_lights
+  #   - light.snowflake_lights
+  # Outside Christmas Lights:
+  #   - light.outside_lights
+  #   - light.star_light
+  # Inside Christmas Lights:
+  #   - light.christmas_tree_bling
+  #   - light.snowflake_lights
 
 
 
