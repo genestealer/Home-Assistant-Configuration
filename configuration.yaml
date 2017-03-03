@@ -57,11 +57,14 @@ sun:
 # Allows you to issue voice commands from the frontend
 conversation:
 
+# enable configuration panel
+config:
+  
 # Enables the frontend
 frontend:  
 
 # Discover some devices automatically
-#discovery:
+# discovery:
 
 
 ############################################################
@@ -84,9 +87,9 @@ climate:
   platform: nest
 
 
-media_player:
- - platform: plex
- - platform: cast
+# media_player:
+#  # - platform: plex
+#  - platform: cast
 
 notify:
   - platform: pushover
@@ -99,9 +102,9 @@ notify:
     gcm_api_key: !secret gcmKey
     gcm_sender_id: !secret gcmID
 
-  - name: Facebook Notify
-    platform: facebook
-    page_access_token: !secret FB_Key    
+  # - name: Facebook Notify
+  #   platform: facebook
+  #   page_access_token: !secret FB_Key    
 
 device_tracker:
   platform: owntracks
@@ -123,9 +126,9 @@ ifttt:
 
 
 
-# rflink:
-#   host: test
-#   port: 32
+rflink:
+  host: !secret RF_Link_IP
+  port: !secret RF_Link_Port
 
 ############################################################
 #
@@ -136,7 +139,7 @@ ifttt:
 # Merge List
 automation: !include_dir_merge_list includes\automation 
 sensor: !include_dir_merge_list includes\sensors
-light: !include_dir_merge_named includes\lights\
+light: !include_dir_merge_list includes\lights
 script: !include_dir_merge_named includes\scripts
 
 # Single Files

@@ -4,7 +4,7 @@
 #
 ############################################################
 
-- alias: "Outside xmas Lights ON at sun set"
+- alias: "Outside xmas Lights OFF at midnight" 
   trigger:
     platform: time
     # Possible values: sunset, sunrise
@@ -20,7 +20,7 @@
 #
 ############################################################
 
-- alias: "Outside xmas Lights OFF at midnight"
+- alias: "Outside xmas Lights ON at sun set"
   trigger:
     platform: sun
     # Possible values: sunset, sunrise

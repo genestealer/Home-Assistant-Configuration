@@ -8,6 +8,6 @@
   mjpeg_url: !secret CCTV1
   name: Front Door
 
-- platform: mjpeg
-  mjpeg_url: !secret CCTV2
-  name: Other Camera
+# - platform: mjpeg
+#   mjpeg_url: !secret CCTV2
+#   name: Other Camera

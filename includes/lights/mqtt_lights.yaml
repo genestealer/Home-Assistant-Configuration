@@ -1,0 +1,19 @@
+############################################################
+#
+# MQTT Light Gatway
+#
+############################################################
+
+  - platform: mqtt
+    command_topic: "HUISHS/LightingGateway/transmit"
+    payload_on: "2006479"
+    payload_off: "2006471"
+    name: "Bedside Light"
+    optimistic: true
+
+  - platform: mqtt
+    command_topic: "HUISHS/LightingGateway/transmit"
+    payload_on: "2006509"
+    payload_off: "2006501"
+    name: "Living Room Left Light"
+    optimistic: true
