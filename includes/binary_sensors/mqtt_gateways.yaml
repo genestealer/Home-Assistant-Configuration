@@ -1,0 +1,51 @@
+############################################################
+#
+# Home Assistant Binary Sensors
+#
+############################################################
+
+############################################################
+#
+# Lighting Gateway Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/Status"
+  name: "RF Gateway Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  sensor_class: connectivity
+
+
+############################################################
+#
+# Bunny Shed Heating Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/status"
+  name: "Bunny Shed Controller Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  sensor_class: connectivity
+
+
+############################################################
+#
+# Doorbell Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Doorbell/Status"
+  name: "Doorbell Controller Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  sensor_class: connectivity
+
+

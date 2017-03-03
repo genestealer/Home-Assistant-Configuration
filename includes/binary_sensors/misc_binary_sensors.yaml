@@ -1,0 +1,70 @@
+############################################################
+#
+# Home Assistant Binary Sensors
+#
+############################################################
+
+############################################################
+#
+# Nest Thermostat
+#
+############################################################
+- platform: nest
+  name: Nest Thermostat
+  monitored_conditions:
+    - 'online'
+    - 'has_leaf'
+
+
+############################################################
+#
+# Doorbells
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Doorbell/Alert"
+  name: "Doorbell"
+  qos: 0
+  payload_on: "1"
+  payload_off: "0"
+
+############################################################
+#
+# Test
+#
+############################################################
+
+#DASH test
+- platform: mqtt
+  state_topic: "HUISHS/dash"
+  name: "Dash Button"
+  payload_on: "on"
+  payload_off: "off"
+
+
+#From examples...
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Summer House"
+#   qos: 0
+#   payload_on: "2"
+#   payload_off: "2 off"
+#   sensor_class: motion
+
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Driveway"
+#   qos: 0
+#   payload_on: "6"
+#   payload_off: "6 off"
+#   sensor_class: motion
+
+# - platform: mqtt
+#   state_topic: "house/controller/1"
+#   name: "Courtyard"
+#   qos: 0
+#   payload_on: "1"
+#   payload_off: "1 off"
+#   sensor_class: motion
+

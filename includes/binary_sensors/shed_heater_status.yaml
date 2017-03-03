@@ -1,0 +1,22 @@
+############################################################
+#
+# Home Assistant Binary Sensors
+#
+############################################################
+
+
+############################################################
+#
+# Bunny Shed Heating Controller Heater Status
+#
+############################################################
+
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/outputState"
+  name: "Bunny Shed Heater"
+  payload_on: "1"
+  payload_off: "0"
+  sensor_class: heat #Classes https://home-assistant.io/components/binary_sensor/  
+
+

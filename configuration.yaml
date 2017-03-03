@@ -59,7 +59,7 @@ conversation:
 
 # enable configuration panel
 config:
-  
+
 # Enables the frontend
 frontend:  
 
@@ -140,12 +140,17 @@ rflink:
 automation: !include_dir_merge_list includes\automation 
 sensor: !include_dir_merge_list includes\sensors
 light: !include_dir_merge_list includes\lights
+binary_sensor: !include_dir_merge_list includes\binary_sensors\
+
+#Merge named https://home-assistant.io/docs/configuration/splitting_configuration/
 script: !include_dir_merge_named includes\scripts
+
 
 # Single Files
 zone: !include includes\zone.yaml
 camera: !include includes\cameras.yaml
-binary_sensor: !include includes\binary_sensors.yaml
+
+
 
 
 # Merge Named
