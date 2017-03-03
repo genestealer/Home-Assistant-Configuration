@@ -57,6 +57,6 @@
 - platform: template
   sensors:
     rflink_status:
-      friendly_name: 'RFlink Gateway Status'
+      friendly_name: 'RFLink Gateway Status'
       device_class: 'connectivity'
       value_template: "{% if is_state('rflink.connection_status', 'connected') %}true{% else %}false{% endif %}"

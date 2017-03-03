@@ -49,12 +49,10 @@
     entities:
       - light.bedside_light
 
-  Device Status:
-    - binary_sensor.bunny_shed_controller_status
-    - binary_sensor.rf_gateway_status
-    - binary_sensor.entryway_thermostat_online
-    - binary_sensor.doorbell_controller_status
-    - binary_sensor.rflink_status
+
+  Nest Thermostat:
+    - climate.entryway
+    - sensor.entryway_thermostat_humidity
 
   Mobiles:
     - device_tracker.richard_pixel
@@ -62,10 +60,24 @@
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
-
   CCTV:
     - camera.front_door
     - camera.other_camera
+
+  Device Status:
+    - binary_sensor.bunny_shed_controller_status
+    - binary_sensor.rf_gateway_status
+    - binary_sensor.entryway_thermostat_online
+    - binary_sensor.rflink_status
+    - binary_sensor.doorbell_controller_status
+    
+
+
+  Kitchen Climate:
+   - sensor.kitchen_temperature
+   - sensor.kitchen_humidity
+
+
 
 
   # Lights:
@@ -87,24 +99,23 @@
     - input_slider.shed_target_temp
     - sensor.bunny_shed_temperature_range_max
 
-  Speed Test:
-   - sensor.speedtest_download
-   - sensor.speedtest_ping
-   - sensor.speedtest_upload
 
-  Kitchen Climate:
-   - sensor.kitchen_humidity
-   - sensor.kitchen_temperature
 
-  Nest Hall:
-    - climate.entryway
-    - sensor.entryway_thermostat_humidity
+
+
+
+
 
   Outside Weather:
     - sensor.dark_sky_summary
     - sensor.dark_sky_temperature
     - sensor.dark_sky_humidity
     - sensor.dark_sky_hourly_summary
+
+  Speed Test:
+   - sensor.speedtest_download
+   - sensor.speedtest_ping
+   - sensor.speedtest_upload
   
   Bunny Shed Controller Info:
     - sensor.shed_controller_ip_address
