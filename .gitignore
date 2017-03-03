@@ -8,6 +8,7 @@
 *.crt
 *.key
 *.pem
+*.old
 .HA_VERSION
 known_devices.yaml
 secrets.yaml

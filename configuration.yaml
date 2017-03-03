@@ -48,7 +48,9 @@ http:
   # ssl_key: !secret SSL_key
 
 recorder:
-  purge_days: 365
+  purge_days: 24
+  # exclude:
+    
 
 # Track the sun
 sun:

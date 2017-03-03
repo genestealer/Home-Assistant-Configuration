@@ -3,11 +3,23 @@
 # Misc
 #
 ############################################################
-  - platform: time_date
-    display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-      - 'time_date'
-      - 'time_utc'
-      - 'beat'
+
+# - platform: template
+#   sensors:
+#    rflink_status:
+#     value_template: '{{ states.rflink.connection_status }}'
+
+#     #value_template: '{{ states.connection_status.state == "connected"}}'
+#     #value_template: "{{ rflink.connection_status == 'connected' }}"
+#     #value_template: '{% if is_state("rflink.connection_status", "connected") %}on{% else %}off{% endif %}'
+#     #value_template: "{% if states.rflink.connection_status.state == "connected") %}on{% else %}off{% endif %}"
+
+#     friendly_name: 'RFlink Gatway Status'
+#     #device_class: 'connectivity'
+
+# - platform: template
+#   sensors:
+#    rflink_status2:
+#     value_template: '{% if is_state("rflink.connection_status", "connected") %}true{% else %}false{% endif %}'
+#     friendly_name: 'RFlink Gatway Status'
+#     #device_class: 'connectivity'

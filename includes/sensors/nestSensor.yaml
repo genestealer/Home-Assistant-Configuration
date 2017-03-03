@@ -4,11 +4,11 @@
 #
 ############################################################
 
-- platform: nest
-  monitored_conditions:
-    - 'temperature'
-    - 'target'
-    - 'weather_condition'
+# - platform: nest
+#   monitored_conditions:
+#     - 'temperature'
+#     - 'target'
+#     - 'weather_condition'
 
 #    - 'target'
 #    

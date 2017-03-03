@@ -10,10 +10,10 @@
   monitored_conditions:
     - summary
     - hourly_summary
-    - daily_summary
     - temperature
     - humidity
 
+    #- daily_summary
     #- summary
     # - icon
     # - nearest_storm_distance

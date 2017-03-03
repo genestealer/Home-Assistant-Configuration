@@ -54,6 +54,7 @@
     - binary_sensor.rf_gateway_status
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.doorbell_controller_status
+    - binary_sensor.rflink_status
 
   Mobiles:
     - device_tracker.richard_pixel
@@ -98,15 +99,12 @@
   Nest Hall:
     - climate.entryway
     - sensor.entryway_thermostat_humidity
-    - sensor.entryway_thermostat_hvac_state
-    - sensor.entryway_thermostat_operation_mode
 
   Outside Weather:
     - sensor.dark_sky_summary
     - sensor.dark_sky_temperature
     - sensor.dark_sky_humidity
     - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_daily_summary
   
   Bunny Shed Controller Info:
     - sensor.shed_controller_ip_address

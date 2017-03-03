@@ -37,7 +37,9 @@ sensor.entryway_thermostat_humidity:
 
 
 binary_sensor.entryway_thermostat_online:
-  sensor_class: connectivity
+  device_class: connectivity
+  friendly_name: Nest Thermostat Status
+
 
 climate.entryway:
   entity_picture: /local/nesticon.png
