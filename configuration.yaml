@@ -181,23 +181,6 @@ input_boolean:
    
  
 
-#automation:
-#  alias: Heat Towel Rail
-#  trigger:
-#    platform: state
-#    entity_id: input_boolean.task_heat_towel_rail
-#    to: 'on'
-#  condition:
-#    platform: state
-#    entity_id: input_boolean.task_heat_towel_rail
-#    state: 'on'
-#  action:
-#    service: climate.set_temperature
-#    data:
-#      temperature: 26
-#      entity_id: climate.hallway      
-
-
 alexa:
   intents:
     LocateIntent:

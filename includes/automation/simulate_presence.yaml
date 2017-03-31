@@ -1,6 +1,7 @@
 ############################################################
 #
 #  Automation Simulate Presence
+#  Source https://github.com/mertenats/Open-Home-Automation/blob/master/openhome/configuration/home_assistant/automation/automation_4a.yaml
 #
 ############################################################
 
@@ -20,25 +21,29 @@
       - condition: state
         entity_id: 'sun.sun'
         state: 'below_horizon'
+      # Randomise when the lights all turn off
       - condition: time
         before: '23:01:00'
+        #before: '23:{{ (range(01, 59) | random) }}:00'
       - condition: state
         entity_id: group.all_devices
         state: 'not_home'
   action:
-    # https://home-assistant.io/cookbook/perform_actions_based_on_input_select/
-    # https://home-assistant.io/getting-started/scripts/
     - service: light.turn_on
+    # Choose a lamp at random (between 1 and 4) and turn it on.
       data_template:
-        # entity_id: >
-        #   light.lamp_{{ (range(1, 6) | random) }}
-        entity_id: light.living_room_left_light
-
-    # wait some seconds (will be in reality in minutes)
-    - delay: '00:{{ (range(2, 10) | random) }}:00'
-    # turn off all devices
+         entity_id: >
+           light.lamp_{{ (range(1, 5) | random) }}
+    # Keep lamp on for xx minutes)
+    - delay: '00:{{ (range(10, 30) | random) }}:00'
+    # turn off all lamps
     - service: light.turn_off
-    # wait a little bit before turning on another lamp
-    - delay: '00:00:{{ (range(1, 5) | random) }}'  
+      entity_id:
+        - light.lamp_1
+        - light.lamp_2
+        - light.lamp_3
+        - light.lamp_4
+    # wait a a few seconds before turning on another lamp
+    - delay: '00:00:{{ (range(3, 10) | random) }}'  
     # generate an event to call again this automation rule
     - event: event_simulate_presence

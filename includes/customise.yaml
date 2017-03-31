@@ -49,6 +49,17 @@ climate.entryway:
 #   friendly_name: RFLink Raw Connection Status
 
 
+# lights
+light.lamp_1:
+  friendly_name: 'Lucy Room Lamp'
+light.lamp_2:
+  friendly_name: 'Bedroom Lamp'
+light.lamp_3:
+  friendly_name: 'Guest Bedroom Lamp'
+light.lamp_4:
+  friendly_name: 'Living Room Lamp'
+
+
 
 ############################################################
 #
