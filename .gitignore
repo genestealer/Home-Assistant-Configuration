@@ -14,3 +14,6 @@ known_devices.yaml
 secrets.yaml
 deps
 html5_push_registrations.conf
+www
+tts
+shortcuts
