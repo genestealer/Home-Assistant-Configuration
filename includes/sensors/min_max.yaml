@@ -6,6 +6,14 @@
 
 - platform: min_max
   unit_of_measurement: '°C'
-  name: "Bunny Shed Temperature Range"
+  name: "Bunny Shed Temperature Highest"
   entity_ids:
     - sensor.bunny_shed_temperature
+  type: max
+
+- platform: min_max
+  unit_of_measurement: '°C'
+  name: "Bunny Shed Temperature Lowest"
+  entity_ids:
+    - sensor.bunny_shed_temperature
+  type: min

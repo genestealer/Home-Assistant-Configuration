@@ -91,13 +91,13 @@
     - sensor.rf_gateway_ssid
 
   Bunny Shed:
-    - binary_sensor.bunny_shed_controller_status
     - sensor.bunny_shed_temperature
     - sensor.bunny_shed_humidity
     - binary_sensor.bunny_shed_heater
     - sensor.bunny_shed_target_temperature
     - input_slider.shed_target_temp
-    - sensor.bunny_shed_temperature_range_max
+    - sensor.bunny_shed_temperature_highest_max
+    - sensor.bunny_shed_temperature_lowest_min
 
 
 

@@ -44,6 +44,11 @@ binary_sensor.entryway_thermostat_online:
 climate.entryway:
   entity_picture: /local/nesticon.png
 
+ #Does now work :(
+# rflink.connection_status:
+#   friendly_name: RFLink Raw Connection Status
+
+
 
 ############################################################
 #

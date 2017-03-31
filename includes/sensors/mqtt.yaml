@@ -109,34 +109,3 @@
   name: "Shed Controller SSID"
 
 
-
-
-
-
-
-# - platform: mqtt
-#   state_topic: "house/mainbedroom/temp"
-#   name: "Bedroom"
-#   qos: 0
-#   unit_of_measurement: "°C"
-
-# - platform: mqtt
-#   state_topic: "house/utilityroom/temp"
-#   name: "Utility Room"
-#   qos: 0
-#   unit_of_measurement: "°C"
-
-# - platform: mqtt
-#   state_topic: "house/energymonitor/1"
-#   name: "Energy Monitor"
-#   qos: 0
-#   unit_of_measurement: "W"
-
-# - platform: mqtt
-#   state_topic: "house/mainbedroom/humidity"
-#   name: "Bedroom Humidity"
-#   qos: 0
-#   unit_of_measurement: "%"
-
-
-

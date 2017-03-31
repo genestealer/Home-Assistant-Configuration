@@ -7,4 +7,11 @@
   - platform: rflink
     devices:
       Maclean_0d82_01:
-        name: Test Light
+        name: Test Light Maclean_0d82_01
+
+  - platform: rflink
+    devices:
+      Ansluta_ce30_0:
+        name: Kitchen Under Counter Lights
+    device_defaults:
+      signal_repetitions: 6
