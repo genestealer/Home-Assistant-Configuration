@@ -1,0 +1,12 @@
+############################################################
+#
+# RFLink Swicths
+#
+############################################################
+
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 3
+  devices:
+    EMW100_a140_0:
+      name: Kitchen Extractor Fan

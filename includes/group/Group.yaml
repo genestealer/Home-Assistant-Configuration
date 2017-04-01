@@ -77,11 +77,14 @@
    - sensor.kitchen_temperature
    - sensor.kitchen_humidity
 
+  Lighting:
+    - light.upstairs_hall_light
+    - light.kitchen_under_counter_lights
+    - light.lamp_1
+    - light.lamp_2
+    - light.lamp_3
+    - light.lamp_4
 
-
-
-  # Lights:
-  #   - group.all_lights
        
   RF Gateway Info:
     - sensor.rf_gateway_ip_address
@@ -159,6 +162,7 @@
     - sensor.server_temperature_chipset
     - sensor.server_temperature_memory
     - sensor.server_temperature_processor
+    - sensor.server_temperature_raid_controller
 
 
   

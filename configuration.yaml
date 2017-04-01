@@ -138,6 +138,7 @@ automation: !include_dir_merge_list includes\automation
 sensor: !include_dir_merge_list includes\sensors
 light: !include_dir_merge_list includes\lights
 binary_sensor: !include_dir_merge_list includes\binary_sensors\
+switch: !include_dir_merge_list includes\switch
 
 #Merge named https://home-assistant.io/docs/configuration/splitting_configuration/
 script: !include_dir_merge_named includes\scripts

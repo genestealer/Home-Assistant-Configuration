@@ -6,35 +6,17 @@
 
 - platform: rflink
   device_defaults:
-    signal_repetitions: 1
+    signal_repetitions: 3
   devices:
     Maclean_0d82_01:
       name: Lamp_1
-
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 1
-  devices:
     Maclean_0d82_02:
       name: Lamp_2
-
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 1
-  devices:
     Maclean_0d82_03:
       name: Lamp_3
-
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 1
-  devices:
     Maclean_0d82_04:
       name: Lamp_4
-
-- platform: rflink
-  devices:
     Ansluta_ce30_0:
       name: Kitchen Under Counter Lights
-  device_defaults:
-    signal_repetitions: 3
+    Eurodomest_0fca6c_00:
+      name: Upstairs Hall Light
