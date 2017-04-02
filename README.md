@@ -4,13 +4,13 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 
 ## Inspiration and Support
 
-- [Graeme Smith] https://github.com/Instagraeme
+- [Graeme Smith](https://github.com/Instagraeme)
 
 ## My Setup
 
 - Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
-- MQTT: Locally hosted Mosquitto MQTT broker https://mosquitto.org/
-- HTTPS SSL Certificate generated via https://github.com/Lone-Coder/letsencrypt-win-simple (Temporally enable IIS server with 433 and 80 bindings and my host name)
+- MQTT: Locally hosted [Mosquitto](https://mosquitto.org/) MQTT broker 
+- HTTPS SSL Certificate generated via [Lets Encrypt](https://github.com/Lone-Coder/letsencrypt-win-simple) (Temporally enable IIS server with 433 and 80 bindings and my host name)
 
 ## Devices
 
@@ -23,8 +23,8 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Amazon Dash Button 
 
 ### Github hosted homemade hardware
-- Homemade 433Mhz switch contoller gateway: https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway
-- Homemade 433Mhz bunny shed heating contoller: https://github.com/Genestealer/Bunny-Shed-Climate-Control
+- [Homemade 433Mhz switch contoller gateway](https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway)
+- [Homemade 433Mhz bunny shed heating contoller](https://github.com/Genestealer/Bunny-Shed-Climate-Control)
 
 
 ## Example
