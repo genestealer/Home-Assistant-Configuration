@@ -15,7 +15,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 ## Devices
 
 - HPE ProLiant MicroServer Gen8 Server
-- APC UPS - APC UPS Daemon http://www.apcupsd.org/wordpress/
+- [APC UPS - APC UPS Daemon](http://www.apcupsd.org/wordpress/)
 - Google Chromecast Audio
 - Google Chromecast
 - Nest Thermostat
