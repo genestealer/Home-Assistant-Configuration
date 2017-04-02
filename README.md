@@ -25,6 +25,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 ### Github hosted homemade hardware
 - [Homemade 433Mhz switch contoller gateway](https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway)
 - [Homemade 433Mhz bunny shed heating contoller](https://github.com/Genestealer/Bunny-Shed-Climate-Control)
+- [Home Assistant to RFLink Gateway via HTTP using NodeMCU (ESP8266 Wifi module)](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266)
 
 
 ## Example
