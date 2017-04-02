@@ -22,7 +22,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Plex Media Server
 - Amazon Dash Button 
 #### Items controlled via my RFLink Controller
-- [Energenie Wall Light Switch](https://energenie4u.co.uk/catalogue/product/MIHO026) )
+- [Energenie Wall Light Switch](https://energenie4u.co.uk/catalogue/product/MIHO026)
 - Room lamps plugged into [Maclean MCE07GB Remote Control Sockets](https://www.amazon.co.uk/Maclean-MCE07GB-Control-Sockets-Programmable/dp/B00OV1TTU6)
 - Hacked Ikea E1201C Remote 'relay' for kitchen extractor fan
 - Ikea Ansluta Lights
