@@ -28,7 +28,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Ikea Ansluta Lights
 
 
-### Github hosted homemade hardware
+## Github hosted homemade hardware
 - [Homemade 433Mhz MQTT transmitter gatway](https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway)
 - [Homemade 433Mhz bunny shed heating contoller](https://github.com/Genestealer/Bunny-Shed-Climate-Control)
 - [Home Assistant to RFLink Gateway Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266)
