@@ -21,6 +21,9 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Nest Thermostat
 - Plex Media Server
 - Amazon Dash Button 
+- [Energenie Wall Light Switch](https://energenie4u.co.uk/catalogue/product/MIHO026) (Controlled via my [Home Assistant to RFLink Gateway Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266))
+- Room lamps plugged into [Maclean MCE07GB Remote Control Sockets](https://www.amazon.co.uk/Maclean-MCE07GB-Control-Sockets-Programmable/dp/B00OV1TTU6) (Controlled via my [Home Assistant to RFLink Gateway Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266))
+
 
 ### Github hosted homemade hardware
 - [Homemade 433Mhz MQTT transmitter gatway](https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway)
