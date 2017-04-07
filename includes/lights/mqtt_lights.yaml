@@ -27,3 +27,11 @@
   payload_off: "6989578"
   name: "MQTT Light 3"
   optimistic: true 
+
+   # energenie branded wall remote control switch
+- platform: mqtt
+  command_topic: "HUISHS/LightingGateway/transmit"
+  payload_on: "219455"
+  payload_off: "219454"
+  name: "MQTT Light 4"
+  optimistic: true 

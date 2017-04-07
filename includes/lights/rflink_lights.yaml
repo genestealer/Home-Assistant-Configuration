@@ -6,7 +6,7 @@
 
 - platform: rflink
   device_defaults:
-    signal_repetitions: 3
+    signal_repetitions: 1
   devices:
     Maclean_0d82_01:
       name: Lamp_1
