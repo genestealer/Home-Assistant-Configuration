@@ -1,0 +1,25 @@
+############################################################
+#
+#  433MHz remote button automation
+#
+############################################################
+
+- alias: Remote Button Press On
+  trigger:
+    - platform: state
+      entity_id: switch.button_1
+      state: 'on'
+  action:
+    - service: light.turn_on
+      entity_id:
+        - light.lamp_2
+
+- alias: Remote Button Press Off
+  trigger:
+    - platform: state
+      entity_id: switch.button_1
+      state: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.lamp_2        
