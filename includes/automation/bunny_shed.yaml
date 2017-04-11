@@ -39,7 +39,7 @@
     service: mqtt.publish
     data_template:
       topic: "HUISHS/BunnyShed/setHeaterTemperature"
-      retain: true
+      retain: false
       payload: '{{ states.input_slider.shed_target_heat_temp.state | int }}'
 
 
@@ -84,7 +84,7 @@
     service: mqtt.publish
     data_template:
       topic: "HUISHS/BunnyShed/setCoolerTemperature"
-      retain: true
+      retain: false
       payload: '{{ states.input_slider.shed_target_cool_temp.state | int }}'
 
 
