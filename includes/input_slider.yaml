@@ -11,7 +11,7 @@ shed_target_heat_temp:
   max: 35
   step: 0.5
   unit_of_measurement: step  
-  icon: mdi:target
+  icon: mdi:weather-sunny
 shed_target_cool_temp:
   name: Bunny Shed Target Cool Temperature
   initial: 20
@@ -19,7 +19,7 @@ shed_target_cool_temp:
   max: 40
   step: 0.5
   unit_of_measurement: step  
-  icon: mdi:target
+  icon: mdi:snowflake
 minute_delay:
   name: Heat for x Mins
   initial: 60

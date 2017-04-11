@@ -123,12 +123,15 @@ bunny_shed:
   entities:
     - sensor.bunny_shed_temperature
     - sensor.bunny_shed_humidity
-    - input_slider.shed_target_cool_temp
-    - sensor.bunny_shed_target_cool_temperature
-    - binary_sensor.bunny_shed_cooler
-    - input_slider.shed_target_heat_temp
-    - sensor.bunny_shed_target_heat_temperature
+
     - binary_sensor.bunny_shed_heater
+    - sensor.bunny_shed_target_heat_temperature
+    - input_slider.shed_target_heat_temp
+
+    - binary_sensor.bunny_shed_cooler
+    - sensor.bunny_shed_target_cool_temperature    
+    - input_slider.shed_target_cool_temp
+
     - sensor.bunny_shed_temperature_highest_max
     - sensor.bunny_shed_temperature_lowest_min
 

@@ -60,6 +60,15 @@ light.lamp_4:
   friendly_name: 'Living Room Lamp'
 
 
+# Bunny Shed
+input_slider.shed_target_cool_temp:
+  friendly_name: 'Shed Cool Target'
+input_slider.shed_target_heat_temp:
+  friendly_name: 'Shed Heat Target'
+
+
+
+
 
 ############################################################
 #

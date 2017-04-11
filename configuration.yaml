@@ -151,7 +151,7 @@ camera: !include includes\cameras.yaml
 
 
 # Merge Named
-group: !include groups.yaml
+group: !include includes\group\groups.yaml
 input_slider: !include includes\input_slider.yaml
 
 
