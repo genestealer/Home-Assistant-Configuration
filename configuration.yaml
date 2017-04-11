@@ -152,11 +152,27 @@ camera: !include includes\cameras.yaml
 
 
 # Merge Named
-group: !include_dir_merge_named includes\group
+group: !include groups.yaml
 
 
 
 input_slider:
+  shed_target_heat_temp:
+    name: Bunny Shed Target Heat Temperaturec
+    initial: 8
+    min: 1
+    max: 35
+    step: 0.5
+    unit_of_measurement: step  
+    icon: mdi:target
+  shed_target_cool_temp:
+    name: Bunny Shed Target Cool Temperature
+    initial: 20
+    min: 1
+    max: 40
+    step: 0.5
+    unit_of_measurement: step  
+    icon: mdi:target
   minute_delay:
     name: Heat for x Mins
     initial: 60
@@ -164,15 +180,6 @@ input_slider:
     max: 120
     step: 1
     icon: mdi:clock-end  
-  shed_target_temp:
-    name: Bunny Shed Target Temperature Slider
-    min: 1
-    max: 15
-    step: 1
-    unit_of_measurement: step  
-    icon: mdi:target
-
-
 
 input_boolean:
   task_heat_towel_rail:

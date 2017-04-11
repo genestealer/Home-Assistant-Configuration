@@ -17,11 +17,14 @@
 
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/setTemperature"
-  name: "Bunny Shed Target Temperature"
+  state_topic: "HUISHS/BunnyShed/setHeaterTemperature"
+  name: "Bunny Shed Target Heat Temperature"
   unit_of_measurement: '°C'
 
-
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/setCoolerTemperature"
+  name: "Bunny Shed Target Cool Temperature"
+  unit_of_measurement: '°C'
 
 
 

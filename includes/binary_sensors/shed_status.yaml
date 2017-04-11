@@ -7,16 +7,23 @@
 
 ############################################################
 #
-# Bunny Shed Heating Controller Heater Status
+# Bunny Shed Controller Status
 #
 ############################################################
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/outputState"
+  state_topic: "HUISHS/BunnyShed/outputHeaterState"
   name: "Bunny Shed Heater"
   payload_on: "1"
   payload_off: "0"
   device_class: heat #Classes https://home-assistant.io/components/binary_sensor/  
 
 
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/outputCoolerState"
+  name: "Bunny Shed Cooler"
+  payload_on: "1"
+  payload_off: "0"
+  device_class: cold #Classes https://home-assistant.io/components/binary_sensor/  

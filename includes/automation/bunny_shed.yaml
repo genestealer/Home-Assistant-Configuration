@@ -1,24 +1,24 @@
 ############################################################
 #
-# Bunny Shed Automation - MQTT triggers temp slider change
+# Bunny Shed Automation - MQTT triggers temp slider change HEATER
 #
 ############################################################
   
  # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
  # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
-- alias: Set shed temp slider
+- alias: Set shed temp heater slider
   hide_entity: True
   trigger:
     platform: mqtt
-    topic: "HUISHS/BunnyShed/setTemperature"
+    topic: "HUISHS/BunnyShed/setHeaterTemperature"
    # entity_id: input_slider.shed_target_temp
   condition:
     - condition: template
-      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
+      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_heat_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
      service: input_slider.select_value
      data_template:
-      entity_id: input_slider.shed_target_temp
+      entity_id: input_slider.shed_target_heat_temp
       value: '{{ trigger.payload | int }}'
 
 
@@ -30,16 +30,61 @@
 
  # This automation script runs when the target temperature slider is moved.
  # It publishes its value to the same MQTT topic it is also subscribed to.
-- alias: Shed temp slider moved
+- alias: Shed temp slider heater moved
   hide_entity: True
   trigger:
     platform: state
-    entity_id: input_slider.shed_target_temp
+    entity_id: input_slider.shed_target_heat_temp
   action:
     service: mqtt.publish
     data_template:
-      topic: "HUISHS/BunnyShed/setTemperature"
+      topic: "HUISHS/BunnyShed/setHeaterTemperature"
       retain: true
-      payload: '{{ states.input_slider.shed_target_temp.state | int }}'
+      payload: '{{ states.input_slider.shed_target_heat_temp.state | int }}'
+
+
+############################################################
+#
+# Bunny Shed Automation - MQTT triggers temp slider change COOLER
+#
+############################################################
+  
+ # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
+ # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
+- alias: Set shed temp cooler slider
+  hide_entity: True
+  trigger:
+    platform: mqtt
+    topic: "HUISHS/BunnyShed/setCoolerTemperature"
+   # entity_id: input_slider.shed_target_temp
+  condition:
+    - condition: template
+      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_cool_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
+  action:
+     service: input_slider.select_value
+     data_template:
+      entity_id: input_slider.shed_target_cool_temp
+      value: '{{ trigger.payload | int }}'
+
+
+############################################################
+#
+# Bunny Shed Automation - Temp slider change tiggers MQTT 
+#
+############################################################
+
+ # This automation script runs when the target temperature slider is moved.
+ # It publishes its value to the same MQTT topic it is also subscribed to.
+- alias: Shed temp slider cooler moved
+  hide_entity: True
+  trigger:
+    platform: state
+    entity_id: input_slider.shed_target_cool_temp
+  action:
+    service: mqtt.publish
+    data_template:
+      topic: "HUISHS/BunnyShed/setCoolerTemperature"
+      retain: true
+      payload: '{{ states.input_slider.shed_target_cool_temp.state | int }}'
 
 

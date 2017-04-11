@@ -4,80 +4,101 @@
 #
 ############################################################
 
- # default_view:
-  #   view: yes
-  #   entities:
-  #     - group.speed_test
-  
-  Home Automation System:
-    name: Home Automation System
-    view: yes
+# default_view:
+#   view: yes
+#   entities:
+#     - group.speed_test
+
+home_automation_system:
+  name: Home Automation System
+  view: yes
 #    icon: mdi:battery-80
-    entities:
-      - group.server_ilo_status
-      - group.ups_data
-      - group.all_automations
-      - group.device_status
-      - binary_sensor.rf_gateway_status
-      - sensor.plex
-      - group.rf_gateway_info
-      - group.bunny_shed_controller_info
-      - binary_sensor.doorbell_controller_status
-  
-  Bathroom:
-    name: Bathroom
-    view: yes
-    entities:
-      - group.bathroom_towel_rail
+  entities:
+    - group.server_ilo_status
+    - group.ups_data
+    - group.all_automations
+    - group.device_status
+    - binary_sensor.rf_gateway_status
+    - sensor.plex
+    - group.rf_gateway_info
+    - group.bunny_shed_controller_info
+    - binary_sensor.doorbell_controller_status
 
-  Lights:
-    view: yes
-    entities:
-      - group.christmas_lights
-      - group.inside_christmas_lights
-      - group.outside_christmas_lights
-      - light.bedside_light
+bathroom:
+  name: Bathroom
+  view: yes
+  entities:
+    - group.bathroom_towel_rail
 
-
-  Kitchen:
-    view: yes
-    entities:
-      - group.kitchen_climate
-
-  Bedroom:
-    view: yes
-    entities:
-      - light.bedside_light
+lights:
+  name: Lights
+  view: yes
+  entities:
+    - group.christmas_lights
+    - group.inside_christmas_lights
+    - group.outside_christmas_lights
+    - light.bedside_light
 
 
-  Nest Thermostat:
+kitchen:
+  name: Kitchen
+  view: yes
+  entities:
+    - group.kitchen_climate
+
+bedroom:
+  name: Bedroom
+  view: yes
+  entities:
+    - light.bedside_light
+
+
+nest_thermostat:
+  name: Nest Thermostat
+  view: no
+  entities:
     - climate.entryway
     - sensor.entryway_thermostat_humidity
 
-  Mobiles:
+mobiles:
+  name: Mobiles
+  view: no
+  entities:
     - device_tracker.richard_pixel
     - device_tracker.lucy_nexus5x
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
-  CCTV:
+cctv:
+  name: CCTV
+  view: no
+  entities:
     - camera.front_door
     - camera.other_camera
 
-  Device Status:
+device_status:
+  name: Device Status
+  view: no
+  entities:
     - binary_sensor.bunny_shed_controller_status
     - binary_sensor.rf_gateway_status
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.rflink_status
     - binary_sensor.doorbell_controller_status
-    
+  
 
 
-  Kitchen Climate:
-   - sensor.kitchen_temperature
-   - sensor.kitchen_humidity
+kitchen_climate:
+  name: Kitchen Climate
+  view: no
+  entities:
+    - sensor.kitchen_temperature
+    - sensor.kitchen_humidity
 
-  Lighting:
+lighting:
+  name: Lighting
+  view: no
+  entities:
     - light.upstairs_hall_light
     - light.kitchen_under_counter_lights
     - light.lamp_1
@@ -85,18 +106,23 @@
     - light.lamp_3
     - light.lamp_4
 
-       
-  RF Gateway Info:
+     
+rf_gateway_info:
+  name: RF Gatway Info
+  view: no
+  entities:
     - sensor.rf_gateway_ip_address
     - sensor.rf_gateway_ip_host_name
     - sensor.rf_gateway_mqtt_client_name
     - sensor.rf_gateway_signal_strength
     - sensor.rf_gateway_ssid
 
-  Bunny Shed:
+bunny_shed:
+  name: Bunny Shed
+  view: no
+  entities:
     - sensor.bunny_shed_temperature
     - sensor.bunny_shed_humidity
-    - input_slider.shed_target_cool_temp
     - input_slider.shed_target_cool_temp
     - sensor.bunny_shed_target_cool_temperature
     - binary_sensor.bunny_shed_cooler
@@ -109,29 +135,37 @@
 
 
 
-
-
-
-
-  Outside Weather:
+outside_weather:
+  name: Outside Weather
+  view: no
+  entities:
     - sensor.dark_sky_summary
     - sensor.dark_sky_temperature
     - sensor.dark_sky_humidity
     - sensor.dark_sky_hourly_summary
 
-  Speed Test:
+speed_test:
+  name: Speed Test
+  view: no
+  entities:
    - sensor.speedtest_download
    - sensor.speedtest_ping
    - sensor.speedtest_upload
-  
-  Bunny Shed Controller Info:
+
+bunny_shed_controller_info:
+  name: Bunny Shed Controller Info
+  view: no
+  entities:
     - sensor.shed_controller_ip_address
     - sensor.shed_controller_ip_host_name
     - sensor.shed_controller_client_name
     - sensor.shed_controller_signal_strength
     - sensor.shed_controller_ssid  
 
-  UPS Data:
+ups_data:
+  name: UPS Data
+  view: no
+  entities:
    - sensor.ups_status
    - sensor.ups_battery
    - sensor.ups_time_left
@@ -149,7 +183,10 @@
    - sensor.ups_transfer_from_battery
 
 
-  Server iLo Status:
+server_ilo_status:
+  name: Server iLo Status
+  view: no
+  entities:
     - sensor.server_server_power_state
     - sensor.server_glance_bios
     - sensor.server_glance_fans
@@ -169,35 +206,39 @@
     - sensor.server_temperature_raid_controller
 
 
-  
 
-  Bathroom Towel Rail:
-    entities:
-     - sensor.towelrail_state
-     - script.timed_heat_towel_rail
-     - script.turn_off_heat_towel_rail
-     - script.timer_off
-     - input_slider.minute_delay
-     - automation.dont_heat_towel_rail_mqtt
-     - automation.heat_towel_rail_mqtt
-     - input_boolean.task_heat_towel_rail
-
-
-  # Christmas Lights:
-  #   - light.star_light
-  #   - light.christmas_tree_bling
-  #   - light.outside_lights
-  #   - light.snowflake_lights
-  # Outside Christmas Lights:
-  #   - light.outside_lights
-  #   - light.star_light
-  # Inside Christmas Lights:
-  #   - light.christmas_tree_bling
-  #   - light.snowflake_lights
+bathroom_towel_rail:
+  name: Bathroom Towel Rail
+  view: no
+  entities:
+    - sensor.towelrail_state
+    - script.timed_heat_towel_rail
+    - script.turn_off_heat_towel_rail
+    - script.timer_off
+    - input_slider.minute_delay
+    - automation.dont_heat_towel_rail_mqtt
+    - automation.heat_towel_rail_mqtt
+    - input_boolean.task_heat_towel_rail
 
 
+# Christmas Lights:
+#   - light.star_light
+#   - light.christmas_tree_bling
+#   - light.outside_lights
+#   - light.snowflake_lights
+# Outside Christmas Lights:
+#   - light.outside_lights
+#   - light.star_light
+# Inside Christmas Lights:
+#   - light.christmas_tree_bling
+#   - light.snowflake_lights
 
-  Doorbell:
+
+
+doorbell:
+  name: Doorbell
+  view: no
+  entities:
     - binary_sensor.doorbell
 
 
@@ -205,7 +246,7 @@
 
 
 
-  
+
 
 
 
