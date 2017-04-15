@@ -17,13 +17,20 @@
       name: Lamp_3
     Maclean_0d82_04:
       name: Lamp_4
-    Eurodomest_0fca6c_00:
-      name: Upstairs Hall Light
+
+
+
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 10
+  devices:
+    Eurodomest_0fca6c_00: # Note: Send TX command over and over agin, as it only seems to listen for them  occasionally. More tried helps ensure one makes it.
+      name: Upstairs Hall Light #Energenie Wall Light Switch MIHO026, 
 
 #2.4MHz
 - platform: rflink
   device_defaults:
-    signal_repetitions: 5
+    signal_repetitions: 10
   devices:
     ansluta_ce30_0: 
       name: Kitchen Under Counter Lights
