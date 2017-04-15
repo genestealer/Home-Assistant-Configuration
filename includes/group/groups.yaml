@@ -45,6 +45,13 @@ kitchen:
   view: yes
   entities:
     - group.kitchen_climate
+    - light.kitchen_under_counter_lights
+    - switch.bunny_fluff_air_filter
+    - automation.bunny_fluff_filter_schedule_on
+    - automation.bunny_fluff_filter_schedule_off
+    - switch.kitchen_extractor_fan
+    - script.kitchen_extractor_timer
+
 
 bedroom:
   name: Bedroom

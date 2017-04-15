@@ -1,0 +1,14 @@
+############################################################
+#
+# Kitchen Extractor Fan timer
+#
+############################################################
+
+kitchen_extractor_timer:
+  alias: "Kitchen fan on: 30 minutes"
+  sequence:
+    - service: switch.turn_on
+      entity_id: switch.kitchen_extractor_fan
+    - delay: '00:00:05'
+    - service: switch.turn_off
+      entity_id: switch.kitchen_extractor_fan
