@@ -9,7 +9,7 @@
   trigger:
     platform: mqtt
     topic: HUISHS/dash1
-    payload: 'on'
+    payload: 'on' # Payload is allways on, even when turing the lights off.
   condition:
     condition: state
     entity_id: light.upstairs_hall_light  
@@ -22,7 +22,7 @@
   trigger:
     platform: mqtt
     topic: HUISHS/dash1
-    payload: 'on'
+    payload: 'on' # Payload is allways on, even when turing the lights off.
   condition:
     condition: state
     entity_id: light.upstairs_hall_light  
