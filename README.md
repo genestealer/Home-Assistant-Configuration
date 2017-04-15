@@ -25,7 +25,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - [Raspberry Pi 3 IP CCTV](https://github.com/Motion-Project/motion) with help from [link](https://pimylifeup.com/raspberry-pi-webcam-server)
 
 #### Items controlled via my [RFLink Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266)
-- [Energenie Wall Light Switch](https://energenie4u.co.uk/catalogue/product/MIHO026)
+- [Energenie Wall Light Switch MIHO026](https://energenie4u.co.uk/catalogue/product/MIHO026)
 - Room lamps plugged into [Maclean MCE07GB Remote Control Sockets](https://www.amazon.co.uk/Maclean-MCE07GB-Control-Sockets-Programmable/dp/B00OV1TTU6)
 - Hacked Ikea E1201C Remote 'relay' for kitchen extractor fan
 - Ikea Ansluta Lights
