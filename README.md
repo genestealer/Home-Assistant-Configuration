@@ -5,6 +5,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 ## Inspiration and Support
 
 - [Graeme Smith](https://github.com/Instagraeme)
+- [Johan Bloemberg](https://github.com/aequitas)
 
 ## My Setup
 
