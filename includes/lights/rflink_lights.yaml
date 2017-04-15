@@ -8,7 +8,7 @@
   device_defaults:
     signal_repetitions: 1
   devices:
-    Maclean_0d82_01:
+    Maclean_0d82_01: # Lucy Room Lamp
       name: Lamp_1
     Maclean_0d82_02:
       name: Lamp_2

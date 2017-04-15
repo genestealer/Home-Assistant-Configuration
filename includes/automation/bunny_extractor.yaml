@@ -1,0 +1,22 @@
+############################################################
+#
+#  Bunny Fluff Extractor Schedule
+#
+############################################################
+
+- alias: Bunny Fluff Filter Schedule On
+  trigger:
+    platform: time
+    after: '08:00:00'
+  action:
+    service: switch.turn_on
+    entity_id: switch.bunny_fluff_air_filter
+
+
+- alias: Bunny Fluff Filter Schedule Off
+  trigger:
+    platform: time
+    after: '22:00:00'
+  action:
+    service: switch.turn_off
+    entity_id: switch.bunny_fluff_air_filter

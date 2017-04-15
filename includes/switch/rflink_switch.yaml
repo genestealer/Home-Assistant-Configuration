@@ -18,3 +18,10 @@
   devices:
     emw100_d018_00:
       name: Button 1
+
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 3
+  devices:
+    RFCustom_524643_0:
+      name: Bunny fluff air filter

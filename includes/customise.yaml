@@ -67,8 +67,11 @@ input_slider.shed_target_heat_temp:
   friendly_name: 'Shed Heat Target'
 
 
+switch.kitchen_extractor_fan:
+  icon: mdi:fan
 
-
+switch.bunny_fluff_air_filter:
+  icon: mdi:fan
 
 ############################################################
 #
