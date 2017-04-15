@@ -1,0 +1,22 @@
+############################################################
+#
+# Amazon dash button sensor
+# Currently super hacky in windows, with https://github.com/fiveseven808/AmazonDashButtonHack
+#   On action, it loads a .bat file, which runs:
+#     "C:\Program Files\mosquitto\mosquitto_pub" -i dash1 -u dash1 -P mypassword -t HUISHS/dash1 -m "on"
+#     "C:\Program Files\mosquitto\mosquitto_pub" -i dash1 -u dash1 -P mypassword -t HUISHS/dash1 -m "off"
+#
+############################################################
+
+#DASH test
+- platform: mqtt
+  state_topic: "HUISHS/dash1"
+  name: "Dash1 Button"
+  payload_on: "on"
+  payload_off: "off"
+
+- platform: mqtt
+  state_topic: "HUISHS/dash2"
+  name: "Dash2 Button"
+  payload_on: "on"
+  payload_off: "off"

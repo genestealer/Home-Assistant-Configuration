@@ -1,0 +1,32 @@
+############################################################
+#
+# Amazon dash button automation
+#
+############################################################
+
+
+- alias: "Dash Button Hall light on"
+  trigger:
+    platform: mqtt
+    topic: HUISHS/dash1
+    payload: 'on'
+  condition:
+    condition: state
+    entity_id: light.upstairs_hall_light  
+    state: 'off'    
+  action:
+    service: homeassistant.turn_on
+    entity_id: light.upstairs_hall_light
+    
+- alias: "Dash Button Hall light off"
+  trigger:
+    platform: mqtt
+    topic: HUISHS/dash1
+    payload: 'on'
+  condition:
+    condition: state
+    entity_id: light.upstairs_hall_light  
+    state: 'on'
+  action:
+    service: homeassistant.turn_off
+    entity_id: light.upstairs_hall_light   
