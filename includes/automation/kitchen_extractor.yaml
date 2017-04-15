@@ -1,0 +1,22 @@
+############################################################
+#
+#  Kitchen Extractor
+#  If on button is pressed twise, enabble auto turn off
+#
+############################################################
+
+- alias: Kitchen Extractor Enable Auto Off
+  trigger:
+    platform: state
+    entity_id: switch.kitchen_extractor_fan
+    state: 'on'
+  condition:
+    # Only scrtipstart if the fan is already on
+    condition: state
+    entity_id: switch.kitchen_extractor_fan
+    state: 'on'
+  action:
+    service: script.turn_on
+    data:
+      entity_id: script.kitchen_extractor_timer
+
