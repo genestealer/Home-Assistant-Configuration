@@ -24,11 +24,12 @@ http:
   ssl_certificate: !secret SSL_cert 
   ssl_key:  !secret SSL_key
   base_url: !secret Base_url
-  ip_ban_enabled: True
-  login_attempts_threshold: 20
+#  ip_ban_enabled: True
+#  login_attempts_threshold: 20
   trusted_networks:
   - 127.0.0.1
   - 192.168.0.0/24
+  - !secret myip
   #- ::1
 
 # Checks for available updates
@@ -165,7 +166,25 @@ input_boolean:
     icon: mdi:temperature-celsius
    
  
+ weblink:
+  entities:
+    - name: Router
+      url: !secret RouterIP
+      icon: mdi:router-wireless
 
+    - name: uTorrent
+      url: !secret uTorrentIP
+      icon: mdi:download
+
+    - name: SickRage
+      url: !secret SickRageIP
+      icon: mdi:monitor
+
+    - name: CouchPotato
+      url: !secret CouchPotatoIP
+      icon: mdi:filmstrip
+
+#NOT WORKING!
 alexa:
   intents:
     LocateIntent:
@@ -216,20 +235,14 @@ alexa:
   #       content: Some more content
 
 
-weblink:
-  entities:
-    - name: Router
-      url: !secret RouterIP
-      icon: mdi:router-wireless
 
-    - name: uTorrent
-      url: !secret uTorrentIP
-      icon: mdi:download
-
-    - name: SickRage
-      url: !secret SickRageIP
-      icon: mdi:monitor
-
-    - name: CouchPotato
-      url: !secret CouchPotatoIP
-      icon: mdi:filmstrip
+#NOT WORKING!
+apiai:
+  intents:
+    GetTemperature:
+      speech: The temperature at home is {{ states.sensor.kitchen_temperature.state }} degrees
+      async_action: False
+      # action:
+      #   service: notify.notify
+      #   data_template:
+      #     message: Api.ai has send a request
