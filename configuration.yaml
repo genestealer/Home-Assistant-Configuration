@@ -166,7 +166,7 @@ input_boolean:
     icon: mdi:temperature-celsius
    
  
- weblink:
+weblink:
   entities:
     - name: Router
       url: !secret RouterIP
