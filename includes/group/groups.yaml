@@ -252,7 +252,12 @@ doorbell:
     - binary_sensor.doorbell
 
 
-
+amazobn_dash:
+  name: Dash Buttons
+  view: no
+  entities:
+    - binary_sensor.dash1_button
+    - binary_sensor.dash2_button
 
 
 

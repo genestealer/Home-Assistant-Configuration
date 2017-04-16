@@ -57,6 +57,11 @@ logbook:
       - sensor.dark_sky_hourly_summary
       - sensor.dark_sky_daily_summary
 
+# https://github.com/home-assistant/home-assistant/issues/1806
+logger:
+  default: warning
+  logs:
+    requests.packages.urllib3.connectionpool: critical
 
 # Track the sun
 sun:

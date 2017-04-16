@@ -25,13 +25,6 @@
 #
 ############################################################
 
-#DASH test
-- platform: mqtt
-  state_topic: "HUISHS/dash"
-  name: "Dash Button"
-  payload_on: "on"
-  payload_off: "off"
-
 
 #From examples...
 # - platform: mqtt
