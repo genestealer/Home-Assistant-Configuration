@@ -1,6 +1,6 @@
 ############################################################
 #
-# HP Server Integrated Lights Out Monitoring 
+# HP Server Integrated Lights Out Monitoring
 #
 ############################################################
 
@@ -12,12 +12,9 @@
   password: !secret hp_ilo_password
   monitored_variables:
     # - server_name
-    # - server_fqdn
-    # - server_host_data
-    #    - server_oa_info
+  #  - server_fqdn
+  #  - server_host_data
     - server_power_status
-    #    - server_power_readings
-    # - server_power_on_time
     #- server_asset_tag
     # - server_uid_status
     - server_health
@@ -47,32 +44,32 @@
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["processor"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Processor"
-    
+
     server_glance_storage:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["storage"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Storage"
-    
+
     server_glance_memory:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["memory"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Memory"
-    
+
     server_glance_temperature:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["temperature"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Temperature"
-    
+
     server_glance_fans:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["fans"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Fans"
-    
+
     server_glance_bios:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["bios_hardware"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "BIOS"
-    
+
     server_glance_network:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["network"]["status"] }}'
       entity_id: sensor.server_server_health
@@ -113,7 +110,7 @@
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
       friendly_name: "RAID Controller"
-    
+
     # server_temperature_LOM:
     #   value_template: '{{states.sensor.server_server_health.attributes.temperature["13-LOM"]["currentreading"][0] }}'
     #   unit_of_measurement: '°C'

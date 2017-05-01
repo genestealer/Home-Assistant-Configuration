@@ -1,0 +1,805 @@
+  ###########################################################
+  #
+  # Home Assistant Customisations
+  #
+  ############################################################
+
+  #https://github.com/Instagraeme/Home-Assistant-Configuration/edit/master/includes/customise.yaml
+
+  # Only the 'entity_id' is required.  All other options are optional.
+  # sensor.bunny_shed_heater_state:
+  #   hidden: true
+  # binary_sensor.bunny_shed_heater:
+  #   icon: mdi:power
+  - entity_id: sensor.bunny_shed_humidity
+    icon: mdi:water-percent
+  - entity_id: sensor.kitchen_humidity
+    icon: mdi:water-percent
+  - entity_id: sensor.hp_ilo_server_power_state
+    icon: mdi:power
+  - entity_id: sensor.speedtest_download
+    icon: mdi:download
+  - entity_id: sensor.speedtest_upload
+    icon: mdi:upload
+  - entity_id: sensor.speedtest_ping
+    icon: mdi:timer
+  - entity_id: light.christmas_tree_bling
+    icon: mdi:pine-tree
+  - entity_id: light.star_light
+    icon: mdi:star
+  - entity_id: light.snowflake_lights
+    icon: mdi:snowflake
+  - entity_id: light.outside_lights
+    icon: mdi:home
+
+  - entity_id: sensor.entryway_thermostat_humidity
+    icon: mdi:water-percent
+
+
+  - entity_id: binary_sensor.entryway_thermostat_online
+    device_class: connectivity
+    friendly_name: Nest Thermostat Status
+
+
+  - entity_id: climate.entryway
+    entity_picture: /local/nesticon.png
+
+   #Does now work :(
+  # rflink.connection_status:
+  #   friendly_name: RFLink Raw Connection Status
+
+
+  # lights
+  - entity_id: light.lamp_1
+    friendly_name: 'Lucy Room Lamp'
+  - entity_id: light.lamp_2
+    friendly_name: 'Bedroom Lamp'
+  - entity_id: light.lamp_3
+    friendly_name: 'Guest Bedroom Lamp'
+  - entity_id: light.lamp_4
+    friendly_name: 'Living Room Lamp'
+
+
+  # Bunny Shed
+  - entity_id: input_slider.shed_target_cool_temp
+    friendly_name: 'Shed Cool Target'
+  - entity_id: input_slider.shed_target_heat_temp
+    friendly_name: 'Shed Heat Target'
+
+
+  - entity_id: switch.kitchen_extractor_fan
+    icon: mdi:fan
+
+  - entity_id: switch.bunny_fluff_air_filter
+    icon: mdi:fan
+
+  ############################################################
+  #
+  # Hide unwanted things - Nest
+  #
+  ############################################################
+  - entity_id: binary_sensor.entryway_thermostat_fan
+    hidden: true
+  - entity_id: binary_sensor.entryway_thermostat_has_leaf
+    hidden: true
+  - entity_id: binary_sensor.entryway_thermostat_is_locked
+    hidden: true
+  - entity_id: binary_sensor.entryway_thermostat_is_using_emergency_heat
+    hidden: true
+  - entity_id: sensor.entryway_thermostat_target
+    hidden: true
+  - entity_id: sensor.entryway_thermostat_temperature
+    hidden: true
+  - entity_id: sensor.entryway_thermostat_hvac_state
+    hidden: true
+  - entity_id: sensor.entryway_thermostat_operation_mode
+    hidden: true
+
+
+  ############################################################
+  #
+  # Hide unwanted things - Double groups
+  #
+  ############################################################
+  - entity_id: group.inside_christmas_lights
+    hidden: true
+  - entity_id: group.outside_christmas_lights
+    hidden: true
+
+  ############################################################
+  #
+  # Groups
+  #
+  ############################################################
+
+  - entity_id: group.bunny_shed
+    entity_picture: /local/shed.png
+
+
+  ############################################################
+  # Glances
+  ############################################################
+
+  - entity_id: sensor.glances_sensor_cpu_load
+    friendly_name: CPU Load
+
+  - entity_id: sensor.glances_sensor_disk_use
+    friendly_name: Disk Use
+
+  - entity_id: sensor.glances_sensor_ram_free
+    friendly_name: Free Memory
+
+  - entity_id: sensor.glances_sensor_running
+    friendly_name: Running Processes
+
+  - entity_id: sensor.glances_sensor_sleeping
+    friendly_name: Sleeping Processes
+
+  - entity_id: sensor.glances_sensor_swap_use
+    friendly_name: Swap Usage
+
+  - entity_id: sensor.*_cpu_load
+    friendly_name: CPU Load
+    icon: mdi:chip
+
+  - entity_id: sensor.*_disk_free
+    friendly_name: Disk Free
+    icon: mdi:harddisk
+
+  - entity_id: sensor.*_disk_use
+    friendly_name: Disk Use
+    icon: mdi:harddisk
+
+  - entity_id: sensor.*_disk_use_2
+    friendly_name: Disk Free
+    icon: mdi:harddisk
+
+  - entity_id: sensor.*_ram_free
+    friendly_name: Free Memory
+    icon: mdi:memory
+
+  - entity_id: sensor.*_ram_use
+    friendly_name: Memory Used
+    icon: mdi:memory
+
+  - entity_id: sensor.*_ram_use_2
+    friendly_name: Memory Used
+    icon: mdi:memory
+
+  - entity_id: sensor.*_running
+    friendly_name: Running Processes
+    icon: mdi:application
+
+  - entity_id: sensor.*_sleeping
+    friendly_name: Sleeping Processes
+    icon: mdi:application
+
+  - entity_id: sensor.*_swap_free
+    friendly_name: Free Swap Memory
+    icon: mdi:memory
+
+  - entity_id: sensor.*_swap_use
+    friendly_name: Swap Memory Used
+    icon: mdi:memory
+
+  - entity_id: sensor.*_swap_use_2
+    friendly_name: Swap Memory Used
+    icon: mdi:memory
+
+  - entity_id: sensor.*_glance_bios
+    icon: mdi:chip
+
+  - entity_id: sensor.*_glance_fans
+    icon: mdi:fan
+
+  - entity_id: sensor.*_fan
+    icon: mdi:fan
+
+  - entity_id: sensor.*_glance_memory
+    icon: mdi:memory
+
+  - entity_id: sensor.*_glance_network
+    icon: mdi:ethernet
+
+  - entity_id: sensor.*_glance_power
+    icon: mdi:power-plug
+
+  - entity_id: sensor.*_glance_processor
+    icon: mdi:chip
+
+  - entity_id: sensor.*_glance_storage
+    icon: mdi:harddisk
+
+  - entity_id: sensor.*_glance_temperature
+    icon: mdi:thermometer
+
+
+
+
+
+  # ############################################################
+  # #
+  # # Binary Sensors
+  # #
+  # ############################################################
+
+
+
+
+  # ############################################################
+  # #
+  # # Groups
+  # #
+  # ############################################################
+
+  # group.all_mobile_devices:
+  #   friendly_name: People
+
+  # group.court_yard:
+  #   icon: mdi:lightbulb
+
+  # group.front_lights:
+  #   icon: mdi:lightbulb
+
+  # group.living_room_lights:
+  #   icon: mdi:lightbulb
+
+
+  # ############################################################
+  # #
+  # # Input Booleans
+  # #
+  # ############################################################
+
+  # input_boolean.cctv_disabled:
+  #   icon: mdi:camera
+  #   friendly_name: Disable Motion Detection
+
+
+  # ############################################################
+  # #
+  # # Sensors
+  # #
+  # ############################################################
+
+  # sensor.hallmotionsensor_luminance_9:
+  #   friendly_name: Hall
+  #   icon: mdi:lightbulb
+
+  # sensor.hallmotionsensor_temperature_9:
+  #   friendly_name: Hall
+  #   icon: mdi:thermometer
+
+  # sensor.kitchenmotionsensor_luminance_2:
+  #   friendly_name: Kitchen
+  #   icon: mdi:lightbulb
+
+  # sensor.kitchenmotionsensor_temperature_2:
+  #   friendly_name: Kitchen
+  #   icon: mdi:thermometer
+
+  # sensor.lightsensor_luminance_14:
+  #   friendly_name: Light Level
+  #   icon: mdi:white-balance-sunny
+
+  # sensor.mainstairslower_luminance_12:
+  #   friendly_name: Living Room
+  #   icon: mdi:lightbulb
+
+  # sensor.mainstairslower_temperature_12:
+  #   friendly_name: Living Room
+  #   icon: mdi:thermometer
+
+  # sensor.mainstairsupper_luminance_11:
+  #   friendly_name: Upstairs
+  #   icon: mdi:lightbulb
+
+  # sensor.mainstairsupper_temperature_11:
+  #   friendly_name: Upstairs
+  #   icon: mdi:thermometer
+
+
+
+  # sensor.mediaserver_cpu_load:
+  #   friendly_name: CPU Load
+  #   icon: mdi:chip
+
+  # sensor.mediaserver_disk_free:
+  #   friendly_name: Disk Free
+  #   icon: mdi:harddisk
+
+  # sensor.mediaserver_disk_use:
+  #   friendly_name: Disk Use
+  #   icon: mdi:harddisk
+
+  # sensor.mediaserver_disk_use_2:
+  #   friendly_name: Disk Free
+  #   icon: mdi:harddisk
+
+  # sensor.mediaserver_ram_free:
+  #   friendly_name: Free Memory
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_ram_use:
+  #   friendly_name: Memory Used
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_ram_use_2:
+  #   friendly_name: Memory Used
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_running:
+  #   friendly_name: Running Processes
+  #   icon: mdi:application
+
+  # sensor.mediaserver_sleeping:
+  #   friendly_name: Sleeping Processes
+  #   icon: mdi:application
+
+  # sensor.mediaserver_swap_free:
+  #   friendly_name: Free Swap Memory
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_swap_use:
+  #   friendly_name: Swap Memory Used
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_swap_use_2:
+  #   friendly_name: Swap Memory Used
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_glance_bios:
+  #   icon: mdi:chip
+
+  # sensor.mediaserver_glance_fans:
+  #   icon: mdi:fan
+
+  # sensor.mediaserver_fan:
+  #   icon: mdi:fan
+
+  # sensor.mediaserver_glance_memory:
+  #   icon: mdi:memory
+
+  # sensor.mediaserver_glance_network:
+  #   icon: mdi:ethernet
+
+  # sensor.mediaserver_glance_power:
+  #   icon: mdi:power-plug
+
+  # sensor.mediaserver_glance_processor:
+  #   icon: mdi:chip
+
+  # sensor.mediaserver_glance_storage:
+  #   icon: mdi:harddisk
+
+  # sensor.mediaserver_glance_temperature:
+  #   icon: mdi:thermometer
+
+  # sensor.porchmotionsensor_luminance_5:
+  #   friendly_name: Porch
+  #   icon: mdi:lightbulb
+
+  # sensor.porchmotionsensor_temperature_5:
+  #   friendly_name: Porch
+  #   icon: mdi:thermometer
+
+  # sensor.server_cpu_load:
+  #   friendly_name: CPU Load
+  #   icon: mdi:chip
+
+  # sensor.server_disk_free:
+  #   friendly_name: Disk Free
+  #   icon: mdi:harddisk
+
+  # sensor.server_disk_use:
+  #   friendly_name: Disk Use
+  #   icon: mdi:harddisk
+
+  # sensor.server_disk_use_2:
+  #   friendly_name: Disk Free
+  #   icon: mdi:harddisk
+
+  # sensor.server_ram_free:
+  #   friendly_name: Free Memory
+  #   icon: mdi:memory
+
+  # sensor.server_ram_use:
+  #   friendly_name: Memory Used
+  #   icon: mdi:memory
+
+  # sensor.server_ram_use_2:
+  #   friendly_name: Memory Used
+  #   icon: mdi:memory
+
+  # sensor.server_running:
+  #   friendly_name: Running Processes
+  #   icon: mdi:application
+
+  # sensor.server_sleeping:
+  #   friendly_name: Sleeping Processes
+  #   icon: mdi:application
+
+  # sensor.server_swap_free:
+  #   friendly_name: Free Swap Memory
+  #   icon: mdi:memory
+
+  # sensor.server_swap_use:
+  #   friendly_name: Swap Memory Used
+  #   icon: mdi:memory
+
+  # sensor.server_swap_use_2:
+  #   friendly_name: Swap Memory Used
+  #   icon: mdi:memory
+  #
+  # sensor.server_glance_bios:
+  #   icon: mdi:chip
+  #
+  # sensor.server_glance_fans:
+  #   icon: mdi:fan
+  #
+  # sensor.server_fan:
+  #   icon: mdi:fan
+  #
+  # sensor.server_glance_memory:
+  #   icon: mdi:memory
+  #
+  # sensor.server_glance_network:
+  #   icon: mdi:ethernet
+  #
+  # sensor.server_glance_power:
+  #   icon: mdi:power-plug
+  #
+  # sensor.server_glance_processor:
+  #   icon: mdi:chip
+  #
+  # sensor.server_glance_storage:
+  #   icon: mdi:harddisk
+  #
+  # sensor.server_glance_temperature:
+  #   icon: mdi:thermometer
+
+  # sensor.steriliserpower_power_4:
+  #   friendly_name: Steriliser Power
+
+  # sensor.steriliserpower_voltage_4:
+  #   friendly_name: Mains Voltage
+
+  # sensor.summerhousedoor_access_control_13:
+  #   friendly_name: Summer House Door
+
+  # sensor.summerhousedoor_luminance_13:
+  #   friendly_name: Summer House
+  #   icon: mdi:white-balance-sunny
+
+  # sensor.summerhousedoor_temperature_13:
+  #   friendly_name: Summer House
+  #   icon: mdi:thermometer
+
+  # sensor.summerhousepower_power_15:
+  #   friendly_name: Summer House Heater
+
+  # sensor.template_front_door:
+  #   icon: mdi:glassdoor
+
+  # sensor.template_summer_house_door:
+  #   icon: mdi:glassdoor
+
+  # sensor.living_room_battery_level:
+  #   friendly_name: Upstairs Battery Level
+  #   icon: mdi:battery
+
+  # sensor.living_room_co_status:
+  #   friendly_name: Upstairs CO Status
+  #   icon: mdi:weather-fog
+
+  # sensor.living_room_smoke_status:
+  #   friendly_name: Upstairs Smoke Status
+  #   icon: mdi:weather-fog
+
+  # sensor.washingmachinepower_power_17:
+  #   icon: mdi:power-socket
+  #   friendly_name: Washing Machine
+
+
+  # ############################################################
+  # #
+  # # Switches
+  # #
+  # ############################################################
+
+  # switch.backfloodlight_switch_8:
+  #   friendly_name: Back Flood Light
+  #   icon: mdi:lightbulb
+
+  # switch.backfloodlight_switch_8_2:
+  #   friendly_name: Back Door Light
+  #   icon: mdi:lightbulb
+
+  # switch.frontfloodlights_switch_10:
+  #   friendly_name: Front Right Flood Light
+  #   icon: mdi:lightbulb
+
+  # switch.frontfloodlights_switch_10_2:
+  #   friendly_name: Front Left Flood Light
+  #   icon: mdi:lightbulb
+
+  # switch.summerhouselights_switch_16:
+  #   friendly_name: Front Lights
+  #   icon: mdi:lightbulb
+
+  # switch.summerhouselights_switch_16_2:
+  #   friendly_name: Summerhouse Side Light
+  #   icon: mdi:lightbulb
+
+  # switch.summerhousepower_switch_15:
+  #   icon: mdi:oil-temperature
+  #   friendly_name: Summer House Heater
+
+
+  # ############################################################
+  # #
+  # # Media Players
+  # #
+  # ############################################################
+
+  # media_player.iphone:
+  #   friendly_name: Graeme's iPhone
+
+  # media_player.rasplex:
+  #   friendly_name: Living Room HTPC
+
+
+  # ############################################################
+  # #
+  # # Devices
+  # #
+  # ############################################################
+
+  # device_tracker.iphone:
+  #   friendly_name: Graeme
+
+  # device_tracker.aileensiphone:
+  #   friendly_name: Aileen
+
+
+  # ############################################################
+  # #
+  # # Lights
+  # #
+  # ############################################################
+
+  # light.halllight_level_10:
+  #   friendly_name: Hall
+
+  # light.utilityroomlight_level_7:
+  #   friendly_name: Utility Room
+
+  # light.workshoplight_level_6:
+  #   friendly_name: Workshop
+
+
+  # ############################################################
+  # #
+  # # Netatmo
+  # #
+  # ############################################################
+
+  # sensor.netatmo_anemometer_angle:
+  #   friendly_name: Wind direction
+
+  # sensor.netatmo_anemometer_battery:
+  #   friendly_name: Anemometer Battery
+
+  # sensor.netatmo_anemometer_gust_angle:
+  #   friendly_name: Gusting from
+
+  # sensor.netatmo_anemometer_gust_strength:
+  #   friendly_name: Gust strength
+
+  # sensor.netatmo_anemometer_radio:
+  #   friendly_name: Anemometer Radio
+
+  # sensor.netatmo_anemometer_strength:
+  #   friendly_name: Wind strength
+
+  # sensor.netatmo_inside_co2:
+  #   friendly_name: Living Room CO2
+
+  # sensor.netatmo_inside_humidity:
+  #   friendly_name: Living Room Humidity
+
+  # sensor.netatmo_inside_noise:
+  #   friendly_name: Living Room Noise
+
+  # sensor.netatmo_inside_pressure:
+  #   friendly_name: Air Pressure
+
+  # sensor.netatmo_inside_temperature:
+  #   friendly_name: Living Room Temperature
+
+  # sensor.netatmo_inside_wifi:
+  #   friendly_name: Netatmo WIFI Signal
+
+  # sensor.netatmo_outside_battery:
+  #   friendly_name: Sensor Battery
+
+  # sensor.netatmo_outside_humidity:
+  #   friendly_name: Humidity
+
+  # sensor.netatmo_outside_max_temp:
+  #   friendly_name: Maximum Temperature
+
+  # sensor.netatmo_outside_min_temp:
+  #   friendly_name: Minimum Temperature
+
+  # sensor.netatmo_outside_radio:
+  #   friendly_name: Sensor Radio
+
+  # sensor.netatmo_outside_temperature:
+  #   friendly_name: Temperature
+
+  # sensor.netatmo_rain_gauge_battery:
+  #   friendly_name: Rain Gauge Battery
+
+  # sensor.netatmo_rain_gauge_radio:
+  #   friendly_name: Rain Gauge Radio
+
+  # sensor.netatmo_rain_gauge_rain:
+  #   friendly_name: Predicted Rainfall
+
+  # sensor.netatmo_rain_gauge_sum_rain_1:
+  #   friendly_name: Rain in last hour
+
+  # sensor.netatmo_rain_gauge_sum_rain_24:
+  #   friendly_name: Rain since midnight
+
+
+  # ############################################################
+  # #
+  # # Forecastio
+  # #
+  # ############################################################
+
+  # sensor.forecastio_apparent_temperature:
+  #   friendly_name: Apparent
+
+  # sensor.forecastio_precip:
+  #   friendly_name: Precipitation
+  #   icon: mdi:weather-rainy
+
+  # sensor.forecastio_precip_probability:
+  #   friendly_name: Probability of Rain
+  #   icon: mdi:weather-rainy
+
+  # sensor.forecastio_pressure:
+  #   friendly_name: Air Pressure
+  #   icon: mdi:chart-line
+
+  # sensor.forecastio_temperature:
+  #   friendly_name: Temperature
+
+  # sensor.forecastio_visibility:
+  #   friendly_name: Visibility
+
+  # sensor.forecastio_wind_bearing:
+  #   friendly_name: Wind Direction
+  #   icon: mdi:weather-windy
+
+  # sensor.forecastio_wind_speed:
+  #   friendly_name: Wind Speed
+  #   icon: mdi:weather-windy
+
+
+  # ############################################################
+  # #
+  # # Travel
+  # #
+  # ############################################################
+
+  # sensor.aileen_to_home:
+  #   icon: mdi:car
+
+  # sensor.aileen_to_work:
+  #   icon: mdi:car
+
+  # sensor.aileen_work_to_home:
+  #   icon: mdi:car
+
+  # sensor.bedroom_humidity:
+  #   icon: mdi:water-percent
+
+  # sensor.graeme_to_home:
+  #   icon: mdi:car
+
+  # sensor.graeme_to_work:
+  #   icon: mdi:car
+
+  # sensor.graeme_work_to_home:
+  #   icon: mdi:car
+
+  # ############################################################
+  # #
+  # # Glances
+  # #
+  # ############################################################
+
+  # sensor.glances_sensor_cpu_load:
+  #   friendly_name: CPU Load
+
+  # sensor.glances_sensor_disk_use:
+  #   friendly_name: Disk Use
+
+  # sensor.glances_sensor_ram_free:
+  #   friendly_name: Free Memory
+
+  # sensor.glances_sensor_running:
+  #   friendly_name: Running Processes
+
+  # sensor.glances_sensor_sleeping:
+  #   friendly_name: Sleeping Processes
+
+  # sensor.glances_sensor_swap_use:
+  #   friendly_name: Swap Usage
+
+  # ############################################################
+  # #
+  # # Batteries
+  # #
+  # ############################################################
+
+  # sensor.frontdoorsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.hallmotionsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.kitchenmotionsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.lightsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.lowerstairsmotionsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.upperstairsmotionsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.porchmotionsensor_battery:
+  #   icon: mdi:battery
+
+  # sensor.summerhousedoorsensor_battery:
+  #   icon: mdi:battery
+
+  # ############################################################
+  # #
+  # # Updater
+  # #
+  # ############################################################
+
+  # #updater.updater:
+  # #  friendly_name: Update Available
+
+  # ############################################################
+  # #
+  # # Weblinks
+  # #
+  # ############################################################
+
+  # weblink.cctv:
+  #   icon: mdi:camera-iris
+
+  # weblink.dashboard:
+  #   icon: mdi:view-dashboard
+
+  # weblink.media_server_plex:
+  #   icon: mdi:filmstrip
+
+  # weblink.router:
+  #   icon: mdi:router-wireless
+
+  # weblink.server_glances:
+  #   icon: mdi:format-list-bulleted
+
+  # weblink.wifi_controller:
+  #   icon: mdi:wifi

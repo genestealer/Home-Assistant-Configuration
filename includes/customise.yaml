@@ -115,6 +115,108 @@ group.outside_christmas_lights:
 group.bunny_shed:
   entity_picture: /local/shed.png
 
+
+############################################################
+# Glances
+############################################################
+
+sensor.glances_sensor_cpu_load:
+  friendly_name: CPU Load
+
+sensor.glances_sensor_disk_use:
+  friendly_name: Disk Use
+
+sensor.glances_sensor_ram_free:
+  friendly_name: Free Memory
+
+sensor.glances_sensor_running:
+  friendly_name: Running Processes
+
+sensor.glances_sensor_sleeping:
+  friendly_name: Sleeping Processes
+
+sensor.glances_sensor_swap_use:
+  friendly_name: Swap Usage
+
+sensor.server_cpu_load:
+  friendly_name: CPU Load
+  icon: mdi:chip
+
+sensor.server_disk_free:
+  friendly_name: Disk Free
+  icon: mdi:harddisk
+
+sensor.server_disk_use:
+  friendly_name: Disk Use
+  icon: mdi:harddisk
+
+sensor.server_disk_use_2:
+  friendly_name: Disk Free
+  icon: mdi:harddisk
+
+sensor.server_ram_free:
+  friendly_name: Free Memory
+  icon: mdi:memory
+
+sensor.server_ram_use:
+  friendly_name: Memory Used
+  icon: mdi:memory
+
+sensor.server_ram_use_2:
+  friendly_name: Memory Used
+  icon: mdi:memory
+
+sensor.server_running:
+  friendly_name: Running Processes
+  icon: mdi:application
+
+sensor.server_sleeping:
+  friendly_name: Sleeping Processes
+  icon: mdi:application
+
+sensor.server_swap_free:
+  friendly_name: Free Swap Memory
+  icon: mdi:memory
+
+sensor.server_swap_use:
+  friendly_name: Swap Memory Used
+  icon: mdi:memory
+
+sensor.server_swap_use_2:
+  friendly_name: Swap Memory Used
+  icon: mdi:memory
+
+sensor.server_glance_bios:
+  icon: mdi:chip
+
+sensor.server_glance_fans:
+  icon: mdi:fan
+
+sensor.server_fan:
+  icon: mdi:fan
+
+sensor.server_glance_memory:
+  icon: mdi:memory
+
+sensor.server_glance_network:
+  icon: mdi:ethernet
+
+sensor.server_glance_power:
+  icon: mdi:power-plug
+
+sensor.server_glance_processor:
+  icon: mdi:chip
+
+sensor.server_glance_storage:
+  icon: mdi:harddisk
+
+sensor.server_glance_temperature:
+  icon: mdi:thermometer
+
+
+
+
+
 # ############################################################
 # #
 # # Binary Sensors
@@ -131,7 +233,7 @@ group.bunny_shed:
 # ############################################################
 
 # group.all_mobile_devices:
-#   friendly_name: People 
+#   friendly_name: People
 
 # group.court_yard:
 #   icon: mdi:lightbulb
@@ -169,11 +271,11 @@ group.bunny_shed:
 #   icon: mdi:thermometer
 
 # sensor.kitchenmotionsensor_luminance_2:
-#   friendly_name: Kitchen 
+#   friendly_name: Kitchen
 #   icon: mdi:lightbulb
 
 # sensor.kitchenmotionsensor_temperature_2:
-#   friendly_name: Kitchen 
+#   friendly_name: Kitchen
 #   icon: mdi:thermometer
 
 # sensor.lightsensor_luminance_14:
@@ -181,7 +283,7 @@ group.bunny_shed:
 #   icon: mdi:white-balance-sunny
 
 # sensor.mainstairslower_luminance_12:
-#   friendly_name: Living Room 
+#   friendly_name: Living Room
 #   icon: mdi:lightbulb
 
 # sensor.mainstairslower_temperature_12:
@@ -191,10 +293,12 @@ group.bunny_shed:
 # sensor.mainstairsupper_luminance_11:
 #   friendly_name: Upstairs
 #   icon: mdi:lightbulb
-  
+
 # sensor.mainstairsupper_temperature_11:
 #   friendly_name: Upstairs
 #   icon: mdi:thermometer
+
+
 
 # sensor.mediaserver_cpu_load:
 #   friendly_name: CPU Load
@@ -326,31 +430,31 @@ group.bunny_shed:
 # sensor.server_swap_use_2:
 #   friendly_name: Swap Memory Used
 #   icon: mdi:memory
-
+#
 # sensor.server_glance_bios:
 #   icon: mdi:chip
-
+#
 # sensor.server_glance_fans:
 #   icon: mdi:fan
-
+#
 # sensor.server_fan:
 #   icon: mdi:fan
-
+#
 # sensor.server_glance_memory:
 #   icon: mdi:memory
-
+#
 # sensor.server_glance_network:
 #   icon: mdi:ethernet
-
+#
 # sensor.server_glance_power:
 #   icon: mdi:power-plug
-
+#
 # sensor.server_glance_processor:
 #   icon: mdi:chip
-
+#
 # sensor.server_glance_storage:
 #   icon: mdi:harddisk
-
+#
 # sensor.server_glance_temperature:
 #   icon: mdi:thermometer
 
@@ -424,7 +528,7 @@ group.bunny_shed:
 #   icon: mdi:lightbulb
 
 # switch.summerhouselights_switch_16_2:
-#   friendly_name: Summerhouse Side Light 
+#   friendly_name: Summerhouse Side Light
 #   icon: mdi:lightbulb
 
 # switch.summerhousepower_switch_15:
@@ -468,10 +572,10 @@ group.bunny_shed:
 #   friendly_name: Hall
 
 # light.utilityroomlight_level_7:
-#   friendly_name: Utility Room 
+#   friendly_name: Utility Room
 
 # light.workshoplight_level_6:
-#   friendly_name: Workshop 
+#   friendly_name: Workshop
 
 
 # ############################################################
@@ -529,14 +633,14 @@ group.bunny_shed:
 #   friendly_name: Minimum Temperature
 
 # sensor.netatmo_outside_radio:
-#   friendly_name: Sensor Radio 
+#   friendly_name: Sensor Radio
 
 # sensor.netatmo_outside_temperature:
 #   friendly_name: Temperature
 
 # sensor.netatmo_rain_gauge_battery:
 #   friendly_name: Rain Gauge Battery
-  
+
 # sensor.netatmo_rain_gauge_radio:
 #   friendly_name: Rain Gauge Radio
 
@@ -648,7 +752,7 @@ group.bunny_shed:
 
 # sensor.hallmotionsensor_battery:
 #   icon: mdi:battery
-  
+
 # sensor.kitchenmotionsensor_battery:
 #   icon: mdi:battery
 

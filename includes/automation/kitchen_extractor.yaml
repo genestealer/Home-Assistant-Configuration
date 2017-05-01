@@ -5,14 +5,28 @@
 #
 ############################################################
 
+# - alias: Kitchen Extractor Enable Auto Off
+#   trigger:
+#     platform: state
+#     entity_id: switch.kitchen_extractor_fan
+#     from: 'off'
+#     to: 'on'
+#   action:
+#     service: script.turn_on
+#     data:
+#       entity_id: script.kitchen_extractor_timer
+
+#https://home-assistant.io/docs/configuration/events/
+#https://home-assistant.io/docs/configuration/state_object/
+
 - alias: Kitchen Extractor Enable Auto Off
   trigger:
     platform: state
     entity_id: switch.kitchen_extractor_fan
-    from: 'off'
-    to: 'on'
+    state: 'on'
   action:
-    service: script.turn_on
-    data:
-      entity_id: script.kitchen_extractor_timer
-
+    - wait_template: "{{ states.switch.kitchen_extractor_fan.state == 'on' }}"
+      timeout: 00:00:10
+    - service: script.turn_on
+      data:
+        entity_id: script.kitchen_extractor_timer

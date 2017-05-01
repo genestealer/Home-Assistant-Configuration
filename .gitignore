@@ -9,6 +9,8 @@
 *.key
 *.pem
 *.old
+*.db-shm
+*.db-wal
 .HA_VERSION
 known_devices.yaml
 secrets.yaml
@@ -17,3 +19,4 @@ html5_push_registrations.conf
 www
 tts
 shortcuts
+ip_bans.yaml

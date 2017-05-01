@@ -10,6 +10,6 @@
   command_topic: "HUISHS/Irrigation/OutputOne/Command"
   payload_on: "1"
   payload_off: "0"
-  # optimistic: false
+  optimistic: false
   # qos: 0
-  # retain: true
+  retain: true

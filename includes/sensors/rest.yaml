@@ -1,0 +1,11 @@
+############################################################
+#
+# RESTful Sensor
+#
+############################################################
+
+- platform: rest
+  resource: !secret glances_HDD1
+  name: Disk 1
+  value_template: '{{ value_json.used| multiply(0.000000954) | round(0) }}'
+  unit_of_measurement: MB

@@ -21,7 +21,7 @@ config:
 http:
   api_password: !secret http_password
   server_port: 443
-  ssl_certificate: !secret SSL_cert 
+  ssl_certificate: !secret SSL_cert
   ssl_key:  !secret SSL_key
   base_url: !secret Base_url
 #  ip_ban_enabled: True
@@ -46,7 +46,7 @@ history:
 
 # recorder:
 #   purge_days: 24
-#   # exclude:  
+#   # exclude:
 
 # View all events in a logbook
 logbook:
@@ -106,7 +106,7 @@ notify:
 
   # - name: Facebook Notify
   #   platform: facebook
-  #   page_access_token: !secret FB_Key    
+  #   page_access_token: !secret FB_Key
 
 device_tracker:
   platform: owntracks
@@ -118,20 +118,22 @@ mqtt:
   client_id: home-assistant-1
   keepalive: 60
   username: !secret mqtt_username
-  password: !secret mqtt_password 
-    
+  password: !secret mqtt_password
+
 # Text to speech
 tts:
   platform: google
 
 ifttt:
-  key: !secret ifttt_key 
+  key: !secret ifttt_key
 
 
 
 rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
+  wait_for_ack: True
+  reconnect_interval: 1 #1 second
 
 ############################################################
 #
@@ -141,13 +143,13 @@ rflink:
 ############################################################
 
 # Merge List
-automation: !include_dir_merge_list includes\automation 
+automation: !include_dir_merge_list includes\automation
 sensor: !include_dir_merge_list includes\sensors
 light: !include_dir_merge_list includes\lights
 binary_sensor: !include_dir_merge_list includes\binary_sensors\
 switch: !include_dir_merge_list includes\switch
 
-# Merge named 
+# Merge named
 script: !include_dir_merge_named includes\scripts
 
 
@@ -169,8 +171,8 @@ input_boolean:
     name: Heat the towel rail for 1 hour
     initial: off
     icon: mdi:temperature-celsius
-   
- 
+
+
 weblink:
   entities:
     - name: Router
@@ -188,6 +190,10 @@ weblink:
     - name: CouchPotato
       url: !secret CouchPotatoIP
       icon: mdi:filmstrip
+
+    - name: Server Glances
+      url: !secret server_glancesIP
+      icon: mdi:format-list-bulleted
 
 #NOT WORKING!
 alexa:
