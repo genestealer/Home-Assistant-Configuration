@@ -25,8 +25,8 @@
     entity_id: switch.kitchen_extractor_fan
     state: 'on'
   action:
-    - wait_template: "{{ states.switch.kitchen_extractor_fan.state == 'on' }}"
-      timeout: 00:00:10
+    # - wait_template: "{{ states.switch.kitchen_extractor_fan.state == 'on' }}"
+    #   timeout: 00:00:05
     - service: script.turn_on
       data:
         entity_id: script.kitchen_extractor_timer

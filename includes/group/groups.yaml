@@ -46,6 +46,7 @@ kitchen_view:
     - automation.bunny_fluff_filter_schedule_off
     - switch.kitchen_extractor_fan
     - script.kitchen_extractor_timer
+    - automation.kitchen_extractor_enable_auto_off
 
 bunny_shed_view:
   name: Bunny Shed
@@ -156,8 +157,8 @@ bunny_shed:
     - sensor.bunny_shed_target_cool_temperature
     - input_slider.shed_target_cool_temp
 
-    - sensor.bunny_shed_temperature_highest_max
-    - sensor.bunny_shed_temperature_lowest_min
+    - sensor.bunny_shed_temperature_highest
+    - sensor.bunny_shed_temperature_lowest
 
 
 
