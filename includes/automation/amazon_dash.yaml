@@ -12,12 +12,12 @@
     payload: 'on' # Payload is allways on, even when turing the lights off.
   condition:
     condition: state
-    entity_id: light.upstairs_hall_light  
-    state: 'off'    
+    entity_id: light.lamp_4 #upstairs_hall_light
+    state: 'off'
   action:
     service: homeassistant.turn_on
-    entity_id: light.upstairs_hall_light
-    
+    entity_id: light.lamp_4 #upstairs_hall_light
+
 - alias: "Dash Button Hall light off"
   trigger:
     platform: mqtt
@@ -25,8 +25,8 @@
     payload: 'on' # Payload is allways on, even when turing the lights off.
   condition:
     condition: state
-    entity_id: light.upstairs_hall_light  
+    entity_id: light.lamp_4 #upstairs_hall_light  
     state: 'on'
   action:
     service: homeassistant.turn_off
-    entity_id: light.upstairs_hall_light   
+    entity_id: light.lamp_4 #upstairs_hall_light

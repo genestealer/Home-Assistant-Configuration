@@ -48,8 +48,12 @@ climate.entryway:
 # rflink.connection_status:
 #   friendly_name: RFLink Raw Connection Status
 
+############################################################
+#
+# Rename Lights
+#
+############################################################
 
-# lights
 light.lamp_1:
   friendly_name: 'Lucy Room Lamp'
 light.lamp_2:
@@ -57,10 +61,14 @@ light.lamp_2:
 light.lamp_3:
   friendly_name: 'Guest Bedroom Lamp'
 light.lamp_4:
-  friendly_name: 'Living Room Lamp'
+  friendly_name: 'Upstairs Hall Light'
 
-
+############################################################
+#
 # Bunny Shed
+#
+############################################################
+
 input_slider.shed_target_cool_temp:
   friendly_name: 'Shed Cool Target'
 input_slider.shed_target_heat_temp:

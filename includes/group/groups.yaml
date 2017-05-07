@@ -1,6 +1,6 @@
 ############################################################
 #
-# Home Assistant Views and groups
+# Home Assistant Views
 #
 ############################################################
 
@@ -9,37 +9,51 @@
 #    entities:
 #      - group.speed_test
 
+main_view:
+  name: Main
+  view: yes
+  entities:
+    - group.cctv_group
+    - group.nest_thermostat_group
+    - group.kitchen_climate_group
+    - group.lighting_group_group
+    - switch.irrigation_switch
+    - group.outside_weather_group
+    - group.mobiles_group
+    - group.device_status_group
+
+
+
+
 automation_system_view:
   name: Automation
   view: yes
 #    icon: mdi:battery-80
   entities:
-    - group.server_ilo_status
-    - group.ups_data
-    - group.all_automations
-    - group.device_status
+    - group.server_ilo_status_group
+    - group.ups_data_group
+    - group.device_status_group
     - binary_sensor.rf_gateway_status
     - sensor.plex
-    - group.rf_gateway_info
-    - group.bunny_shed_controller_info
+    - group.rf_gateway_info_group
+    - group.bunny_shed_controller_info_group
     - binary_sensor.doorbell_controller_status
-    - group.all_automations
-    - group.irrigation_controller_info
+    - group.irrigation_controller_info_group
 
 lights_view:
   name: Lights
   view: yes
   entities:
     - group.lighting_group
-    - group.christmas_lights
-    - group.inside_christmas_lights
-    - group.outside_christmas_lights
+    - group.christmas_lights_group
+    - group.inside_christmas_lights_group
+    - group.outside_christmas_lights_group
 
 kitchen_view:
   name: Kitchen
   view: yes
   entities:
-    - group.kitchen_climate
+    - group.kitchen_climate_group
     - light.kitchen_under_counter_lights
     - switch.bunny_fluff_air_filter
     - automation.bunny_fluff_filter_schedule_on
@@ -52,15 +66,15 @@ bunny_shed_view:
   name: Bunny Shed
   view: yes
   entities:
-    - group.bunny_shed
-    - group.bunny_shed_controller_info
+    - group.bunny_shed_group
+    - group.bunny_shed_controller_info_group
 
 
 bathroom_view:
   name: Bathroom
   view: yes
   entities:
-    - group.bathroom_towel_rail
+    - group.bathroom_towel_rail_group
 
 irrigation_view:
   name: Irrigation
@@ -68,7 +82,9 @@ irrigation_view:
   entities:
     - camera.front_door
     - switch.irrigation_switch
-    - group.irrigation_controller_info
+    - group.irrigation_controller_info_group
+    - automation.irrigation_schedule_am_on
+    - automation.irrigation_schedule_am_off
 
 bedroom_view:
   name: Bedroom
@@ -76,16 +92,28 @@ bedroom_view:
   entities:
     - light.bedside_light
 
+############################################################
+#
+# Home Assistant Groups
+#
+############################################################
 
 
-nest_thermostat:
+cctv_group:
+  name: CCTV
+  view: no
+  entities:
+    - camera.front_door
+    - camera.other_camera
+
+nest_thermostat_group:
   name: Nest Thermostat
   view: no
   entities:
     - climate.entryway
     - sensor.entryway_thermostat_humidity
 
-mobiles:
+mobiles_group:
   name: Mobiles
   view: no
   entities:
@@ -94,14 +122,8 @@ mobiles:
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
-cctv:
-  name: CCTV
-  view: no
-  entities:
-    - camera.front_door
-    - camera.other_camera
 
-device_status:
+device_status_group:
   name: Device Status
   view: no
   entities:
@@ -113,7 +135,7 @@ device_status:
 
 
 
-kitchen_climate:
+kitchen_climate_group:
   name: Kitchen Climate
   view: no
   entities:
@@ -132,7 +154,7 @@ lighting_group:
     - light.lamp_4
 
 
-rf_gateway_info:
+rf_gateway_info_group:
   name: RF Gatway Info
   view: no
   entities:
@@ -142,7 +164,7 @@ rf_gateway_info:
     - sensor.rf_gateway_signal_strength
     - sensor.rf_gateway_ssid
 
-bunny_shed:
+bunny_shed_group:
   name: Bunny Shed
   view: no
   entities:
@@ -163,7 +185,7 @@ bunny_shed:
 
 
 
-outside_weather:
+outside_weather_group:
   name: Outside Weather
   view: no
   entities:
@@ -172,7 +194,7 @@ outside_weather:
     - sensor.dark_sky_humidity
     - sensor.dark_sky_hourly_summary
 
-speed_test:
+speed_test_group:
   name: Speed Test
   view: no
   entities:
@@ -180,7 +202,7 @@ speed_test:
    - sensor.speedtest_ping
    - sensor.speedtest_upload
 
-bunny_shed_controller_info:
+bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
   view: no
   entities:
@@ -191,7 +213,7 @@ bunny_shed_controller_info:
     - sensor.shed_controller_ssid
 
 
-irrigation_controller_info:
+irrigation_controller_info_group:
   name: Irrigation Controller Info
   view: no
   entities:
@@ -201,7 +223,7 @@ irrigation_controller_info:
     - sensor.irrigation_controller_signal_strength
     - sensor.irrigation_controller_ssid
 
-ups_data:
+ups_data_group:
   name: UPS Data
   view: no
   entities:
@@ -222,7 +244,7 @@ ups_data:
    - sensor.ups_transfer_from_battery
 
 
-server_ilo_status:
+server_ilo_status_group:
   name: Server Status
   view: no
   entities:
@@ -261,7 +283,7 @@ server_ilo_status:
 
 
 
-bathroom_towel_rail:
+bathroom_towel_rail_group:
   name: Bathroom Towel Rail
   view: no
   entities:
@@ -289,14 +311,14 @@ bathroom_towel_rail:
 
 
 
-doorbell:
+doorbell_group:
   name: Doorbell
   view: no
   entities:
     - binary_sensor.doorbell
 
 
-amazon_dash:
+amazon_dash_group:
   name: Dash Buttons
   view: no
   entities:

@@ -173,27 +173,29 @@ input_boolean:
     icon: mdi:temperature-celsius
 
 
-weblink:
-  entities:
-    - name: Router
-      url: !secret RouterIP
-      icon: mdi:router-wireless
+# weblink:
+#   entities:
+#     - name: Router
+#       url: !secret RouterIP
+#       icon: mdi:router-wireless
+#
+#     - name: uTorrent
+#       url: !secret uTorrentIP
+#       icon: mdi:download
+#
+#     - name: SickRage
+#       url: !secret SickRageIP
+#       icon: mdi:monitor
+#
+#     - name: CouchPotato
+#       url: !secret CouchPotatoIP
+#       icon: mdi:filmstrip
+#
+#     - name: Server Glances
+#       url: !secret server_glancesIP
+#       icon: mdi:format-list-bulleted
 
-    - name: uTorrent
-      url: !secret uTorrentIP
-      icon: mdi:download
 
-    - name: SickRage
-      url: !secret SickRageIP
-      icon: mdi:monitor
-
-    - name: CouchPotato
-      url: !secret CouchPotatoIP
-      icon: mdi:filmstrip
-
-    - name: Server Glances
-      url: !secret server_glancesIP
-      icon: mdi:format-list-bulleted
 
 #NOT WORKING!
 alexa:
