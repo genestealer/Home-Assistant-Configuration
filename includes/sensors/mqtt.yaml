@@ -66,7 +66,7 @@
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/ClientName"
   name: "RF Gateway MQTT Client Name"
- 
+
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/IpAddress"
   name: "RF Gateway IP Address"
@@ -93,7 +93,7 @@
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/ClientName"
   name: "Shed Controller Client Name"
- 
+
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/IpAddress"
   name: "Shed Controller IP Address"
@@ -112,3 +112,30 @@
   name: "Shed Controller SSID"
 
 
+
+############################################################
+#
+# Irrigation Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/ClientName"
+  name: "Irrigation Controller Client Name"
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/IpAddress"
+  name: "Irrigation Controller IP Address"
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/SignalStrength"
+  name: "Irrigation Controller Signal Strength"
+  unit_of_measurement: "dBm"
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/HostName"
+  name: "Irrigation Controller IP Host Name"
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/SSID"
+  name: "Irrigation Controller SSID"

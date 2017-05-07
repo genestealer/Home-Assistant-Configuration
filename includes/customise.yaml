@@ -115,7 +115,6 @@ group.outside_christmas_lights:
 group.bunny_shed:
   entity_picture: /local/shed.png
 
-
 ############################################################
 # Glances
 ############################################################

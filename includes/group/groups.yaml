@@ -1,16 +1,16 @@
 ############################################################
 #
-# Home Assistant Default View
+# Home Assistant Views and groups
 #
 ############################################################
 
 # default_view:
-#   view: yes
-#   entities:
-#     - group.speed_test
+#    view: yes
+#    entities:
+#      - group.speed_test
 
-home_automation_system:
-  name: Home Automation System
+automation_system_view:
+  name: Automation
   view: yes
 #    icon: mdi:battery-80
   entities:
@@ -23,24 +23,19 @@ home_automation_system:
     - group.rf_gateway_info
     - group.bunny_shed_controller_info
     - binary_sensor.doorbell_controller_status
+    - group.all_automations
+    - group.irrigation_controller_info
 
-bathroom:
-  name: Bathroom
-  view: yes
-  entities:
-    - group.bathroom_towel_rail
-
-lights:
+lights_view:
   name: Lights
   view: yes
   entities:
+    - group.lighting_group
     - group.christmas_lights
     - group.inside_christmas_lights
     - group.outside_christmas_lights
-    - light.bedside_light
 
-
-kitchen:
+kitchen_view:
   name: Kitchen
   view: yes
   entities:
@@ -52,12 +47,34 @@ kitchen:
     - switch.kitchen_extractor_fan
     - script.kitchen_extractor_timer
 
+bunny_shed_view:
+  name: Bunny Shed
+  view: yes
+  entities:
+    - group.bunny_shed
+    - group.bunny_shed_controller_info
 
-bedroom:
+
+bathroom_view:
+  name: Bathroom
+  view: yes
+  entities:
+    - group.bathroom_towel_rail
+
+irrigation_view:
+  name: Irrigation
+  view: yes
+  entities:
+    - camera.front_door
+    - switch.irrigation_switch
+    - group.irrigation_controller_info
+
+bedroom_view:
   name: Bedroom
   view: yes
   entities:
     - light.bedside_light
+
 
 
 nest_thermostat:
@@ -102,7 +119,7 @@ kitchen_climate:
     - sensor.kitchen_temperature
     - sensor.kitchen_humidity
 
-lighting:
+lighting_group:
   name: Lighting
   view: no
   entities:
@@ -172,6 +189,17 @@ bunny_shed_controller_info:
     - sensor.shed_controller_signal_strength
     - sensor.shed_controller_ssid
 
+
+irrigation_controller_info:
+  name: Irrigation Controller Info
+  view: no
+  entities:
+    - sensor.irrigation_controller_ip_address
+    - sensor.irrigation_controller_ip_host_name
+    - sensor.irrigation_controller_client_name
+    - sensor.irrigation_controller_signal_strength
+    - sensor.irrigation_controller_ssid
+
 ups_data:
   name: UPS Data
   view: no
@@ -194,26 +222,41 @@ ups_data:
 
 
 server_ilo_status:
-  name: Server iLo Status
+  name: Server Status
   view: no
   entities:
+    - sensor.server_ilo_temperature_ambient
+    - sensor.server_ilo_temperature_exhaust
+    - sensor.server_ilo_temperature_chipset
+    - sensor.server_ilo_temperature_memory
+    - sensor.server_ilo_temperature_processor
+    - sensor.server_ilo_temperature_raid_controller
     - sensor.server_server_power_state
-    - sensor.server_glance_bios
-    - sensor.server_glance_fans
-    - sensor.server_glance_memory
-    - sensor.server_glance_power
-    - sensor.server_glance_processor
-    - sensor.server_glance_storage
-    - sensor.server_glance_temperature
-    - sensor.server_glance_network
-    - sensor.server_server_health
-    - sensor.server_fan
-    - sensor.server_temperature_ambient
-    - sensor.server_temperature_exhaust
-    - sensor.server_temperature_chipset
-    - sensor.server_temperature_memory
-    - sensor.server_temperature_processor
-    - sensor.server_temperature_raid_controller
+    - sensor.server_ilo_bios
+    - sensor.server_ilo_fans
+    - sensor.server_ilo_memory
+    - sensor.server_ilo_power
+    - sensor.server_ilo_processor
+    - sensor.server_ilo_storage
+    - sensor.server_ilo_temperature
+    - sensor.server_ilo_network
+  #  - sensor.server_server_health
+    - sensor.server_ilo_fan
+    - sensor.server_uptime
+    - sensor.server_cpu_load
+    - sensor.server_disk_free
+    - sensor.server_disk_use
+    - sensor.server_disk_use_2
+    - sensor.server_ram_free
+    - sensor.server_ram_use
+    - sensor.server_ram_use_2
+    - sensor.server_running
+    - sensor.server_sleeping
+    - sensor.server_swap_free
+    - sensor.server_swap_use
+    - sensor.server_swap_use_2
+    - sensor.server_thread
+    - sensor.server_total
 
 
 
@@ -252,43 +295,9 @@ doorbell:
     - binary_sensor.doorbell
 
 
-amazobn_dash:
+amazon_dash:
   name: Dash Buttons
   view: no
   entities:
     - binary_sensor.dash1_button
     - binary_sensor.dash2_button
-
-
-
-
-Server:
-  - sensor.server_uptime
-  - sensor.server_cpu_load
-  - sensor.server_disk_free
-  - sensor.server_disk_use
-  - sensor.server_disk_use_2
-  - sensor.server_ram_free
-  - sensor.server_ram_use
-  - sensor.server_ram_use_2
-  - sensor.server_running
-  - sensor.server_sleeping
-  - sensor.server_swap_free
-  - sensor.server_swap_use
-  - sensor.server_swap_use_2
-  - sensor.server_thread
-  - sensor.server_total
-  - sensor.server_temperature_ambient
-  - sensor.server_temperature_chipset
-  - sensor.server_temperature_exhaust
-  - sensor.server_temperature_memory
-  - sensor.server_temperature_processor
-  - sensor.server_glance_bios
-  - sensor.server_glance_fans
-  - sensor.server_fan
-  - sensor.server_glance_memory
-  - sensor.server_glance_network
-  - sensor.server_glance_power
-  - sensor.server_glance_processor
-  - sensor.server_glance_storage
-  - sensor.server_glance_temperature

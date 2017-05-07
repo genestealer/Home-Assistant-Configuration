@@ -14,10 +14,10 @@
     # - server_name
   #  - server_fqdn
   #  - server_host_data
-    - server_power_status
+  ##  - server_power_status
     #- server_asset_tag
     # - server_uid_status
-    - server_health
+  ##  - server_health
     # - network_settings
 
 
@@ -29,65 +29,65 @@
 
 - platform: template
   sensors:
-    server_fan:
+    server_ilo_fan:
       value_template: '{{states.sensor.server_server_health.attributes.fans["Fan 1"]["speed"][0] }}'
       unit_of_measurement: '%'
       entity_id: sensor.server_server_health
       friendly_name: "Fan Speed"
 
-    server_glance_power:
+    server_ilo_power:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["power_supplies"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Power Supplies"
 
-    server_glance_processor:
+    server_ilo_processor:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["processor"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Processor"
 
-    server_glance_storage:
+    server_ilo_storage:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["storage"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Storage"
 
-    server_glance_memory:
+    server_ilo_memory:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["memory"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Memory"
 
-    server_glance_temperature:
+    server_ilo_temperature:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["temperature"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Temperature"
 
-    server_glance_fans:
+    server_ilo_fans:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["fans"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Fans"
 
-    server_glance_bios:
+    server_ilo_bios:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["bios_hardware"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "BIOS"
 
-    server_glance_network:
+    server_ilo_network:
       value_template: '{{states.sensor.server_server_health.attributes.health_at_a_glance["network"]["status"] }}'
       entity_id: sensor.server_server_health
       friendly_name: "Network"
 
-    server_temperature_ambient:
+    server_ilo_temperature_ambient:
       value_template: '{{states.sensor.server_server_health.attributes.temperature["01-Inlet Ambient"]["currentreading"][0] }}'
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
       friendly_name: "Ambient"
 
-    server_temperature_processor:
+    server_ilo_temperature_processor:
       value_template: '{{states.sensor.server_server_health.attributes.temperature["02-CPU"]["currentreading"][0] }}'
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
       friendly_name: "Processor"
 
-    server_temperature_memory:
+    server_ilo_temperature_memory:
       value_template: '{{states.sensor.server_server_health.attributes.temperature["03-P1 DIMM 1-2"]["currentreading"][0] }}'
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
@@ -99,13 +99,13 @@
     #   entity_id: sensor.server_server_health
     #   friendly_name: "HDD"
 
-    server_temperature_chipset:
+    server_ilo_temperature_chipset:
       value_template: '{{states.sensor.server_server_health.attributes.temperature["05-Chipset"]["currentreading"][0] }}'
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
       friendly_name: "Chipset"
 
-    server_temperature_raid_controller:
+    server_ilo_temperature_raid_controller:
       value_template: '{{states.sensor.server_server_health.attributes.temperature["10-PCI 1"]["currentreading"][0] }}'
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
@@ -118,7 +118,7 @@
     #   friendly_name: "LOM"
 
 
-    server_temperature_exhaust:
+    server_ilo_temperature_exhaust:
       value_template: '{{states.sensor.server_server_health.attributes.temperature["12-Sys Exhaust"]["currentreading"][0] }}'
       unit_of_measurement: '°C'
       entity_id: sensor.server_server_health
