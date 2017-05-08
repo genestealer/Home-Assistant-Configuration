@@ -1,0 +1,19 @@
+############################################################
+#
+# Pi-Hole automation
+#
+############################################################
+
+
+- alias: "Notify: Possible DDOS Attack"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.pihole_dns_queries_today
+    value_template: '{{ state.sensor.pihole_dns_queries_today.state }}'
+    above: 40000
+  action:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'Possible DDOS Attack from inside network'
+      message: >
+        DNS Queries: {{ states('sensor.pihole_dns_queries_today') }}

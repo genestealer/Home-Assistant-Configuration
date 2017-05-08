@@ -5,16 +5,16 @@
 ############################################################
 
 - alias: NOTIFY when Electricity Supply Voltage is HIGH
-  trigger: 
+  trigger:
     platform: numeric_state
-    entity_id: sensor.ups_input_voltage 
+    entity_id: sensor.ups_input_voltage
     above: 254
   action:
-    service: notify.notify
+    service: notify.google_cloud_notify
     data_template:
       title: 'Electricity Supply Voltage High'
       message: >
-        Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts 
+        Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts
 
 
 ############################################################
@@ -24,16 +24,16 @@
 ############################################################
 
 - alias: NOTIFY when Electricity Supply Voltage is LOW
-  trigger: 
+  trigger:
     platform: numeric_state
-    entity_id: sensor.ups_input_voltage 
+    entity_id: sensor.ups_input_voltage
     below: 220
   action:
-    service: notify.notify
+    service: notify.google_cloud_notify
     data_template:
       title: 'Electricity Supply Voltage Low'
       message: >
-        Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts 
+        Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts
 
 
 
@@ -44,16 +44,14 @@
 ##
 #############################################################
 
-- alias: NOTIFY when UPS is close to being depleted 
-  trigger: 
+- alias: NOTIFY when UPS is close to being depleted
+  trigger:
     platform: numeric_state
-    entity_id: sensor.ups_time_left 
+    entity_id: sensor.ups_time_left
     below: 10
   action:
-    service: notify.notify
+    service: notify.google_cloud_notify
     data_template:
       title: 'WARNING: UPS close to being depleted'
       message: >
-        UPS is running low: {{ states('sensor.ups_time_left') }} minutes 
-
-
+        UPS is running low: {{ states('sensor.ups_time_left') }} minutes

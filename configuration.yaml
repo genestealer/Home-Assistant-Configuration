@@ -94,13 +94,13 @@ climate:
 #  - platform: cast
 
 notify:
-  - platform: pushover
-    name: Pushover Notify
-    api_key:  !secret pushover_api_key
-    user_key:  !secret pushover_user_key
+  # - platform: pushover
+  #   name: Pushover Notify
+  #   api_key:  !secret pushover_api_key
+  #   user_key:  !secret pushover_user_key
 
-  - platform: html5
-    name: Google Cloud Notify
+  - name: Google Cloud Notify
+    platform: html5
     gcm_api_key: !secret gcmKey
     gcm_sender_id: !secret gcmID
 
