@@ -81,10 +81,9 @@ irrigation_view:
   view: yes
   entities:
     - camera.front_door
-    - switch.irrigation_switch
     - group.irrigation_controller_info_group
-    - automation.irrigation_schedule_am_on
-    - automation.irrigation_schedule_am_off
+    - group.irrigation_group
+
 
 bedroom_view:
   name: Bedroom
@@ -154,15 +153,6 @@ lighting_group:
     - light.lamp_4
 
 
-rf_gateway_info_group:
-  name: RF Gatway Info
-  view: no
-  entities:
-    - sensor.rf_gateway_ip_address
-    - sensor.rf_gateway_ip_host_name
-    - sensor.rf_gateway_mqtt_client_name
-    - sensor.rf_gateway_signal_strength
-    - sensor.rf_gateway_ssid
 
 bunny_shed_group:
   name: Bunny Shed
@@ -202,6 +192,16 @@ speed_test_group:
    - sensor.speedtest_ping
    - sensor.speedtest_upload
 
+
+irrigation_group:
+  name: Irrigation
+  view: no
+  entities:
+    - switch.irrigation_switch
+    - input_slider.irrigation_duration
+    - script.irrigation_timer
+    - automation.irrigation_schedule_am_on
+
 bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
   view: no
@@ -212,6 +212,15 @@ bunny_shed_controller_info_group:
     - sensor.shed_controller_signal_strength
     - sensor.shed_controller_ssid
 
+rf_gateway_info_group:
+  name: RF Gatway Info
+  view: no
+  entities:
+    - sensor.rf_gateway_ip_address
+    - sensor.rf_gateway_ip_host_name
+    - sensor.rf_gateway_mqtt_client_name
+    - sensor.rf_gateway_signal_strength
+    - sensor.rf_gateway_ssid
 
 irrigation_controller_info_group:
   name: Irrigation Controller Info
@@ -222,6 +231,7 @@ irrigation_controller_info_group:
     - sensor.irrigation_controller_client_name
     - sensor.irrigation_controller_signal_strength
     - sensor.irrigation_controller_ssid
+
 
 ups_data_group:
   name: UPS Data

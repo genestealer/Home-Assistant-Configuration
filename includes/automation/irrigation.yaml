@@ -4,19 +4,29 @@
 #
 ############################################################
 
+
 - alias: Irrigation Schedule AM On
   trigger:
     platform: time
     after: '07:00:00'
   action:
-    service: switch.turn_on
-    entity_id: switch.irrigation_switch
+    service: homeassistant.turn_on
+    entity_id: script.irrigation_timer
 
 
-- alias: Irrigation Schedule AM Off
-  trigger:
-    platform: time
-    after: '07:15:00'
-  action:
-    service: switch.turn_off
-    entity_id: switch.irrigation_switch
+# - alias: Irrigation Schedule AM On
+#   trigger:
+#     platform: time
+#     after: '07:00:00'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.irrigation_switch
+
+
+# - alias: Irrigation Schedule AM Off
+#   trigger:
+#     platform: time
+#     after: '07:15:00'
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.irrigation_switch

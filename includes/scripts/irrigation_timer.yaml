@@ -1,0 +1,14 @@
+############################################################
+#
+# Irrigation Timer
+#
+############################################################
+
+irrigation_timer:
+  alias: "Irrigation Timer"
+  sequence:
+    - service: switch.turn_on
+      entity_id: switch.irrigation_switch
+    - delay: '00:{{states.input_slider.irrigation_duration.state|round(0)}}:00'
+    - service: switch.turn_off
+      entity_id: switch.irrigation_switch
