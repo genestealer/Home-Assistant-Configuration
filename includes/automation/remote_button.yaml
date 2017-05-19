@@ -23,3 +23,29 @@
     - service: homeassistant.turn_off
       entity_id:
         - light.lamp_2        
+
+
+
+############################################################
+#
+#  Update HASS button state when light changes automation
+#
+############################################################    
+
+- alias: Update Remote Button Assumed State
+  trigger:
+    - platform: state
+      entity_id: light.lamp_2
+      state: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.button_1
+
+- alias: Update Remote Button Assumed State
+  trigger:
+    - platform: state
+      entity_id: light.lamp_2
+      state: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.button_1

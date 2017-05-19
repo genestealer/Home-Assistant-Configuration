@@ -89,7 +89,8 @@ bedroom_view:
   name: Bedroom
   view: yes
   entities:
-    - light.bedside_light
+    - light.lamp_2
+    - switch.button_1
 
 ############################################################
 #
