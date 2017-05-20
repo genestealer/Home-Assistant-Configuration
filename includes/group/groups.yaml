@@ -259,6 +259,7 @@ server_ilo_status_group:
   name: Server Status
   view: no
   entities:
+    # iLo sensores
     - sensor.server_ilo_temperature_ambient
     - sensor.server_ilo_temperature_exhaust
     - sensor.server_ilo_temperature_chipset
@@ -291,6 +292,20 @@ server_ilo_status_group:
     - sensor.server_swap_use_2
     - sensor.server_thread
     - sensor.server_total
+    
+    #Rest senesores
+    - sensor.system_drive_size
+    - sensor.system_drive_percent_used
+    - sensor.raid5_array_size
+    - sensor.raid5_array_percent_used
+    - sensor.backup_drive_size
+    - sensor.backup_drive_percent_used
+    - sensor.cctv_drive_size
+    - sensor.cctv_drive_percent_used
+    - sensor.file_history_drive_size
+    - sensor.file_history_drive_percent_used
+
+
 
 
 

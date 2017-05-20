@@ -23,3 +23,5 @@
     - 'process_total'
     - 'process_thread'
     - 'process_sleeping'
+
+#Note, other hard drive sensors are in the rest.yaml file
