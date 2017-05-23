@@ -1,36 +1,17 @@
-- alias: "heat towel rail mqtt"
-  trigger:
-    - platform: mqtt
-      topic: HUISHS/Button1/set
-    # Optional
-      payload: '1'
-  action:
-    service: homeassistant.turn_on
-    entity_id: script.timed_heat_towel_rail
-    
-- alias: "dont heat towel rail mqtt"
-  trigger:
-    - platform: mqtt
-      topic: HUISHS/Button1/set
-    # Optional
-      payload: 'off'
-  action:
-    service: homeassistant.turn_on
-    entity_id: script.turn_off_heat_towel_rail
 
 
 
+# 
+# - alias: "Dash Button Lights Off"
+#   trigger:
+#     - platform: mqtt
+#       topic: HUISHS/dash
+#     # Optional
+#       payload: 'on'
+#   action:
+#     service: homeassistant.turn_off
+#     entity_id: group.christmas_lights
 
-- alias: "Dash Button Lights Off"
-  trigger:
-    - platform: mqtt
-      topic: HUISHS/dash
-    # Optional
-      payload: 'on'
-  action:
-    service: homeassistant.turn_off
-    entity_id: group.christmas_lights
-    
 #garage_door:
  # platform: mqtt
   #state_topic: "home-assistant/garage-door"
@@ -55,4 +36,3 @@
 #  action:
 #    service: homeassistant.turn_on
 #    entity_id: script.timed_heat_towel_rail
-  

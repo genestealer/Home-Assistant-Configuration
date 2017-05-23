@@ -1,0 +1,26 @@
+############################################################
+#
+# Bathroom Towel Rail automation
+#
+############################################################
+
+
+- alias: "heat towel rail mqtt"
+  trigger:
+    - platform: mqtt
+      topic: HUISHS/Button1/set
+    # Optional
+      payload: '1'
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.timed_heat_towel_rail
+
+- alias: "dont heat towel rail mqtt"
+  trigger:
+    - platform: mqtt
+      topic: HUISHS/Button1/set
+    # Optional
+      payload: 'off'
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.turn_off_heat_towel_rail

@@ -44,6 +44,10 @@ binary_sensor.entryway_thermostat_online:
 climate.entryway:
   entity_picture: /local/nesticon.png
 
+
+
+
+
  #Does now work :(
 # rflink.connection_status:
 #   friendly_name: RFLink Raw Connection Status
@@ -74,6 +78,11 @@ input_slider.shed_target_cool_temp:
 input_slider.shed_target_heat_temp:
   friendly_name: 'Shed Heat Target'
 
+binary_sensor.bunny_shed_cooler:
+  icon: mdi:fan
+
+binary_sensor.bunny_shed_heater:
+  icon: mdi:waves
 
 switch.kitchen_extractor_fan:
   icon: mdi:fan
