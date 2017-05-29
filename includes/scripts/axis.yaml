@@ -1,0 +1,13 @@
+############################################################
+#
+# Axis CCTV Script
+#
+############################################################
+
+axis_test:
+  alias: "Axis CCTV Script"
+  sequence:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'Test AXIS'
+      message: 'Test'

@@ -6,6 +6,7 @@
 
 
 - alias: "Dash Button Hall light on"
+  hide_entity: True
   trigger:
     platform: mqtt
     topic: HUISHS/dash1
@@ -19,6 +20,7 @@
     entity_id: light.lamp_4 #upstairs_hall_light
 
 - alias: "Dash Button Hall light off"
+  hide_entity: True
   trigger:
     platform: mqtt
     topic: HUISHS/dash1

@@ -7,6 +7,8 @@
 - platform: mjpeg
   mjpeg_url: !secret CCTV1
   name: Front Door
+  username: !secret axis_P3301_username
+  password: !secret axis_P3301_password
 
 # - platform: mjpeg
 #   mjpeg_url: !secret CCTV2

@@ -5,6 +5,7 @@
 ############################################################
 
 - alias: Remote Button Press On
+  hide_entity: True
   trigger:
     - platform: state
       entity_id: switch.button_1
@@ -33,6 +34,7 @@
 ############################################################
 
 - alias: Update Remote Button Assumed State
+  hide_entity: True
   trigger:
     - platform: state
       entity_id: light.lamp_2

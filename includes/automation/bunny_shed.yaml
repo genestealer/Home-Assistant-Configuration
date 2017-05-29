@@ -88,3 +88,20 @@
       payload: '{{ states.input_slider.shed_target_cool_temp.state | int }}'
 
 
+############################################################
+#
+# Bunny Shed Automation - Warn of overtemp
+#
+############################################################
+
+# - alias: Bunny Shed Overtemp
+# #  hide_entity: True
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.bunny_shed_temperature
+#     above: 30
+#     below: 3
+#   action:
+#     service: notify.google_cloud_notify
+#     title: Bunny Shed Temperature Crital
+#     message: "The bunny shed is {{ states.sensor.bunny_shed_temperature.state }}° C."

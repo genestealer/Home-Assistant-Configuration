@@ -1,0 +1,17 @@
+############################################################
+#
+# Amazon dash button automation
+#
+############################################################
+
+
+- alias: Update notifications
+  hide_entity: True
+  trigger:
+    - platform: state
+      entity_id: updater.updater
+  action:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'New Home Assistant Release'
+      message: "Home Assistant  {{ states.updater.updater.state }}  is now available."

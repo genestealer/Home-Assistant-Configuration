@@ -135,6 +135,20 @@ rflink:
   wait_for_ack: True
   reconnect_interval: 1 #1 second
 
+
+axis:
+  # P3301:
+  #   host: !secret axis_P3301_IP
+  #   username: !secret axis_P3301_username
+  #   password: !secret axis_P3301_password
+  #   # include:
+  #   # - camera
+  #   # - motion
+  #   # - pir
+  #   # - sound
+  #   # - daynight
+
+
 ############################################################
 #
 # Includes
@@ -142,8 +156,10 @@ rflink:
 #
 ############################################################
 
+automation: !include automations.yaml
+
 # Merge List
-automation: !include_dir_merge_list includes\automation
+automation old: !include_dir_merge_list includes\automation
 sensor: !include_dir_merge_list includes\sensors
 light: !include_dir_merge_list includes\lights
 binary_sensor: !include_dir_merge_list includes\binary_sensors\

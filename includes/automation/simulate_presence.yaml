@@ -1,7 +1,7 @@
 ############################################################
 #
-#  Automation Simulate Presence
-#  Source https://github.com/mertenats/Open-Home-Automation/blob/master/openhome/configuration/home_assistant/automation/automation_4a.yaml
+#  Automation Simulate Presence / Occupancy Simulation
+#  Source: https://github.com/mertenats/Open-Home-Automation/blob/master/openhome/configuration/home_assistant/automation/automation_4a.yaml
 #
 ############################################################
 
@@ -13,6 +13,7 @@
       to: 'not_home'
     - platform: sun
       event: sunset
+      offset: "+00:30:00"
     - platform: event
       event_type: event_simulate_presence
   condition:  
