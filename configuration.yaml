@@ -156,7 +156,7 @@ axis:
 #
 ############################################################
 
-automation: !include automations.yaml
+automation: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
 
 # Merge List
 automation old: !include_dir_merge_list includes\automation

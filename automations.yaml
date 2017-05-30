@@ -1,0 +1,27 @@
+- action:
+  - service: notify.google_cloud_notify
+  alias: New Automation
+  id: '1496102620520'
+  trigger:
+  - above: '40000'
+    entity_id: sensor.pihole_dns_queries_today
+    platform: numeric_state
+- action:
+  - service: notify.google_cloud_notify
+  alias: New Automation
+  id: '1496102693745'
+  trigger:
+  - above: '40000'
+    entity_id: sensor.pihole_dns_queries_today
+    platform: numeric_state
+    value_template: '''{{ state.sensor.pihole_dns_queries_today.state }}'''
+- action:
+  - data:
+      message: hello world
+    service: persistent_notification.create
+  alias: New Automation1
+  id: '1496103044461'
+  trigger:
+  - above: '10'
+    entity_id: sensor.random_sensor
+    platform: numeric_state
