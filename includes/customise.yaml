@@ -48,10 +48,6 @@ climate.entryway:
 
 
 
- #Does now work :(
-# rflink.connection_status:
-#   friendly_name: RFLink Raw Connection Status
-
 ############################################################
 #
 # Rename Lights

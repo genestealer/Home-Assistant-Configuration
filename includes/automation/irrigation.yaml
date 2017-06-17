@@ -1,19 +1,56 @@
 ############################################################
 #
-#  Irrigation Schedule
+#  Irrigation Schedule set time (Option 1)
 #
 ############################################################
 
 
-- alias: Irrigation Schedule AM On
+# - alias: Irrigation Schedule AM On
+#   trigger:
+#     platform: time
+#     after: '07:00:00'
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: script.irrigation_timer
+
+############################################################
+#
+#  Irrigation Schedule auto time Lawn
+#
+############################################################
+
+- alias: Irrigate Lawn at Sunrise
   trigger:
-    platform: time
-    after: '07:00:00'
+    platform: sun
+    event: sunrise
+  condition:
+    #Its not raining today
   action:
     service: homeassistant.turn_on
-    entity_id: script.irrigation_timer
+    entity_id: script.lawn_irrigation_timer
 
 
+############################################################
+#
+#  Irrigation Schedule auto time pots
+#
+############################################################
+
+- alias: Irrigate Pots at Sunrise
+  trigger:
+    platform: sun
+    event: sunrise
+    # Time offset, to start action once Lawn irrigation duration has elapsed.
+    # TODO: Offset NOT WORKING
+    #offset: '00:{{states.input_slider.lawn_irrigation_duration.state|round(0)}}:00'
+  condition:
+    #To do its not raining today
+  action:
+    service: homeassistant.turn_on
+    entity_id: script.pot_irrigation_timer
+
+
+#### OLD method.
 # - alias: Irrigation Schedule AM On
 #   trigger:
 #     platform: time

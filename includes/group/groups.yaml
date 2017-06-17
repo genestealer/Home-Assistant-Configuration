@@ -17,7 +17,7 @@ main_view:
     - group.nest_thermostat_group
     - group.kitchen_climate_group
     - group.lighting_group_group
-    - switch.irrigation_switch
+    - switch.lawn_irrigation
     - group.outside_weather_group
     - group.mobiles_group
     - group.device_status_group
@@ -81,8 +81,9 @@ irrigation_view:
   view: yes
   entities:
     - camera.front_door
-    - group.irrigation_controller_info_group
     - group.irrigation_group
+    - group.irrigation_controller_info_group
+
 
 
 bedroom_view:
@@ -198,10 +199,14 @@ irrigation_group:
   name: Irrigation
   view: no
   entities:
-    - switch.irrigation_switch
-    - input_slider.irrigation_duration
-    - script.irrigation_timer
-    - automation.irrigation_schedule_am_on
+    - automation.irrigate_at_sunrise
+    - switch.lawn_irrigation
+    - input_slider.lawn_irrigation_duration
+    - script.lawn_irrigation_timer
+    - switch.pot_irrigation
+    - input_slider.pot_irrigation_duration
+    - script.pot_irrigation_timer
+
 
 bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
@@ -292,7 +297,7 @@ server_ilo_status_group:
     - sensor.server_swap_use_2
     - sensor.server_thread
     - sensor.server_total
-    
+
     #Rest senesores
     - sensor.system_drive_size
     - sensor.system_drive_percent_used

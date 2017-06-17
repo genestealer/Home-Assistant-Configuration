@@ -10,13 +10,15 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/Status"
-  name: "RF Gateway Status"
-  qos: 0
-  payload_on: "online"
-  payload_off: "offline"
-  device_class: connectivity
+# 2017 disabled
+# Ref: https://github.com/home-assistant/home-assistant/issues/6876
+# - platform: mqtt
+#   state_topic: "HUISHS/LightingGateway/Status"
+#   name: "RF Gateway Status"
+#   qos: 0
+#   payload_on: "online"
+#   payload_off: "offline"
+#   device_class: connectivity
 
 
 ############################################################

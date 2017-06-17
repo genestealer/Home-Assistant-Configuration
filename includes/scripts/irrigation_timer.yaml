@@ -4,11 +4,20 @@
 #
 ############################################################
 
-irrigation_timer:
-  alias: "Irrigation Timer"
+lawn_irrigation_timer:
+  alias: "Lawn Irrigation Timer"
   sequence:
     - service: switch.turn_on
-      entity_id: switch.irrigation_switch
-    - delay: '00:{{states.input_slider.irrigation_duration.state|round(0)}}:00'
+      entity_id: switch.lawn_irrigation
+    - delay: '00:{{states.input_slider.lawn_irrigation_duration.state|round(0)}}'
     - service: switch.turn_off
-      entity_id: switch.irrigation_switch
+      entity_id: switch.lawn_irrigation
+
+pot_irrigation_timer:
+  alias: "Pot Irrigation Timer"
+  sequence:
+    - service: switch.turn_on
+      entity_id: switch.pot_irrigation
+    - delay: '00:{{states.input_slider.pot_irrigation_duration.state|round(0)}}'
+    - service: switch.turn_off
+      entity_id: switch.pot_irrigation

@@ -62,6 +62,7 @@ logger:
   default: warning
   logs:
     requests.packages.urllib3.connectionpool: critical
+ 
 
 # Track the sun
 sun:
@@ -136,17 +137,25 @@ rflink:
   reconnect_interval: 1 #1 second
 
 
-axis:
-  # P3301:
-  #   host: !secret axis_P3301_IP
-  #   username: !secret axis_P3301_username
-  #   password: !secret axis_P3301_password
-  #   # include:
-  #   # - camera
-  #   # - motion
-  #   # - pir
-  #   # - sound
-  #   # - daynight
+emulated_hue:
+
+# emulated_hue 1:
+#   type: google_home
+#   host_ip: !secret LocalHost
+#   listen_port: 80
+
+
+# axis:
+#    p3301:
+#      host: !secret axis_P3301_IP
+#      username: !secret axis_P3301_username
+#      password: !secret axis_P3301_password
+#      include:
+#       # - camera
+#       - motion
+#       # - pir
+#       # - sound
+#       # - daynight
 
 
 ############################################################

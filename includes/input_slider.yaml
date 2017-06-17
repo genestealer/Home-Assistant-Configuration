@@ -30,10 +30,18 @@ minute_delay:
   step: 1
   icon: mdi:clock-end 
 
-irrigation_duration:
-  name: Irrigation Duration
-  initial: 15
+lawn_irrigation_duration:
+  name: Lawn Irrigation Duration
+  initial: 20
   min: 1
   max: 60
-  step: 5
+  step: 1
+  icon: mdi:clock-end 
+
+pot_irrigation_duration:
+  name: Pot Irrigation Duration
+  initial: 30
+  min: 1
+  max: 60
+  step: 1
   icon: mdi:clock-end 
