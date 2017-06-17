@@ -81,7 +81,8 @@ irrigation_view:
   view: yes
   entities:
     - camera.front_door
-    - group.irrigation_group
+    - group.lawn_irrigation_group
+    - group.pots_irrigation_group
     - group.irrigation_controller_info_group
 
 
@@ -195,14 +196,21 @@ speed_test_group:
    - sensor.speedtest_upload
 
 
-irrigation_group:
-  name: Irrigation
+lawn_irrigation_group:
+  name: Lawn Irrigation
   view: no
   entities:
-    - automation.irrigate_at_sunrise
+    - automation.irrigate_lawn_at_sunrise
     - switch.lawn_irrigation
     - input_slider.lawn_irrigation_duration
     - script.lawn_irrigation_timer
+
+
+pots_irrigation_group:
+  name: Pots Irrigation
+  view: no
+  entities:
+    - automation.irrigate_pots_at_sunrise
     - switch.pot_irrigation
     - input_slider.pot_irrigation_duration
     - script.pot_irrigation_timer
