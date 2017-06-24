@@ -119,6 +119,22 @@ group.inside_christmas_lights:
 group.outside_christmas_lights:
     hidden: true
 
+
+############################################################
+#
+# Hide unwanted things - RFLink Sensors
+#
+############################################################
+sensor.owl_cm113_ea3b_current3:
+  hidden: true
+sensor.owl_cm113_eabf_current2:
+  hidden: true
+sensor.owl_cm113_eabf_current3:
+  hidden: true
+sensor.owl_cm113_eaff_current2:
+  hidden: true
+sensor.owl_cm113_eaff_current3:
+
 ############################################################
 #
 # Groups
