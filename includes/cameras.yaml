@@ -5,11 +5,17 @@
 ############################################################
 
 - platform: mjpeg
-  mjpeg_url: !secret CCTV1
+  mjpeg_url: !secret axis_P3301_IP_mjpg
   name: Front Door
   username: !secret axis_P3301_username
   password: !secret axis_P3301_password
 
-# - platform: mjpeg
-#   mjpeg_url: !secret CCTV2
-#   name: Other Camera
+- platform: mjpeg
+  mjpeg_url: !secret axis_M3204_IP_mjpg
+  name: Front of House
+  username: !secret axis_M3204_username
+  password: !secret axis_M3204_password
+
+- platform: mjpeg
+  mjpeg_url: !secret Bunny_CCTV_mjpg
+  name: Bunny Cam

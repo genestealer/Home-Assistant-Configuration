@@ -106,7 +106,8 @@ cctv_group:
   view: no
   entities:
     - camera.front_door
-    - camera.other_camera
+    - camera.front_of_house
+    - camera.bunny_cam
 
 nest_thermostat_group:
   name: Nest Thermostat

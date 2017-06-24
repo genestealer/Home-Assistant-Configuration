@@ -36,7 +36,7 @@ http:
 updater:
 
 # Discover some devices automatically
-discovery:
+#discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -121,9 +121,6 @@ mqtt:
   username: !secret mqtt_username
   password: !secret mqtt_password
 
-# Text to speech
-tts:
-  platform: google
 
 ifttt:
   key: !secret ifttt_key
@@ -137,7 +134,12 @@ rflink:
   reconnect_interval: 1 #1 second
 
 
-emulated_hue:
+# # Text to speech
+# tts:
+#   platform: google
+
+
+# emulated_hue:
 
 # emulated_hue 1:
 #   type: google_home

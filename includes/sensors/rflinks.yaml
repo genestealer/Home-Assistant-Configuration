@@ -1,0 +1,25 @@
+  ############################################################
+  #
+  # RFLink House Mains Measurement
+  #
+  ############################################################
+
+# OWL CM113 sends Amps / Current and not Watts
+- platform: rflink
+  automatic_add: true
+  devices:
+    owl_cm113_ea3b_current2: 
+      sensor_type: current_phase_2
+      name: 'House Consumption Current'
+      unit_of_measurement: A
+
+# Using live measured voltage from UPS calculate total wattage 
+
+- platform: template
+  sensors:
+   house_wattage:
+    value_template: '{{states.sensor.house_consumption_current.state | int * (states.sensor.ups_input_voltage.state | int / 1000)}}'
+    friendly_name: 'House Wattage'
+    unit_of_measurement: 'KW'
+
+
