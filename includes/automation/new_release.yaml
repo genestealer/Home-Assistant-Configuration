@@ -14,4 +14,4 @@
     service: notify.google_cloud_notify
     data_template:
       title: 'New Home Assistant Release'
-      message: "Home Assistant  {{ states.updater.updater.state }}  is now available."
+      message: "Home Assistant  {{ states('updater.updater') }}  is now available."

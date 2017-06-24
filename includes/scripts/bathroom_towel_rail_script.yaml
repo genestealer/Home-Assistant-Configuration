@@ -25,7 +25,7 @@ timer_off:
   alias: "TIMER: Turn off heat after 60 minutes"
   sequence:
     #- delay: 
-    - delay: '00:{{ states.input_slider.minute_delay.state | int }}:00'
+    - delay: '00:{{ states('input_slider.minute_delay') | int }}:00'
     #https://community.home-assistant.io/t/issues-with-input-slider-together-with-in-automation/1152/5 and https://community.home-assistant.io/t/would-somebody-walk-me-through-an-automation-to-set-a-timer-for-a-fan/1922/8
        # seconds: {{states("input_slider.slider1")}}
         #seconds: '{{ states.input_slider.slider1.state }}'

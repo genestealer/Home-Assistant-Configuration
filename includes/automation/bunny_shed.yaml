@@ -14,7 +14,7 @@
    # entity_id: input_slider.shed_target_temp
   condition:
     - condition: template
-      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_heat_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
+      value_template: '{{ trigger.payload | int != states('input_slider.shed_target_heat_temp') | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
      service: input_slider.select_value
      data_template:
@@ -40,7 +40,7 @@
     data_template:
       topic: "HUISHS/BunnyShed/setHeaterTemperature"
       retain: false
-      payload: '{{ states.input_slider.shed_target_heat_temp.state | int }}'
+      payload: '{{ states('input_slider.shed_target_heat_temp') | int }}'
 
 
 ############################################################
@@ -59,7 +59,7 @@
    # entity_id: input_slider.shed_target_temp
   condition:
     - condition: template
-      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_cool_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
+      value_template: '{{ trigger.payload | int != states('input_slider.shed_target_cool_temp') | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
      service: input_slider.select_value
      data_template:
@@ -85,7 +85,7 @@
     data_template:
       topic: "HUISHS/BunnyShed/setCoolerTemperature"
       retain: false
-      payload: '{{ states.input_slider.shed_target_cool_temp.state | int }}'
+      payload: '{{ states('input_slider.shed_target_cool_temp') | int }}'
 
 
 ############################################################

@@ -9,7 +9,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.pihole_dns_queries_today
-    value_template: '{{ state.sensor.pihole_dns_queries_today.state }}'
+    value_template: '{{ state('sensor.pihole_dns_queries_today') }}'
     above: 40000
   action:
     service: notify.google_cloud_notify
