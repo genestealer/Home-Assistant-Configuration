@@ -12,8 +12,6 @@
       sensor_type: current_phase_2
       name: 'House Consumption Current'
       unit_of_measurement: A
-      aliasses:
-
 
 # Using live measured voltage from UPS calculate total wattage 
 
