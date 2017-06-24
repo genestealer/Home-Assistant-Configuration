@@ -18,8 +18,8 @@
 - platform: template
   sensors:
    house_wattage:
-   value_template: '{{states('sensor.house_consumption_current') | int * (states ('sensor.ups_input_voltage') | int / 1000)}}'
-    friendly_name: 'House Wattage'
-    unit_of_measurement: 'KW'
+   value_template: '{{states.sensor.house_consumption_current.state | int * (states.sensor.ups_input_voltage.state | int / 1000)}}'
+   friendly_name: 'House Wattage'
+   unit_of_measurement: 'KW'
 
 
