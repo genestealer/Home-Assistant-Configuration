@@ -9,7 +9,7 @@ lawn_irrigation_timer:
   sequence:
     - service: switch.turn_on
       entity_id: switch.lawn_irrigation
-    - delay: '00:{{states.stateinput_slider.lawn_irrigation_duration.state |round(0)}}'
+    - delay: '00:{{states.input_slider.lawn_irrigation_duration.state | round(0)}}'
     - service: switch.turn_off
       entity_id: switch.lawn_irrigation
 
@@ -18,6 +18,6 @@ pot_irrigation_timer:
   sequence:
     - service: switch.turn_on
       entity_id: switch.pot_irrigation
-    - delay: '00:{{states.input_slider.pot_irrigation_duration.state|round(0)}}'
+    - delay: '00:{{states.input_slider.pot_irrigation_duration.state | round(0)}}'
     - service: switch.turn_off
       entity_id: switch.pot_irrigation
