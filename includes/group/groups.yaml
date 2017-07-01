@@ -39,6 +39,7 @@ automation_system_view:
     - group.bunny_shed_controller_info_group
     - binary_sensor.doorbell_controller_status
     - group.irrigation_controller_info_group
+    - group.rf_link_group
 
 lights_view:
   name: Lights
@@ -133,6 +134,7 @@ device_status_group:
     - binary_sensor.bunny_shed_controller_status
     - binary_sensor.rf_gateway_status
     - binary_sensor.entryway_thermostat_online
+    - binary_sensor.esp_link_status
     - binary_sensor.rflink_status
     - binary_sensor.doorbell_controller_status
 
@@ -247,7 +249,13 @@ irrigation_controller_info_group:
     - sensor.irrigation_controller_signal_strength
     - sensor.irrigation_controller_ssid
 
-
+rf_link_group:
+  name: RF Link
+  view: no
+  entities:
+    - binary_sensor.rflink_status
+    - sensor.esplink_controller_signal_strength
+    
 ups_data_group:
   name: UPS Data
   view: no

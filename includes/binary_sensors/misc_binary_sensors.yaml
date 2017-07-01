@@ -20,6 +20,12 @@
   payload_off: "0"
 
 
+# - platform: mqtt
+#   state_topic: !secret
+#   name: "ESP-Link"
+#   qos: 0
+#   device_class: connectivity
+#   value_template: '{{ value_json.batt }}'
 
 #From examples...
 # - platform: mqtt
@@ -45,4 +51,3 @@
 #   payload_on: "1"
 #   payload_off: "1 off"
 #   sensor_class: motion
-

@@ -26,17 +26,17 @@
   condition:
       # Don't water it is raining today
     - condition: numeric_state
-      entity_id: sensor.dark_sky_precip_intensity
-      above: 3
-     
+      entity_id: sensor.precip_1d_metric
+      below: 3
+
     #   # Only water every few days
-    #   # not working, look into https://community.home-assistant.io/t/hass-sprinkler/1903/41
+    #   # not working, look into https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
     # - condition: time
     #   weekday:
     #    - tue
     #    - thurs
     #    - sun
-  
+
   action:
     service: homeassistant.turn_on
     entity_id: script.lawn_irrigation_timer

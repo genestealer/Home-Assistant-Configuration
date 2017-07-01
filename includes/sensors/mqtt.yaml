@@ -139,3 +139,17 @@
 - platform: mqtt
   state_topic: "HUISHS/Irrigation/SSID"
   name: "Irrigation Controller SSID"
+
+
+############################################################
+#
+# ESP-Link Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/esp-link"
+  name: "ESP-Link Controller Signal Strength"
+  unit_of_measurement: "dBm"
+  expire_after: 125 # MQTT messages are only every 60 seconds, so 125 will permit it to miss two messages.
+  value_template: '{{ value_json.rssi }}'

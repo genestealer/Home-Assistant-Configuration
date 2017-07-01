@@ -62,7 +62,7 @@ logger:
   default: warning
   logs:
     requests.packages.urllib3.connectionpool: critical
- 
+
 
 # Track the sun
 sun:
@@ -110,8 +110,11 @@ notify:
   #   page_access_token: !secret FB_Key
 
 device_tracker:
-  platform: owntracks
-  max_gps_accuracy: 250
+  - platform: owntracks
+    max_gps_accuracy: 250
+  - platform: ping
+    hosts:
+      hostone: 192.168.1.16
 
 mqtt:
   broker: localhost

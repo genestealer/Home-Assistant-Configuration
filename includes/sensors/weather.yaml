@@ -1,6 +1,6 @@
 ############################################################
 #
-# Weather Sensor
+# Weather Sensor - darksky
 #
 ############################################################
 
@@ -12,14 +12,14 @@
     - hourly_summary
     - temperature
     - humidity
-    #- daily_summary
+    - daily_summary
     #- summary
     # - icon
     # - nearest_storm_distance
     # - nearest_storm_bearing
     # - precip_type
-    - precip_intensity
-    - precip_probability
+    # - precip_intensity
+    # - precip_probability
     # - temperature
     # - apparent_temperature
     # - dew_point
@@ -38,3 +38,15 @@
     # - apparent_temperature_max
     # - apparent_temperature_min
     # - precip_intensity_max
+
+############################################################
+#
+# Weather Sensor - Weather Underground (wunderground)
+# https://home-assistant.io/components/sensor.wunderground/
+#
+############################################################
+- platform: wunderground
+  api_key: !secret WUnderground_API
+  monitored_conditions:
+    - precip_today_metric
+    # - precip_1d_metric
