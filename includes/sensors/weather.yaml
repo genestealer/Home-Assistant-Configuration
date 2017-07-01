@@ -12,15 +12,14 @@
     - hourly_summary
     - temperature
     - humidity
-
     #- daily_summary
     #- summary
     # - icon
     # - nearest_storm_distance
     # - nearest_storm_bearing
     # - precip_type
-    # - precip_intensity
-    # - precip_probability
+    - precip_intensity
+    - precip_probability
     # - temperature
     # - apparent_temperature
     # - dew_point

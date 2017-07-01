@@ -24,7 +24,19 @@
     platform: sun
     event: sunrise
   condition:
-    #Its not raining today
+      # Don't water it is raining today
+    - condition: numeric_state
+      entity_id: sensor.dark_sky_precip_intensity
+      above: 3
+     
+    #   # Only water every few days
+    #   # not working, look into https://community.home-assistant.io/t/hass-sprinkler/1903/41
+    # - condition: time
+    #   weekday:
+    #    - tue
+    #    - thurs
+    #    - sun
+  
   action:
     service: homeassistant.turn_on
     entity_id: script.lawn_irrigation_timer

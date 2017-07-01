@@ -40,7 +40,7 @@
 - alias: "Inside xmas Lights ON when home"
   trigger:
     platform: zone
-    entity_id: device_tracker.richard_pixel
+    entity_id: device_tracker.richard_sailfish
     zone: zone.home
     # Event is either enter or leave
     event: enter  # or "leave"
@@ -57,7 +57,7 @@
 - alias: "Inside xmas Lights OFF when not home"
   trigger:
     platform: zone
-    entity_id: device_tracker.richard_pixel
+    entity_id: device_tracker.richard_sailfish
     zone: zone.home
     # Event is either enter or leave
     event: leave  # or "enter"

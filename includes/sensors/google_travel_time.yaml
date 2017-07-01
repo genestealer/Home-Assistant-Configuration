@@ -23,7 +23,7 @@
 - platform: google_travel_time
   name: Richard to Home
   api_key: !secret googlemaps_api_key
-  origin: device_tracker.richard_pixel
+  origin: device_tracker.richard_sailfish
   destination: zone.home
   options:
     mode: driving

@@ -120,7 +120,7 @@ mobiles_group:
   name: Mobiles
   view: no
   entities:
-    - device_tracker.richard_pixel
+    - device_tracker.richard_sailfish
     - device_tracker.lucy_nexus5x
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
@@ -364,3 +364,11 @@ amazon_dash_group:
   entities:
     - binary_sensor.dash1_button
     - binary_sensor.dash2_button
+
+gateways:
+  name: gateways
+  view: no
+  entities:
+    - group.rf_gateway_info_group
+    - group.bunny_shed_controller_info_group
+    - group.irrigation_controller_info_group

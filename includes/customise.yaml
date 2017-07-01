@@ -119,6 +119,9 @@ group.inside_christmas_lights:
 group.outside_christmas_lights:
     hidden: true
 
+
+
+
 ############################################################
 #
 # Groups
@@ -225,7 +228,17 @@ sensor.server_glance_storage:
 sensor.server_glance_temperature:
   icon: mdi:thermometer
 
+############################################################
+#
+# Phone Batteries
+#
+############################################################
 
+sensor.lucy_phone_battery:
+  icon: mdi:battery
+
+sensor.richard_phone_battery:
+  icon: mdi:battery
 
 
 
