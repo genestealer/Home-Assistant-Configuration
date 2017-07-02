@@ -1,0 +1,27 @@
+############################################################
+#
+#  Travel time to work alert
+#
+############################################################
+
+- alias: Delay to work
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.home_to_work
+    above: 30
+  condition:
+    condition: time
+    after: '07:00:00'
+    before: '08:45:00'
+    weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+
+  action:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'Delay driving to work'
+      message: "It will take {{ states.sensor.home_to_work.state }} minutes to drive to work!" 

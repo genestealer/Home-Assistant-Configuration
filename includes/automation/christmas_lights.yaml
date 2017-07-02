@@ -4,11 +4,11 @@
 #
 ############################################################
 
-- alias: "Outside xmas Lights OFF at midnight" 
+- alias: "Outside xmas Lights OFF at midnight"
   trigger:
     platform: time
     # Possible values: sunset, sunrise
-    after: '22:00:00'
+    at: '22:00:00'
   action:
     service: homeassistant.turn_off
     entity_id: group.outside_christmas_lights
@@ -63,4 +63,4 @@
     event: leave  # or "enter"
   action:
     service: homeassistant.turn_off
-    entity_id: group.inside_christmas_lights    
+    entity_id: group.inside_christmas_lights
