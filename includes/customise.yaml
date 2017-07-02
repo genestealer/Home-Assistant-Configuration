@@ -88,6 +88,56 @@ switch.bunny_fluff_air_filter:
 
 ############################################################
 #
+# Gatway icons
+#
+############################################################
+
+
+sensor.rfg_client_name:
+    icon: mdi:desktop-classic
+sensor.rfg_host:
+    icon: mdi:desktop-classic
+sensor.rfg_ip:
+    icon: mdi:desktop-classic
+sensor.rfg_mac:
+  icon: mdi:desktop-classic
+sensor.rfg_rssi:
+  icon: mdi:signal-variant
+sensor.rfg_ssid:
+  icon: mdi:wifi
+
+
+sensor.bs_client_name:
+    icon: mdi:desktop-classic
+sensor.bs_host:
+    icon: mdi:desktop-classic
+sensor.bs_ip:
+    icon: mdi:desktop-classic
+sensor.bs_mac:
+  icon: mdi:desktop-classic
+sensor.bs_rssi:
+  icon: mdi:signal-variant
+sensor.bs_ssid:
+  icon: mdi:wifi
+
+sensor.ic_client_name:
+    icon: mdi:desktop-classic
+sensor.ic_host:
+    icon: mdi:desktop-classic
+sensor.ic_ip:
+    icon: mdi:desktop-classic
+sensor.ic_mac:
+  icon: mdi:desktop-classic
+sensor.ic_rssi:
+  icon: mdi:signal-variant
+sensor.ic_ssid:
+  icon: mdi:wifi
+
+
+
+
+############################################################
+#
 # Hide unwanted things - Nest
 #
 ############################################################

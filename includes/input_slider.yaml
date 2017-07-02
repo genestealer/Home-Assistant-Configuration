@@ -6,42 +6,42 @@
 
 shed_target_heat_temp:
   name: Bunny Shed Target Heat Temperaturec
-  initial: 8
+  # initial: 8
   min: 1
   max: 35
   step: 0.5
-  unit_of_measurement: step  
+  unit_of_measurement: step
   icon: mdi:weather-sunny
 
 shed_target_cool_temp:
   name: Bunny Shed Target Cool Temperature
-  initial: 20
+  # initial: 20
   min: 1
   max: 40
   step: 0.5
-  unit_of_measurement: step  
+  unit_of_measurement: step
   icon: mdi:snowflake
 
 minute_delay:
   name: Heat for x Mins
-  initial: 60
+  # initial: 60
   min: 1
   max: 120
   step: 1
-  icon: mdi:clock-end 
+  icon: mdi:clock-end
 
 lawn_irrigation_duration:
   name: Lawn Irrigation Duration
-  initial: 20
+  # initial: 20
   min: 1
   max: 60
   step: 1
-  icon: mdi:clock-end 
+  icon: mdi:clock-end
 
 pot_irrigation_duration:
   name: Pot Irrigation Duration
-  initial: 30
+  # initial: 30
   min: 1
   max: 60
   step: 1
-  icon: mdi:clock-end 
+  icon: mdi:clock-end

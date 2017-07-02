@@ -3,7 +3,7 @@
 # Bunny Shed Automation - MQTT triggers temp slider change HEATER
 #
 ############################################################
-  
+
  # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
  # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
 - alias: Set shed temp heater slider
@@ -24,7 +24,7 @@
 
 ############################################################
 #
-# Bunny Shed Automation - Temp slider change tiggers MQTT 
+# Bunny Shed Automation - Temp slider change tiggers MQTT
 #
 ############################################################
 
@@ -39,7 +39,7 @@
     service: mqtt.publish
     data_template:
       topic: "HUISHS/BunnyShed/setHeaterTemperature"
-      retain: false
+      retain: true
       payload: '{{ states.input_slider.shed_target_heat_temp.state | int }}'
 
 
@@ -48,7 +48,7 @@
 # Bunny Shed Automation - MQTT triggers temp slider change COOLER
 #
 ############################################################
-  
+
  # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
  # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
 - alias: Set shed temp cooler slider
@@ -69,7 +69,7 @@
 
 ############################################################
 #
-# Bunny Shed Automation - Temp slider change tiggers MQTT 
+# Bunny Shed Automation - Temp slider change tiggers MQTT
 #
 ############################################################
 
@@ -84,7 +84,7 @@
     service: mqtt.publish
     data_template:
       topic: "HUISHS/BunnyShed/setCoolerTemperature"
-      retain: false
+      retain: true
       payload: '{{ states.input_slider.shed_target_cool_temp.state | int }}'
 
 

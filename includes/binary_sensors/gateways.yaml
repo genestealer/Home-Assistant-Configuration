@@ -12,7 +12,7 @@
 
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/Status"
-  name: "RF Gateway Status"
+  name: "RFG Status"
   qos: 0
   payload_on: "online"
   payload_off: "offline"
@@ -27,7 +27,7 @@
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/status"
-  name: "Bunny Shed Controller Status"
+  name: "BS Status"
   qos: 0
   payload_on: "online"
   payload_off: "offline"
@@ -41,7 +41,7 @@
 
 - platform: mqtt
   state_topic: "HUISHS/Irrigation/status"
-  name: "Irrigation Controller Status"
+  name: "IC Status"
   qos: 0
   payload_on: "online"
   payload_off: "offline"

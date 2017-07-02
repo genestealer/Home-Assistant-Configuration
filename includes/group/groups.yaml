@@ -31,7 +31,7 @@ automation_system_view:
     - group.server_ilo_status_group
     - group.ups_data_group
     - group.device_status_group
-    - binary_sensor.rf_gateway_status
+    - binary_sensor.rfg_status
     - sensor.plex
     - group.rf_gateway_info_group
     - group.bunny_shed_controller_info_group
@@ -129,9 +129,9 @@ device_status_group:
   name: Device Status
   view: no
   entities:
-    - binary_sensor.bunny_shed_controller_status
-    - binary_sensor.rf_gateway_status
-    - binary_sensor.irrigation_controller_status
+    - binary_sensor.bs_status
+    - binary_sensor.rfg_status
+    - binary_sensor.ic_status
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.esp_link_status
     - binary_sensor.doorbell_controller_status
@@ -231,35 +231,35 @@ bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
   view: no
   entities:
-    - binary_sensor.bunny_shed_controller_status
-    - sensor.shed_controller_ip_address
-    - sensor.shed_controller_ip_host_name
-    - sensor.shed_controller_client_name
-    - sensor.shed_controller_signal_strength
-    - sensor.shed_controller_ssid
+    - binary_sensor.bs_status
+    - sensor.bs_client_name
+    - sensor.bs_host
+    - sensor.bs_ip
+    - sensor.bs_rssi
+    - sensor.bs_ssid
 
 rf_gateway_info_group:
   name: RF Gatway Info
   view: no
   entities:
-    - binary_sensor.rf_gateway_status
+    - binary_sensor.rfg_status
     - sensor.rfg_client_name
+    - sensor.rfg_host
     - sensor.rfg_ip
     - sensor.rfg_mac
-    - sensor.rfg_host
-    - sensor.rfg_RSSI
+    - sensor.rfg_rssi
     - sensor.rfg_ssid
 
 irrigation_controller_info_group:
   name: Irrigation Controller Info
   view: no
   entities:
-    - binary_sensor.irrigation_controller_status
-    - sensor.irrigation_controller_ip_address
-    - sensor.irrigation_controller_ip_host_name
-    - sensor.irrigation_controller_client_name
-    - sensor.irrigation_controller_signal_strength
-    - sensor.irrigation_controller_ssid
+    - binary_sensor.ic_status
+    - sensor.ic_client_name
+    - sensor.ic_host
+    - sensor.ic_ip
+    - sensor.ic_rssi
+    - sensor.ic_ssid
 
 rf_link_group:
   name: RF Link
@@ -386,7 +386,7 @@ amazon_dash_group:
     - binary_sensor.dash1_button
     - binary_sensor.dash2_button
 
-gateways:
+Controllers:
   name: Gateways
   view: no
   entities:

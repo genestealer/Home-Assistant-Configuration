@@ -104,24 +104,24 @@
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/ClientName"
-  name: "Shed Controller Client Name"
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/IpAddress"
-  name: "Shed Controller IP Address"
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/SignalStrength"
-  name: "Shed Controller Signal Strength"
-  unit_of_measurement: "dBm"
+  name: "BS Client Name"
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/HostName"
-  name: "Shed Controller IP Host Name"
+  name: "BS Host"
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/IpAddress"
+  name: "BS IP"
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/SignalStrength"
+  name: "BS RSSI"
+  unit_of_measurement: "dBm"
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/SSID"
-  name: "Shed Controller SSID"
+  name: "BS SSID"
 
 
 
@@ -133,24 +133,24 @@
 
 - platform: mqtt
   state_topic: "HUISHS/Irrigation/ClientName"
-  name: "Irrigation Controller Client Name"
-
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation/IpAddress"
-  name: "Irrigation Controller IP Address"
-
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation/SignalStrength"
-  name: "Irrigation Controller Signal Strength"
-  unit_of_measurement: "dBm"
+  name: "IC Client Name"
 
 - platform: mqtt
   state_topic: "HUISHS/Irrigation/HostName"
-  name: "Irrigation Controller IP Host Name"
+  name: "IC Host"
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/IpAddress"
+  name: "IC IP"
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/SignalStrength"
+  name: "IC RSSI"
+  unit_of_measurement: "dBm"
 
 - platform: mqtt
   state_topic: "HUISHS/Irrigation/SSID"
-  name: "Irrigation Controller SSID"
+  name: "IC SSID"
 
 
 ############################################################
