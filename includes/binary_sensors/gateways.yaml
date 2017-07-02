@@ -10,15 +10,13 @@
 #
 ############################################################
 
-# 2017 disabled
-# Ref: https://github.com/home-assistant/home-assistant/issues/6876
-# - platform: mqtt
-#   state_topic: "HUISHS/LightingGateway/Status"
-#   name: "RF Gateway Status"
-#   qos: 0
-#   payload_on: "online"
-#   payload_off: "offline"
-#   device_class: connectivity
+- platform: mqtt
+  state_topic: "HUISHS/LightingGateway/Status"
+  name: "RF Gateway Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  device_class: connectivity
 
 
 ############################################################
@@ -35,6 +33,19 @@
   payload_off: "offline"
   device_class: connectivity
 
+############################################################
+#
+# Irrigation Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/status"
+  name: "Irrigation Controller Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  device_class: connectivity
 
 ############################################################
 #
@@ -55,7 +66,8 @@
 # RFLink Gateway
 #
 ############################################################
-
+# 2017 disabled
+# Ref: https://github.com/home-assistant/home-assistant/issues/6876
 - platform: template
   sensors:
     rflink_status:

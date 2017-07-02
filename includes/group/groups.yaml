@@ -16,8 +16,6 @@ main_view:
     - group.cctv_group
     - group.nest_thermostat_group
     - group.kitchen_climate_group
-    - group.lighting_group_group
-    - switch.lawn_irrigation
     - group.outside_weather_group
     - group.mobiles_group
     - group.device_status_group
@@ -133,9 +131,9 @@ device_status_group:
   entities:
     - binary_sensor.bunny_shed_controller_status
     - binary_sensor.rf_gateway_status
+    - binary_sensor.irrigation_controller_status
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.esp_link_status
-    - binary_sensor.rflink_status
     - binary_sensor.doorbell_controller_status
 
 
@@ -161,8 +159,9 @@ lighting_group:
 
 
 bunny_shed_group:
-  name: Bunny Shed
+  name: Bunny Shed Climate Control
   view: no
+  control: hidden
   entities:
     - sensor.bunny_shed_temperature
     - sensor.bunny_shed_humidity
@@ -198,31 +197,41 @@ speed_test_group:
    - sensor.speedtest_ping
    - sensor.speedtest_upload
 
+irrigation_group:
+    name: Irrigation Control
+    view: no
+    control: hidden
+    entities:
+      - group.lawn_irrigation_group
+      - group.pots_irrigation_group
 
 lawn_irrigation_group:
   name: Lawn Irrigation
   view: no
+  control: hidden
   entities:
     - automation.irrigate_lawn_at_sunrise
     - switch.lawn_irrigation
     - input_slider.lawn_irrigation_duration
     - script.lawn_irrigation_timer
-
+    - group.irrigation_controller_info_group
 
 pots_irrigation_group:
   name: Pots Irrigation
   view: no
+  control: hidden
   entities:
     - automation.irrigate_pots_at_sunrise
     - switch.pot_irrigation
     - input_slider.pot_irrigation_duration
     - script.pot_irrigation_timer
 
-
+# controller_info_groups
 bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
   view: no
   entities:
+    - binary_sensor.bunny_shed_controller_status
     - sensor.shed_controller_ip_address
     - sensor.shed_controller_ip_host_name
     - sensor.shed_controller_client_name
@@ -233,16 +242,19 @@ rf_gateway_info_group:
   name: RF Gatway Info
   view: no
   entities:
-    - sensor.rf_gateway_ip_address
-    - sensor.rf_gateway_ip_host_name
-    - sensor.rf_gateway_mqtt_client_name
-    - sensor.rf_gateway_signal_strength
-    - sensor.rf_gateway_ssid
+    - binary_sensor.rf_gateway_status
+    - sensor.rfg_client_name
+    - sensor.rfg_ip
+    - sensor.rfg_mac
+    - sensor.rfg_host
+    - sensor.rfg_RSSI
+    - sensor.rfg_ssid
 
 irrigation_controller_info_group:
   name: Irrigation Controller Info
   view: no
   entities:
+    - binary_sensor.irrigation_controller_status
     - sensor.irrigation_controller_ip_address
     - sensor.irrigation_controller_ip_host_name
     - sensor.irrigation_controller_client_name
@@ -255,7 +267,7 @@ rf_link_group:
   entities:
     - binary_sensor.rflink_status
     - sensor.esplink_controller_signal_strength
-    
+
 ups_data_group:
   name: UPS Data
   view: no
@@ -334,6 +346,7 @@ server_ilo_status_group:
 bathroom_towel_rail_group:
   name: Bathroom Towel Rail
   view: no
+  control: hidden
   entities:
     - sensor.towelrail_state
     - script.timed_heat_towel_rail
@@ -374,7 +387,7 @@ amazon_dash_group:
     - binary_sensor.dash2_button
 
 gateways:
-  name: gateways
+  name: Gateways
   view: no
   entities:
     - group.rf_gateway_info_group
