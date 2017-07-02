@@ -5,7 +5,7 @@
 ############################################################
 
 - platform: mqtt
-  name: "Lawn Irrigation"
+  name: "Lawn Irrigation Valve"
   state_topic: "HUISHS/Irrigation/OutputOne/State"
   command_topic: "HUISHS/Irrigation/OutputOne/Command"
   payload_on: "1"
@@ -20,7 +20,7 @@
 #
 ############################################################
 - platform: mqtt
-  name: "Pot Irrigation"
+  name: "Pot Irrigation Valve"
   state_topic: "HUISHS/Irrigation/OutputTwo/State"
   command_topic: "HUISHS/Irrigation/OutputTwo/Command"
   payload_on: "1"
