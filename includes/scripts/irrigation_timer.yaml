@@ -8,16 +8,16 @@ lawn_irrigation_timer:
   alias: "Lawn Irrigation Timer"
   sequence:
     - service: switch.turn_on
-      entity_id: switch.lawn_irrigation
+      entity_id: switch.lawn_irrigation_valve
     - delay: '00:{{states.input_slider.lawn_irrigation_duration.state | round(0)}}'
     - service: switch.turn_off
-      entity_id: switch.lawn_irrigation
+      entity_id: switch.lawn_irrigation_valve
 
 pot_irrigation_timer:
   alias: "Pot Irrigation Timer"
   sequence:
     - service: switch.turn_on
-      entity_id: switch.pot_irrigation
+      entity_id: switch.pot_irrigation_valve
     - delay: '00:{{states.input_slider.pot_irrigation_duration.state | round(0)}}'
     - service: switch.turn_off
-      entity_id: switch.pot_irrigation
+      entity_id: switch.pot_irrigation_valve

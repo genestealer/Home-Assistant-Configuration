@@ -212,11 +212,10 @@ lawn_irrigation_group:
   entities:
     - automation.irrigate_lawn_at_sunrise
     - switch.lawn_irrigation_valve
+    - sensor.lawn_irrigation_duration
     - input_slider.lawn_irrigation_duration
     - script.lawn_irrigation_timer
-    - group.irrigation_controller_info_group
-    - script.lawnn_irrigation_timer
-    - sensor.lawnn_irrigation_last_run
+    - sensor.lawn_irrigation_last_run
 
 pots_irrigation_group:
   name: Pots Irrigation

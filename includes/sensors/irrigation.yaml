@@ -1,6 +1,7 @@
 ############################################################
 #
 # Irrigation Sensors
+# https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
 #
 ############################################################
 
@@ -9,8 +10,8 @@
     pot_irrigation_duration:
       friendly_name: 'Pot Water Duration'
       entity_id: input_slider.pot_irrigation_duration
-      value_template: '00:{{states.input_slider.pot_irrigation_duration.state | round(0)}}'   
-      
+      value_template: '00:{{states.input_slider.pot_irrigation_duration.state | round(0)}}'
+
 
     pot_irrigation_last_run:
        friendly_name: 'Pots Last Watered'
@@ -23,8 +24,8 @@
     lawn_irrigation_duration:
       friendly_name: 'Lawn Water Duration'
       entity_id: input_slider.pot_irrigation_duration
-      value_template: '00:{{states.input_slider.lawn_irrigation_duration.state | round(0)}}'   
-      
+      value_template: '00:{{states.input_slider.lawn_irrigation_duration.state | round(0)}}'
+
 
     lawn_irrigation_last_run:
        friendly_name: 'Lawn Last Watered'
@@ -36,7 +37,7 @@
     #   friendly_name: 'Pot Water Schedule'
     #   entity_id: input_select.valve_1_schedule
     #   value_template: "{{ states.input_select.valve_1_schedule.state }}"
-     
+
 #   pot_irrigation_next_run:
 #      friendly_name: 'Pots next Water'
 #      entity_id:
@@ -51,22 +52,22 @@
 #         {% set currentDay = now.weekday() |int %}
 #         {%- macro monthu() -%}
 #             {%- if currentDay == 0 -%}
-#                 {{0}}  
+#                 {{0}}
 #             {%- elif  currentDay <= 3 -%}
 #                 {{3}}
-#             {%- else -%}  
+#             {%- else -%}
 #                 {{0}}
 #             {%- endif -%}
 #         {%- endmacro -%}
 #         {%- macro monwedfrisun() -%}
 #             {%- if currentDay == 0 -%}
-#                 {{0}}  
+#                 {{0}}
 #             {%- elif  currentDay <= 2 -%}
 #                 {{2}}
 #             {%- elif  currentDay <= 4 -%}
 #                 {{4}}
 #             {%- elif  currentDay <= 6 -%}
-#                 {{6}} 
+#                 {{6}}
 #             {%- endif -%}
 #         {%- endmacro -%}
 #         {# set configured runDay from input_select #}
@@ -87,10 +88,10 @@
 #         {% elif states.input_select.valve_1_schedule.state == "Mon/Thu" %}
 #             {% set runDay = monthu() |int -%}
 #         {% elif states.input_select.valve_1_schedule.state == "Mon/Wed/Fri/Sun" %}
-#             {% set runDay = monwedfrisun() |int %}  
+#             {% set runDay = monwedfrisun() |int %}
 #         {% elif states.input_select.valve_1_schedule.state == "Every Day" %}
-#             {% set runDay = currentDay |int %}     
-#         {% endif %} 
+#             {% set runDay = currentDay |int %}
+#         {% endif %}
 #         {# determine the next runday #}
 #         {% if runDay == 9 %}
 #             {# schedule not active #}
@@ -107,13 +108,13 @@
 #                     {% if states.input_select.valve_1_schedule.state == "Mon/Thu" %}
 #                         {% set runDay = monthu() |int -%}
 #                     {% elif states.input_select.valve_1_schedule.state == "Mon/Wed/Fri/Sun" %}
-#                         {% set runDay = monwedfrisun() |int %} 
+#                         {% set runDay = monwedfrisun() |int %}
 #                     {% elif states.input_select.valve_1_schedule.state == "Every Day" %}
-#                         {% set runDay = currentDay |int %} 
+#                         {% set runDay = currentDay |int %}
 #                     {% endif %}
 #                 {% endif %}
 #             {% endif %}
-#             {# Now we can determine next runDate base on now.weekday() and not currentDay as that can be set to fake tomorrow #}  
+#             {# Now we can determine next runDate base on now.weekday() and not currentDay as that can be set to fake tomorrow #}
 #             {% if currentDay <= runDay %}
 #                 {% set Days = runDay - now.weekday() |int %}
 #             {% else %}
@@ -126,14 +127,14 @@
 #                 {% set weekday = weekdayList[(now.weekday()+ Days)] %}
 #             {% else %}
 #                 {% set weekday = weekdayList[(now.weekday()+ Days)- 7] %}
-#             {% endif %} 
+#             {% endif %}
 #         {% endif %}
 #         {# all done #}
 #         {# set states.sensor.next_run_date_valve_1.state = runDate #}
 #         {% if runDay == 9 %}
 #             {# schedule not active #}
 #             {{runDate}}
-#         {% else %}  
+#         {% else %}
 #             {{weekday}}, {{runDate[8:10]}}-{{runDate[5:7]}}-{{runDate[0:4]}} at {{states.sensor.starttime_valve_1.state}}
 #         {% endif %}
 
@@ -155,7 +156,7 @@
 #   - Saturday
 #   - Sunday
 #   initial: None - Close Valve
-#   icon: mdi:calendar  
+#   icon: mdi:calendar
 
 # #### groups
 #   valve_1_status:
@@ -173,11 +174,11 @@
 #   valve_1_settings:
 #   name: Settings
 #   icon: mdi:settings
-#   entities:  
+#   entities:
 #     - input_select.valve_1_schedule
 #     - input_slider.valve_1_hour
 #     - input_slider.valve_1_minutes
-#     - input_slider.valve_1_duration 
+#     - input_slider.valve_1_duration
 
 # ##### Switch
 #   - platform: mqtt
@@ -208,7 +209,7 @@
 #   - service: script.turn_on
 #   entity_id: script.open_valve_1
 
-# ##################### 
+# #####################
 # alias: "Turn on valve"
 # trigger:
 #   - platform: state
@@ -217,7 +218,7 @@
 
 # action:
 #   - service: script.turn_on
-#   entity_id: script.open_valve_1  
+#   entity_id: script.open_valve_1
 
 # ################
 # alias: "Turn off valve"
@@ -228,7 +229,7 @@
 
 # action:
 #   - service: script.turn_on
-#   entity_id: script.close_valve_1 
+#   entity_id: script.close_valve_1
 
 # #### scripts
 #   open_valve_1:
@@ -254,9 +255,9 @@
 
 #     - service: switch.turn_off
 #     data:
-#       entity_id: switch.valve_1 
+#       entity_id: switch.valve_1
 
-# ################      
+# ################
 #   close_valve_1:
 #   alias: "Close Valve 1 immediately"
 #   sequence:

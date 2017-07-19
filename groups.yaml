@@ -1,0 +1,18 @@
+device_status_group:
+  entities:
+  - binary_sensor.bs_status
+  - binary_sensor.rfg_status
+  - binary_sensor.ic_status
+  - binary_sensor.entryway_thermostat_online
+  - binary_sensor.esp_link_status
+  - binary_sensor.doorbell_controller_status
+  name: Device Status
+  view: false
+irrigation_view:
+  entities:
+  - group.lawn_irrigation_group
+  - camera.front_door
+  - group.pots_irrigation_group
+  - group.irrigation_controller_info_group
+  name: Irrigation
+  view: true
