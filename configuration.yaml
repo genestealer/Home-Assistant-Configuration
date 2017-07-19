@@ -21,9 +21,9 @@ config:
 http:
   api_password: !secret http_password
   server_port: 8123
-  # ssl_certificate: !secret SSL_cert
-  # ssl_key:  !secret SSL_key
-  # base_url: !secret Base_url
+  ssl_certificate: !secret SSL_cert
+  ssl_key: !secret SSL_key
+  base_url: !secret Base_url
 #  ip_ban_enabled: True
 #  login_attempts_threshold: 20
   trusted_networks:
