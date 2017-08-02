@@ -6,7 +6,7 @@
 
 shed_target_heat_temp:
   name: Bunny Shed Target Heat Temperaturec
-  # initial: 8
+  initial: 8
   min: 1
   max: 35
   step: 0.5
@@ -15,7 +15,7 @@ shed_target_heat_temp:
 
 shed_target_cool_temp:
   name: Bunny Shed Target Cool Temperature
-  # initial: 20
+  initial: 21
   min: 1
   max: 40
   step: 0.5
@@ -24,7 +24,7 @@ shed_target_cool_temp:
 
 minute_delay:
   name: Heat for x Mins
-  # initial: 60
+  initial: 40
   min: 1
   max: 120
   step: 1
@@ -32,7 +32,7 @@ minute_delay:
 
 lawn_irrigation_duration:
   name: Lawn Irrigation Duration
-  # initial: 20
+  initial: 30
   min: 1
   max: 60
   step: 1
@@ -40,7 +40,7 @@ lawn_irrigation_duration:
 
 pot_irrigation_duration:
   name: Pot Irrigation Duration
-  # initial: 30
+  initial: 40
   min: 1
   max: 60
   step: 1

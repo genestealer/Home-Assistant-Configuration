@@ -20,7 +20,7 @@ config:
 
 http:
   api_password: !secret http_password
-  server_port: 8123
+  server_port: 443
   ssl_certificate: !secret SSL_cert
   ssl_key: !secret SSL_key
   base_url: !secret Base_url
@@ -56,6 +56,10 @@ logbook:
       - sensor.dark_sky_summary
       - sensor.dark_sky_hourly_summary
       - sensor.dark_sky_daily_summary
+      - sensor.server_server_health
+      - sensor.pihole_ads_blocked_today
+      - sensor.pihole_ads_percentage_blocked_today
+      - sensor.pihole_dns_queries_today
 
 # https://github.com/home-assistant/home-assistant/issues/1806
 logger:
@@ -138,7 +142,7 @@ rflink:
 
 tradfri:
   host: !secret Ikea_Tradfri_IP
-  api_key: !secret Ikea_Tradfri_KEY 
+  api_key: !secret Ikea_Tradfri_KEY
 
 # # Text to speech
 # tts:
@@ -146,11 +150,16 @@ tradfri:
 
 
 emulated_hue:
-
+  host_ip: !secret LocalHost
+  listen_port: 80
 # emulated_hue 1:
-#   type: google_home
 #   host_ip: !secret LocalHost
-#   listen_port: 80
+
+
+shell_command:
+  update_restart: bash /home/homeassistant/.homeassistant/includes/shell_commands/update.sh
+  123restart: bash /home/homeassistant/.homeassistant/update.sh
+  test: touch /home/homeassistant/.homeassistant/includes/shell_commands/hass-shell-command-test
 
 
 # axis:
@@ -189,7 +198,6 @@ script: !include_dir_merge_named includes/scripts
 # Single Files
 zone: !include includes/zone.yaml
 camera: !include includes/cameras.yaml
-
 
 # Merge Named
 group: !include includes/group/groups.yaml
@@ -281,14 +289,14 @@ alexa:
   #       content: Some more content
 
 
-
-#NOT WORKING!
-apiai:
-  intents:
-    GetTemperature:
-      speech: The temperature at home is {{ states.sensor.kitchen_temperature.state }} degrees
-      async_action: False
-      # action:
-      #   service: notify.notify
-      #   data_template:
-      #     message: Api.ai has send a request
+#
+# #NOT WORKING!
+# apiai:
+#   intents:
+#     GetTemperature:
+#       speech: The temperature at home is {{ states.sensor.kitchen_temperature.state }} degrees
+#       async_action: False
+#       # action:
+#       #   service: notify.notify
+#       #   data_template:
+#       #     message: Api.ai has send a request

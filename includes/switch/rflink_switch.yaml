@@ -11,7 +11,7 @@
   devices:
     EMW100_a140_0:
       name: Kitchen Extractor Fan
-      aliasses: emw100_a140_00
+      aliases: emw100_a140_00
     RFCustom_524643_0:
       name: Bunny Fluff Air Filter
 

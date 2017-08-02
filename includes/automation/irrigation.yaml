@@ -24,6 +24,7 @@
   trigger:
     platform: sun
     event: sunrise
+    offset: "+01:30:00"
   condition:
    condition: and
    conditions:

@@ -9,7 +9,7 @@
   trigger:
     - platform: state
       entity_id: switch.button_1
-      state: 'on'
+      to: 'on'
   action:
     - service: light.turn_on
       entity_id:
@@ -19,7 +19,7 @@
   trigger:
     - platform: state
       entity_id: switch.button_1
-      state: 'off'
+      to: 'off'
   action:
     - service: homeassistant.turn_off
       entity_id:
@@ -38,7 +38,7 @@
   trigger:
     - platform: state
       entity_id: light.lamp_2
-      state: 'on'
+      to: 'on'
   action:
     - service: switch.turn_on
       entity_id: switch.button_1
@@ -47,7 +47,7 @@
   trigger:
     - platform: state
       entity_id: light.lamp_2
-      state: 'off'
+      to: 'off'
   action:
     - service: switch.turn_off
       entity_id: switch.button_1

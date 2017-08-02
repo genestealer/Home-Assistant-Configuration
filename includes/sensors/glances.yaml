@@ -3,7 +3,6 @@
 # Glances Sensor
 #
 ############################################################
-
 - platform: glances
   name: Server
   host: !secret glances_server_host
@@ -24,4 +23,4 @@
     - 'process_thread'
     - 'process_sleeping'
 
-#Note, other hard drive sensors are in the rest.yaml file
+# Note, other hard drive sensors are in the rest.yaml file
