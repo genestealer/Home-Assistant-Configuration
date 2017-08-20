@@ -11,7 +11,7 @@
 #   hidden: true
 # binary_sensor.bunny_shed_heater:
 #   icon: mdi:power
-sensor.bunny_shed_humidity:
+sensor.bs_humidity:
   icon: mdi:water-percent
 sensor.kitchen_humidity:
   icon: mdi:water-percent
@@ -132,6 +132,10 @@ sensor.ic_rssi:
   icon: mdi:signal-variant
 sensor.ic_ssid:
   icon: mdi:wifi
+
+
+sensor.esplink_controller_signal_strength:
+  icon: mdi:signal-variant
 
 
 

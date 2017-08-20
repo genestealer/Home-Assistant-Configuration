@@ -1,0 +1,9 @@
+############################################################
+#
+# Statistics Sensor
+#
+############################################################
+
+- platform: statistics
+  name: "BS Temperature Statistics"
+  entity_id: sensor.bs_temperature

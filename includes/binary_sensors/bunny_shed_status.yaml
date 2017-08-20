@@ -13,17 +13,19 @@
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/outputHeaterState"
+  state_topic: "HUISHS/BunnyShed/sensorJSON"
   name: "Bunny Shed Heater"
   payload_on: "1"
   payload_off: "0"
   device_class: heat #Classes https://home-assistant.io/components/binary_sensor/  
+  value_template: '{{ value_json.HeaterState }}'
 
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/outputCoolerState"
+  state_topic: "HUISHS/BunnyShed/sensorJSON"
   name: "Bunny Shed Cooler"
   payload_on: "1"
   payload_off: "0"
   device_class: cold #Classes https://home-assistant.io/components/binary_sensor/  
+  value_template: '{{ value_json.CoolerState }}'

@@ -1,0 +1,56 @@
+############################################################
+#
+# mqtt Sensors Bunny Shed
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  name: "BS Temperature"
+  unit_of_measurement: '°C'
+  value_template: '{{ value_json.Temperature }}'
+
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  name: "BS Humidity"
+  unit_of_measurement: '%'
+  value_template: '{{ value_json.Humidity }}'
+
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  name: "Bunny Shed Target Heat Temperature"
+  unit_of_measurement: '°C'
+  value_template: '{{ value_json.TargetHeaterTemperature }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  name: "Bunny Shed Target Cool Temperature"
+  unit_of_measurement: '°C'
+  value_template: '{{ value_json.TargetCoolerTemperature }}'
+
+
+############################################################
+#
+# History Statistics Sensor Bunny Shed
+#
+############################################################
+
+- platform: history_stats
+  name: Heater on last 24 hours
+  entity_id: binary_sensor.bunny_shed_heater
+  state: 'on'
+  type: time
+  end: '{{ now() }}'
+  duration:
+      days: 1
+
+- platform: history_stats
+  name: Cooler on last 24 hours
+  entity_id: binary_sensor.bunny_shed_cooler
+  state: 'on'
+  type: time
+  end: '{{ now() }}'
+  duration:
+      days: 1

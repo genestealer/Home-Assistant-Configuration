@@ -1,63 +1,39 @@
 ############################################################
 #
-# mqtt Sensors Bunny Shed
+# Bunny Shed Controller Status
 #
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/temperature"
-  name: "Bunny Shed Temperature"
-  unit_of_measurement: '°C'
-
-# Icon done in # Done in homeassistant:customize
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/humidity"
-  name: "Bunny Shed Humidity"
-  unit_of_measurement: '%'
-
+  state_topic: "HUISHS/BunnyShed/statusJSON"
+  name: "BS Client Name"
+  value_template: '{{ value_json.ClientName }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/setHeaterTemperature"
-  name: "Bunny Shed Target Heat Temperature"
-  unit_of_measurement: '°C'
+  state_topic: "HUISHS/BunnyShed/statusJSON"
+  name: "BS IP"
+  value_template: '{{ value_json.IP }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/setCoolerTemperature"
-  name: "Bunny Shed Target Cool Temperature"
-  unit_of_measurement: '°C'
-
-
-
-
-#     # Template Binary Sensor https://home-assistant.io/components/binary_sensor.template/
-#     # Because bunny_shed_heater_state is a 0 or 1 passed from MQTT and we want it to be binary
-#   # - platform: template
-#   #   sensors:
-#   #     bunny_shed_heater:
-#   #       # value_template: '{{ states.sensors.bunny_shed_heater_state | float > 0}}'
-#   #       value_template: '{{states.sensors.bunny_shed_heater_state.state > 0}}'
-#   #       friendly_name: 'Bunny Shed Heater On'
-
-
-############################################################
-#
-# mqtt Kitchen
-#
-############################################################
+  state_topic: "HUISHS/BunnyShed/statusJSON"
+  name: "BS MAC"
+  value_template: '{{ value_json.MAC }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/sensorJSON"
-  name: "Kitchen Temperature"
-  unit_of_measurement: '°C'
-  value_template: '{{ value_json.Temperature }}'
+  state_topic: "HUISHS/BunnyShed/statusJSON"
+  name: "BS RSSI"
+  unit_of_measurement: "dBm"
+  value_template: '{{ value_json.RSSI }}'
 
-# Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/sensorJSON"
-  name: "Kitchen Humidity"
-  unit_of_measurement: '%'
-  value_template: '{{ value_json.Humidity }}'
+  state_topic: "HUISHS/BunnyShed/statusJSON"
+  name: "BS Host"
+  value_template: '{{ value_json.HostName }}'
 
+- platform: mqtt
+  state_topic: "HUISHS/BunnyShed/statusJSON"
+  name: "BS SSID"
+  value_template: '{{ value_json.ConnectedSSID }}'
 
 ############################################################
 #
@@ -95,35 +71,6 @@
   state_topic: "HUISHS/LightingGateway/statusJSON"
   name: "RFG SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
-
-############################################################
-#
-# Bunny Shed Controller Status
-#
-############################################################
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/ClientName"
-  name: "BS Client Name"
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/HostName"
-  name: "BS Host"
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/IpAddress"
-  name: "BS IP"
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/SignalStrength"
-  name: "BS RSSI"
-  unit_of_measurement: "dBm"
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/SSID"
-  name: "BS SSID"
-
-
 
 ############################################################
 #

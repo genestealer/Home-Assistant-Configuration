@@ -19,10 +19,6 @@ main_view:
     - group.outside_weather_group
     - group.mobiles_group
     - group.device_status_group
-
-
-
-
 automation_system_view:
   name: Automation
   view: yes
@@ -38,6 +34,7 @@ automation_system_view:
     - binary_sensor.doorbell_controller_status
     - group.irrigation_controller_info_group
     - group.rf_link_group
+    - group.pi_hole
 
 lights_view:
   name: Lights
@@ -163,8 +160,8 @@ bunny_shed_group:
   view: no
   control: hidden
   entities:
-    - sensor.bunny_shed_temperature
-    - sensor.bunny_shed_humidity
+    - sensor.bs_temperature
+    - sensor.bs_humidity
 
     - binary_sensor.bunny_shed_heater
     - sensor.bunny_shed_target_heat_temperature
@@ -174,9 +171,12 @@ bunny_shed_group:
     - sensor.bunny_shed_target_cool_temperature
     - input_slider.shed_target_cool_temp
 
-    - sensor.bunny_shed_temperature_highest
-    - sensor.bunny_shed_temperature_lowest
+    - sensor.bs_temperature_highest
+    - sensor.bs_temperature_lowest
 
+    - sensor.heater_on_last_24_hours
+    - sensor.cooler_on_last_24_hours
+    - sensor.bs_temperature_statistics_mean
 
 
 
@@ -238,6 +238,7 @@ bunny_shed_controller_info_group:
     - sensor.bs_client_name
     - sensor.bs_host
     - sensor.bs_ip
+    - sensor.bs_mac
     - sensor.bs_rssi
     - sensor.bs_ssid
 
@@ -268,6 +269,7 @@ rf_link_group:
   name: RF Link
   view: no
   entities:
+    - binary_sensor.esp_link_status
     - binary_sensor.rflink_status
     - sensor.esplink_controller_signal_strength
 
@@ -389,10 +391,18 @@ amazon_dash_group:
     - binary_sensor.dash1_button
     - binary_sensor.dash2_button
 
-Controllers:
+controllers:
   name: Gateways
   view: no
   entities:
     - group.rf_gateway_info_group
     - group.bunny_shed_controller_info_group
     - group.irrigation_controller_info_group
+
+pi_hole:
+    name: Pi Hole
+    view: no
+    entities:
+      - sensor.pihole_ads_blocked_today
+      - sensor.pihole_ads_percentage_blocked_today
+      - sensor.pihole_dns_queries_today

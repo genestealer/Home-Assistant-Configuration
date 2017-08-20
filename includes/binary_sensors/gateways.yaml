@@ -68,12 +68,12 @@
 ############################################################
 # 2017 disabled
 # Ref: https://github.com/home-assistant/home-assistant/issues/6876
-- platform: template
-  sensors:
-    rflink_status:
-      friendly_name: 'RFLink Gateway Status'
-      device_class: 'connectivity'
-      value_template: "{% if is_state('rflink.connection_status', 'connected') %}true{% else %}false{% endif %}"
+# - platform: template
+#   sensors:
+#     rflink_status:
+#       friendly_name: 'RFLink Gateway Status'
+#       device_class: 'connectivity'
+#       value_template: "{% if is_state('rflink.connection_status', 'connected') %}true{% else %}false{% endif %}"
 
 
 ############################################################

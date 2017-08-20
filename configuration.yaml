@@ -52,7 +52,6 @@ history:
 logbook:
    exclude:
     entities:
-      - binary_sensor.bunny_shed_heater
       - sensor.dark_sky_summary
       - sensor.dark_sky_hourly_summary
       - sensor.dark_sky_daily_summary

@@ -6,4 +6,7 @@
 
 - platform: pi_hole
   host: !secret piHoleIP
-  
+  monitored_conditions:
+    - ads_blocked_today
+    - dns_queries_today
+    - ads_percentage_today
