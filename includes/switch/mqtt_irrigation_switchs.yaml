@@ -6,13 +6,16 @@
 
 - platform: mqtt
   name: "Lawn Irrigation Valve"
-  state_topic: "HUISHS/Irrigation/OutputOne/State"
-  command_topic: "HUISHS/Irrigation/OutputOne/Command"
+  state_topic: "HUISHS/Irrigation/StatusJASON"
+  value_template: '{{ value_json.Valve1 }}'
   payload_on: "1"
   payload_off: "0"
+  command_topic: "HUISHS/Irrigation/OutputOne/Command"
+  availability_topic: "HUISHS/Irrigation/status"
+  payload_available: "online"
+  payload_not_available: "offline"
   optimistic: false
-  # qos: 0
-  retain: true
+  retain: false
 
 ############################################################
 #
@@ -21,10 +24,13 @@
 ############################################################
 - platform: mqtt
   name: "Pot Irrigation Valve"
-  state_topic: "HUISHS/Irrigation/OutputTwo/State"
+  state_topic: "HUISHS/Irrigation/StatusJASON"
+  value_template: '{{ value_json.Valve2 }}'
   command_topic: "HUISHS/Irrigation/OutputTwo/Command"
   payload_on: "1"
   payload_off: "0"
+  availability_topic: "HUISHS/Irrigation/status"
+  payload_available: "online"
+  payload_not_available: "offline"
   optimistic: false
-  # qos: 0
-  retain: true
+  retain: false

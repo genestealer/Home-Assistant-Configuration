@@ -79,27 +79,35 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/ClientName"
+  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC Client Name"
+  value_template: '{{ value_json.ClientName }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/HostName"
-  name: "IC Host"
-
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation/IpAddress"
+  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC IP"
+  value_template: '{{ value_json.IP }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/SignalStrength"
+  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
+  name: "IC MAC"
+  value_template: '{{ value_json.MAC }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC RSSI"
   unit_of_measurement: "dBm"
+  value_template: '{{ value_json.RSSI }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/SSID"
+  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
+  name: "IC Host"
+  value_template: '{{ value_json.HostName }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC SSID"
-
-
+  value_template: '{{ value_json.ConnectedSSID }}'
 
 ############################################################
 #

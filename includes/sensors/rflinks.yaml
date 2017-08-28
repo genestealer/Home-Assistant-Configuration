@@ -8,7 +8,7 @@
 - platform: rflink
   automatic_add: false
   devices:
-    owl_cm113_ea3b_current2:
+    owl_cm113_eacd_current2:
       sensor_type: current_phase_2
       name: 'House Consumption Current'
       unit_of_measurement: A

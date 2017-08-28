@@ -185,6 +185,7 @@ outside_weather_group:
   view: no
   entities:
     - sensor.dark_sky_summary
+    - sensor.dark_sky_daily_summary
     - sensor.dark_sky_temperature
     - sensor.dark_sky_humidity
     - sensor.dark_sky_hourly_summary
@@ -305,6 +306,10 @@ server_ilo_status_group:
     - sensor.server_ilo_temperature_memory
     - sensor.server_ilo_temperature_processor
     - sensor.server_ilo_temperature_raid_controller
+    - sensor.server_server_raid_controller_temperature
+    - sensor.server_server_inlet_temperature
+    - sensor.server_server_exhaust_temperature
+    - sensor.server_server_fanspeed
     - sensor.server_server_power_state
     - sensor.server_ilo_bios
     - sensor.server_ilo_fans
