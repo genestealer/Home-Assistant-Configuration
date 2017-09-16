@@ -1,0 +1,19 @@
+############################################################
+#
+# mqtt Sensors Irrigation
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/StatusJASON"
+  name: "Soil Temperature"
+  unit_of_measurement: '°C'
+  value_template: '{{ value_json.SoilTemperature }}'
+
+# Icon done in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation/StatusJASON"
+  name: "Soil Capacitance"
+  #unit_of_measurement: '%'
+  value_template: '{{ value_json.SoilCapacitance }}'
+

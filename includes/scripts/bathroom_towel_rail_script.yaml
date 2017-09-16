@@ -11,6 +11,12 @@ timed_heat_towel_rail:
     - service: script.turn_off
       data:
          entity_id: script.timer_off
+
+    # set nest to home, else it will not turn on. 
+    - service: nest.set_mode
+      data:
+        home_mode: home
+
     - service: climate.set_temperature
       entity_id: climate.entryway
       data:

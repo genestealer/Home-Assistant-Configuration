@@ -263,6 +263,7 @@ irrigation_controller_info_group:
     - sensor.ic_client_name
     - sensor.ic_host
     - sensor.ic_ip
+    - sensor.ic_mac
     - sensor.ic_rssi
     - sensor.ic_ssid
 
