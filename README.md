@@ -21,6 +21,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Google Chromecast Audio
 - Google Chromecast
 - Nest Thermostat
+- Amazon Echo Dot (2nd Generation) (using [Emulated Hue Bridge](https://home-assistant.io/components/emulated_hue/) to control hass with voice commands)
 - Plex Media Server
 - Amazon Dash Button 
 - Axis IP CCTV Cameras
