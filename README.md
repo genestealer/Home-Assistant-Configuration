@@ -9,9 +9,10 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 
 ## My Setup
 
-- Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
+- Orginal OS: Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
+- Current OS: Ubuntu Server 16.04.1 LTS virtualization on Windows Server 2016 Hyper-V
 - MQTT: Locally hosted [Mosquitto](https://mosquitto.org/) MQTT broker 
-- HTTPS SSL Certificate generated via [Lets Encrypt](https://github.com/Lone-Coder/letsencrypt-win-simple) (Temporally enable IIS server with 433 and 80 bindings and my host name)
+- HTTPS SSL Certificate generated via [Let's Encript](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/)
 
 ## Devices
 
@@ -22,8 +23,9 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Nest Thermostat
 - Plex Media Server
 - Amazon Dash Button 
-- Axis P3301 IP CCTV
+- Axis IP CCTV Cameras
 - [Raspberry Pi 3 IP CCTV](https://github.com/Motion-Project/motion) with help from [link](https://pimylifeup.com/raspberry-pi-webcam-server)
+- IKEA Trådfri (Tradfri) lights (One of the reasons for moving to Linux as the modified lib-coap doesn’t exists for Windows)
 
 #### Items controlled via my [RFLink Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266)
 - [Energenie Wall Light Switch MIHO026](https://energenie4u.co.uk/catalogue/product/MIHO026)
