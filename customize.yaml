@@ -181,3 +181,27 @@ sensor.lucy_phone_battery:
   icon: mdi:battery
 sensor.richard_phone_battery:
   icon: mdi:battery
+automation.dash_button_hall_light_off:
+  hidden: true
+automation.dash_button_hall_light_on:
+  hidden: true
+automation.notify_when_electricity_supply_voltage_is_high:
+  hidden: true
+automation.notify_when_ups_is_close_to_being_depleted:
+  hidden: true
+automation.notify_possible_ddos_attack:
+  hidden: true
+automation.remote_button_press_off:
+  hidden: true
+automation.notify_when_electricity_supply_voltage_is_low:
+  hidden: true
+automation.delay_to_work:
+  hidden: true
+automation.update_remote_button_assumed_state_2:
+  hidden: true
+script.saa_alarm_alert_start:
+  hidden: true
+script.saa_sleep_tracking_started:
+  hidden: true
+script.saa_smart_period:
+  hidden: true
