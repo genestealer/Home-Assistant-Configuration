@@ -159,17 +159,18 @@ emulated_hue:
 #   host_ip: !secret LocalHost
 
 
-# axis:
-#    p3301:
-#      host: !secret axis_P3301_IP
-#      username: !secret axis_P3301_username
-#      password: !secret axis_P3301_password
-#      include:
-#       # - camera
-#       - motion
-#       # - pir
-#       # - sound
-#       # - daynight
+axis:
+   p3301:
+     host: !secret axis_P3301_IP
+     username: !secret axis_P3301_username
+     password: !secret axis_P3301_password
+     include:
+      - camera
+      - motion
+      - vmd3
+      - pir
+      - sound
+      - daynight
 
 
 ############################################################

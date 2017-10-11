@@ -30,3 +30,14 @@
   action:
     service: homeassistant.turn_off
     entity_id: light.lamp_4 #upstairs_hall_light
+
+# Triggered from Dasher: https://github.com/maddox/dasher
+- alias: "Dash Button Hall light toggle"
+  trigger:
+    platform: mqtt
+    topic: HUISHS/dash-button/rightguard
+    payload: 'active'
+  action:
+    service: light.toggle
+    entity_id: light.lamp_4 #upstairs_hall_light
+
