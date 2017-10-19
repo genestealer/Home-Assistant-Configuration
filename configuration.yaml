@@ -201,7 +201,7 @@ shell_command: !include includes/shell_commands.yaml
 
 # Merge Named
 group: !include includes/group/groups.yaml
-input_slider: !include includes/input_slider.yaml
+input_number: !include includes/input_slider.yaml
 
 
 

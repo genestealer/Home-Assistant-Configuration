@@ -31,8 +31,8 @@
       unit_of_measurement: '°C'
       value_template: '{{ ilo_data.temperature["12-Sys Exhaust"].currentreading[0] }}'
 
-    - name: Server Health
-      sensor_type: server_health
+    # - name: Server Health
+    #   sensor_type: server_health
 
     # - name: Server Storage Status
     #   sensor_type: server_health

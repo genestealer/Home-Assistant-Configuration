@@ -53,9 +53,6 @@
   trigger:
     platform: sun
     event: sunrise
-    # Time offset, to start action once Lawn irrigation duration has elapsed.
-    # TODO: Offset NOT WORKING
-    #offset: '00:{{states.input_slider.lawn_irrigation_duration.state|round(0)}}:00'
   condition:
     #To do its not raining today
   action:
