@@ -1,0 +1,34 @@
+############################################################
+#
+#  Monitor the health of my gatways
+#
+############################################################
+# https://community.home-assistant.io/t/help-with-binary-sensor-automation/4069/3
+- alias: bs_status_monitor
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bs_status
+    from: 'on'
+    to: 'off'
+    for:
+      seconds: 5
+  action:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'BS Status'
+      message: "Bunny Shed controller has gone offline" 
+
+- alias: ic_status_monitor
+  trigger:
+    platform: state
+    entity_id: binary_sensor.ic_status
+    from: 'on'
+    to: 'off'
+    for:
+      seconds: 5
+  action:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'IC Status'
+      message: "Irrigation Controller has gone offline" 
+

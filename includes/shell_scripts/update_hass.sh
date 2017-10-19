@@ -9,6 +9,7 @@
 #sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get autoremove
 hassctl update-hass && hassctl config && hassctl restart
 
-# This requires a modification using `sudo visudo`:
+# This requires a modification using `sudo visudo` to include "/bin/systemctl"
+# E.G. homeassistant ALL=(ALL) NOPASSWD:SETENV: /bin/systemctl
 #   https://community.home-assistant.io/t/lets-encrypt-installation-need-help/28468/4
 
