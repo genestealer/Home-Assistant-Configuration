@@ -23,7 +23,12 @@ renew_ssl: './certbot/certbot-auto renew --quiet --no-self-upgrade --standalone 
 #
 ############################################################
 update_and_restart_hass: 'hassctl update-hass && hassctl config && hassctl restart'
+
 # Alternative method running same code as above but as a script file file
-upgrade_hass: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh
+#backup- upgrade_hass: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh
+#upgrade_hass: /usr/bin/nohup $HASS_CONFIG/includes/shell_scripts/update_hass.sh </dev/null >> $HASS_CONFIG/includes/shell_scripts/update_hass.log 2>&1 &
+#Working backup upgrade_hass: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh </dev/null >> /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.log 2>&1 &
+# Note path to includes would have to be updated to match any changes to configuration location. This is a bug: https://community.home-assistant.io/t/using-secrets-yaml-with-shell-commands/4478
+update_and_restart_hass_with_logging: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh </dev/null >> /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.log 2>&1 &
 
 
