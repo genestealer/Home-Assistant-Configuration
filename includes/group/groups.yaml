@@ -41,6 +41,7 @@ lights_view:
   view: yes
   entities:
     - group.lighting_group
+    - group.all_lights # Unhide group in customizations https://community.home-assistant.io/t/add-auto-generated-groups-e-g-group-all-lights-to-custom-default-view/7291/2
     - group.christmas_lights_group
     - group.inside_christmas_lights_group
     - group.outside_christmas_lights_group
@@ -165,11 +166,11 @@ bunny_shed_group:
 
     - binary_sensor.bunny_shed_heater
     - sensor.bunny_shed_target_heat_temperature
-    - input_slider.shed_target_heat_temp
+    - input_number.shed_target_heat_temp
 
     - binary_sensor.bunny_shed_cooler
     - sensor.bunny_shed_target_cool_temperature
-    - input_slider.shed_target_cool_temp
+    - input_number.shed_target_cool_temp
 
     - sensor.bs_temperature_highest
     - sensor.bs_temperature_lowest
@@ -214,7 +215,7 @@ lawn_irrigation_group:
     - automation.irrigate_lawn_at_sunrise
     - switch.lawn_irrigation_valve
     - sensor.lawn_irrigation_duration
-    - input_slider.lawn_irrigation_duration
+    - input_number.lawn_irrigation_duration
     - script.lawn_irrigation_timer
     - sensor.lawn_irrigation_last_run
 
@@ -226,7 +227,7 @@ pots_irrigation_group:
     - automation.irrigate_pots_at_sunrise
     - switch.pot_irrigation_valve
     - sensor.pot_irrigation_duration
-    - input_slider.pot_irrigation_duration
+    - input_number.pot_irrigation_duration
     - script.pot_irrigation_timer
     - sensor.pot_irrigation_last_run
 
@@ -363,7 +364,7 @@ bathroom_towel_rail_group:
     - script.timed_heat_towel_rail
     - script.turn_off_heat_towel_rail
     - script.timer_off
-    - input_slider.minute_delay
+    - input_number.minute_delay
     - automation.dont_heat_towel_rail_mqtt
     - automation.heat_towel_rail_mqtt
     - input_boolean.task_heat_towel_rail

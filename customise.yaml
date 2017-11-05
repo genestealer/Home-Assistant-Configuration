@@ -49,7 +49,8 @@ climate.entryway:
   entity_picture: /local/nesticon.png
 
 
-
+# group.all_lights:
+#   hidden: false # Unhide group in customizations https://community.home-assistant.io/t/add-auto-generated-groups-e-g-group-all-lights-to-custom-default-view/7291/2
 
 
 ############################################################
@@ -73,9 +74,9 @@ light.lamp_4:
 #
 ############################################################
 
-input_slider.shed_target_cool_temp:
+input_number.shed_target_cool_temp:
   friendly_name: 'Shed Cool Target'
-input_slider.shed_target_heat_temp:
+input_number.shed_target_heat_temp:
   friendly_name: 'Shed Heat Target'
 
 binary_sensor.bunny_shed_cooler:

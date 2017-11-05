@@ -9,8 +9,8 @@
    sensors:
     pot_irrigation_duration:
       friendly_name: 'Pot Water Duration'
-      entity_id: input_slider.pot_irrigation_duration
-      value_template: '00:{{states.input_slider.pot_irrigation_duration.state | round(0)}}'
+      entity_id: input_number.pot_irrigation_duration
+      value_template: '00:{{states.input_number.pot_irrigation_duration.state | round(0)}}'
 
     pot_irrigation_last_run:
        friendly_name: 'Pots Last Watered'
@@ -19,8 +19,8 @@
 
     lawn_irrigation_duration:
       friendly_name: 'Lawn Water Duration'
-      entity_id: input_slider.pot_irrigation_duration
-      value_template: '00:{{states.input_slider.lawn_irrigation_duration.state | round(0)}}'
+      entity_id: input_number.pot_irrigation_duration
+      value_template: '00:{{states.input_number.lawn_irrigation_duration.state | round(0)}}'
 
     lawn_irrigation_last_run:
        friendly_name: 'Lawn Last Watered'

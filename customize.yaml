@@ -39,9 +39,9 @@ light.lamp_3:
   friendly_name: Guest Bedroom Lamp
 light.lamp_4:
   friendly_name: Upstairs Hall Light
-input_slider.shed_target_cool_temp:
+input_number.shed_target_cool_temp:
   friendly_name: Shed Cool Target
-input_slider.shed_target_heat_temp:
+input_number.shed_target_heat_temp:
   friendly_name: Shed Heat Target
 binary_sensor.bunny_shed_cooler:
   icon: mdi:fan
@@ -205,3 +205,7 @@ script.saa_sleep_tracking_started:
   hidden: true
 script.saa_smart_period:
   hidden: true
+group.lights_view:
+  order: 7
+group.all_lights:
+  hidden: false

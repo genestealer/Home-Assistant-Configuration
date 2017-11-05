@@ -11,14 +11,14 @@
   trigger:
     platform: mqtt
     topic: "HUISHS/BunnyShed/setHeaterTemperature"
-   # entity_id: input_slider.shed_target_temp
+   # entity_id: input_number.shed_target_temp
   condition:
     - condition: template
-      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_heat_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
+      value_template: '{{ trigger.payload | int != states.input_number.shed_target_heat_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
-     service: input_slider.select_value
+     service: input_number.select_value
      data_template:
-      entity_id: input_slider.shed_target_heat_temp
+      entity_id: input_number.shed_target_heat_temp
       value: '{{ trigger.payload | int }}'
 
 
@@ -34,13 +34,13 @@
   hide_entity: True
   trigger:
     platform: state
-    entity_id: input_slider.shed_target_heat_temp
+    entity_id: input_number.shed_target_heat_temp
   action:
     service: mqtt.publish
     data_template:
       topic: "HUISHS/BunnyShed/setHeaterTemperature"
       retain: true
-      payload: '{{ states.input_slider.shed_target_heat_temp.state | int }}'
+      payload: '{{ states.input_number.shed_target_heat_temp.state | int }}'
 
 
 ############################################################
@@ -56,14 +56,14 @@
   trigger:
     platform: mqtt
     topic: "HUISHS/BunnyShed/setCoolerTemperature"
-   # entity_id: input_slider.shed_target_temp
+   # entity_id: input_number.shed_target_temp
   condition:
     - condition: template
-      value_template: '{{ trigger.payload | int != states.input_slider.shed_target_cool_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
+      value_template: '{{ trigger.payload | int != states.input_number.shed_target_cool_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
-     service: input_slider.select_value
+     service: input_number.select_value
      data_template:
-      entity_id: input_slider.shed_target_cool_temp
+      entity_id: input_number.shed_target_cool_temp
       value: '{{ trigger.payload | int }}'
 
 
@@ -79,13 +79,13 @@
   hide_entity: True
   trigger:
     platform: state
-    entity_id: input_slider.shed_target_cool_temp
+    entity_id: input_number.shed_target_cool_temp
   action:
     service: mqtt.publish
     data_template:
       topic: "HUISHS/BunnyShed/setCoolerTemperature"
       retain: true
-      payload: '{{ states.input_slider.shed_target_cool_temp.state | int }}'
+      payload: '{{ states.input_number.shed_target_cool_temp.state | int }}'
 
 
 ############################################################
