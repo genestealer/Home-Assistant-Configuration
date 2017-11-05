@@ -5,7 +5,7 @@
 ############################################################
 
 
-update_hass:
-  alias: "Update HASS"
-  sequence:
-    - service: shell_command.update_restart
+# update_hass:
+#   alias: "Update HASS"
+#   sequence:
+#     - service: shell_command.update_restart

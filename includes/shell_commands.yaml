@@ -8,7 +8,22 @@
  # renew_ssl: '~/certbot/certbot-auto renew --quiet --no-self-upgrade --standalone --preferred-challenges tls-sni-01 --tls-sni-01-port 443 --pre-hook "sudo systemctl stop home-assistant@homeassistant.service" --post-hook "sudo systemctl start home-assistant@homeassistant.service"'
 renew_ssl: './certbot/certbot-auto renew --quiet --no-self-upgrade --standalone --preferred-challenges http-01'
 
+
+#renew_ssl: 'includes/shell_commands.sh &'
+
+############################################################
+#
+# Shell Command to update HA, run the config checker
+# and only if it passes then restart HA.
+# Makes use of hassctl https://github.com/dale3h/hassctl
+#
+# This requires a modification using `sudo visudo`:
+# https://community.home-assistant.io/t/lets-encrypt-installation-need-help/28468/4
+# E.G. "homeassistant ALL=(ALL) NOPASSWD:SETENV: /bin/systemctl"
+#
+############################################################
+update_and_restart_hass: 'hassctl update-hass && hassctl config && hassctl restart'
+# Alternative method running same code as above but as a script file file
 upgrade_hass: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh
 
 
-  #renew_ssl: 'includes/shell_commands.sh &'

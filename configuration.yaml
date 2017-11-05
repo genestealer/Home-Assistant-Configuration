@@ -143,9 +143,9 @@ rflink:
   wait_for_ack: True
   reconnect_interval: 1 #1 second
 
-tradfri:
-  host: !secret Ikea_Tradfri_IP
-  api_key: !secret Ikea_Tradfri_KEY
+# tradfri:
+#   host: !secret Ikea_Tradfri_IP
+#   api_key: !secret Ikea_Tradfri_KEY
 
 # # Text to speech
 # tts:
