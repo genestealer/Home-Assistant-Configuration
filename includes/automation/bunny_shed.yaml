@@ -16,7 +16,7 @@
     - condition: template
       value_template: '{{ trigger.payload | int != states.input_number.shed_target_heat_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
-     service: input_number.select_value
+     service: input_number.set_value
      data_template:
       entity_id: input_number.shed_target_heat_temp
       value: '{{ trigger.payload | int }}'
@@ -61,7 +61,7 @@
     - condition: template
       value_template: '{{ trigger.payload | int != states.input_number.shed_target_cool_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
-     service: input_number.select_value
+     service: input_number.set_value
      data_template:
       entity_id: input_number.shed_target_cool_temp
       value: '{{ trigger.payload | int }}'
