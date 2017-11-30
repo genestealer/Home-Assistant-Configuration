@@ -33,10 +33,10 @@
     service: notify.google_cloud_notify
     data_template:
       title: 'New Home Assistant Release'
-      message: "Home Assistant {{ states.updater.updater.state }} is now available. Release notes here."
+      message: "Home Assistant {{ states.updater.updater.state }} is now available. {{now().strftime('%Y-%m-%d %I:%M %p')}}"
     data:
       data:
-        url: "https://home-assistant.io/blog/" #"{{ states.updater.updater.attributes.release_notes}}"
+        # url: "https://home-assistant.io/blog/" #"{{ states.updater.updater.attributes.release_notes}}"
         actions:
           - action: update
             icon: "/static/icons/update-48x48.png"
