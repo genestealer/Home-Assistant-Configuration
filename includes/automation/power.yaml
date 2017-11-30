@@ -14,7 +14,7 @@
     data_template:
       title: 'Electricity Supply Voltage High'
       message: >
-        Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts
+        Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts. {{now().strftime('%Y-%m-%d %I:%M %p')}}
 
 
 ############################################################
@@ -33,7 +33,7 @@
     data_template:
       title: 'Electricity Supply Voltage Low'
       message: >
-        Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts
+        Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts. {{now().strftime('%Y-%m-%d %I:%M %p')}}
 
 
 
@@ -54,4 +54,4 @@
     data_template:
       title: 'WARNING: UPS close to being depleted'
       message: >
-        UPS is running low: {{ states('sensor.ups_time_left') }} minutes
+        UPS is running low: {{ states('sensor.ups_time_left') }} minutes. {{now().strftime('%Y-%m-%d %I:%M %p')}}

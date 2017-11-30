@@ -15,8 +15,8 @@
   action:
     service: notify.google_cloud_notify
     data_template:
-      title: 'BS Status'
-      message: "Bunny Shed controller has gone offline" 
+      title: 'Bunny Shed Offline'
+      message: "Bunny Shed controller has gone offline. {{now().strftime('%Y-%m-%d %I:%M %p')}}"
 
 - alias: ic_status_monitor
   trigger:
@@ -29,6 +29,5 @@
   action:
     service: notify.google_cloud_notify
     data_template:
-      title: 'IC Status'
-      message: "Irrigation Controller has gone offline" 
-
+      title: 'Irrigation offline'
+      message: "Irrigation Controller has gone offline. {{now().strftime('%Y-%m-%d %I:%M %p')}}" 

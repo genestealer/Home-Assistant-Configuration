@@ -23,5 +23,5 @@
   action:
     service: notify.google_cloud_notify
     data_template:
-      title: 'Delay driving to work'
-      message: "It will take {{ states.sensor.home_to_work.state }} minutes to drive to work!" 
+      title: 'Delay to work'
+      message: "It will take {{ states.sensor.home_to_work.state }} minutes to drive to work!"
