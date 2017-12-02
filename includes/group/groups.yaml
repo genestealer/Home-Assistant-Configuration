@@ -31,7 +31,7 @@ automation_system_view:
     - sensor.plex
     - group.rf_gateway_info_group
     - group.bunny_shed_controller_info_group
-    - binary_sensor.doorbell_controller_status
+    - binary_sensor.tor_db_status
     - group.irrigation_controller_info_group
     - group.rf_link_group
     - group.pi_hole
@@ -132,7 +132,7 @@ device_status_group:
     - binary_sensor.ic_status
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.esp_link_status
-    - binary_sensor.doorbell_controller_status
+    - binary_sensor.tor_db_status
 
 
 
@@ -276,6 +276,18 @@ rf_link_group:
     - binary_sensor.rflink_status
     - sensor.esplink_controller_signal_strength
 
+tor_doorbell_info_group:
+  name: TOR DoorBell Info
+  view: no
+  entities:
+    - binary_sensor.tor_db_status
+    - sensor.tor_db_client_name
+    - sensor.tor_db_host
+    - sensor.tor_db_ip
+    - sensor.tor_db_mac
+    - sensor.tor_db_rssi
+    - sensor.tor_db_ssid
+
 ups_data_group:
   name: UPS Data
   view: no
@@ -384,11 +396,11 @@ bathroom_towel_rail_group:
 
 
 
-doorbell_group:
-  name: Doorbell
-  view: no
-  entities:
-    - binary_sensor.doorbell
+# doorbell_group:
+#   name: Doorbell
+#   view: no
+#   entities:
+#     - binary_sensor.doorbell
 
 
 amazon_dash_group:

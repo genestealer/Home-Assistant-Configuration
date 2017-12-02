@@ -121,3 +121,42 @@
   unit_of_measurement: "dBm"
   expire_after: 125 # MQTT messages are only every 60 seconds, so 125 will permit it to miss two messages.
   value_template: '{{ value_json.rssi }}'
+
+
+
+  ############################################################
+  #
+  # TOR DoorBell Controller Status
+  #
+  ############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/DoorBell/StatusJSON"
+  name: "TOR DB Client Name"
+  value_template: '{{ value_json.ClientName }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/DoorBell/StatusJSON"
+  name: "TOR DB IP"
+  value_template: '{{ value_json.IP }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/DoorBell/StatusJSON"
+  name: "TOR DB MAC"
+  value_template: '{{ value_json.MAC }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/DoorBell/StatusJSON"
+  name: "TOR DB RSSI"
+  unit_of_measurement: "dBm"
+  value_template: '{{ value_json.RSSI }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/DoorBell/StatusJSON"
+  name: "TOR DB Host"
+  value_template: '{{ value_json.HostName }}'
+
+- platform: mqtt
+  state_topic: "HUISHS/DoorBell/StatusJSON"
+  name: "TOR DB SSID"
+  value_template: '{{ value_json.ConnectedSSID }}'

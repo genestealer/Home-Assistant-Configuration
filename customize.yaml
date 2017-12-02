@@ -87,6 +87,18 @@ sensor.ic_rssi:
   icon: mdi:signal-variant
 sensor.ic_ssid:
   icon: mdi:wifi
+sensor.tor_db_client_name:
+  icon: mdi:desktop-classic
+sensor.tor_db_host:
+  icon: mdi:desktop-classic
+sensor.tor_db_ip:
+  icon: mdi:desktop-classic
+sensor.tor_db_mac:
+  icon: mdi:desktop-classic
+sensor.tor_db_rssi:
+  icon: mdi:signal-variant
+sensor.tor_db_ssid:
+  icon: mdi:wifi
 sensor.esplink_controller_signal_strength:
   icon: mdi:signal-variant
 binary_sensor.entryway_thermostat_fan:
