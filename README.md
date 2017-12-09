@@ -33,7 +33,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Room lamps plugged into [Maclean MCE07GB Remote Control Sockets](https://www.amazon.co.uk/Maclean-MCE07GB-Control-Sockets-Programmable/dp/B00OV1TTU6)
 - Hacked Ikea E1201C Remote 'relay' for kitchen extractor fan (302.329.80 433MHz two button remote & in-line switch.)
 - Ikea Ansluta Lights: Works together with Ikea 2.4GHz Remote control (903.007.73) with CC2500 Transceiver.
-- Status RCS-K09 remote control sockets: Bunny fluff extractor fan and room wax milters, simple 433MHz plug in switches
+- Status RCS-K09 remote control sockets: Bunny fluff extractor fan and room wax melters, simple 433MHz plug in switches
 
 
 ## Github hosted homemade hardware
