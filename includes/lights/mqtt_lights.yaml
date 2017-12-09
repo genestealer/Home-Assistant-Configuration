@@ -1,37 +1,37 @@
-############################################################
+# ############################################################
+# #
+# # MQTT Light Gatway
+# #
+# ############################################################
 #
-# MQTT Light Gatway
+# # Status branded remote control socket
+# - platform: mqtt
+#   command_topic: "HUISHS/LightingGateway/transmit"
+#   payload_on: "2006479"
+#   payload_off: "2006471"
+#   name: "MQTT Light 1"
+#   optimistic: true
 #
-############################################################
-
-# Status branded remote control socket
-- platform: mqtt
-  command_topic: "HUISHS/LightingGateway/transmit"
-  payload_on: "2006479"
-  payload_off: "2006471"
-  name: "MQTT Light 1"
-  optimistic: true
-
-# Status branded remote control socket
-- platform: mqtt
-  command_topic: "HUISHS/LightingGateway/transmit"
-  payload_on: "2006509"
-  payload_off: "2006501"
-  name: "MQTT Light 2"
-  optimistic: true
-
- # energenie branded wall remote control switch
-- platform: mqtt
-  command_topic: "HUISHS/LightingGateway/transmit"
-  payload_on: "6989579"
-  payload_off: "6989578"
-  name: "MQTT Light 3"
-  optimistic: true 
-
-   # energenie branded wall remote control switch
-- platform: mqtt
-  command_topic: "HUISHS/LightingGateway/transmit"
-  payload_on: "219455"
-  payload_off: "219454"
-  name: "MQTT Light 4"
-  optimistic: true 
+# # Status branded remote control socket
+# - platform: mqtt
+#   command_topic: "HUISHS/LightingGateway/transmit"
+#   payload_on: "2006509"
+#   payload_off: "2006501"
+#   name: "MQTT Light 2"
+#   optimistic: true
+#
+#  # energenie branded wall remote control switch
+# - platform: mqtt
+#   command_topic: "HUISHS/LightingGateway/transmit"
+#   payload_on: "6989579"
+#   payload_off: "6989578"
+#   name: "MQTT Light 3"
+#   optimistic: true
+#
+#    # energenie branded wall remote control switch
+# - platform: mqtt
+#   command_topic: "HUISHS/LightingGateway/transmit"
+#   payload_on: "219455"
+#   payload_off: "219454"
+#   name: "MQTT Light 4"
+#   optimistic: true

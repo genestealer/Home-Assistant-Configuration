@@ -186,12 +186,12 @@ automation: !include automations.yaml # Cannot change location or filename as th
 automation old: !include_dir_merge_list includes/automation
 sensor: !include_dir_merge_list includes/sensors
 light: !include_dir_merge_list includes/lights
-binary_sensor: !include_dir_merge_list includes/binary_sensors/
+binary_sensor: !include_dir_merge_list includes/binary_sensors
 switch: !include_dir_merge_list includes/switch
 
-# Merge named
+# Merge named dir
 script: !include_dir_merge_named includes/scripts
-
+input_boolean: !include_dir_merge_named includes/input_boolean
 
 # Single Files
 zone: !include includes/zone.yaml
@@ -203,15 +203,6 @@ shell_command: !include includes/shell_commands.yaml
 group: !include includes/group/groups.yaml
 input_number: !include includes/input_number.yaml
 
-
-
-
-
-input_boolean:
-  task_heat_towel_rail:
-    name: Heat the towel rail for 1 hour
-    initial: off
-    icon: mdi:temperature-celsius
 
 
 # weblink:

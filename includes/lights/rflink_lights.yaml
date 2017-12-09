@@ -1,33 +1,44 @@
 ############################################################
 #
 # RFLink Lights, renamed in customise.yaml
+# For contoller:
+# see https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266
+#
+# Remote types:
+# - Maclean: MCE07GB Remote Control Sockets
+# - Eurodomest: Energenie Wall Light Switch MIHO026
+# - Ansluta: Ikea 2.4GHz Remote control (903.007.73)
+# - RFCustom: Status RCS-K09 433MHz remote control socket
 #
 ############################################################
 
-#433MHz
+
+# 433MHz Lights
 - platform: rflink
   device_defaults:
     signal_repetitions: 3
   devices:
-    Maclean_0d82_01: # Lucy Room Lamp
-      name: Lamp_1
-    Maclean_0d82_02:
-      name: Lamp_2
+    Maclean_0d82_01:
+      name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
+    # Maclean_0d82_02:
+    #   name: Lamp_2 # renamed in customise.yaml to 'Bedroom Lamp'
     Maclean_0d82_03:
-      name: Lamp_3
+      name: Lamp_3 # renamed in customise.yaml to 'Guest Bedroom Lamp'
     # Maclean_0d82_04:
     #   name: Lamp_4
 
-
-
+# 433MHz Lights
 - platform: rflink
   device_defaults:
+    # For this Energenie wall light switch,
+    # Send TX command over and over agin, as it only seems to listen for them occasionally/
+    # More tried helps ensure one makes it.
     signal_repetitions: 10
   devices:
-    Eurodomest_0fca6c_00: # Note: Send TX command over and over agin, as it only seems to listen for them  occasionally. More tried helps ensure one makes it.
-      name: Lamp_4 # renamed in customise.yaml to 'Upstairs Hall Light' #Energenie Wall Light Switch MIHO026,
+    Eurodomest_0fca6c_00: # Energenie MIHO026
+      name: Lamp_4 # renamed in customise.yaml to 'Upstairs Hall Light'
 
-
+#Saved Energenie remote control commands.
 #Eurodomest_0fca6c_00:
 # Off: Decimal: 219454 (24Bit) Binary: 000000110101100100111110 Tri-State: not applicable PulseLength: 309 microseconds Protocol: 1
 # OFF Raw data: 9588,280,924,280,928,276,928,276,924,284,924,280,928,868,336,868,348,264,932,868,344,264,940,864,340,860,348,264,936,268,944,852,348,260,944,260,944,860,344,856,352,852,352,852,352,852,360,252,952,
@@ -36,7 +47,7 @@
 # ON Raw data: 9588,280,928,272,928,276,932,272,932,268,928,284,920,872,344,864,344,268,940,860,340,264,940,864,340,860,348,264,940,264,944,856,352,256,948,256,952,860,344,860,348,852,352,852,364,840,360,848,360,
 
 
-#2.4MHz
+# 2.4GHz Lights
 - platform: rflink
   device_defaults:
     signal_repetitions: 3

@@ -1,0 +1,28 @@
+############################################################
+#
+#  Remote Control Schedules
+#
+############################################################
+
+# - alias: Plug-in Air Freshener Start
+#   trigger:
+#     platform: time
+#     at: '08:00:00'
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.plugin_air_freshener_enable
+#       state: 'on'
+#     - condition: state
+#       entity_id: group.all_devices
+#       state: 'home'
+#   action:
+#     service: switch.turn_on
+#     entity_id: switch.plugin_air_freshener
+#
+# - alias: Plug-in Air Freshener Stop
+#   trigger:
+#     platform: time
+#     at: '23:00:00'
+#   action:
+#     service: switch.turn_off
+#     entity_id: switch.plugin_air_freshener

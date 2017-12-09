@@ -8,10 +8,13 @@
   trigger:
     platform: time
     at: '08:00:00'
+  condition:
+    condition: state
+    entity_id: input_boolean.bunny_fluff_air_filter_enable
+    state: 'on'
   action:
     service: switch.turn_on
     entity_id: switch.bunny_fluff_air_filter
-
 
 - alias: Bunny Fluff Filter Schedule Off
   trigger:

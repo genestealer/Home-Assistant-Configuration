@@ -1,0 +1,51 @@
+############################################################
+#
+# Plug-in Air Freshener
+#
+# Turn on when someone is home and its morning
+# Turn off when everyone leaves or it's night.
+#
+############################################################
+
+# Turn ON Plug-in Air Freshener
+- alias: Plug-in Air Freshener Start
+  trigger:
+    # It's during the day and someone came home.
+    - platform: state
+      entity_id: group.all_devices
+      from: 'not_home'
+      to: 'home'
+    # It's during the day and everyone is already home.
+    - platform: time
+      at: '10:00:00'
+  condition:
+    condition: and
+    conditions:
+    # Check it's within certain hours of the day.
+    - condition: time
+      after: '10:00:00'
+      before: '22:00:00'
+    # Check we are enabled
+    - condition: state
+      entity_id: input_boolean.plugin_air_freshener_enable
+      state: 'on'
+    # Check someone is home.
+    - condition: state
+      entity_id: group.all_devices
+      state: 'home'
+  action:
+    service: switch.turn_on
+    entity_id: switch.plugin_air_freshener
+
+# Turn OFF Plug-in Air Freshener
+- alias: Plug-in Air Freshener Stop
+  trigger:
+    - platform: time
+      at: '22:00:00'
+    - platform: state
+      entity_id: group.all_devices
+      from: 'home'
+      to: 'not_home'
+  action:
+    service: switch.turn_off
+    entity_id: switch.plugin_air_freshener

@@ -2,23 +2,37 @@
 #
 # RFLink Switchs
 #
+# For contoller:
+# see https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266
+#
+# Remote types:
+# - Maclean: MCE07GB Remote Control Sockets
+# - Eurodomest: Energenie Wall Light Switch MIHO026
+# - Ansluta: Ikea 2.4GHz Remote control (903.007.73)
+# - RFCustom: Status RCS-K09 433MHz remote control socket
+#
 ############################################################
 
+# 433MHz switchs
 - platform: rflink
   device_defaults:
     signal_repetitions: 3
     fire_event: true
   devices:
-    EMW100_a140_0:
+    EMW100_a140_0: # Ikea ANSLUTA E1202
       name: Kitchen Extractor Fan
       aliases: emw100_a140_00
-    RFCustom_524643_0:
+    RFCustom_524643_0: # Status RCS-K09
       name: Bunny Fluff Air Filter
+    RFCustom_524643_2: # Status RCS-K09
+      name: Wax Melter
+    RFCustom_524643_4: # Status RCS-K09
+      name: Plug-In Air Freshener
 
-
-- platform: rflink
-  device_defaults:
-    fire_event: true
-  devices:
-    emw100_d018_00:
-      name: Button 1
+# # Ikea two button round remote
+# - platform: rflink
+#   device_defaults:
+#     fire_event: true
+#   devices:
+#     emw100_d018_00:
+#       name: Button 1

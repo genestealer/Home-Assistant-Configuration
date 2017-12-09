@@ -221,3 +221,7 @@ group.lights_view:
   order: 7
 group.all_lights:
   hidden: false
+automation.bunny_fluff_filter_schedule_off:
+  hidden: true
+automation.bunny_fluff_filter_schedule_on:
+  hidden: true

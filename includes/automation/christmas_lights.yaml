@@ -4,7 +4,7 @@
 #
 ############################################################
 
-- alias: "Outside xmas Lights OFF at midnight"
+- alias: "Outside Christmas Lights OFF at midnight"
   trigger:
     platform: time
     # Possible values: sunset, sunrise
@@ -20,7 +20,7 @@
 #
 ############################################################
 
-- alias: "Outside xmas Lights ON at sun set"
+- alias: "Outside Christmas Lights ON at sun set"
   trigger:
     platform: sun
     # Possible values: sunset, sunrise
@@ -37,7 +37,7 @@
 #
 ############################################################
 
-- alias: "Inside xmas Lights ON when home"
+- alias: "Inside Christmas Lights ON when home"
   trigger:
     platform: zone
     entity_id: device_tracker.richard_sailfish
@@ -54,7 +54,7 @@
 #
 ############################################################
 
-- alias: "Inside xmas Lights OFF when not home"
+- alias: "Inside Christmas Lights OFF when not home"
   trigger:
     platform: zone
     entity_id: device_tracker.richard_sailfish
