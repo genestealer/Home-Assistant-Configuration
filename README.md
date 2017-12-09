@@ -30,10 +30,10 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 
 #### Items controlled via my [RFLink Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266)
 - [Energenie Wall Light Switch MIHO026](https://energenie4u.co.uk/catalogue/product/MIHO026)
-- Room lamps plugged into [Maclean MCE07GB Remote Control Sockets](https://www.amazon.co.uk/Maclean-MCE07GB-Control-Sockets-Programmable/dp/B00OV1TTU6)
+- Room lamps plugged into [Maclean MCE07GB Remote Control Sockets](https://www.amazon.co.uk/Maclean-MCE07GB-Control-Sockets-Programmable/dp/B00OV1TTU6) and [Status RCS-K09 Remote Control Sockets](https://www.amazon.co.uk/Status-Remote-Control-Socket-Pack/dp/B003XOXAVG)
 - Hacked Ikea E1201C Remote 'relay' for kitchen extractor fan (302.329.80 433MHz two button remote & in-line switch.)
 - Ikea Ansluta Lights: Works together with Ikea 2.4GHz Remote control (903.007.73) with CC2500 Transceiver.
-- Status RCS-K09 remote control sockets: Bunny fluff extractor fan and room wax melters, simple 433MHz plug in switches
+- Bunny fluff extractor fan, room wax melters and extra lights (Christmas) plugged into [Status RCS-K09 Remote Control Sockets](https://www.amazon.co.uk/Status-Remote-Control-Socket-Pack/dp/B003XOXAVG)
 
 
 ## Github hosted homemade hardware
