@@ -20,12 +20,8 @@
   devices:
     Maclean_0d82_01:
       name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
-    # Maclean_0d82_02:
-    #   name: Lamp_2 # renamed in customise.yaml to 'Bedroom Lamp'
     Maclean_0d82_03:
-      name: Lamp_3 # renamed in customise.yaml to 'Guest Bedroom Lamp'
-    # Maclean_0d82_04:
-    #   name: Lamp_4
+      name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
 
 # 433MHz Lights
 - platform: rflink
@@ -36,7 +32,7 @@
     signal_repetitions: 10
   devices:
     Eurodomest_0fca6c_00: # Energenie MIHO026
-      name: Lamp_4 # renamed in customise.yaml to 'Upstairs Hall Light'
+      name: Lamp_3 # renamed in customise.yaml to 'Upstairs Hall Light'
 
 #Saved Energenie remote control commands.
 #Eurodomest_0fca6c_00:

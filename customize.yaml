@@ -117,10 +117,6 @@ sensor.entryway_thermostat_hvac_state:
   hidden: true
 sensor.entryway_thermostat_operation_mode:
   hidden: true
-group.inside_christmas_lights:
-  hidden: true
-group.outside_christmas_lights:
-  hidden: true
 group.bunny_shed:
   entity_picture: /local/shed.png
 sensor.glances_sensor_cpu_load:
@@ -224,4 +220,8 @@ group.all_lights:
 automation.bunny_fluff_filter_schedule_off:
   hidden: true
 automation.bunny_fluff_filter_schedule_on:
+  hidden: true
+automation.plugin_air_freshener_start:
+  hidden: true
+automation.plugin_air_freshener_stop:
   hidden: true

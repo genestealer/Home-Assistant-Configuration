@@ -338,30 +338,18 @@ server_ilo_status_group:
     - sensor.server_uptime
     - sensor.server_cpu_load
     - sensor.server_disk_free
-    - sensor.server_disk_use
-    - sensor.server_disk_use_2
+    - sensor.server_disk_used
+    - sensor.server_disk_used_2
     - sensor.server_ram_free
-    - sensor.server_ram_use
-    - sensor.server_ram_use_2
+    - sensor.server_ram_used
+    - sensor.server_ram_used_2
     - sensor.server_running
     - sensor.server_sleeping
     - sensor.server_swap_free
-    - sensor.server_swap_use
-    - sensor.server_swap_use_2
+    - sensor.server_swap_used
+    - sensor.server_swap_used_2
     - sensor.server_thread
     - sensor.server_total
-
-    #Rest senesores
-    - sensor.system_drive_size
-    - sensor.system_drive_percent_used
-    - sensor.raid5_array_size
-    - sensor.raid5_array_percent_used
-    - sensor.backup_drive_size
-    - sensor.backup_drive_percent_used
-    - sensor.cctv_drive_size
-    - sensor.cctv_drive_percent_used
-    - sensor.file_history_drive_size
-    - sensor.file_history_drive_percent_used
 
 
 
@@ -382,17 +370,26 @@ bathroom_towel_rail_group:
     - input_boolean.task_heat_towel_rail
 
 
+
+outside_christmas_lights:
+  name: Outside Christmas Lights
+  view: no
+  entities:
+    - light.lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
+    - light.lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
+    - light.christmas_bed_room_star
+    - light.christmas_sitting_room_star
+
 # Christmas Lights:
-#   - light.star_light
-#   - light.christmas_tree_bling
-#   - light.outside_lights
-#   - light.snowflake_lights
-# Outside Christmas Lights:
-#   - light.outside_lights
-#   - light.star_light
+#   # - light.star_light
+#   # - light.christmas_tree_bling
+#   # - light.outside_lights
+#   # - light.snowflake_lights
+  # - light.outside_lights
+  # - light.star_light
 # Inside Christmas Lights:
-#   - light.christmas_tree_bling
-#   - light.snowflake_lights
+#   # - light.christmas_tree_bling
+#   # - light.snowflake_lights
 
 
 
@@ -419,9 +416,9 @@ controllers:
     - group.irrigation_controller_info_group
 
 pi_hole:
-    name: Pi Hole
-    view: no
-    entities:
+  name: Pi Hole
+  view: no
+  entities:
       - sensor.pihole_ads_blocked_today
       - sensor.pihole_ads_percentage_blocked_today
       - sensor.pihole_dns_queries_today

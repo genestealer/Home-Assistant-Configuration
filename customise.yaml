@@ -173,10 +173,10 @@ sensor.entryway_thermostat_operation_mode:
 # Hide unwanted things - Double groups
 #
 ############################################################
-group.inside_christmas_lights:
-    hidden: true
-group.outside_christmas_lights:
-    hidden: true
+# group.inside_christmas_lights:
+#     hidden: true
+# group.outside_christmas_lights:
+#     hidden: true
 
 
 
@@ -298,6 +298,3 @@ sensor.lucy_phone_battery:
 
 sensor.richard_phone_battery:
   icon: mdi:battery
-
-
-

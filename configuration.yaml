@@ -29,7 +29,7 @@ http:
   trusted_networks:
   - 127.0.0.1
   - 192.168.0.0/24
-  - !secret myip
+  # - !secret myip
   #- ::1
 
 # Checks for available updates
@@ -143,9 +143,9 @@ rflink:
   wait_for_ack: True
   reconnect_interval: 1 #1 second
 
-# tradfri:
-#   host: !secret Ikea_Tradfri_IP
-#   api_key: !secret Ikea_Tradfri_KEY
+tradfri:
+  host: !secret Ikea_Tradfri_IP
+  # api_key: !secret Ikea_Tradfri_KEY
 
 # # Text to speech
 # tts:

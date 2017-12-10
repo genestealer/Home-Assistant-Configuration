@@ -2,12 +2,31 @@
 #
 # Christmas Lights - Enabled Seasonally
 #
+# Note: I reuse the following lights during this time:
+#    Maclean_0d82_01:
+#     name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
+#    Maclean_0d82_03:
+#      name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
+#
 # For mqtt contoller:
 # see https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway
 #
 # For rflink contoller:
 # see https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266
 ############################################################
+
+
+# 433MHz switchs
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 5
+    fire_event: true
+  devices:
+    RFCustom_524643_6: # Status RCS-K09
+      name: Christmas Sitting Room Star
+    RFCustom_524643_8: # Status RCS-K09
+      name: Christmas Bed Room Star
+
 
 ### Old
 # - platform: mqtt
@@ -33,14 +52,3 @@
 #   payload_on: "2006511"
 #   payload_off: "2006503"
 #   name: "Snowflake Lights"
-
-# 433MHz switchs
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 5
-    fire_event: true
-  devices:
-    RFCustom_524643_6: # Status RCS-K09
-      name: Christmas Sitting Room Star
-    RFCustom_524643_8: # Status RCS-K09
-      name: Christmas Bed Room Star
