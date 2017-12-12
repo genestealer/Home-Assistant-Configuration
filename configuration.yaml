@@ -115,9 +115,9 @@ notify:
 device_tracker:
   - platform: owntracks
     max_gps_accuracy: 250
-  - platform: ping
-    hosts:
-      hostone: 192.168.1.16
+  # - platform: ping
+  #   hosts:
+  #     hostone: 192.168.1.16
   # - platform: snmp
   #   host: 192.168.1.1
   #   community: public
@@ -147,9 +147,9 @@ tradfri:
   host: !secret Ikea_Tradfri_IP
   # api_key: !secret Ikea_Tradfri_KEY
 
-# # Text to speech
-# tts:
-#   platform: google
+# Text to speech
+tts:
+  - platform: google
 
 
 emulated_hue:

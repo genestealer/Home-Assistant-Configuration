@@ -4,40 +4,52 @@
 #
 ############################################################
 
-
-- alias: "Dash Button Hall light on"
-  trigger:
-    platform: mqtt
-    topic: HUISHS/dash1
-    payload: 'on' # Payload is allways on, even when turing the lights off.
-  condition:
-    condition: state
-    entity_id: light.lamp_4 #upstairs_hall_light
-    state: 'off'
-  action:
-    service: homeassistant.turn_on
-    entity_id: light.lamp_4 #upstairs_hall_light
-
-- alias: "Dash Button Hall light off"
-  trigger:
-    platform: mqtt
-    topic: HUISHS/dash1
-    payload: 'on' # Payload is allways on, even when turing the lights off.
-  condition:
-    condition: state
-    entity_id: light.lamp_4 #upstairs_hall_light
-    state: 'on'
-  action:
-    service: homeassistant.turn_off
-    entity_id: light.lamp_4 #upstairs_hall_light
+#
+# - alias: "Dash Button Hall light on"
+#   trigger:
+#     platform: mqtt
+#     topic: HUISHS/dash1
+#     payload: 'on' # Payload is allways on, even when turing the lights off.
+#   condition:
+#     condition: state
+#     entity_id: light.lamp_3 #upstairs_hall_light
+#     state: 'off'
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: light.lamp_3 #upstairs_hall_light
+#
+# - alias: "Dash Button Hall light off"
+#   trigger:
+#     platform: mqtt
+#     topic: HUISHS/dash1
+#     payload: 'on' # Payload is allways on, even when turing the lights off.
+#   condition:
+#     condition: state
+#     entity_id: light.lamp_3 #upstairs_hall_light
+#     state: 'on'
+#   action:
+#     service: homeassistant.turn_off
+#     entity_id: light.lamp_3 #upstairs_hall_light
 
 # Triggered from Dasher: https://github.com/maddox/dasher
 - alias: "Dash Button Hall light toggle"
   trigger:
-    platform: mqtt
-    topic: HUISHS/dash-button/rightguard
-    payload: 'active'
+    - platform: mqtt
+      topic: HUISHS/dash-button/dettol
+      payload: 'active'
+    - platform: mqtt
+      topic: HUISHS/dash-button/rightguard
+      payload: 'active'
   action:
     service: light.toggle
-    entity_id: light.lamp_4 #upstairs_hall_light
+    entity_id: light.lamp_3 #upstairs_hall_light
 
+
+- alias: "Dash Button All Lights Off"
+  trigger:
+    - platform: mqtt
+      topic: HUISHS/dash-button/airwick
+      payload: 'active'
+  action:
+    service: light.turn_off
+    entity_id: group.all_lights

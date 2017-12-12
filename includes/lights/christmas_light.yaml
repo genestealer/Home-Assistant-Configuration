@@ -23,9 +23,11 @@
     fire_event: true
   devices:
     RFCustom_524643_6: # Status RCS-K09
-      name: Christmas Sitting Room Star
+      name: Christmas Outside Lights
     RFCustom_524643_8: # Status RCS-K09
       name: Christmas Bed Room Star
+    Maclean_0d82_02:
+      name: Christmas Sitting Room Star
 
 
 ### Old

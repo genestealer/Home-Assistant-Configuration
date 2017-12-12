@@ -34,10 +34,8 @@ climate.entryway:
 light.lamp_1:
   friendly_name: Lucy Room Lamp
 light.lamp_2:
-  friendly_name: Bedroom Lamp
-light.lamp_3:
   friendly_name: Guest Bedroom Lamp
-light.lamp_4:
+light.lamp_3:
   friendly_name: Upstairs Hall Light
 input_number.shed_target_cool_temp:
   friendly_name: Shed Cool Target

@@ -8,7 +8,7 @@
   trigger:
     platform: time
     # Possible values: sunset, sunrise
-    at: '22:00:00'
+    at: '23:59:00'
   action:
     service: homeassistant.turn_off
     entity_id: group.outside_christmas_lights
@@ -39,11 +39,15 @@
 
 - alias: "Inside Christmas Lights ON when home"
   trigger:
-    platform: zone
-    entity_id: device_tracker.richard_sailfish
-    zone: zone.home
-    # Event is either enter or leave
-    event: enter  # or "leave"
+    # platform: zone
+    # entity_id: device_tracker.richard_sailfish
+    # zone: zone.home
+    # # Event is either enter or leave
+    # event: enter  # or "leave"
+    platform: state
+    entity_id: group.all_devices
+    from: 'not_home'
+    to: 'home'
   action:
     service: homeassistant.turn_on
     entity_id: group.inside_christmas_lights
@@ -56,11 +60,15 @@
 
 - alias: "Inside Christmas Lights OFF when not home"
   trigger:
-    platform: zone
-    entity_id: device_tracker.richard_sailfish
-    zone: zone.home
-    # Event is either enter or leave
-    event: leave  # or "enter"
+    # platform: zone
+    # entity_id: device_tracker.richard_sailfish
+    # zone: zone.home
+    # # Event is either enter or leave
+    # event: leave  # or "enter"
+    platform: state
+    entity_id: group.all_devices
+    from: 'home'
+    to: 'not_home'
   action:
     service: homeassistant.turn_off
     entity_id: group.inside_christmas_lights

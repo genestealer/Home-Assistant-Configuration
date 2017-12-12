@@ -369,27 +369,25 @@ bathroom_towel_rail_group:
     - automation.heat_towel_rail_mqtt
     - input_boolean.task_heat_towel_rail
 
-
-
+christmas_lights:
+    name: Christmas Lights
+    view: no
+    entities:
+      - group.outside_christmas_lights
+      - group.inside_christmas_lights
 outside_christmas_lights:
   name: Outside Christmas Lights
   view: no
   entities:
     - light.lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
-    - light.lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
     - light.christmas_bed_room_star
     - light.christmas_sitting_room_star
-
-# Christmas Lights:
-#   # - light.star_light
-#   # - light.christmas_tree_bling
-#   # - light.outside_lights
-#   # - light.snowflake_lights
-  # - light.outside_lights
-  # - light.star_light
-# Inside Christmas Lights:
-#   # - light.christmas_tree_bling
-#   # - light.snowflake_lights
+inside_christmas_lights:
+  name: Inside Christmas Lights
+  view: no
+  entities:
+    - light.christmas_tree_bling
+    # - light.snowflake_lights
 
 
 
