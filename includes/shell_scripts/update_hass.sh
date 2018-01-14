@@ -2,13 +2,13 @@
 
 # This is for log purposes
 echo
-echo "[$(date)] Update script starting"
+echo "[$(date)] HA update script starting, using HASSCTL"
 
 # https://github.com/dale3h/hassctl
-# Update HA, run the config checker and only if it passes then restart HA.
-# This requires a modification using `sudo visudo`:
-# E.G. "homeassistant ALL=(ALL) NOPASSWD:SETENV: /bin/systemctl"
-
+# USeing HASSCTL this script updates HA, runs the config checker and only if it passes  restart HA.
+# This requires a modification using `sudo visudo`:E.G. "homeassistant ALL=(ALL) NOPASSWD:SETENV: /bin/systemctl"
+# A log of this script is stored in the same location as this script.
+# Example of HA shell_command used to call this script: update_and_restart_hass_with_logging: "/bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh </dev/null >> /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.log 2>&1 &"
 hassctl update-hass && hassctl config && hassctl restart
 
 

@@ -28,7 +28,10 @@
       name: Christmas Bed Room Star
     Maclean_0d82_02:
       name: Christmas Sitting Room Star
-
+    Maclean_0d82_04:
+      name: Christmas Tree Bling
+    Maclean_0d85_01:
+      name: Christmas Kitchen Star
 
 ### Old
 # - platform: mqtt

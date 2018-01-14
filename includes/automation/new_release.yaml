@@ -41,7 +41,7 @@
           - action: update
             icon: "/static/icons/update-48x48.png"
             title: Update Home Assistant
-      
+
 
 
 - alias: HTML5 push notification action button clicked
@@ -56,7 +56,7 @@
         title: 'Home Assistant Update'
         message: 'Update Started'
     - service: shell_command.update_and_restart_hass_with_logging
-    - service: notify.google_cloud_notify
-      data:
-        title: 'Home Assistant Updated'
-        message: 'Update Completed'
+    # - service: notify.google_cloud_notify
+    #   data:
+    #     title: 'Home Assistant Updated'
+    #     message: 'Update Completed'

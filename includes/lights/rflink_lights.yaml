@@ -18,7 +18,7 @@
   device_defaults:
     signal_repetitions: 3
   devices:
-    Maclean_0d82_01:
+    Maclean_0d52_04:
       name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
     Maclean_0d82_03:
       name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'

@@ -9,16 +9,16 @@
 #    entities:
 #      - group.speed_test
 
-main_view:
-  name: Main
-  view: yes
-  entities:
-    - group.cctv_group
-    - group.nest_thermostat_group
-    - group.kitchen_climate_group
-    - group.outside_weather_group
-    - group.mobiles_group
-    - group.device_status_group
+# main_view:
+#   name: Main
+#   view: yes
+#   entities:
+#     - group.cctv_group
+#     - group.nest_thermostat_group
+#     - group.kitchen_climate_group
+#     - group.outside_weather_group
+#     - group.mobiles_group
+#     - group.device_status_group
 automation_system_view:
   name: Automation
   view: yes
@@ -84,12 +84,12 @@ irrigation_view:
 
 
 
-bedroom_view:
-  name: Bedroom
-  view: yes
-  entities:
-    - light.lamp_2
-    - switch.button_1
+# bedroom_view:
+#   name: Bedroom
+#   view: yes
+#   entities:
+#     - light.lamp_2
+#     - switch.button_1
 
 ############################################################
 #
@@ -369,7 +369,7 @@ bathroom_towel_rail_group:
     - automation.heat_towel_rail_mqtt
     - input_boolean.task_heat_towel_rail
 
-christmas_lights:
+christmas_lights_group:
     name: Christmas Lights
     view: no
     entities:
@@ -379,14 +379,16 @@ outside_christmas_lights:
   name: Outside Christmas Lights
   view: no
   entities:
-    - light.lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
     - light.christmas_bed_room_star
     - light.christmas_sitting_room_star
+    - light.christmas_outside_lights
+    - light.lamp_1
 inside_christmas_lights:
   name: Inside Christmas Lights
   view: no
   entities:
     - light.christmas_tree_bling
+    - light.christmas_kitchen_star
     # - light.snowflake_lights
 
 
