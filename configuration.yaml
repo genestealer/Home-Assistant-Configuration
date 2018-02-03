@@ -82,7 +82,8 @@ sun:
 
 # APC UPS
 apcupsd:
-  host: !secret apcupsdIP
+# Defaults to localhost
+#  host: !secret apcupsdIP
   port: !secret apcupsdPort
 
 nest:
@@ -161,9 +162,9 @@ emulated_hue:
 
 axis:
    p3301:
-     host: !secret axis_P3301_IP
-     username: !secret axis_P3301_username
-     password: !secret axis_P3301_password
+     host: !secret axis_front_door_IP
+     username: !secret axis_front_door_username
+     password: !secret axis_front_door_password
      include:
       - camera
       - motion
