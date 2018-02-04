@@ -13,7 +13,7 @@
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "Bunny Shed Heater"
   payload_on: "1"
   payload_off: "0"
@@ -23,7 +23,7 @@
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "Bunny Shed Cooler"
   payload_on: "1"
   payload_off: "0"

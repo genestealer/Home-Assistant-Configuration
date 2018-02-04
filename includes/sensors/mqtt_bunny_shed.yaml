@@ -5,27 +5,27 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "BS Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.Temperature }}'
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "BS Humidity"
   unit_of_measurement: '%'
   value_template: '{{ value_json.Humidity }}'
 
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "Bunny Shed Target Heat Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.TargetHeaterTemperature }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/sensorJSON"
+  state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "Bunny Shed Target Cool Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.TargetCoolerTemperature }}'

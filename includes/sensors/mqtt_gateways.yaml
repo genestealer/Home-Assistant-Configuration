@@ -5,33 +5,33 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/statusJSON"
+  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Client Name"
   value_template: '{{ value_json.ClientName }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/statusJSON"
+  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS IP"
   value_template: '{{ value_json.IP }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/statusJSON"
+  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS MAC"
   value_template: '{{ value_json.MAC }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/statusJSON"
+  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS RSSI"
   unit_of_measurement: "dBm"
   value_template: '{{ value_json.RSSI }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/statusJSON"
+  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Host"
   value_template: '{{ value_json.HostName }}'
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/statusJSON"
+  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
 
