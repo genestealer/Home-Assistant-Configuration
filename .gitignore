@@ -47,3 +47,4 @@ html5_push_registrations.conf
 ip_bans.yaml
 /icloud/*
 html5_push_registrations
+entity_registry.yaml

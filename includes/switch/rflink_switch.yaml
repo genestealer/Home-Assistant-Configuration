@@ -29,6 +29,24 @@
     RFCustom_524643_4: # Status RCS-K09
       name: Plug-In Air Freshener
 
+# # Feb 2018: Removed and moved to "mqtt_switch.yaml" using my 433mhz MQTT controller
+# # https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway
+# # This is because of limitations with the HASS rflink not allowing custom "on" and "off"
+# # commands and being unable to program custom commands into the RFLink gatway firmware slots.
+# # I.E. RFFIND command will not find the EV1527_xxxx
+# #
+# # 433MHz Office blinds
+# - platform: rflink
+#   device_defaults:
+#     signal_repetitions: 1
+#     fire_event: false
+#   devices:
+#     EV1527_080d40_8: # Office Blinds (THE BLIND GENIE)
+#       name: Office Blinds Close
+#     EV1527_080d40_4: # Office Blinds (THE BLIND GENIE)
+#       name: Office Blinds Open
+
+
 # # Ikea two button round remote
 # - platform: rflink
 #   device_defaults:
