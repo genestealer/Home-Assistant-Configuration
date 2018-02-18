@@ -5,4 +5,4 @@
 ############################################################
 
 # - platform: hue
-#   host: !secret LocalHost
+#   host: !secret Local_Host

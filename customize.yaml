@@ -227,3 +227,15 @@ automation.plugin_air_freshener_start:
   hidden: true
 automation.plugin_air_freshener_stop:
   hidden: true
+binary_sensor.usp_network_online:
+  icon: mdi:server-network
+switch.office_blinds:
+  icon: mdi:blinds
+switch.plugin_air_freshener:
+  icon: mdi:power-socket-uk
+switch.wax_melter:
+  icon: mdi:power-socket-uk
+switch.pot_irrigation_valve:
+  icon: mdi:water
+switch.lawn_irrigation_valve:
+  icon: mdi:water

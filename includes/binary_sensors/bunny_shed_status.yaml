@@ -11,7 +11,7 @@
 #
 ############################################################
 
-# Icon done in # Done in homeassistant:customize
+# Icon set in # Done in homeassistant:customize
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "Bunny Shed Heater"
@@ -19,9 +19,11 @@
   payload_off: "0"
   device_class: heat #Classes https://home-assistant.io/components/binary_sensor/  
   value_template: '{{ value_json.HeaterState }}'
+  availability_topic: "HUISHS/BunnyShed/status"
+  payload_available: "online"
+  payload_not_available: "offline"
 
-
-# Icon done in # Done in homeassistant:customize
+# Icon set in # Done in homeassistant:customize
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/StatusJASON"
   name: "Bunny Shed Cooler"
@@ -29,3 +31,6 @@
   payload_off: "0"
   device_class: cold #Classes https://home-assistant.io/components/binary_sensor/  
   value_template: '{{ value_json.CoolerState }}'
+  availability_topic: "HUISHS/BunnyShed/status"
+  payload_available: "online"
+  payload_not_available: "offline"

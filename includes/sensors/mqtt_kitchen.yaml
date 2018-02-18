@@ -9,10 +9,16 @@
   name: "Kitchen Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.Temperature }}'
-
+  availability_topic: "HUISHS/LightingGateway/Status"
+  payload_available: "online"
+  payload_not_available: "offline"  
+  
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/sensorJSON"
   name: "Kitchen Humidity"
   unit_of_measurement: '%'
   value_template: '{{ value_json.Humidity }}'
+  availability_topic: "HUISHS/LightingGateway/Status"
+  payload_available: "online"
+  payload_not_available: "offline"

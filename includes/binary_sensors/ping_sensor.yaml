@@ -1,0 +1,15 @@
+############################################################
+#
+# Binary Ping Sensors
+#
+############################################################
+
+# UPS Network controller state
+  - platform: ping
+    name: "USP Network Online"
+    host: !secret apc_UPS_Network_IP
+
+# Ikea Tradfri gateway state
+  - platform: ping
+    name: "Ikea Tradfri Gateway Online"
+    host: !secret Ikea_Tradfri_IP

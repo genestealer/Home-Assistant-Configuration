@@ -9,11 +9,17 @@
   name: "Soil Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.SoilTemperature }}'
+  availability_topic: "HUISHS/Irrigation/status"
+  payload_available: "online"
+  payload_not_available: "offline"
 
-# Icon done in # Done in homeassistant:customize
+# Icon added in # Done in homeassistant:customize
 - platform: mqtt
   state_topic: "HUISHS/Irrigation/StatusJASON"
   name: "Soil Capacitance"
   #unit_of_measurement: '%'
   value_template: '{{ value_json.SoilCapacitance }}'
+  availability_topic: "HUISHS/Irrigation/status"
+  payload_available: "online"
+  payload_not_available: "offline"
 

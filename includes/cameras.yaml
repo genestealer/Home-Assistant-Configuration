@@ -24,4 +24,11 @@
 
 - platform: mjpeg
   mjpeg_url: !secret Bunny_CCTV_mjpg
-  name: Bunny Cam
+  name: Bunny Camera
+  username: !secret Bunny_CCTV_username
+  password: !secret Bunny_CCTV_password
+
+# Needs FFMPEG, not currently installed.
+# - platform: onvif
+#   host: !secret Bunny_shed_onvif
+#   name: Bunny Shed Camera

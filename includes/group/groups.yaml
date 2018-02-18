@@ -104,7 +104,9 @@ cctv_group:
   entities:
     - camera.front_door
     - camera.front_of_house
-    - camera.bunny_cam
+    - camera.garage
+    - camera.bunny_camera
+
 
 nest_thermostat_group:
   name: Nest Thermostat
@@ -133,7 +135,8 @@ device_status_group:
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.esp_link_status
     - binary_sensor.tor_db_status
-
+    - binary_sensor.usp_network_online
+    - binary_sensor.ikea_tradfri_gateway_online
 
 
 kitchen_climate_group:

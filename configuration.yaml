@@ -80,10 +80,9 @@ sun:
 ############################################################
 
 
-# APC UPS
+# APC UPS Daemon, which talks to the networked UPS via SNMP.
 apcupsd:
-# Defaults to localhost
-#  host: !secret apcupsdIP
+#  host: !secret Local_Host
   port: !secret apcupsdPort
 
 nest:
@@ -154,7 +153,7 @@ tts:
 
 
 emulated_hue:
-  host_ip: !secret LocalHost
+  host_ip: !secret Local_Host
   listen_port: 80
 # emulated_hue 1:
 #   host_ip: !secret LocalHost
