@@ -155,23 +155,24 @@ tts:
 emulated_hue:
   host_ip: !secret Local_Host
   listen_port: 80
+  entities:
+    light.kitchen_under_counter_lights:
+      name: "Kitchen Lights"
 # emulated_hue 1:
 #   host_ip: !secret LocalHost
 
 
-axis:
-   p3301:
-     host: !secret axis_front_door_IP
-     username: !secret axis_front_door_username
-     password: !secret axis_front_door_password
-     include:
-      - camera
-      - motion
-      - vmd3
-      - pir
-      - sound
-      - daynight
-
+# axis:
+#    p3301:
+#      host: !secret axis_front_door_IP
+#      username: !secret axis_front_door_username
+#      password: !secret axis_front_door_password
+#      include:
+#       - camera
+#       - motion
+#       - vmd3
+#       - sound
+#      trigger_time: 0
 
 ############################################################
 #
