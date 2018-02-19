@@ -120,7 +120,7 @@ mobiles_group:
   view: no
   entities:
     - device_tracker.richard_sailfish
-    - device_tracker.lucy_nexus5x
+    - device_tracker.lucy_bullhead
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 

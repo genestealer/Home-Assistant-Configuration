@@ -142,6 +142,9 @@ rflink:
   port: !secret RF_Link_Port
   wait_for_ack: True
   reconnect_interval: 1 #1 second
+  ignore_devices:
+    - sensor.owl_cm113_ea7f_current2
+    - sensor.owl_cm113_ea7f_current3
 
 tradfri:
   host: !secret Ikea_Tradfri_IP

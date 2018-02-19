@@ -4,17 +4,28 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: !secret owntracksMQTTRichard
-  name: "Richard Phone Battery"
-  unit_of_measurement: "%"
-  value_template: '{{ value_json.batt }}'
+# - platform: mqtt
+#   state_topic: !secret owntracksMQTTRichard
+#   name: "Richard Phone Battery"
+#   unit_of_measurement: "%"
+#   value_template: '{{ value_json.batt }}'
 
-- platform: mqtt
-  state_topic: !secret owntracksMQTTLucy
-  name: "Lucy Phone Battery"
-  unit_of_measurement: "%"
-  value_template: '{{ value_json.batt }}'
+# - platform: mqtt
+#   state_topic: !secret owntracksMQTTLucy
+#   name: "Lucy Phone Battery"
+#   unit_of_measurement: "%"
+#   value_template: '{{ value_json.batt }}'
 
+- platform: template
+  sensors:
+    richard_phone_battery:
+      friendly_name: "Richard Phone Battery"
+      unit_of_measurement: "%"
+      value_template: "{{states.device_tracker.richard_sailfish.attributes.battery}}"
+    
+    lucy_phone_battery:
+      friendly_name: "Lucy Phone Battery"
+      unit_of_measurement: "%"
+      value_template: "{{states.device_tracker.lucy_bullhead.attributes.battery}}"
 
   

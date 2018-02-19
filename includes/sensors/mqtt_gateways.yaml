@@ -188,7 +188,7 @@
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB Client Name"
   value_template: '{{ value_json.ClientName }}'
-  availability_topic: "HUISHS/DoorBell/status"
+  availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -196,7 +196,7 @@
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB IP"
   value_template: '{{ value_json.IP }}'
-  availability_topic: "HUISHS/DoorBell/status"
+  availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -204,7 +204,7 @@
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB MAC"
   value_template: '{{ value_json.MAC }}'
-  availability_topic: "HUISHS/DoorBell/status"
+  availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -213,7 +213,7 @@
   name: "TOR DB RSSI"
   unit_of_measurement: "dBm"
   value_template: '{{ value_json.RSSI }}'
-  availability_topic: "HUISHS/DoorBell/status"
+  availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -221,7 +221,7 @@
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB Host"
   value_template: '{{ value_json.HostName }}'
-  availability_topic: "HUISHS/DoorBell/status"
+  availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -229,6 +229,6 @@
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
-  availability_topic: "HUISHS/DoorBell/status"
+  availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
