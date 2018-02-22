@@ -37,9 +37,6 @@
     - platform: mqtt
       topic: HUISHS/dash-button/dettol
       payload: 'active'
-    - platform: mqtt
-      topic: HUISHS/dash-button/rightguard
-      payload: 'active'
   action:
     service: light.toggle
     entity_id: light.lamp_3 #upstairs_hall_light
@@ -62,3 +59,20 @@
   action:
     service: light.toggle
     entity_id: light.christmas_tree_bling
+
+
+
+- alias: "Dash Button Bedroom Lights Night Mode"
+  trigger:
+    - platform: mqtt
+      topic: HUISHS/dash-button/rightguard
+      payload: 'active'
+  action:
+    - service: homeassistant.turn_on
+      #THIS IS TRADFRI GATEWAY
+      entity_id: light.richard_bed 
+      data:
+        brightness: 10
+    - service: homeassistant.turn_off
+      #THIS IS TRADFRI GATEWAY
+      entity_id: light.lucy_bed     

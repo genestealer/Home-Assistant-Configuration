@@ -83,13 +83,24 @@ irrigation_view:
     - group.irrigation_controller_info_group
 
 
+bedroom_view:
+  name: Bedroom
+  view: yes
+  entities:
+    - light.bedroom
+    - light.richard_bed
+    - light.lucy_bed
 
-# bedroom_view:
-#   name: Bedroom
-#   view: yes
-#   entities:
-#     - light.lamp_2
-#     - switch.button_1
+
+sitting_room_view:
+  name: Sitting Room
+  view: yes
+  entities:
+    - switch.plugin_air_freshener
+    - light.sitting_room
+    - light.sofa_left
+    - light.sofa_right
+
 
 ############################################################
 #
@@ -156,6 +167,12 @@ lighting_group:
     - light.lamp_2
     - light.lamp_3
     - light.lamp_4
+    - light.bedroom
+    - light.richard_bed
+    - light.lucy_bed
+    - light.sitting_room
+    - light.sofa_left
+    - light.sofa_right
 
 
 
@@ -164,6 +181,9 @@ bunny_shed_group:
   view: no
   control: hidden
   entities:
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_humidity
+
     - sensor.bs_temperature
     - sensor.bs_humidity
 
@@ -201,6 +221,14 @@ speed_test_group:
    - sensor.speedtest_download
    - sensor.speedtest_ping
    - sensor.speedtest_upload
+
+pi_hole:
+  name: Pi Hole
+  view: no
+  entities:
+      - sensor.pihole_ads_blocked_today
+      - sensor.pihole_ads_percentage_blocked_today
+      - sensor.pihole_dns_queries_today
 
 irrigation_group:
     name: Irrigation Control
@@ -392,23 +420,9 @@ inside_christmas_lights:
   entities:
     - light.christmas_tree_bling
     - light.christmas_kitchen_star
-    # - light.snowflake_lights
 
 
 
-# doorbell_group:
-#   name: Doorbell
-#   view: no
-#   entities:
-#     - binary_sensor.doorbell
-
-
-amazon_dash_group:
-  name: Dash Buttons
-  view: no
-  entities:
-    - binary_sensor.dash1_button
-    - binary_sensor.dash2_button
 
 controllers:
   name: Gateways
@@ -418,10 +432,4 @@ controllers:
     - group.bunny_shed_controller_info_group
     - group.irrigation_controller_info_group
 
-pi_hole:
-  name: Pi Hole
-  view: no
-  entities:
-      - sensor.pihole_ads_blocked_today
-      - sensor.pihole_ads_percentage_blocked_today
-      - sensor.pihole_dns_queries_today
+

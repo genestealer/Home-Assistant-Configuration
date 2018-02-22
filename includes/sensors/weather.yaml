@@ -8,11 +8,13 @@
   api_key: !secret dark_sky_key
   units: uk2
   monitored_conditions:
-    - summary
-    - hourly_summary
     - temperature
     - humidity
+    - summary
     - daily_summary
+    - hourly_summary
+    - temperature_max
+    - temperature_min
     #- summary
     # - icon
     # - nearest_storm_distance
@@ -33,8 +35,7 @@
     # - minutely_summary
     #  - hourly_summary
     #  - daily_summary
-    # - temperature_max
-    # - temperature_min
+
     # - apparent_temperature_max
     # - apparent_temperature_min
     # - precip_intensity_max
