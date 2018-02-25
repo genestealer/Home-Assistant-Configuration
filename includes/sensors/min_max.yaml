@@ -1,0 +1,19 @@
+############################################################
+#
+# Min/max Sensor
+#
+############################################################
+
+# - platform: min_max
+#   unit_of_measurement: '°C'
+#   name: "BS Temperature Highest"
+#   entity_ids:
+#     - sensor.bs_temperature
+#   type: max
+
+# - platform: min_max
+#   unit_of_measurement: '°C'
+#   name: "BS Temperature Lowest"
+#   entity_ids:
+#     - sensor.bs_temperature
+#   type: min
