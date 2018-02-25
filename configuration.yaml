@@ -43,10 +43,7 @@ updater:
 discovery:
   ignore:
     - roku
-<<<<<<< HEAD
-    
-=======
->>>>>>> b4e340119c18b4cc807718f254c9c3c1fad8f92c
+
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
@@ -79,12 +76,8 @@ logger:
   logs:
     requests.packages.urllib3.connectionpool: critical
     rflink.protocol: fatal
-<<<<<<< HEAD
     homeassistant.components.sensor.plex: fatal
     urllib3.connectionpool: error
-
-=======
->>>>>>> b4e340119c18b4cc807718f254c9c3c1fad8f92c
 
 
 # Track the sun
