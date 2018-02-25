@@ -11,6 +11,13 @@
   availability_topic: "HUISHS/BunnyShed/status"
   payload_available: "online"
   payload_not_available: "offline"
+  json_attributes:
+    - ClientName
+    - IP
+    - MAC
+    - RSSI
+    - HostName
+    - ConnectedSSID
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
