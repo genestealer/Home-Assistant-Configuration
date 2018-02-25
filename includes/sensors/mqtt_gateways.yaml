@@ -4,6 +4,14 @@
 #
 ############################################################
 
+# # Example of using template to extract the json_attributes from the mqtt sensor.
+# - platform: template
+#   sensors:
+#     bs_client_name:
+#       friendly_name: "BS Client Name"
+#       value_template: "{{ states.sensor.bs_client_name.attributes.ClientName }}"
+
+
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Client Name"

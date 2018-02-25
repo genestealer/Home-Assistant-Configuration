@@ -23,18 +23,18 @@ config:
 cloud:
 
 http:
-  # api_password: !secret http_password
-  # server_port: 443
-  # ssl_certificate: !secret SSL_cert
-  # ssl_key: !secret SSL_key
-  # base_url: !secret Base_url
-  # ip_ban_enabled: True
-  # login_attempts_threshold: 50
-  # trusted_networks:
-  # - 127.0.0.1
-  # - 192.168.0.0/24
-  # # - !secret myip
-  # #- ::1
+  api_password: !secret http_password
+  server_port: 443
+  ssl_certificate: !secret SSL_cert
+  ssl_key: !secret SSL_key
+  base_url: !secret Base_url
+  ip_ban_enabled: True
+  login_attempts_threshold: 50
+  trusted_networks:
+  - 127.0.0.1
+  - 192.168.0.0/24
+  # - !secret myip
+  #- ::1
 
 # Checks for available updates
 updater:
@@ -48,12 +48,12 @@ discovery:
 conversation:
 
 
-# Enables support for tracking state changes over time.
+# Enables support for tracking state changes over time. (Cleared at startup)
 history:
 
-# Tracked history is kept for 10 days
-recorder:
-  purge_keep_days: 10
+# Tracked history is kept for 10 days. (Not cleared at startup)
+# recorder:
+#   purge_keep_days: 10
 
 # View all events in a logbook
 logbook:
@@ -72,7 +72,7 @@ map:
 
 # https://github.com/home-assistant/home-assistant/issues/1806
 logger:
-  default: warning
+  default: debug
   logs:
     requests.packages.urllib3.connectionpool: critical
     rflink.protocol: fatal
@@ -197,6 +197,10 @@ emulated_hue:
 #
 ############################################################
 
+# Single Files
+zone: !include includes/zone.yaml
+camera: !include includes/cameras.yaml
+shell_command: !include includes/shell_commands.yaml
 automation: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
 
 # Merge List
@@ -209,12 +213,6 @@ switch: !include_dir_merge_list includes/switch
 # Merge named dir
 script: !include_dir_merge_named includes/scripts
 input_boolean: !include_dir_merge_named includes/input_boolean
-
-# Single Files
-zone: !include includes/zone.yaml
-camera: !include includes/cameras.yaml
-shell_command: !include includes/shell_commands.yaml
-
 
 # Merge Named
 group: !include includes/group/groups.yaml

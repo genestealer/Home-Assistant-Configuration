@@ -4,7 +4,8 @@
 #
 ############################################################
 
-- alias: Bunny Fluff Filter Schedule On
+- id: '1519574397860'
+  alias: Bunny Fluff Filter Schedule On
   trigger:
     platform: time
     at: '08:00:00'
