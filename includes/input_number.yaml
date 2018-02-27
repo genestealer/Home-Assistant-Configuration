@@ -1,6 +1,6 @@
 ############################################################
 #
-# Sliders
+# Sliders - Input Numbers
 #
 ############################################################
 
@@ -49,3 +49,4 @@ pot_irrigation_duration:
   step: 1
   unit_of_measurement: mins
   icon: mdi:clock-end
+

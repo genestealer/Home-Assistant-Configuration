@@ -217,7 +217,7 @@ input_boolean: !include_dir_merge_named includes/input_boolean
 # Merge Named
 group: !include includes/group/groups.yaml
 input_number: !include includes/input_number.yaml
-
+input_select: !include includes/input_select.yaml
 
 
 # weblink:

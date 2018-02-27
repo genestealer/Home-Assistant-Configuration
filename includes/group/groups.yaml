@@ -244,11 +244,21 @@ lawn_irrigation_group:
   control: hidden
   entities:
     - automation.irrigate_lawn_at_sunrise
-    - switch.lawn_irrigation_valve
+    - sensor.lawn_irrigation_valve_status
     - sensor.lawn_irrigation_duration
+    - sensor.lawn_irrigation_last_run
+    - group.lawn_irrigation_settings
+
+lawn_irrigation_settings:
+  name: Settings
+  view: no
+  control: hidden
+  entities:
+    - automation.irrigate_lawn_at_sunrise
+    - switch.lawn_irrigation_valve
     - input_number.lawn_irrigation_duration
     - script.lawn_irrigation_timer
-    - sensor.lawn_irrigation_last_run
+
 
 pots_irrigation_group:
   name: Pots Irrigation
@@ -256,11 +266,21 @@ pots_irrigation_group:
   control: hidden
   entities:
     - automation.irrigate_pots_at_sunrise
-    - switch.pot_irrigation_valve
+    - sensor.pot_irrigation_valve_status
     - sensor.pot_irrigation_duration
+    - sensor.pot_irrigation_last_run
+    - group.pots_irrigation_settings
+
+
+pots_irrigation_settings:
+  name: Settings
+  view: no
+  control: hidden
+  entities:
+    - automation.irrigate_pots_at_sunrise
+    - switch.pot_irrigation_valve
     - input_number.pot_irrigation_duration
     - script.pot_irrigation_timer
-    - sensor.pot_irrigation_last_run
 
 # controller_info_groups
 bunny_shed_controller_info_group:

@@ -8,21 +8,44 @@
 - platform: template
   sensors:
     pot_irrigation_duration:
-      friendly_name: 'Pot Water Duration'
+      friendly_name: 'Duration'
       entity_id: input_number.pot_irrigation_duration
       value_template: '00:{{states.input_number.pot_irrigation_duration.state | round(0)}}'
 
     pot_irrigation_last_run:
-       friendly_name: 'Pots Last Watered'
+       friendly_name: 'Last Watered'
        entity_id: switch.pot_irrigation_valve
        value_template: "{{states.switch.pot_irrigation_valve.last_changed.strftime('%a')}}, {{states.switch.pot_irrigation_valve.last_changed.strftime('%H:%M %d-%m-%Y')}}"
 
+    pot_irrigation_valve_status:
+      friendly_name: 'Valve Status'
+      value_template: "{% if states.switch.pot_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(now()) - as_timestamp(states.switch.pot_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
+
+
     lawn_irrigation_duration:
-      friendly_name: 'Lawn Water Duration'
+      friendly_name: 'Duration'
       entity_id: input_number.pot_irrigation_duration
       value_template: '00:{{states.input_number.lawn_irrigation_duration.state | round(0)}}'
 
     lawn_irrigation_last_run:
-       friendly_name: 'Lawn Last Watered'
+       friendly_name: 'Last Watered'
        entity_id: switch.lawn_irrigation_valve
        value_template: "{{states.switch.lawn_irrigation_valve.last_changed.strftime('%a')}}, {{states.switch.lawn_irrigation_valve.last_changed.strftime('%H:%M %d-%m-%Y')}}"
+
+    lawn_irrigation_valve_status:
+      friendly_name: 'Valve Status'
+      value_template: "{% if states.switch.lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(now()) - as_timestamp(states.switch.lawn_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
+
+
+# Next pots watering:
+  # Disabled/enamlbed: Irrigate Pots at Sunrise
+  # sun next_rising
+  # Temp not too low
+
+
+# Next Lawn watering:
+  # Disabled/enamlbed: Irrigate Lawn at Sunrise
+  # sun next_rising + offset
+  # day of the week
+  # wind
+  # Temp not too low

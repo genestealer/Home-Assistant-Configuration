@@ -1,44 +1,44 @@
-############################################################
+# ############################################################
+# #
+# # Weather Sensor - darksky
+# #
+# ############################################################
 #
-# Weather Sensor - darksky
+# - platform: darksky
+#   api_key: !secret dark_sky_key
+#   units: uk2
+#   monitored_conditions:
+#     - temperature
+#     - humidity
+#     - summary
+#     - daily_summary
+#     - hourly_summary
+#     - temperature_max
+#     - temperature_min
+#     #- summary
+#     # - icon
+#     # - nearest_storm_distance
+#     # - nearest_storm_bearing
+#     # - precip_type
+#     # - precip_intensity
+#     # - precip_probability
+#     # - temperature
+#     # - apparent_temperature
+#     # - dew_point
+#     # - wind_speed
+#     # - wind_bearing
+#     # - cloud_cover
+#     # - humidity
+#     # - pressure
+#     # - visibility
+#     # - ozone
+#     # - minutely_summary
+#     #  - hourly_summary
+#     #  - daily_summary
 #
-############################################################
-
-- platform: darksky
-  api_key: !secret dark_sky_key
-  units: uk2
-  monitored_conditions:
-    - temperature
-    - humidity
-    - summary
-    - daily_summary
-    - hourly_summary
-    - temperature_max
-    - temperature_min
-    #- summary
-    # - icon
-    # - nearest_storm_distance
-    # - nearest_storm_bearing
-    # - precip_type
-    # - precip_intensity
-    # - precip_probability
-    # - temperature
-    # - apparent_temperature
-    # - dew_point
-    # - wind_speed
-    # - wind_bearing
-    # - cloud_cover
-    # - humidity
-    # - pressure
-    # - visibility
-    # - ozone
-    # - minutely_summary
-    #  - hourly_summary
-    #  - daily_summary
-
-    # - apparent_temperature_max
-    # - apparent_temperature_min
-    # - precip_intensity_max
+#     # - apparent_temperature_max
+#     # - apparent_temperature_min
+#     # - precip_intensity_max
 
 ############################################################
 #
@@ -49,5 +49,14 @@
 - platform: wunderground
   api_key: !secret WUnderground_API
   monitored_conditions:
-    - precip_today_metric
-    # - precip_1d_metric
+    - precip_today_metric #Total precipitation in metric units
+    - precip_1d_mm # Forecasted precipitation intensity in millimeters
+    - temp_low_1d_c # Forecasted low temperature in Celsius
+    - temp_high_1d_c # Forecasted high temperature in Celsius
+    - temp_c # Current temperature in Celsius
+    - relative_humidity # Relative humidity
+    - feelslike_c # Feels like (or apparent) temperature in Celsius
+    - precip_1d # Forecasted precipitation probability in %
+    - wind_mph # Current wind speed in mph
+    - wind_1d_mph # Forecasted wind speed in mph
+    - alerts

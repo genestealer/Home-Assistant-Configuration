@@ -1,0 +1,37 @@
+############################################################
+#
+# Input Select
+#
+############################################################
+
+lawn_irrigation_schedule:
+  name: Schedule
+  options:
+  - Mon/Wed/Fri/Sun
+  # - None - Close Valve
+  - Every Day
+  - Mon/Thu
+  - Monday
+  - Tuesday
+  - Wednesday
+  - Thursday
+  - Friday
+  - Saturday
+  - Sunday
+  icon: mdi:calendar
+
+pots_irrigation_schedule:
+  name: Schedule
+  options:
+  - Mon/Wed/Fri/Sun
+  # - None - Close Valve
+  - Every Day
+  - Mon/Thu
+  - Monday
+  - Tuesday
+  - Wednesday
+  - Thursday
+  - Friday
+  - Saturday
+  - Sunday
+  icon: mdi:calendar

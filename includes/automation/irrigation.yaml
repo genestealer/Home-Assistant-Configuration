@@ -16,6 +16,8 @@
 ############################################################
 #
 #  Irrigation Schedule auto time Lawn
+#  Only runs when is not forecasted to rain, its not too windy
+#  and the forecasted low is above 5 degrees centigrade.
 #
 ############################################################
 # look into https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
@@ -24,20 +26,33 @@
   trigger:
     platform: sun
     event: sunrise
-    offset: "+01:30:00"
+    offset: "+01:30:00" # Run 1.5 hours after dawn
   condition:
    condition: and
    conditions:
-     # Don't water it is raining today
+     # Don't water it is raining today (Forcasted using wunderground)
    - condition: numeric_state
-     entity_id: sensor.precip_1d_metric
+     entity_id: sensor.pws_precip_1d_mm
+     below: 3 # 3mm of rain.
+
+     # Don't water it is very windy right this moment.
+   - condition: numeric_state
+     entity_id: sensor.pws_wind_mph
      below: 3
+
      # Only water every few days
    - condition: time
      weekday:
        - tue
        - thu
        - sat
+
+    # To protect the plants and pipes, don't run if the forecasted low is above 5 degrees centigrade
+    # (Should be off in winter anyways)
+   - condition: numeric_state
+     entity_id: sensor.pws_temp_low_1d_c
+     above: 5
+
   action:
     service: homeassistant.turn_on
     entity_id: script.lawn_irrigation_timer
@@ -48,13 +63,19 @@
 #  Irrigation Schedule auto time pots
 #
 ############################################################
-
 - alias: Irrigate Pots at Sunrise
   trigger:
     platform: sun
     event: sunrise
   condition:
-    #To do its not raining today
+    # Still run, even if its going to rain rain today.
+
+    # To protect the plants and pipes, don't run if the forecasted low is above 5 degrees centigrade
+    # (Should be off in winter anyways)
+   - condition: numeric_state
+     entity_id: sensor.pws_temp_low_1d_c
+     above: 5
+
   action:
     service: homeassistant.turn_on
     entity_id: script.pot_irrigation_timer
