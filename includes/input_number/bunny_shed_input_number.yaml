@@ -1,6 +1,6 @@
 ############################################################
 #
-# Sliders - Input Numbers
+# Bunny Shed: Sliders - Input Numbers
 #
 ############################################################
 
@@ -22,31 +22,3 @@ shed_target_cool_temp:
   step: 0.5
   unit_of_measurement: °C
   icon: mdi:snowflake
-
-minute_delay:
-  name: Heat for x Mins
-  # initial: 40
-  min: 1
-  max: 120
-  step: 1
-  unit_of_measurement: mins
-  icon: mdi:clock-end
-
-lawn_irrigation_duration:
-  name: Lawn Irrigation Duration
-  # initial: 30
-  min: 1
-  max: 60
-  step: 1
-  unit_of_measurement: mins
-  icon: mdi:clock-end
-
-pot_irrigation_duration:
-  name: Pot Irrigation Duration
-  # initial: 40
-  min: 1
-  max: 60
-  step: 1
-  unit_of_measurement: mins
-  icon: mdi:clock-end
-

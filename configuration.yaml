@@ -170,12 +170,10 @@ tts:
 
 emulated_hue:
   host_ip: !secret Local_Host
-  listen_port: 80
+  # listen_port: 8300
   entities:
     light.kitchen_under_counter_lights:
       name: "Kitchen Lights"
-# emulated_hue 1:
-#   host_ip: !secret LocalHost
 
 
 # axis:
@@ -213,11 +211,12 @@ switch: !include_dir_merge_list includes/switch
 # Merge named dir
 script: !include_dir_merge_named includes/scripts
 input_boolean: !include_dir_merge_named includes/input_boolean
+input_select: !include_dir_merge_named includes/input_select
+input_number: !include_dir_merge_named includes/input_number
 
 # Merge Named
 group: !include includes/group/groups.yaml
-input_number: !include includes/input_number.yaml
-input_select: !include includes/input_select.yaml
+
 
 
 # weblink:

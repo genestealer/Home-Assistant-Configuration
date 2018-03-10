@@ -8,9 +8,8 @@ lawn_irrigation_schedule:
   name: Schedule
   options:
   - Mon/Wed/Fri/Sun
-  # - None - Close Valve
   - Every Day
-  - Mon/Thu
+  - Tue/Fri
   - Monday
   - Tuesday
   - Wednesday
@@ -26,7 +25,7 @@ pots_irrigation_schedule:
   - Mon/Wed/Fri/Sun
   # - None - Close Valve
   - Every Day
-  - Mon/Thu
+  - Tue/Fri
   - Monday
   - Tuesday
   - Wednesday
@@ -35,3 +34,16 @@ pots_irrigation_schedule:
   - Saturday
   - Sunday
   icon: mdi:calendar
+
+  # - None - Close Valve
+  # - Run Now
+  # - Every Day
+  # - Mon/Wed/Fri/Sun
+  # - Mon/Thu
+  # - Monday
+  # - Tuesday
+  # - Wednesday
+  # - Thursday
+  # - Friday
+  # - Saturday
+  # - Sunday

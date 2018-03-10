@@ -1,0 +1,24 @@
+############################################################
+#
+# irrigation: Sliders - Input Numbers
+#
+############################################################
+
+lawn_irrigation_duration:
+  name: Lawn Irrigation Duration
+  # initial: 30
+  min: 1
+  max: 60
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:clock-end
+
+pot_irrigation_duration:
+  name: Pot Irrigation Duration
+  # initial: 40
+  min: 1
+  max: 60
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:clock-end
+
