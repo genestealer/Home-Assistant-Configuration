@@ -1,0 +1,41 @@
+############################################################
+#
+# Binary Irrigation Sensors
+#
+############################################################
+
+
+# Pots Weather Interlock
+# Only water the lawn if its not too cold 
+  - platform: template
+    sensors:
+      pots_irrigation_interlock:
+        friendly_name: "Weather Interlock"
+        device_class: problem
+        value_template: >
+         {% if
+         states('sensor.pws_temp_low_1d_c') | int > 5 %}
+         false
+         {% else %}
+         true
+         {% endif %}
+         
+# Lawn Weather Interlock
+# Only water the lawn if its not going to rain, its not windy and its not too cold 
+  - platform: template
+    sensors:
+      lawn_irrigation_interlock:
+        friendly_name: "Weather Interlock"
+        device_class: problem
+        value_template: >
+         {% if
+         states('sensor.pws_precip_today_metric') | int < 3
+         and
+         states('sensor.pws_wind_mph') | int < 15
+         and
+         states('sensor.pws_temp_low_1d_c') | int > 5 %}
+         false
+         {% else %}
+         true
+         {% endif %}
+

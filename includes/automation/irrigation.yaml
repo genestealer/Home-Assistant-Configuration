@@ -20,42 +20,63 @@
 #  and the forecasted low is above 5 degrees centigrade.
 #
 ############################################################
-# look into https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
-
 - alias: Irrigate Lawn at Sunrise
   trigger:
-    platform: sun
-    event: sunrise
-    offset: "+01:30:00" # Run 1.5 hours after dawn
+    platform: template
+    value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}'
   condition:
    condition: and
    conditions:
-     # Don't water it is raining today (Forcasted using wunderground)
-   - condition: numeric_state
-     entity_id: sensor.pws_precip_1d_mm
-     below: 3 # 3mm of rain.
-
-     # Don't water it is very windy right this moment.
-   - condition: numeric_state
-     entity_id: sensor.pws_wind_mph
-     below: 3
-
-     # Only water every few days
-   - condition: time
-     weekday:
-       - tue
-       - thu
-       - sat
-
-    # To protect the plants and pipes, don't run if the forecasted low is above 5 degrees centigrade
-    # (Should be off in winter anyways)
-   - condition: numeric_state
-     entity_id: sensor.pws_temp_low_1d_c
-     above: 5
+   - condition: template
+     value_template: "{{states.sensor.lawn_irrigation_next_run.state[5:15] == now.date().strftime('%d-%m-%Y')}}"
+   
+   - condition: state
+     entity_id: 'binary_sensor.lawn_irrigation_interlock'
+     state: 'off'
 
   action:
     service: homeassistant.turn_on
     entity_id: script.lawn_irrigation_timer
+
+###OLD method
+# look into https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
+
+# - alias: Irrigate Lawn at Sunrise
+#   trigger:
+#     platform: sun
+#     event: sunrise
+#     offset: "+01:30:00" # Run 1.5 hours after dawn
+#   condition:
+#    condition: and
+#    conditions:
+#      # Don't water it is raining today (Forcasted using wunderground)
+#    - condition: numeric_state
+#      entity_id: sensor.pws_precip_today_metric
+#      below: 5 # 5mm of rain.
+
+#      # Don't water it is very windy right this moment.
+#    - condition: numeric_state
+#      entity_id: sensor.pws_wind_mph
+#      below: 10
+
+#      # Only water every few days
+#    - condition: time
+#      weekday:
+#        - tue
+#        - thu
+#        - sat
+
+#     # To protect the plants and pipes, don't run if the forecasted low is above 5 degrees centigrade
+#     # (Should be off in winter anyways)
+#    - condition: numeric_state
+#      entity_id: sensor.pws_temp_low_1d_c
+#      above: 5
+
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: script.lawn_irrigation_timer
+
+
 
 
 ############################################################
@@ -68,20 +89,40 @@
     platform: sun
     event: sunrise
   condition:
-    # Still run, even if its going to rain rain today.
-
-    # To protect the plants and pipes, don't run if the forecasted low is above 5 degrees centigrade
-    # (Should be off in winter anyways)
-   - condition: numeric_state
-     entity_id: sensor.pws_temp_low_1d_c
-     above: 5
+   condition: and
+   conditions:
+   - condition: template
+     value_template: "{{states.sensor.pot_irrigation_next_run.state[5:15] == now.date().strftime('%d-%m-%Y')}}"
+   
+   - condition: state
+     entity_id: 'binary_sensor.pots_irrigation_interlock'
+     state: 'off'
 
   action:
     service: homeassistant.turn_on
     entity_id: script.pot_irrigation_timer
 
+###OLD method
+# - alias: Irrigate Pots at Sunrise
+#   trigger:
+#     platform: sun
+#     event: sunrise
+#   condition:
+#     # Still run, even if its going to rain rain today.
 
-#### OLD method.
+#     # To protect the plants and pipes, don't run if the forecasted low is above 5 degrees centigrade
+#     # (Should be off in winter anyways)
+#    - condition: numeric_state
+#      entity_id: sensor.pws_temp_low_1d_c
+#      above: 5
+
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: script.pot_irrigation_timer
+
+
+
+#### OLDER method.
 # - alias: Irrigation Schedule AM On
 #   trigger:
 #     platform: time

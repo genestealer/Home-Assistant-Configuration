@@ -239,3 +239,29 @@ switch.pot_irrigation_valve:
   icon: mdi:water
 switch.lawn_irrigation_valve:
   icon: mdi:water
+sensor.lawn_irrigation_valve_status:
+ icon: mdi:water-pump
+sensor.lawn_irrigation_last_run:
+ icon: mdi:history  
+sensor.lawn_irrigation_next_run:
+ icon: mdi:calendar-clock
+sensor.lawn_irrigation_schedule:
+ icon: mdi:calendar
+sensor.irrigation_starttime:
+ icon: mdi:clock 
+sensor.lawn_irrigation_duration:
+ icon: mdi:timer-sand
+sensor.pot_irrigation_valve_status:
+ icon: mdi:water-pump
+sensor.pot_irrigation_last_run:
+ icon: mdi:history  
+sensor.pot_irrigation_next_run:
+ icon: mdi:calendar-clock
+sensor.pot_irrigation_schedule:
+ icon: mdi:calendar
+sensor.pot_irrigation_duration:
+ icon: mdi:timer-sand 
+
+
+
+

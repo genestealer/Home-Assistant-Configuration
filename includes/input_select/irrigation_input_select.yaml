@@ -4,35 +4,40 @@
 #
 ############################################################
 
-lawn_irrigation_schedule:
-  name: Schedule
-  options:
-  - Mon/Wed/Fri/Sun
-  - Every Day
-  - Tue/Fri
-  - Monday
-  - Tuesday
-  - Wednesday
-  - Thursday
-  - Friday
-  - Saturday
-  - Sunday
-  icon: mdi:calendar
 
 pots_irrigation_schedule:
   name: Schedule
   options:
-  - Mon/Wed/Fri/Sun
-  # - None - Close Valve
-  - Every Day
-  - Tue/Fri
-  - Monday
-  - Tuesday
-  - Wednesday
-  - Thursday
-  - Friday
-  - Saturday
-  - Sunday
+    - None - Close Valve
+    - Run Now
+    - Every Day
+    - Mon/Wed/Fri/Sun
+    - Mon/Thu
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    - Sunday
+  icon: mdi:calendar
+
+
+lawn_irrigation_schedule:
+  name: Schedule
+  options:
+    - None - Close Valve
+    - Run Now
+    - Every Day
+    - Mon/Wed/Fri/Sun
+    - Mon/Thu
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    - Sunday
   icon: mdi:calendar
 
   # - None - Close Valve
