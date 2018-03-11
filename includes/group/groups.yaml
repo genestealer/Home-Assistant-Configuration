@@ -201,11 +201,11 @@ bunny_shed_group:
 
     - binary_sensor.bunny_shed_heater
     - sensor.bunny_shed_target_heat_temperature
-    - input_number.shed_target_heat_temp
+
 
     - binary_sensor.bunny_shed_cooler
     - sensor.bunny_shed_target_cool_temperature
-    - input_number.shed_target_cool_temp
+
 
     - sensor.bs_temperature_highest
     - sensor.bs_temperature_lowest
@@ -213,7 +213,15 @@ bunny_shed_group:
     - sensor.heater_on_last_24_hours
     - sensor.cooler_on_last_24_hours
     - sensor.bs_temperature_statistics_mean
+    - group.bunny_shed_settings
 
+bunny_shed_settings:
+  name: Setting
+  view: no
+  control: hidden
+  entities:
+    - input_number.shed_target_heat_temp
+    - input_number.shed_target_cool_temp
 
 
 outside_weather_group:
@@ -272,7 +280,7 @@ lawn_irrigation_group:
     - group.lawn_irrigation_settings
 
 lawn_irrigation_settings:
-  name: Lawn Settings
+  name: Settings
   view: no
   control: hidden
   entities:
@@ -300,7 +308,7 @@ pots_irrigation_group:
 
 
 pots_irrigation_settings:
-  name: Pots Settings
+  name: Settings
   view: no
   control: hidden
   entities:

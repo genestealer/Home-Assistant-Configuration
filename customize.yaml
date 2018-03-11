@@ -46,9 +46,10 @@ input_number.shed_target_cool_temp:
 input_number.shed_target_heat_temp:
   friendly_name: Shed Heat Target
 binary_sensor.bunny_shed_cooler:
+  device_class: cold
   icon: mdi:fan
 binary_sensor.bunny_shed_heater:
-  icon: mdi:waves
+  icon: mdi:fire
 switch.kitchen_extractor_fan:
   icon: mdi:fan
 switch.bunny_fluff_air_filter:
@@ -240,28 +241,28 @@ switch.pot_irrigation_valve:
 switch.lawn_irrigation_valve:
   icon: mdi:water
 sensor.lawn_irrigation_valve_status:
- icon: mdi:water-pump
+  icon: mdi:water-pump
 sensor.lawn_irrigation_last_run:
- icon: mdi:history  
+  icon: mdi:history
 sensor.lawn_irrigation_next_run:
- icon: mdi:calendar-clock
+  icon: mdi:calendar-clock
 sensor.lawn_irrigation_schedule:
- icon: mdi:calendar
+  icon: mdi:calendar
 sensor.irrigation_starttime:
- icon: mdi:clock 
+  icon: mdi:clock
 sensor.lawn_irrigation_duration:
- icon: mdi:timer-sand
+  icon: mdi:timer-sand
 sensor.pot_irrigation_valve_status:
- icon: mdi:water-pump
+  icon: mdi:water-pump
 sensor.pot_irrigation_last_run:
- icon: mdi:history  
+  icon: mdi:history
 sensor.pot_irrigation_next_run:
- icon: mdi:calendar-clock
+  icon: mdi:calendar-clock
 sensor.pot_irrigation_schedule:
- icon: mdi:calendar
+  icon: mdi:calendar
 sensor.pot_irrigation_duration:
- icon: mdi:timer-sand 
-
-
-
-
+  icon: mdi:timer-sand
+sensor.bunny_shed_target_cool_temperature:
+  icon: mdi:target
+sensor.bunny_shed_target_heat_temperature:
+  icon: mdi:target

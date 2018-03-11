@@ -8,8 +8,7 @@
 pots_irrigation_schedule:
   name: Schedule
   options:
-    - None - Close Valve
-    - Run Now
+    - None
     - Every Day
     - Mon/Wed/Fri/Sun
     - Mon/Thu
@@ -26,8 +25,7 @@ pots_irrigation_schedule:
 lawn_irrigation_schedule:
   name: Schedule
   options:
-    - None - Close Valve
-    - Run Now
+    - None
     - Every Day
     - Mon/Wed/Fri/Sun
     - Mon/Thu
