@@ -60,3 +60,4 @@
     - wind_mph # Current wind speed in mph
     - wind_1d_mph # Forecasted wind speed in mph
     - alerts
+    - weather

@@ -28,6 +28,8 @@
 #
 # Irrigation Sensors: Template
 # https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
+# Note, "now()" replaced with "as_timestamp(strptime(states.sensor.date__time.state, '%Y-%m-%d, %H:%M'"
+# as now() will noy trigger templated sensor updates.
 #
 ############################################################
 
@@ -41,7 +43,7 @@
 
 
     pot_irrigation_duration:
-      friendly_name: 'Duration'
+      friendly_name: 'Run Duration'
       # entity_id: input_number.pot_irrigation_duration
       value_template: '{{states.input_number.pot_irrigation_duration.state | round(0)}} minutes'
 
@@ -52,14 +54,14 @@
 
     pot_irrigation_valve_status:
       friendly_name: 'Valve Status'
-      value_template: "{% if states.switch.pot_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(now()) - as_timestamp(states.switch.pot_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
-
+      value_template: "{% if states.switch.pot_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date__time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.pot_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
+   
     pot_irrigation_schedule:
       friendly_name: 'Schedule'
       value_template: "{{ states.input_select.pots_irrigation_schedule.state }}"
 
     lawn_irrigation_duration:
-      friendly_name: 'Duration'
+      friendly_name: 'Run Duration'
       # entity_id: input_number.lawn_irrigation_duration
       value_template: '{{states.input_number.lawn_irrigation_duration.state | round(0)}} minutes'
 
@@ -70,7 +72,7 @@
 
     lawn_irrigation_valve_status:
       friendly_name: 'Valve Status'
-      value_template: "{% if states.switch.lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(now()) - as_timestamp(states.switch.lawn_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
+      value_template: "{% if states.switch.lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(as_timestamp(strptime(states.sensor.date__time.state, '%Y-%m-%d, %H:%M') - as_timestamp(states.switch.lawn_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
 
     lawn_irrigation_schedule:
       friendly_name: 'Schedule'

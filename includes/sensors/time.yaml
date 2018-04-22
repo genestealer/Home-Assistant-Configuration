@@ -1,0 +1,12 @@
+############################################################
+#
+# Time and Date
+# Used for driving template sensors which need a heatbeat to
+# update, in  place of Now()
+#
+############################################################
+
+
+- platform: time_date
+  display_options:
+    - 'date_time'

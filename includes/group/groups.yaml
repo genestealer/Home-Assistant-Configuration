@@ -9,16 +9,22 @@
 #    entities:
 #      - group.speed_test
 
-# main_view:
-#   name: Main
-#   view: yes
-#   entities:
-#     - group.cctv_group
-#     - group.nest_thermostat_group
-#     - group.kitchen_climate_group
-#     - group.outside_weather_group
-#     - group.mobiles_group
-#     - group.device_status_group
+main_view:
+  name: Main
+  view: yes
+  entities:
+    - group.cctv_group1
+    - group.cctv_group2
+    - group.nest_thermostat_group
+    - group.kitchen_climate_group
+    - group.mobiles_group
+    # - group.device_status_group
+    - group.device_status_summary_group
+    # - group.gateway_info_summary_group
+    - sensor.pws_weather
+    # - group.outside_weather_group
+
+    - group.speed_test_group
 
 
 lights_view:
@@ -50,6 +56,8 @@ bunny_shed_view:
   entities:
     - group.bunny_shed_group
     - group.bunny_shed_controller_info_group
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_humidity
 
 
 bathroom_view:
@@ -147,6 +155,12 @@ mobiles_group:
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
+
+device_status_summary_group:
+  name: Device Status Summary
+  view: no
+  entities:
+    - group.device_status_group
 
 device_status_group:
   name: Device Status
@@ -469,7 +483,6 @@ outside_christmas_lights:
     - light.christmas_bed_room_star
     - light.christmas_sitting_room_star
     - light.christmas_outside_lights
-    - light.lamp_1
 inside_christmas_lights:
   name: Inside Christmas Lights
   view: no
@@ -478,14 +491,13 @@ inside_christmas_lights:
     - light.christmas_kitchen_star
 
 
-
-
-controllers:
-  name: Gateways
+gateway_info_summary_group:
+  name: Gateways Info
   view: no
   entities:
     - group.rf_gateway_info_group
     - group.bunny_shed_controller_info_group
     - group.irrigation_controller_info_group
+    - group.tor_doorbell_info_group
 
 

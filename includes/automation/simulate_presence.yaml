@@ -24,8 +24,8 @@
         state: 'below_horizon'
       # Randomise when the lights all turn off
       - condition: time
-        before: '23:01:00'
-        #before: '23:{{ (range(01, 59) | random) }}:00'
+        before: '23:55:00'
+        #dont work: before: '23:{{ (range(01, 59) | random) }}:00'
       - condition: state
         entity_id: group.all_devices
         state: 'not_home'
@@ -35,12 +35,20 @@
         state: 'on'
   action:
     - service: light.turn_on
-    # Choose a lamp at random (between 1 and 4) and turn it on.
+    # Choose a lamp at random (between 1 and 3 (Set as 1-4)) and turn it on.
       data_template:
          entity_id: >
-           light.lamp_{{ (range(1, 3) | random) }}
+           light.lamp_{{ (range(1, 4) | random) }}
     # Keep lamp on for xx minutes)
     - delay: '00:{{ (range(10, 30) | random) }}:00'
+    - service: light.turn_on
+    # Choose a lamp at random (between 1 and 3 (Set as 1-4)) and turn it on.
+      data_template:
+         entity_id: >
+           light.lamp_{{ (range(1, 4) | random) }}
+    # Keep lamp on for xx minutes)
+    - delay: '00:{{ (range(10, 30) | random) }}:00'  
+
     # turn off all lamps
     - service: light.turn_off
       entity_id:
