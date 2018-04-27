@@ -48,3 +48,5 @@ ip_bans.yaml
 /icloud/*
 html5_push_registrations
 entity_registry.yaml
+emulated_hue_ids.json
+emulated_hue_ids.json

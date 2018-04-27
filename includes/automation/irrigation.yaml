@@ -86,8 +86,8 @@
 ############################################################
 - alias: Irrigate Pots at Sunrise
   trigger:
-    platform: sun
-    event: sunrise
+    platform: template
+    value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}'
   condition:
    condition: and
    conditions:

@@ -48,7 +48,7 @@
       payload: 'active'
   action:
     service: light.turn_off
-    entity_id: group.all_lights
+    entity_id: group.lighting_group
 
 
 - alias: "Dash Button christmas_tree_bling"

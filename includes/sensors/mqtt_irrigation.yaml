@@ -39,7 +39,8 @@
   sensors:
     irrigation_starttime:
       friendly_name: 'Forcasted Start Time'
-      value_template: "{{as_timestamp(states.sun.sun.attributes.next_rising)  | timestamp_custom('%H:%M') }}"
+      # With 2 hour positive offset to let the sun get up! 
+      value_template: "{{(as_timestamp(states.sun.sun.attributes.next_rising) + 7200) | timestamp_custom('%H:%M')}}"
 
 
     pot_irrigation_duration:
@@ -72,7 +73,7 @@
 
     lawn_irrigation_valve_status:
       friendly_name: 'Valve Status'
-      value_template: "{% if states.switch.lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(as_timestamp(strptime(states.sensor.date__time.state, '%Y-%m-%d, %H:%M') - as_timestamp(states.switch.lawn_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
+      value_template: "{% if states.switch.lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date__time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.lawn_irrigation_valve.last_changed)) / 60) | round(0) }} minutes ago{% else %}Closed{% endif %}"
 
     lawn_irrigation_schedule:
       friendly_name: 'Schedule'

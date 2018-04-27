@@ -242,6 +242,10 @@ switch.lawn_irrigation_valve:
   icon: mdi:water
 sensor.lawn_irrigation_valve_status:
   icon: mdi:water-pump
+sensor.lawn_irrigation_valve_position:
+  icon: mdi:water
+sensor.pot_irrigation_valve_position:
+  icon: mdi:water
 sensor.lawn_irrigation_last_run:
   icon: mdi:history
 sensor.lawn_irrigation_next_run:
@@ -249,6 +253,7 @@ sensor.lawn_irrigation_next_run:
 sensor.lawn_irrigation_schedule:
   icon: mdi:calendar
 sensor.irrigation_starttime:
+  hidden: true
   icon: mdi:clock
 sensor.lawn_irrigation_duration:
   icon: mdi:timer-sand
@@ -266,3 +271,9 @@ sensor.bunny_shed_target_cool_temperature:
   icon: mdi:target
 sensor.bunny_shed_target_heat_temperature:
   icon: mdi:target
+sensor.date__time:
+  hidden: true
+binary_sensor.lawn_irrigation_valve_position:
+  icon: mdi:water
+binary_sensor.pot_irrigation_valve_position:
+  icon: mdi:water

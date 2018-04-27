@@ -285,10 +285,10 @@ lawn_irrigation_group:
   control: hidden
   entities:
     - sensor.lawn_irrigation_valve_status
+    - binary_sensor.lawn_irrigation_valve_position
     - sensor.lawn_irrigation_last_run
     - sensor.lawn_irrigation_next_run
     - sensor.lawn_irrigation_schedule
-    - sensor.irrigation_starttime
     - sensor.lawn_irrigation_duration
     - binary_sensor.lawn_irrigation_interlock
     - group.lawn_irrigation_settings
@@ -312,10 +312,10 @@ pots_irrigation_group:
   control: hidden
   entities:
     - sensor.pot_irrigation_valve_status
+    - binary_sensor.pot_irrigation_valve_position
     - sensor.pot_irrigation_last_run
     - sensor.pot_irrigation_next_run
     - sensor.pot_irrigation_schedule
-    - sensor.irrigation_starttime
     - sensor.pot_irrigation_duration
     - binary_sensor.pots_irrigation_interlock
     - group.pots_irrigation_settings
