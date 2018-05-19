@@ -22,17 +22,19 @@
 ############################################################
 - alias: Irrigate Lawn at Sunrise
   trigger:
-    # platform: template
-    # value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}' #not working as now.* not working.
-    platform: sun
-    event: sunrise
-    offset: "+01:30:00" # Run 1.5 hours after dawn
+    platform: template
+    # Trigger every day when time is right, but use conditions to only run on the scheduled days.
+    value_template: '{{states.sensor.irrigation_starttime.state == now().time().strftime("%H:%M")}}'
+    # platform: sun
+    # event: sunrise
+    # offset: "+01:30:00" # Run 1.5 hours after dawn
   condition:
    condition: and
    conditions:
    - condition: template
-     value_template: "{{states.sensor.lawn_irrigation_next_run.state[5:15] == now.date().strftime('%d-%m-%Y')}}"
-   
+     # Only run on scheduled days.
+     value_template: "{{states.sensor.lawn_irrigation_next_run.state[5:15] == now().date().strftime('%d-%m-%Y')}}"
+
    - condition: state
      entity_id: 'binary_sensor.lawn_irrigation_interlock'
      state: 'off'
@@ -89,17 +91,19 @@
 ############################################################
 - alias: Irrigate Pots at Sunrise
   trigger:
-    # platform: template
-    # value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}'
-    platform: sun
-    event: sunrise
-    offset: "+01:30:00" # Run 1.5 hours after dawn
+    platform: template
+    # Trigger every day when time is right, but use conditions to only run on the scheduled days.
+    value_template: '{{states.sensor.irrigation_starttime.state == now().time().strftime("%H:%M")}}'
+    # platform: sun
+    # event: sunrise
+    # offset: "+01:30:00" # Run 1.5 hours after dawn
   condition:
    condition: and
    conditions:
    - condition: template
-     value_template: "{{states.sensor.pot_irrigation_next_run.state[5:15] == now.date().strftime('%d-%m-%Y')}}"
-   
+    # Only run on scheduled days.
+     value_template: "{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime('%d-%m-%Y')}}"
+
    - condition: state
      entity_id: 'binary_sensor.pots_irrigation_interlock'
      state: 'off'

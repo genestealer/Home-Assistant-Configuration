@@ -105,7 +105,6 @@ cctv_view:
 automation_system_view:
   name: Automation
   view: yes
-#    icon: mdi:battery-80
   entities:
     - group.server_ilo_status_group
     - group.ups_data_group
@@ -118,6 +117,8 @@ automation_system_view:
     - group.irrigation_controller_info_group
     - group.rf_link_group
     - group.pi_hole
+    - group.all_automations
+    - group.all_scripts
 ############################################################
 #
 # Home Assistant Groups
@@ -247,7 +248,7 @@ outside_weather_group:
     - sensor.pws_feelslike_c
     - sensor.pws_temp_high_1d_c
     - sensor.pws_temp_low_1d_c
-    - sensor.pws_relative_humidity        
+    - sensor.pws_relative_humidity
     - sensor.pws_precip_1d
     - sensor.pws_precip_today_metric
     - sensor.pws_precip_1d_mm
@@ -305,7 +306,7 @@ lawn_irrigation_settings:
     - input_select.lawn_irrigation_schedule
     - switch.lawn_irrigation_valve
     - script.lawn_irrigation_timer
-    
+
 
 
 pots_irrigation_group:
@@ -502,5 +503,3 @@ gateway_info_summary_group:
     - group.bunny_shed_controller_info_group
     - group.irrigation_controller_info_group
     - group.tor_doorbell_info_group
-
-
