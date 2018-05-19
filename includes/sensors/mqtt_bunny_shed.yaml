@@ -9,7 +9,7 @@
   name: "BS Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.Temperature }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -19,7 +19,7 @@
   name: "BS Humidity"
   unit_of_measurement: '%'
   value_template: '{{ value_json.Humidity }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -28,7 +28,7 @@
   name: "Bunny Shed Target Heat Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.TargetHeaterTemperature }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -37,7 +37,7 @@
   name: "Bunny Shed Target Cool Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.TargetCoolerTemperature }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 

@@ -16,7 +16,7 @@
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Client Name"
   value_template: '{{ value_json.ClientName }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
   json_attributes:
@@ -31,7 +31,7 @@
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS IP"
   value_template: '{{ value_json.IP }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -39,7 +39,7 @@
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS MAC"
   value_template: '{{ value_json.MAC }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -48,7 +48,7 @@
   name: "BS RSSI"
   unit_of_measurement: "dBm"
   value_template: '{{ value_json.RSSI }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -56,7 +56,7 @@
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Host"
   value_template: '{{ value_json.HostName }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -64,7 +64,7 @@
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
-  availability_topic: "HUISHS/BunnyShed/status"
+  availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -75,54 +75,54 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/statusJSON"
+  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG Client Name"
   value_template: '{{ value_json.ClientName }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  
+
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/statusJSON"
+  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG IP"
   value_template: '{{ value_json.IP }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  
+
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/statusJSON"
+  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG MAC"
   value_template: '{{ value_json.MAC }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  
+
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/statusJSON"
+  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG RSSI"
   unit_of_measurement: "dBm"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  
+
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/statusJSON"
+  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG Host"
   value_template: '{{ value_json.HostName }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  
+
 - platform: mqtt
-  state_topic: "HUISHS/LightingGateway/statusJSON"
+  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  
+
 ############################################################
 #
 # Irrigation Controller Status
@@ -133,7 +133,7 @@
   state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC Client Name"
   value_template: '{{ value_json.ClientName }}'
-  availability_topic: "HUISHS/Irrigation/status"
+  availability_topic: "HUISHS/Irrigation/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -141,7 +141,7 @@
   state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC IP"
   value_template: '{{ value_json.IP }}'
-  availability_topic: "HUISHS/Irrigation/status"
+  availability_topic: "HUISHS/Irrigation/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -149,7 +149,7 @@
   state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC MAC"
   value_template: '{{ value_json.MAC }}'
-  availability_topic: "HUISHS/Irrigation/status"
+  availability_topic: "HUISHS/Irrigation/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -158,7 +158,7 @@
   name: "IC RSSI"
   unit_of_measurement: "dBm"
   value_template: '{{ value_json.RSSI }}'
-  availability_topic: "HUISHS/Irrigation/status"
+  availability_topic: "HUISHS/Irrigation/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -166,7 +166,7 @@
   state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC Host"
   value_template: '{{ value_json.HostName }}'
-  availability_topic: "HUISHS/Irrigation/status"
+  availability_topic: "HUISHS/Irrigation/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
@@ -174,7 +174,7 @@
   state_topic: "HUISHS/Irrigation/NodeHealthJSON"
   name: "IC SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
-  availability_topic: "HUISHS/Irrigation/status"
+  availability_topic: "HUISHS/Irrigation/Status"
   payload_available: "online"
   payload_not_available: "offline"
 

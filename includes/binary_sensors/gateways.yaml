@@ -27,7 +27,7 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/BunnyShed/status"
+  state_topic: "HUISHS/BunnyShed/Status"
   name: "BS Status"
   qos: 0
   payload_on: "online"
@@ -41,7 +41,7 @@
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/status"
+  state_topic: "HUISHS/Irrigation/Status"
   name: "IC Status"
   qos: 0
   payload_on: "online"

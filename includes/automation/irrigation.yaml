@@ -22,8 +22,11 @@
 ############################################################
 - alias: Irrigate Lawn at Sunrise
   trigger:
-    platform: template
-    value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}'
+    # platform: template
+    # value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}' #not working as now.* not working.
+    platform: sun
+    event: sunrise
+    offset: "+01:30:00" # Run 1.5 hours after dawn
   condition:
    condition: and
    conditions:
@@ -86,8 +89,11 @@
 ############################################################
 - alias: Irrigate Pots at Sunrise
   trigger:
-    platform: template
-    value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}'
+    # platform: template
+    # value_template: '{{states.sensor.irrigation_starttime.state == now.time().strftime("%H:%M")}}'
+    platform: sun
+    event: sunrise
+    offset: "+01:30:00" # Run 1.5 hours after dawn
   condition:
    condition: and
    conditions:

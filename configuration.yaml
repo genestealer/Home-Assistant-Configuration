@@ -25,8 +25,8 @@ cloud:
 http:
   api_password: !secret http_password
   server_port: 443
-  ssl_certificate: !secret SSL_cert
-  ssl_key: !secret SSL_key
+#  ssl_certificate: !secret SSL_cert
+#  ssl_key: !secret SSL_key
   base_url: !secret Base_url
   ip_ban_enabled: True
   login_attempts_threshold: 50
