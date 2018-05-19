@@ -233,6 +233,7 @@ bunny_shed_settings:
   name: Setting
   view: no
   control: hidden
+  icon: mdi:settings
   entities:
     - input_number.shed_target_heat_temp
     - input_number.shed_target_cool_temp
@@ -297,6 +298,7 @@ lawn_irrigation_settings:
   name: Settings
   view: no
   control: hidden
+  icon: mdi:settings
   entities:
     - automation.irrigate_lawn_at_sunrise
     - input_number.lawn_irrigation_duration
@@ -324,6 +326,7 @@ pots_irrigation_group:
 pots_irrigation_settings:
   name: Settings
   view: no
+  icon: mdi:settings
   control: hidden
   entities:
     - automation.irrigate_pots_at_sunrise

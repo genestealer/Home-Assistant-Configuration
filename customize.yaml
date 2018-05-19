@@ -277,3 +277,4 @@ binary_sensor.lawn_irrigation_valve_position:
   icon: mdi:water
 binary_sensor.pot_irrigation_valve_position:
   icon: mdi:water
+group.bunny_shed_settings: {}
