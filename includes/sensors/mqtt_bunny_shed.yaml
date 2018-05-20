@@ -12,6 +12,7 @@
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
+  device_class: temperature 
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
@@ -22,6 +23,7 @@
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
+  device_class: humidity
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/StatusJSON"
@@ -31,6 +33,7 @@
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
+  device_class: temperature
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/StatusJSON"
@@ -40,6 +43,7 @@
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
+  device_class: temperature 
 
 
 ############################################################

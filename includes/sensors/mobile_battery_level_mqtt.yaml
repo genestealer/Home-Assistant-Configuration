@@ -22,10 +22,12 @@
       friendly_name: "Richard Phone Battery"
       unit_of_measurement: "%"
       value_template: "{{states.device_tracker.richard_sailfish.attributes.battery}}"
+      device_class: battery
     
     lucy_phone_battery:
       friendly_name: "Lucy Phone Battery"
       unit_of_measurement: "%"
       value_template: "{{states.device_tracker.lucy_bullhead.attributes.battery}}"
+      device_class: battery
 
   

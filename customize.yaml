@@ -2,10 +2,6 @@ sensor.owl_cm113_eacd_current3:
   hidden: true
 sensor.unscaled_house_consumption_current:
   hidden: true
-sensor.bs_humidity:
-  icon: mdi:water-percent
-sensor.kitchen_humidity:
-  icon: mdi:water-percent
 sensor.hp_ilo_server_power_state:
   icon: mdi:power
 sensor.speedtest_download:
@@ -41,10 +37,7 @@ light.lamp_2:
   friendly_name: Guest Bedroom Lamp
 light.lamp_3:
   friendly_name: Upstairs Hall Light
-input_number.shed_target_cool_temp:
-  friendly_name: Shed Cool Target
-input_number.shed_target_heat_temp:
-  friendly_name: Shed Heat Target
+
 binary_sensor.bunny_shed_cooler:
   device_class: cold
   icon: mdi:fan
@@ -54,56 +47,6 @@ switch.kitchen_extractor_fan:
   icon: mdi:fan
 switch.bunny_fluff_air_filter:
   icon: mdi:fan
-sensor.rfg_client_name:
-  icon: mdi:desktop-classic
-sensor.rfg_host:
-  icon: mdi:desktop-classic
-sensor.rfg_ip:
-  icon: mdi:desktop-classic
-sensor.rfg_mac:
-  icon: mdi:desktop-classic
-sensor.rfg_rssi:
-  icon: mdi:signal-variant
-sensor.rfg_ssid:
-  icon: mdi:wifi
-sensor.bs_client_name:
-  icon: mdi:desktop-classic
-sensor.bs_host:
-  icon: mdi:desktop-classic
-sensor.bs_ip:
-  icon: mdi:desktop-classic
-sensor.bs_mac:
-  icon: mdi:desktop-classic
-sensor.bs_rssi:
-  icon: mdi:signal-variant
-sensor.bs_ssid:
-  icon: mdi:wifi
-sensor.ic_client_name:
-  icon: mdi:desktop-classic
-sensor.ic_host:
-  icon: mdi:desktop-classic
-sensor.ic_ip:
-  icon: mdi:desktop-classic
-sensor.ic_mac:
-  icon: mdi:desktop-classic
-sensor.ic_rssi:
-  icon: mdi:signal-variant
-sensor.ic_ssid:
-  icon: mdi:wifi
-sensor.tor_db_client_name:
-  icon: mdi:desktop-classic
-sensor.tor_db_host:
-  icon: mdi:desktop-classic
-sensor.tor_db_ip:
-  icon: mdi:desktop-classic
-sensor.tor_db_mac:
-  icon: mdi:desktop-classic
-sensor.tor_db_rssi:
-  icon: mdi:signal-variant
-sensor.tor_db_ssid:
-  icon: mdi:wifi
-sensor.esplink_controller_signal_strength:
-  icon: mdi:signal-variant
 binary_sensor.entryway_thermostat_fan:
   hidden: true
 binary_sensor.entryway_thermostat_has_leaf:
@@ -188,10 +131,8 @@ sensor.server_glance_storage:
   icon: mdi:harddisk
 sensor.server_glance_temperature:
   icon: mdi:thermometer
-sensor.lucy_phone_battery:
-  icon: mdi:battery
-sensor.richard_phone_battery:
-  icon: mdi:battery
+sensor.lucy_phone_battery: {}
+sensor.richard_phone_battery: {}
 automation.dash_button_hall_light_off:
   hidden: true
 automation.dash_button_hall_light_on:
@@ -267,6 +208,10 @@ sensor.pot_irrigation_schedule:
   icon: mdi:calendar
 sensor.pot_irrigation_duration:
   icon: mdi:timer-sand
+input_number.shed_target_cool_temp:
+  friendly_name: Shed Cool Target
+input_number.shed_target_heat_temp:
+  friendly_name: Shed Heat Target
 sensor.bunny_shed_target_cool_temperature:
   icon: mdi:target
 sensor.bunny_shed_target_heat_temperature:
