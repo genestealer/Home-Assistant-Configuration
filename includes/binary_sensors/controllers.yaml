@@ -91,3 +91,18 @@
   payload_on: "online"
   payload_off: "offline"
   device_class: connectivity
+
+
+############################################################
+#
+# Chicken Shed Door Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Chickens/Door/Status"
+  name: "CS Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  device_class: connectivity

@@ -1,0 +1,21 @@
+############################################################
+#
+# Chicken Door Cover
+#
+############################################################
+
+- platform: mqtt
+  name: "Chicken Coop Door"
+  command_topic: "HUISHS/Chickens/Door/Set"
+  payload_open: "OPEN"
+  payload_close: "CLOSE"
+  payload_stop: "STOP"
+  availability_topic: "HUISHS/Chickens/Door/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  state_topic:  "HUISHS/Chickens/Door/State"
+  state_open: "OPENED"
+  state_closed: "CLOSED"
+  optimistic: true
+  retain: true
+  qos: 2

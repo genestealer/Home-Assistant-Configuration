@@ -1,0 +1,51 @@
+- id: '1529279555355'
+  alias: Reset Front Door Sensor
+  trigger:
+  - entity_id: switch.front_door_sensor
+    from: 'off'
+    platform: state
+    to: 'on'
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - delay: 00:00:05
+  - data:
+      entity_id: switch.front_door_sensor
+    service: switch.turn_off
+- id: '1529366648322'
+  alias: Open chicken pop hole door at dawn
+  trigger:
+  - event: sunrise
+    offset: +01:00:00
+    platform: sun
+  condition: []
+  action:
+  - data:
+      entity_id: cover.chicken_coop_door
+    service: cover.open_cover
+- id: '1531947302338'
+  alias: Close Chicken Door
+  trigger:
+  - event: sunset
+    offset: +01:00:00
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: binary_sensor.chicken_door_status
+    state: 'on'
+  action:
+  - alias: ''
+    data:
+      action:
+        data:
+          data:
+            actions:
+            - action: close_door
+              icon: /static/icons/update-48x48.png
+              title: Close Chicken Coop Door
+        data_template:
+          message: Chicken Door Still Open!
+          title: Chicken Coop
+        service: notify.google_cloud_notify
+    service: notify.google_cloud_notify

@@ -28,6 +28,11 @@
       name: Wax Melter
     RFCustom_524643_4: # Status RCS-K09
       name: Plug-In Air Freshener
+    ev1527_05d797_0e:
+      name: Front Door Sensor
+
+
+
 
 # # Feb 2018: Removed and moved to "mqtt_switch.yaml" using my 433mhz MQTT controller
 # # https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway

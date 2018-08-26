@@ -1,6 +1,8 @@
 ############################################################
 #
 #  Irrigation Schedule set time (Option 1)
+# https://community.home-assistant.io/t/hass-sprinkler/1903/30?u=richard.huish
+# Time trigger issues: https://community.home-assistant.io/t/hass-sprinkler/1903/62?u=richard.huish
 #
 ############################################################
 
@@ -24,7 +26,7 @@
   trigger:
     platform: template
     # Trigger every day when time is right, but use conditions to only run on the scheduled days.
-    value_template: '{{states.sensor.irrigation_starttime.state == now().time().strftime("%H:%M")}}'
+    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
     # platform: sun
     # event: sunrise
     # offset: "+01:30:00" # Run 1.5 hours after dawn
@@ -93,20 +95,20 @@
   trigger:
     platform: template
     # Trigger every day when time is right, but use conditions to only run on the scheduled days.
-    value_template: '{{states.sensor.irrigation_starttime.state == now().time().strftime("%H:%M")}}'
+    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
     # platform: sun
     # event: sunrise
     # offset: "+01:30:00" # Run 1.5 hours after dawn
-  condition:
-   condition: and
-   conditions:
-   - condition: template
-    # Only run on scheduled days.
-     value_template: "{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime('%d-%m-%Y')}}"
+  # condition:
+  #  condition: and
+  #  conditions:
+  #  - condition: template
+  #   # Only run on scheduled days.
+  #    value_template: "{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime('%d-%m-%Y')}}"
 
-   - condition: state
-     entity_id: 'binary_sensor.pots_irrigation_interlock'
-     state: 'off'
+  #  - condition: state
+  #    entity_id: 'binary_sensor.pots_irrigation_interlock'
+  #    state: 'off'
 
   action:
     service: homeassistant.turn_on

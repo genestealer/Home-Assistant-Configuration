@@ -27,6 +27,23 @@ main_view:
     - group.speed_test_group
 
 
+irrigation_view:
+  name: Irrigation
+  view: yes
+  entities:
+    - camera.front_door
+    - group.lawn_irrigation_group
+    - group.pots_irrigation_group
+    - group.irrigation_controller_info_group
+    - group.outside_weather_group
+
+chickens_view:
+  name: Chickens
+  view: yes
+  entities:
+    - cover.chicken_coop_door
+    - binary_sensor.chicken_door_status
+
 lights_view:
   name: Lights
   view: yes
@@ -65,16 +82,6 @@ bathroom_view:
   view: yes
   entities:
     - group.bathroom_towel_rail_group
-
-irrigation_view:
-  name: Irrigation
-  view: yes
-  entities:
-    - camera.front_door
-    - group.lawn_irrigation_group
-    - group.pots_irrigation_group
-    - group.irrigation_controller_info_group
-    - group.outside_weather_group
 
 
 bedroom_view:
@@ -119,6 +126,12 @@ automation_system_view:
     - group.pi_hole
     - group.all_automations
     - group.all_scripts
+
+
+
+##########################
+
+
 ############################################################
 #
 # Home Assistant Groups

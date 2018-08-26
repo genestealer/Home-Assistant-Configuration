@@ -24,7 +24,7 @@ cloud:
 
 http:
   api_password: !secret http_password
-  server_port: 443
+  server_port: 8123
 #  ssl_certificate: !secret SSL_cert
 #  ssl_key: !secret SSL_key
   base_url: !secret Base_url
@@ -207,12 +207,14 @@ sensor: !include_dir_merge_list includes/sensors
 light: !include_dir_merge_list includes/lights
 binary_sensor: !include_dir_merge_list includes/binary_sensors
 switch: !include_dir_merge_list includes/switch
+cover: !include_dir_merge_list includes/cover
 
 # Merge named dir
 script: !include_dir_merge_named includes/scripts
 input_boolean: !include_dir_merge_named includes/input_boolean
 input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
+
 
 # Merge Named
 group: !include includes/group/groups.yaml
