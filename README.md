@@ -17,6 +17,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Current Home Assistant: Hass.IO in Docker on Ubuntu Server 18.04, as per [these instructions](https://bonani.tech/how-to-install-hass.io-on-ubuntu-server-18.04/)
 - MQTT: Locally hosted on same Ubuntu Server, but outside of HASS.IO for the moment, [Mosquitto](https://mosquitto.org/) MQTT broker 
 - HTTPS SSL Certificate originally generated via by home assistant via [Let's Encript Instructions](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/), with scripts to auto-update and automations to alert via HTML5 push notification if renew date threshold is close. (Search my repository for [ssl_cert.yaml](https://github.com/Genestealer/Home-Assistant-Configuration/blob/master/includes/automation/ssl_cert.yaml))
+- Server infomation: Source of data from [glances](https://github.com/nicolargo/glances) installed on Windows server.
 
 ## Devices
 
