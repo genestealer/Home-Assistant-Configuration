@@ -1,0 +1,32 @@
+# ############################################################
+# #
+# #  SSL cert warning
+# #  Sep 2018 update: Inactive since moving to Apache Reverse Proxy: https://www.home-assistant.io/docs/ecosystem/apache/
+# #
+# ############################################################
+
+# - alias: 'SSL expiry notification'
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.ssl_cert_expiry
+#     below: 21
+#   action:
+#     service: notify.google_cloud_notify
+#     data:
+#       title: 'HASS SSL Certificate'
+#       message: 'Warning - HASS SSL certificate expires in 21 days and has not been automatically renewed'
+
+
+# ############################################################
+# #
+# #  SSL cert renew
+# #  Sep 2018 update: Inactive since moving to Apache Reverse Proxy: https://www.home-assistant.io/docs/ecosystem/apache/
+# #
+# ############################################################
+# - alias: 'Auto Renew SSL Cert'
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.ssl_cert_expiry
+#     below: 29
+#   action:
+#     service: shell_command.renew_ssl
