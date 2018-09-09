@@ -9,10 +9,14 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 
 ## My Setup
 
-- Orginal OS: Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
-- Current OS: Ubuntu Server 16.04.1 LTS virtualization on Windows Server 2016 Hyper-V
-- MQTT: Locally hosted [Mosquitto](https://mosquitto.org/) MQTT broker 
-- HTTPS SSL Certificate generated via [Let's Encript](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/)
+- Original OS: Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
+- Original Home Assistant: Python folder, home assistant run command run at start-up from shortcut in Windows start-up folder.
+- 2nd OS: Ubuntu Server 16.04.1 LTS virtualization on Windows Server 2016 Hyper-V.
+- 2nd Home Assistant: Python virtual environment with homeassistant user. As per [Manual installation on a Raspberry Pi](https://www.home-assistant.io/docs/installation/raspberry-pi/). [HASSCTL](https://github.com/dale3h/hassctl) Used for management.
+- Current OS: Ubuntu Server 18.04.1 LTS virtualization on Windows Server 2016 Hyper-V
+- Current Home Assistant: Hass.IO in Docker on Ubuntu Server 18.04, as per [these instructions](https://bonani.tech/how-to-install-hass.io-on-ubuntu-server-18.04/)
+- MQTT: Locally hosted on same Ubuntu Server, but outside of HASS.IO for the moment, [Mosquitto](https://mosquitto.org/) MQTT broker 
+- HTTPS SSL Certificate originally generated via by home assistant via [Let's Encript Instructions](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/), with scripts to auto-update and automations to alert via HTML5 push notification if renew date threshold is close.  
 
 ## Devices
 
