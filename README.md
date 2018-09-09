@@ -18,7 +18,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - MQTT: Installed on same virtualized Ubuntu server, outside of HASS.IO [Mosquitto](https://mosquitto.org/) MQTT broker 
 - HTTPS SSL Certificate originally generated via by home assistant via [Let's Encript Instructions](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/), with scripts to auto-update and automations to alert via HTML5 push notification if renew date threshold is close. (Search my repository for [ssl_cert.yaml](https://github.com/Genestealer/Home-Assistant-Configuration/blob/master/includes/automation/ssl_cert.yaml))
 - Server infomation: Data from [glances](https://github.com/nicolargo/glances) installed on host Windows server.
-- UPS infomation: Data from [APC UPS Daemon](http://www.apcupsd.org/) Installed on same virtualized Ubuntu server, outside of HASS.IO.
+- UPS infomation: Data from [APC UPS Daemon](http://www.apcupsd.org/) installed on same virtualized Ubuntu server, outside of HASS.IO.
 
 ## Devices
 
