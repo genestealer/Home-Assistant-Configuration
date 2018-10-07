@@ -1,6 +1,8 @@
 ############################################################
 #
 # Glances Sensor
+# Source of data is from https://github.com/nicolargo/glances
+# installed on server
 #
 ############################################################
 - platform: glances
