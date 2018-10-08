@@ -24,13 +24,14 @@ frontend:
 config:
 
 #Home Assistant Cloud
-cloud:
+#cloud:
 
 http:
   api_password: !secret http_password
   server_port: 8123
-#  ssl_certificate: !secret SSL_cert
-#  ssl_key: !secret SSL_key
+  # SSL is now performed by Apache reverse proxy
+  #  ssl_certificate: !secret SSL_cert
+  #  ssl_key: !secret SSL_key
   base_url: !secret Base_url
   ip_ban_enabled: False
   login_attempts_threshold: 20
@@ -58,13 +59,12 @@ discovery:
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
-
 # Enables support for tracking state changes over time. (Cleared at startup)
 history:
 
-# Tracked history is kept for 10 days. (Not cleared at startup)
-# recorder:
-#   purge_keep_days: 10
+# Tracked history is kept for 12 days. (Not cleared at startup)
+recorder:
+  purge_keep_days: 12
 
 # View all events in a logbook
 logbook:
