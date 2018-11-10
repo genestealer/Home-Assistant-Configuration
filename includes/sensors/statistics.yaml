@@ -1,9 +1,10 @@
 ############################################################
 #
 # Statistics Sensor
+# DISABLED: Was never seemed to work!
 #
 ############################################################
 
-- platform: statistics
-  name: "BS Temperature Statistics"
-  entity_id: sensor.bs_temperature
+# - platform: statistics
+#   name: "BS Temperature Statistics"
+#   entity_id: sensor.bs_temperature

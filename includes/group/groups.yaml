@@ -41,8 +41,8 @@ chickens_view:
   name: Chickens
   view: yes
   entities:
-    - cover.chicken_coop_door
-    - binary_sensor.chicken_door_status
+    - group.chicken_group
+
 
 lights_view:
   name: Lights
@@ -138,6 +138,13 @@ automation_system_view:
 #
 ############################################################
 
+chicken_group:
+  name: Chicken Coop
+  view: no
+  entities:
+    - cover.chicken_coop_door
+    - binary_sensor.chicken_door_status
+    - binary_sensor.cc_status
 
 cctv_group1:
   name: CCTV1
@@ -157,8 +164,9 @@ nest_thermostat_group:
   name: Nest Thermostat
   view: no
   entities:
-    - climate.entryway
-    - sensor.entryway_thermostat_humidity
+    - climate.hallway
+    - binary_sensor.hallway_thermostat_online
+    - sensor.hallway_thermostat_humidity
 
 mobiles_group:
   name: Mobiles

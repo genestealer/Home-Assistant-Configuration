@@ -134,10 +134,11 @@ notify:
   #   platform: facebook
   #   page_access_token: !secret FB_Key
 
-# APC UPS Daemon, which talks to the networked UPS via SNMP.
+
+# APC UPS Network Infomation Server, which talks to the networked UPS via apcupsd daemon (outside of HASS, but on same system).
 apcupsd:
-#  host: !secret Local_Host
-  port: !secret apcupsdPort
+  host: !secret apcupsdNisIP
+  port: !secret apcupsdNisPort
 
 nest:
   client_id: !secret nest_id
@@ -192,26 +193,27 @@ panel_iframe:
   ide:
     title: IDE
     icon: mdi:code-braces
-    url: http://192.168.1.21:8432
+    url: !secret panel_iframe_IDE_URL
   octobox:
     title: Portainer
     icon: mdi:docker
-    url: http://192.168.1.21:9000
+    url: !secret panel_iframe_Portainer_URL
   webmin1:
     title: StormBreaker Webmin
     icon: mdi:gauge
-    url: https://home.richardhuish.com/sb/webmin/   
+    url: !secret panel_iframe_StormBreaker_Webmin_URL
   webmin2:
     title: Thor Webmin
     icon: mdi:gauge
-    url: https://home.richardhuish.com/thor/webmin  
+    url: !secret panel_iframe_Thor_Webmin_URL
 
 
 
 google_assistant:
   project_id: !secret google_assistant_project_id
-  client_id: !secret google_assistant_client_id
-  access_token: !secret google_assistant_access_token
+  # Not needed since release 0.80
+  # client_id: !secret google_assistant_client_id
+  # access_token: !secret google_assistant_access_token
 
 ############################################################
 #

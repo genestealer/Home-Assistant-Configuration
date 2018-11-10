@@ -95,13 +95,13 @@
 
 ############################################################
 #
-# Chicken Shed Door Controller Status
+# Chicken Coop Door Controller Status
 #
 ############################################################
 
 - platform: mqtt
   state_topic: "HUISHS/Chickens/Door/Status"
-  name: "CS Status"
+  name: "CC Status"
   qos: 0
   payload_on: "online"
   payload_off: "offline"

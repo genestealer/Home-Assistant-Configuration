@@ -1,6 +1,8 @@
 ############################################################
 #
 # rflink_status
+# DISABLED: Now using template sensor "esp_link_status",
+#  based on status of sensor.esplink_controller_signal_strength
 #
 ############################################################
 
@@ -15,6 +17,7 @@
 #     #value_template: "{% if states.rflink.connection_status.state == "connected") %}on{% else %}off{% endif %}"
 
 #     friendly_name: 'RFlink Gatway Status'
+
 #     #device_class: 'connectivity'
 
 # - platform: template

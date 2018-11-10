@@ -37,7 +37,6 @@ light.lamp_2:
   friendly_name: Guest Bedroom Lamp
 light.lamp_3:
   friendly_name: Upstairs Hall Light
-
 binary_sensor.bunny_shed_cooler:
   device_class: cold
   icon: mdi:fan
@@ -223,3 +222,31 @@ binary_sensor.lawn_irrigation_valve_position:
 binary_sensor.pot_irrigation_valve_position:
   icon: mdi:water
 group.bunny_shed_settings: {}
+binary_sensor.hallway_thermostat_fan:
+  hidden: true
+binary_sensor.hallway_thermostat_has_leaf:
+  friendly_name: Entryway Thermostat has leaf
+  hidden: true
+sensor.hallway_thermostat_hvac_state:
+  friendly_name: Entryway Thermostat hvac state
+  hidden: true
+binary_sensor.hallway_thermostat_is_locked:
+  hidden: true
+binary_sensor.hallway_thermostat_is_using_emergency_heat:
+  hidden: true
+binary_sensor.hallway_thermostat_online:
+  friendly_name: Nest Status
+  hidden: true
+climate.hallway:
+  friendly_name: Nest
+sensor.hallway_thermostat_humidity:
+  friendly_name: Nest Hall Humidity
+sensor.hallway_thermostat_operation_mode:
+  friendly_name: Nest Heat State
+  hidden: true
+sensor.hallway_thermostat_target:
+  friendly_name: Nest Thermostat target
+  hidden: true
+sensor.hallway_thermostat_temperature:
+  friendly_name: Nest Hall Temperature
+  hidden: true
