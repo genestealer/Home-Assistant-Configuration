@@ -250,3 +250,5 @@ sensor.hallway_thermostat_target:
 sensor.hallway_thermostat_temperature:
   friendly_name: Nest Hall Temperature
   hidden: true
+group.chicken_group:
+  friendly_name: Chicken Coop Controller Info

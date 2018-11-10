@@ -13,3 +13,23 @@
   - platform: ping
     name: "Ikea Tradfri Gateway Online"
     host: !secret Ikea_Tradfri_IP
+
+# Bunny CCTV
+  - platform: ping
+    name: "Bunny CCTV Online"
+    host: !secret Bunny_CCTV_ip
+
+# Front Door CCTV
+  - platform: ping
+    name: "Front Door CCTV Online"
+    host: !secret axis_front_door_IP
+
+# Drive CCTV
+  - platform: ping
+    name: "Drive CCTV Online"
+    host: !secret axis_front_drive_IP
+
+# Garage CCTV
+  - platform: ping
+    name: "Garage CCTV Online"
+    host: !secret axis_garage_IP

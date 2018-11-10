@@ -138,13 +138,7 @@ automation_system_view:
 #
 ############################################################
 
-chicken_group:
-  name: Chicken Coop
-  view: no
-  entities:
-    - cover.chicken_coop_door
-    - binary_sensor.chicken_door_status
-    - binary_sensor.cc_status
+
 
 cctv_group1:
   name: CCTV1
@@ -187,6 +181,7 @@ device_status_summary_group:
 device_status_group:
   name: Device Status
   view: no
+  control: hidden
   entities:
     - binary_sensor.bs_status
     - binary_sensor.rfg_status
@@ -196,7 +191,25 @@ device_status_group:
     - binary_sensor.tor_db_status
     - binary_sensor.usp_network_online
     - binary_sensor.ikea_tradfri_gateway_online
+    - binary_sensor.cc_status
 
+chicken_group:
+  name: Chicken Coop
+  view: no
+  entities:
+    - cover.chicken_coop_door
+    - binary_sensor.chicken_door_status
+    - binary_sensor.cc_status
+    
+gateway_info_summary_group:
+  name: Gateways Info
+  view: no
+  control: hidden
+  entities:
+    - group.rf_gateway_info_group
+    - group.bunny_shed_controller_info_group
+    - group.irrigation_controller_info_group
+    - group.tor_doorbell_info_group
 
 kitchen_climate_group:
   name: Kitchen Climate
@@ -514,13 +527,3 @@ inside_christmas_lights:
   entities:
     - light.christmas_tree_bling
     - light.christmas_kitchen_star
-
-
-gateway_info_summary_group:
-  name: Gateways Info
-  view: no
-  entities:
-    - group.rf_gateway_info_group
-    - group.bunny_shed_controller_info_group
-    - group.irrigation_controller_info_group
-    - group.tor_doorbell_info_group
