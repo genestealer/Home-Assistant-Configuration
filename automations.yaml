@@ -49,3 +49,15 @@
           title: Chicken Coop
         service: notify.google_cloud_notify
     service: notify.google_cloud_notify
+- id: '1541895123590'
+  alias: CCTV Offline
+  trigger:
+  - entity_id: binary_sensor.garage_cctv_online
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Garage CCTV Offline
+    service: notify.google_cloud_notify
