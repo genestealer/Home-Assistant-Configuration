@@ -1,12 +1,30 @@
-############################################################
+# ############################################################
+# #
+# # New Home Assistant Release Notification Automation
+# # With button to auto-update
+# #
+# #
+# ############################################################
 #
-# New Home Assistant Release Notification Automation
+# # - alias: Update notifications
+# #   # hide_entity: True
+# #   trigger:
+# #     platform: state
+# #     entity_id: updater.updater
+# #   action:
+# #     service: notify.google_cloud_notify
+# #     data_template:
+# #       title: 'New Home Assistant Release'
+# #       message: "Home Assistant {{ states.updater.updater.state }} is now available. Release notes here."
+# #     data:
+# #       data:
+# #         url: "{{ states.updater.updater.attributes.release_notes}}"
+# #         actions:
+# #           - action: update
+# #             icon: "/static/icons/update-48x48.png"
+# #             title: Update Home Assistant
 #
-############################################################
-
-
-
-# - alias: Update notifications
+# - alias: Update Available Notification
 #   # hide_entity: True
 #   trigger:
 #     platform: state
@@ -15,48 +33,29 @@
 #     service: notify.google_cloud_notify
 #     data_template:
 #       title: 'New Home Assistant Release'
-#       message: "Home Assistant {{ states.updater.updater.state }} is now available. Release notes here."
+#       message: "Home Assistant {{ states.updater.updater.state }} is now available. {{now().strftime('%Y-%m-%d %I:%M %p')}}"
 #     data:
 #       data:
-#         url: "{{ states.updater.updater.attributes.release_notes}}"
+#         # url: "https://home-assistant.io/blog/" #"{{ states.updater.updater.attributes.release_notes}}"
 #         actions:
 #           - action: update
 #             icon: "/static/icons/update-48x48.png"
 #             title: Update Home Assistant
-
-- alias: Update Available Notification
-  # hide_entity: True
-  trigger:
-    platform: state
-    entity_id: updater.updater
-  action:
-    service: notify.google_cloud_notify
-    data_template:
-      title: 'New Home Assistant Release'
-      message: "Home Assistant {{ states.updater.updater.state }} is now available. {{now().strftime('%Y-%m-%d %I:%M %p')}}"
-    data:
-      data:
-        # url: "https://home-assistant.io/blog/" #"{{ states.updater.updater.attributes.release_notes}}"
-        actions:
-          - action: update
-            icon: "/static/icons/update-48x48.png"
-            title: Update Home Assistant
-
-
-
-- alias: HTML5 push notification action button clicked
-  trigger:
-    platform: event
-    event_type: html5_notification.clicked
-    event_data:
-      action: update
-  action:
-    - service: notify.google_cloud_notify
-      data:
-        title: 'Home Assistant Update'
-        message: 'Update Started'
-    - service: shell_command.update_and_restart_hass_with_logging
-    # - service: notify.google_cloud_notify
-    #   data:
-    #     title: 'Home Assistant Updated'
-    #     message: 'Update Completed'
+#
+#
+# - alias: HTML5 push notification action button clicked
+#   trigger:
+#     platform: event
+#     event_type: html5_notification.clicked
+#     event_data:
+#       action: update
+#   action:
+#     - service: notify.google_cloud_notify
+#       data:
+#         title: 'Home Assistant Update'
+#         message: 'Update Started'
+#     - service: shell_command.update_and_restart_hass_with_logging
+#     # - service: notify.google_cloud_notify
+#     #   data:
+#     #     title: 'Home Assistant Updated'
+#     #     message: 'Update Completed'

@@ -227,18 +227,18 @@ google_assistant:
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token
 
-# Unused Axis CCTV intergration.
-axis:
-   p3301:
-     host: !secret axis_front_door_IP
-     username: !secret axis_front_door_username
-     password: !secret axis_front_door_password
-     include:
-      # - camera
-      # - motion
-      # - vmd3
-      # - sound
-     trigger_time: 0
+# # Unused Axis CCTV intergration.
+# axis:
+#    p3301:
+#      host: !secret axis_front_door_IP
+#      username: !secret axis_front_door_username
+#      password: !secret axis_front_door_password
+#      include:
+#       # - camera
+#       # - motion
+#       # - vmd3
+#       # - sound
+#      trigger_time: 0
 
 ############################################################
 #

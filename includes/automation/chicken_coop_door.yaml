@@ -1,43 +1,51 @@
-# ############################################################
-# #
-# # Chicken Coop Door Automation
-# #
-# ############################################################
+############################################################
+#
+# Chicken Coop Door Automation
+#
+############################################################
 
 
-# - alias: Chicken Door Open Notification
-#   # hide_entity: True
-#   trigger:
-#     platform: state
-#     entity_id: updater.updater
-#   action:
-#     service: notify.google_cloud_notify
-#     data_template:
-#       title: 'New Home Assistant Release'
-#       message: "Home Assistant {{ states.updater.updater.state }} is now available. {{now().strftime('%Y-%m-%d %I:%M %p')}}"
-#     data:
-#       data:
-#         # url: "https://home-assistant.io/blog/" #"{{ states.updater.updater.attributes.release_notes}}"
-#         actions:
-#           - action: update
-#             icon: "/static/icons/update-48x48.png"
-#             title: Update Home Assistant
+- alias: Close Chicken Door Notification
+  # hide_entity: True
+  trigger:
+  - event: sunset
+    offset: +02:00:00
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: binary_sensor.chicken_door_status
+    state: 'on'
+  action:
+    service: notify.google_cloud_notify
+    data_template:
+      title: 'Chicken Bed Time? [Home Assistant]'
+      message: "It's dark, shall I close the chicken coop door?"
+    data:
+      data:
+        actions:
+          - action: close_door
+            icon: "/static/icons/chicken.png"
+            title: "Close chicken coop door"
 
 
 
-# - alias: HTML5 push notification action button clicked
-#   trigger:
-#     platform: event
-#     event_type: html5_notification.clicked
-#     event_data:
-#       action: update
-#   action:
-#     - service: notify.google_cloud_notify
-#       data:
-#         title: 'Home Assistant Update'
-#         message: 'Update Started'
-#     - service: shell_command.update_and_restart_hass_with_logging
-#     # - service: notify.google_cloud_notify
-#     #   data:
-#     #     title: 'Home Assistant Updated'
-#     #     message: 'Update Completed'
+- alias: Close Chicken Door Notification HTML5 push notification action button clicked
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: close_door
+  action:
+    - service: cover.close_cover
+      data:
+        entity_id: cover.chicken_coop_door
+
+    # - service: notify.google_cloud_notify
+    #   data:
+    #     title: 'Home Assistant Update'
+    #     message: 'Update Started'
+    # - service: shell_command.update_and_restart_hass_with_logging
+    # # - service: notify.google_cloud_notify
+    # #   data:
+    # #     title: 'Home Assistant Updated'
+    # #     message: 'Update Completed'

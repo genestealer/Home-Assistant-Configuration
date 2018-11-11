@@ -193,6 +193,16 @@ device_status_group:
     - binary_sensor.ikea_tradfri_gateway_online
     - binary_sensor.cc_status
 
+cctv_status_group:
+  name: CCTV Online Status
+  view: no
+  control: hidden
+  entities:
+    - binary_sensor.bunny_cctv_online
+    - binary_sensor.drive_cctv_online
+    - binary_sensor.front_door_cctv_online
+    - binary_sensor.garage_cctv_online
+
 chicken_group:
   name: Chicken Coop
   view: no
@@ -200,7 +210,7 @@ chicken_group:
     - cover.chicken_coop_door
     - binary_sensor.chicken_door_status
     - binary_sensor.cc_status
-    
+
 gateway_info_summary_group:
   name: Gateways Info
   view: no
@@ -374,6 +384,7 @@ pots_irrigation_settings:
 bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
   view: no
+  control: hidden
   entities:
     - binary_sensor.bs_status
     - sensor.bs_client_name
@@ -386,6 +397,7 @@ bunny_shed_controller_info_group:
 rf_gateway_info_group:
   name: RF Gatway Info
   view: no
+  control: hidden
   entities:
     - binary_sensor.rfg_status
     - sensor.rfg_client_name
@@ -398,6 +410,7 @@ rf_gateway_info_group:
 irrigation_controller_info_group:
   name: Irrigation Controller Info
   view: no
+  control: hidden
   entities:
     - binary_sensor.ic_status
     - sensor.ic_client_name
@@ -410,6 +423,7 @@ irrigation_controller_info_group:
 rf_link_group:
   name: RF Link
   view: no
+  control: hidden
   entities:
     - binary_sensor.esp_link_status
     - binary_sensor.rflink_status
@@ -418,6 +432,7 @@ rf_link_group:
 tor_doorbell_info_group:
   name: TOR DoorBell Info
   view: no
+  control: hidden
   entities:
     - binary_sensor.tor_db_status
     - sensor.tor_db_client_name
