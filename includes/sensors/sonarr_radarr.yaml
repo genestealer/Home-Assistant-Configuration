@@ -1,0 +1,25 @@
+############################################################
+#
+# Sonarr and Radarr Sensor
+#
+############################################################
+- platform: sonarr
+  host: !secret sonarr_ip
+  api_key: !secret sonarr_api
+  urlbase: /tv
+  monitored_conditions:
+    - series
+    - upcoming
+    - wanted
+    - queue
+    - commands
+
+- platform: radarr
+  host: !secret radarr_ip
+  api_key: !secret radarr_api
+  days: 30
+  urlbase: /film
+  monitored_conditions:
+    - movies
+    - upcoming
+    - commands

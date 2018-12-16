@@ -24,33 +24,8 @@
   - data:
       entity_id: cover.chicken_coop_door
     service: cover.open_cover
-- id: '1531947302338'
-  alias: Close Chicken Door
-  trigger:
-  - event: sunset
-    offset: +01:00:00
-    platform: sun
-  condition:
-  - condition: state
-    entity_id: binary_sensor.chicken_door_status
-    state: 'on'
-  action:
-  - alias: ''
-    data:
-      action:
-        data:
-          data:
-            actions:
-            - action: close_door
-              icon: /static/icons/update-48x48.png
-              title: Close Chicken Coop Door
-        data_template:
-          message: Chicken Door Still Open!
-          title: Chicken Coop
-        service: notify.google_cloud_notify
-    service: notify.google_cloud_notify
 - id: '1541895123590'
-  alias: CCTV Offline
+  alias: Garage CCTV Offline
   trigger:
   - entity_id: binary_sensor.garage_cctv_online
     from: 'on'
@@ -60,4 +35,52 @@
   action:
   - data:
       message: Garage CCTV Offline
+    service: notify.google_cloud_notify
+- id: '1541895123591'
+  alias: Drive CCTV Offline
+  trigger:
+  - entity_id: binary_sensor.drive_cctv_online
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Drive CCTV Offline
+    service: notify.google_cloud_notify
+- id: '1541895123592'
+  alias: Door CCTV Offline
+  trigger:
+  - entity_id: binary_sensor.front_door_cctv_online
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Front Door CCTV Offline
+    service: notify.google_cloud_notify
+- id: '1544967364329'
+  alias: Battery Low tradfri_remote_control
+  trigger:
+  - below: '20'
+    entity_id: sensor.tradfri_remote_control
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Sitting room Tradfri remote battery low. Currently {{ states.sensor.tradfri_remote_control.state
+        }}%
+    service: notify.google_cloud_notify
+- id: '1544967729500'
+  alias: Battery Low tradfri_wireless_dimmer
+  trigger:
+  - below: '25'
+    entity_id: sensor.tradfri_wireless_dimmer
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Master bedroom Tradfri remote battery low. Currently {{ states.sensor.tradfri_wireless_dimmer.state
+        }}%
     service: notify.google_cloud_notify

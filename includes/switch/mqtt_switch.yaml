@@ -10,6 +10,7 @@
 # 433MHz switchs
 # THE BLIND GENIE Office Blinds
 - platform: mqtt
+  entity_namespace: holiday_house
   command_topic: "HUISHS/LightingGateway/transmit"
   payload_on: "8442884"
   payload_off: "8442888"

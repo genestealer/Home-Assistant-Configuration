@@ -5,26 +5,30 @@
 ############################################################
 
 - platform: google_travel_time
-  name: Home to Work
+  id: morning_commute
+  name: Morning Commute Home to Work
   api_key: !secret googlemaps_api_key
   origin: zone.home
   destination: zone.work
+  scan_interval: 900 #15 mins. automation.update_frequency_morning_commute_sensor chanegs this to 5 mins in the mornings
   options:
     mode: driving
 
 - platform: google_travel_time
-  name: Work to Home
+  name: Evening Commute Home From Work
   api_key: !secret googlemaps_api_key
   origin: zone.work
   destination: zone.home
+  scan_interval: 900 #15 mins
   options:
     mode: driving
 
 - platform: google_travel_time
-  name: Richard to Home
+  name: Richard Travel Home
   api_key: !secret googlemaps_api_key
-  origin: device_tracker.richard_sailfish
+  origin: device_tracker.richard_blueline
   destination: zone.home
+  scan_interval: 900 #15 mins
   options:
     mode: driving
 
@@ -34,5 +38,4 @@
 #   origin: device_tracker.Richard
 #   destination: zone.home
 #   options:
-#     mode: driving    
-
+#     mode: driving

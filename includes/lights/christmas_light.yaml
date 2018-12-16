@@ -23,15 +23,18 @@
     fire_event: true
   devices:
     RFCustom_524643_6: # Status RCS-K09
-      name: Christmas Outside Lights
+      name: Christmas Garden Lights
     RFCustom_524643_8: # Status RCS-K09
-      name: Christmas Bed Room Star
+      name: Christmas Master Bedroom Star
     Maclean_0d82_02:
       name: Christmas Sitting Room Star
     Maclean_0d82_04:
       name: Christmas Tree Bling
     Maclean_0d85_01:
-      name: Christmas Kitchen Star
+      name: Christmas Mess Room Star
+    Maclean_0d85_02:
+      name: Christmas Guest Bedroom Star
+
 
 ### Old
 # - platform: mqtt

@@ -4,7 +4,8 @@
 #
 ############################################################
 
-- alias: Delay to work
+- id: morning_commute_sensor_notification
+  alias: "Commute time to work"
   trigger:
     platform: numeric_state
     entity_id: sensor.home_to_work
@@ -25,3 +26,26 @@
     data_template:
       title: 'Delay to work'
       message: "It will take {{ states.sensor.home_to_work.state }} minutes to drive to work!"
+
+- id: update_frequency_morning_commute_sensor
+  alias: "Update morning commute sensor"
+  initial_state: 'on'
+  trigger:
+    - platform: time
+      minutes: '/5'
+      seconds: 00
+  condition:
+    - condition: time
+      after: '07:00:00'
+      before: '8:45:00'
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+  action:
+    - service: sensor.google_travel_sensor_update
+      data:
+        entity_id: sensor.morning_commute_home_to_work

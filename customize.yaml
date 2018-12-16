@@ -12,16 +12,18 @@ sensor.speedtest_ping:
   icon: mdi:timer
 light.christmas_tree_bling:
   icon: mdi:pine-tree
-light.christmas_bed_room_star:
+light.christmas_master_bedroom_star:
   icon: mdi:star
 light.christmas_sitting_room_star:
   icon: mdi:star
-light.christmas_kitchen_star:
+light.christmas_mess_room_star:
+  icon: mdi:star
+light.christmas_guest_bedroom_star:
   icon: mdi:star
 light.snowflake_lights:
   icon: mdi:snowflake
-light.christmas_outside_lights:
-  icon: mdi:home
+light.christmas_garden_lights:
+  icon: mdi:tree
 sensor.ssl_cert_expiry:
   icon: mdi:certificate
 sensor.entryway_thermostat_humidity:

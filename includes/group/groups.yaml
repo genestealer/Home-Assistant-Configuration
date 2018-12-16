@@ -84,14 +84,12 @@ bathroom_view:
     - group.bathroom_towel_rail_group
 
 
-bedroom_view:
-  name: Bedroom
+bedrooms_view:
+  name: Bedrooms
   view: yes
   entities:
-    - light.bedroom
-    - light.richard_bed
-    - light.lucy_bed
-
+    - group.bedroom_master
+    - group.bedroom_guest
 
 sitting_room_view:
   name: Sitting Room
@@ -166,8 +164,8 @@ mobiles_group:
   name: Mobiles
   view: no
   entities:
-    - device_tracker.richard_sailfish
-    - device_tracker.lucy_bullhead
+    - device_tracker.richard_blueline
+    - device_tracker.lucy_taimen
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
@@ -507,6 +505,18 @@ server_ilo_status_group:
 
 
 
+bedroom_master:
+  name: Master Bedroom Lights
+  view: no
+  entities:
+    - light.richard_bed
+    - light.lucy_bed
+
+bedroom_guest:
+  name: Guest Bedroom Lights
+  view: no
+  entities:
+    - light.lamp_2
 
 
 bathroom_towel_rail_group:
@@ -533,12 +543,14 @@ outside_christmas_lights:
   name: Outside Christmas Lights
   view: no
   entities:
-    - light.christmas_bed_room_star
+    - light.christmas_master_bedroom_star
     - light.christmas_sitting_room_star
-    - light.christmas_outside_lights
+    - light.christmas_mess_room_star
+    - light.christmas_guest_bedroom_star
+    - light.christmas_garden_lights
+
 inside_christmas_lights:
   name: Inside Christmas Lights
   view: no
   entities:
     - light.christmas_tree_bling
-    - light.christmas_kitchen_star

@@ -1,0 +1,26 @@
+############################################################
+#
+# MQTT Sonoff
+# Icon done in # Done in homeassistant:customize
+#
+############################################################
+
+- platform: mqtt
+  name: "Sonoff1 Temperature"
+  state_topic: "HUISHS/SONOFF/tele/sonoff/SENSOR"
+  value_template: "{{ value_json['AM2301'].Temperature }}"
+  unit_of_measurement: "°C"
+  availability_topic: "HUISHS/SONOFF/tele/sonoff/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  device_class: temperature
+  
+- platform: mqtt
+  name: "Sonoff1 Humidity"
+  state_topic: "HUISHS/SONOFF/tele/sonoff/SENSOR"
+  value_template: "{{ value_json['AM2301'].Humidity }}"
+  unit_of_measurement: "%"
+  availability_topic: "HUISHS/SONOFF/tele/sonoff/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  device_class: humidity

@@ -151,8 +151,9 @@ notify:
 
 # APC UPS Network Infomation Server, which talks to the networked UPS via apcupsd daemon (outside of HASS, but on same system).
 apcupsd:
-  host: !secret apcupsdNisIP
-  port: !secret apcupsdNisPort
+  host: a722577e-apcupsd-net
+#  host: !secret apcupsdNisIP
+#  port: !secret apcupsdNisPort
 
 # Google Nest integration.
 nest:
@@ -186,6 +187,33 @@ rflink:
   ignore_devices:
     - sensor.owl_cm113_ea7f_current2
     - sensor.owl_cm113_ea7f_current3
+    - sensor.owl_cm113_ea9f_current2
+    - sensor.owl_cm113_ea9f_current3
+    - sensor.owl_cm130_007f_kwatt
+    - sensor.alectov5_*
+    # - sensor.alectov5_000d_raintot
+    # - sensor.blyss_th_0004_hum
+    # - sensor.blyss_th_0004_hum
+    # - sensor.blyss_th_0004_temp
+    # - sensor.blyss_th_2000_hum
+    # - sensor.blyss_th_2000_temp
+    # - sensor.blyss_th_9000_hum
+    # - sensor.blyss_th_9000_temp
+    # - sensor.blyss_th_a880_hum
+    # - sensor.blyss_th_a880_temp
+    - sensor.dkw2012_*
+    # - sensor.dkw2012_0040_bat
+    # - sensor.dkw2012_0040_hum
+    # - sensor.dkw2012_0040_raintot
+    # - sensor.dkw2012_0040_temp
+    # - sensor.dkw2012_0040_windir
+    # - sensor.dkw2012_0040_wings
+    # - sensor.dkw2012_0040_winsp
+    - light.drayton_1180_*
+    - elrodb_72fab739_*
+    - mertik_44_*
+    - drayton_1180_*
+
 
 #Ikea Tradfri ethernet gatway integration.
 tradfri:
@@ -223,6 +251,7 @@ panel_iframe:
 # Google Assistant intergration.
 google_assistant:
   project_id: !secret google_assistant_project_id
+  api_key: !secret google_assistant_api_key
   # Not needed since release 0.80
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token
