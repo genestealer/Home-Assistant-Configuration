@@ -166,6 +166,12 @@ climate:
 device_tracker:
   - platform: owntracks
     max_gps_accuracy: 250
+  - platform: google_maps
+    username: google_maps_username
+    password: google_maps_password
+  - platform: googlehome
+    host: !secret google_home_hub_ip
+    
   # - platform: ping
   #   hosts:
   #     hostone: 192.168.1.16
