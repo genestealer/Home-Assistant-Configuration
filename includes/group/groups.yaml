@@ -96,9 +96,9 @@ sitting_room_view:
   view: yes
   entities:
     - switch.plugin_air_freshener
-    - light.sitting_room
     - light.sofa_left
     - light.sofa_right
+    - light.sitting_room_light
 
 cctv_view:
   name: CCTV

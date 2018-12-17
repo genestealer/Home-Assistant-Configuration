@@ -22,8 +22,8 @@
       name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
     Maclean_0d82_03:
       name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
-    # Maclean_0d82_04:
-    #   name: na
+    Maclean_0d85_04:
+      name: Sitting Room Light
 
 # 433MHz Lights
 - platform: rflink
