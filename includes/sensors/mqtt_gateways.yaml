@@ -242,7 +242,7 @@
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
-  
+
 - platform: mqtt
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB RSSI"
@@ -267,6 +267,78 @@
   name: "TOR DB SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
   availability_topic: "HUISHS/DoorBell/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:radio-tower
+
+
+
+    ############################################################
+    #
+    # Chicken Controller Status
+    #
+    ############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Chickens/Pi/Health"
+  name: "CC CPU Load"
+  value_template: '{{ value_json.cpu_load }}'
+  availability_topic: "HUISHS/Chickens/Door/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Chickens/Pi/Health"
+  name: "CC CPU Temperature"
+  value_template: '{{ value_json.pi_cpu_temp }}'
+  availability_topic: "HUISHS/Chickens/Door/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Chickens/Pi/Health"
+  name: "CC IP"
+  value_template: '{{ value_json.IP }}'
+  availability_topic: "HUISHS/Chickens/Door/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+# - platform: mqtt
+#   state_topic: "HUISHS/Chickens/Pi/Health"
+#   name: "TOR DB MAC"
+#   value_template: '{{ value_json.MAC }}'
+#   availability_topic: "HUISHS/Chickens/Door/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Chickens/Pi/Health"
+  name: "TOR DB RSSI"
+  unit_of_measurement: "dBm"
+  value_template: '{{ value_json.RSSI }}'
+  availability_topic: "HUISHS/Chickens/Door/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:signal-variant
+
+# - platform: mqtt
+#   state_topic: "HUISHS/Chickens/Pi/Health"
+#   name: "TOR DB Host"
+#   value_template: '{{ value_json.HostName }}'
+#   availability_topic: "HUISHS/Chickens/Door/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Chickens/Pi/Health"
+  name: "CC SSID"
+  value_template: '{{ value_json.SSID }}'
+  availability_topic: "HUISHS/Chickens/Door/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:radio-tower

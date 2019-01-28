@@ -6,7 +6,7 @@
 
 # - alias: Plug-in Air Freshener Start
 #   trigger:
-#     platform: time
+#     platform: time_pattern
 #     at: '08:00:00'
 #   condition:
 #     - condition: state
@@ -21,7 +21,7 @@
 #
 # - alias: Plug-in Air Freshener Stop
 #   trigger:
-#     platform: time
+#     platform: time_pattern
 #     at: '23:00:00'
 #   action:
 #     service: switch.turn_off

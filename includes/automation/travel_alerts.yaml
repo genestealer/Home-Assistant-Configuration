@@ -27,13 +27,13 @@
       title: 'Delay to work'
       message: "It will take {{ states.sensor.home_to_work.state }} minutes to drive to work!"
 
+#Updating sensors on-demand using Automation
 - id: update_frequency_morning_commute_sensor
   alias: "Update morning commute sensor"
   initial_state: 'on'
   trigger:
-    - platform: time
+    - platform: time_pattern
       minutes: '/5'
-      seconds: 00
   condition:
     - condition: time
       after: '07:00:00'
