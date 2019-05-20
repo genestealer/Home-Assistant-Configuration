@@ -4,12 +4,11 @@
 #
 ############################################################
 
-minute_delay:
+bathroom_towel_on_time:
   name: Heat for x Mins
   # initial: 40
   min: 1
   max: 120
-  step: 1
+  step: 5
   unit_of_measurement: mins
   icon: mdi:clock-end
-

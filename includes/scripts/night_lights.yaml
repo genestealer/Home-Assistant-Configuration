@@ -1,20 +1,20 @@
-############################################################
+# ############################################################
+# #
+# # Set lights in bedroom to night mode
+# #
+# ############################################################
 #
-# Set lights in bedroom to night mode
 #
-############################################################
-
-
-bedroom_lights_night_mode:
-  alias: "Bedroom Lights Night mode"
-  sequence:
-    - service: homeassistant.turn_on
-      #THIS IS TRADFRI GATEWAY
-      entity_id: light.richard_bed 
-      data:
-        brightness: 10
-    - service: homeassistant.turn_off
-      #THIS IS TRADFRI GATEWAY
-      entity_id: light.lucy_bed 
-      # data:
-      #   brightness: 1
+# bedroom_lights_night_mode:
+#   alias: "Bedroom Lights Night mode"
+#   sequence:
+#     - service: homeassistant.turn_on
+#       #THIS IS TRADFRI GATEWAY
+#       entity_id: light.richard_bed
+#       data:
+#         brightness: 10
+#     - service: homeassistant.turn_off
+#       #THIS IS TRADFRI GATEWAY
+#       entity_id: light.lucy_bed
+#       # data:
+#       #   brightness: 1

@@ -8,7 +8,7 @@
 - platform: rflink
   #automatic_add: false
   devices:
-    owl_cm113_eacd_current2:
+    owl_cm113_ead1_current2:
       sensor_type: current_phase_1
       name: 'Unscaled House Consumption Current'
       unit_of_measurement: A
@@ -29,5 +29,3 @@
     value_template: '{{states.sensor.house_current_consumption.state | int * (states.sensor.ups_input_voltage.state | int / 1000)}}'
     friendly_name: 'House Wattage'
     unit_of_measurement: 'KW'
-
-

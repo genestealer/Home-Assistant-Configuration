@@ -1,0 +1,106 @@
+bedroom_lights_night_mode:
+  alias: Bedroom Lights Night mode
+  sequence:
+  - service: homeassistant.turn_on
+    entity_id: light.richard_bed
+    data:
+      brightness: 10
+  - service: homeassistant.turn_off
+    entity_id: light.lucy_bed
+kitchen_extractor_timer:
+  alias: 'Kitchen fan on: 30 minutes'
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.kitchen_extractor_fan
+  - delay: 00:30
+  - service: switch.turn_off
+    entity_id: switch.kitchen_extractor_fan
+lawn_irrigation_timer:
+  alias: Timer
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.lawn_irrigation_valve
+  - delay: 00:{{states.input_number.lawn_irrigation_duration.state | round(0)}}
+  - service: switch.turn_off
+    entity_id: switch.lawn_irrigation_valve
+pot_irrigation_timer:
+  alias: Timer
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.pot_irrigation_valve
+  - delay: 00:{{states.input_number.pot_irrigation_duration.state | round(0)}}
+  - service: switch.turn_off
+    entity_id: switch.pot_irrigation_valve
+saa_sleep_tracking_started:
+  alias: Sleep Tracking Started
+  sequence:
+  - service: light.turn_off
+    entity_id: light.bedroom
+saa_smart_period:
+  alias: Sleep Tracking Smart Period
+  sequence:
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 10
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 41
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 92
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 143
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 194
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 245
+saa_alarm_alert_start:
+  alias: Sleep Tracking Alarm Alert
+  sequence:
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 255
+dash_button_google_home_test:
+  alias: Hello World Test
+  sequence:
+    service: tts.google_say
+    entity_id: media_player.kitchen_mini_speaker
+    data:
+      message: Hello World.
+bathroom_towel_rail_timer:
+  alias: Bathroom Towel Rail Timer
+  sequence:
+  - data:
+      entity_id: climate.entryway
+      temperature: '30'
+    service: climate.set_temperature
+  - delay: 00:15
+  - data:
+      entity_id: climate.entryway
+      temperature: '15'
+    service: climate.set_temperature
+  - delay: 00:{{ states.input_number.minute_delay.state | int }}
+  - alias: ''
+    data:
+      entity_id: bathroom_towel_rail_timer
+    service: script.turn_off

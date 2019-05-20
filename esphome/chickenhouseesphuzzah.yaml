@@ -1,0 +1,42 @@
+esphome:
+  name: chickenhouseesphuzzah
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  manual_ip:
+    static_ip: 192.168.2.25
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery_prefix: homeassistant
+  discovery: true
+#  topic_prefix: homeassistant
+
+
+
+
+sensor:
+  - platform: dht
+    pin: GPIO2
+    temperature:
+      name: "Chicken House Temperature"
+    humidity:
+      name: "Chicken House Humidity"
+    update_interval: 60s
+    model: DHT11

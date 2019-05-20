@@ -1,0 +1,74 @@
+############################################################
+#
+# Home Assistant Camera Configuration
+#
+############################################################
+
+- platform: mjpeg
+  mjpeg_url: !secret axis_front_door_ip_mjpg
+  name: Front Door
+  username: !secret axis_front_door_username
+  password: !secret axis_front_door_password
+
+- platform: mjpeg
+  mjpeg_url: !secret axis_front_drive_IP_mjpg
+  name: Front of House
+  username: !secret axis_front_drive_username
+  password: !secret axis_front_drive_password
+
+
+- platform: mjpeg
+  mjpeg_url: !secret axis_garage_IP_mjpg
+  name: Garage
+  username: !secret axis_garage_username
+  password: !secret axis_garage_password
+
+- platform: mjpeg
+  mjpeg_url: !secret axis_garage2_IP_mjpg
+  name: Garage 2
+  username: !secret axis_garage2_username
+  password: !secret axis_garage2_password
+
+- platform: mjpeg
+  mjpeg_url: !secret Bunny_CCTV_mjpg
+  name: Bunny Camera
+  username: !secret Bunny_CCTV_username
+  password: !secret Bunny_CCTV_password
+
+
+# Non of these work!
+
+# - platform: generic
+#   name: Front Door Stream
+#   username: !secret axis_front_door_username
+#   password: !secret axis_front_door_password
+#   still_image_url: !secret axis_front_door_ip_still
+#   stream_source: !secret axis_front_door_ip_mjpg
+
+# - platform: generic
+#   name: Front of House Stream
+#   username: !secret axis_front_drive_username
+#   password: !secret axis_front_drive_password
+#   still_image_url: !secret axis_front_drive_ip_still
+#   stream_source: !secret axis_front_drive_stream_source
+#
+# - platform: generic
+#   name: Garage Stream
+#   username: !secret axis_garage_username
+#   password: !secret axis_garage_password
+#   still_image_url: !secret axis_garage_still
+#   stream_source: !secret axis_garage_stream_source
+#
+# - platform: generic
+#   name: Garage2 Stream
+#   username: !secret axis_garage2_username
+#   password: !secret axis_garage2_password
+#   still_image_url: !secret axis_garage2_still
+#   stream_source: !secret axis_garage2_stream_source
+
+
+
+# Needs FFMPEG, not currently installed.
+# - platform: onvif
+#   host: !secret Bunny_shed_onvif
+#   name: Bunny Shed Camera

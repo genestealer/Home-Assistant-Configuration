@@ -1,63 +1,50 @@
-# ############################################################
-# #
-# # Weather Sensor - darksky
-# #
-# ############################################################
+############################################################
 #
-# - platform: darksky
-#   api_key: !secret dark_sky_key
-#   units: uk2
-#   monitored_conditions:
-#     - temperature
-#     - humidity
-#     - summary
-#     - daily_summary
-#     - hourly_summary
-#     - temperature_max
-#     - temperature_min
-#     #- summary
-#     # - icon
-#     # - nearest_storm_distance
-#     # - nearest_storm_bearing
-#     # - precip_type
-#     # - precip_intensity
-#     # - precip_probability
-#     # - temperature
-#     # - apparent_temperature
-#     # - dew_point
-#     # - wind_speed
-#     # - wind_bearing
-#     # - cloud_cover
-#     # - humidity
-#     # - pressure
-#     # - visibility
-#     # - ozone
-#     # - minutely_summary
-#     #  - hourly_summary
-#     #  - daily_summary
+# Weather Sensor - darksky
 #
-#     # - apparent_temperature_max
-#     # - apparent_temperature_min
-#     # - precip_intensity_max
+############################################################
 
-############################################################
-#
-# Weather Sensor - Weather Underground (wunderground)
-# https://home-assistant.io/components/sensor.wunderground/
-#
-############################################################
-- platform: wunderground
-  api_key: !secret WUnderground_API
+- platform: darksky
+  api_key: !secret dark_sky_key
+  units: uk2
+  forecast:
+    - 0 # Today only
+    - 1
+  # hourly_forecast:
+  #   - 0
+  #   - 1
   monitored_conditions:
-    - precip_today_metric #Total precipitation in metric units
-    - precip_1d_mm # Forecasted precipitation intensity in millimeters
-    - temp_low_1d_c # Forecasted low temperature in Celsius
-    - temp_high_1d_c # Forecasted high temperature in Celsius
-    - temp_c # Current temperature in Celsius
-    - relative_humidity # Relative humidity
-    - feelslike_c # Feels like (or apparent) temperature in Celsius
-    - precip_1d # Forecasted precipitation probability in %
-    - wind_mph # Current wind speed in mph
-    - wind_1d_mph # Forecasted wind speed in mph
-    - alerts
-    - weather
+    - temperature
+    - humidity
+    - summary
+    - daily_summary
+    - hourly_summary
+    - temperature_max
+    - temperature_min
+    - precip_intensity
+    - precip_probability
+    - precip_accumulation
+
+
+# ############################################################
+# #
+# # Weather Sensor - Weather Underground (wunderground)
+# # https://home-assistant.io/components/sensor.wunderground/
+# #
+# #They no longer offer free API keys, it will be  disabled Dec 31, 2018
+# ############################################################
+# - platform: wunderground
+#   api_key: !secret WUnderground_API
+#   monitored_conditions:
+#     - precip_today_metric #Total precipitation in metric units
+#     - precip_1d_mm # Forecasted precipitation intensity in millimeters
+#     - temp_low_1d_c # Forecasted low temperature in Celsius
+#     - temp_high_1d_c # Forecasted high temperature in Celsius
+#     - temp_c # Current temperature in Celsius
+#     - relative_humidity # Relative humidity
+#     - feelslike_c # Feels like (or apparent) temperature in Celsius
+#     - precip_1d # Forecasted precipitation probability in %
+#     - wind_mph # Current wind speed in mph
+#     - wind_1d_mph # Forecasted wind speed in mph
+#     - alerts
+#     - weather

@@ -1,5 +1,3 @@
-sensor.owl_cm113_eacd_current3:
-  hidden: true
 sensor.unscaled_house_consumption_current:
   hidden: true
 sensor.hp_ilo_server_power_state:
@@ -224,32 +222,32 @@ binary_sensor.lawn_irrigation_valve_position:
 binary_sensor.pot_irrigation_valve_position:
   icon: mdi:water
 group.bunny_shed_settings: {}
-binary_sensor.hallway_thermostat_fan:
+binary_sensor.entryway_thermostat_fan:
   hidden: true
-binary_sensor.hallway_thermostat_has_leaf:
+binary_sensor.entryway_thermostat_has_leaf:
   friendly_name: Entryway Thermostat has leaf
   hidden: true
-sensor.hallway_thermostat_hvac_state:
+sensor.entryway_thermostat_hvac_state:
   friendly_name: Entryway Thermostat hvac state
   hidden: true
-binary_sensor.hallway_thermostat_is_locked:
+binary_sensor.entryway_thermostat_is_locked:
   hidden: true
-binary_sensor.hallway_thermostat_is_using_emergency_heat:
+binary_sensor.entryway_thermostat_is_using_emergency_heat:
   hidden: true
-binary_sensor.hallway_thermostat_online:
+binary_sensor.entryway_thermostat_online:
   friendly_name: Nest Status
   hidden: true
-climate.hallway:
+climate.entryway:
   friendly_name: Nest
-sensor.hallway_thermostat_humidity:
+sensor.entryway_thermostat_humidity:
   friendly_name: Nest Hall Humidity
-sensor.hallway_thermostat_operation_mode:
+sensor.entryway_thermostat_operation_mode:
   friendly_name: Nest Heat State
   hidden: true
-sensor.hallway_thermostat_target:
+sensor.entryway_thermostat_target:
   friendly_name: Nest Thermostat target
   hidden: true
-sensor.hallway_thermostat_temperature:
+sensor.entryway_thermostat_temperature:
   friendly_name: Nest Hall Temperature
   hidden: true
 group.chicken_group:

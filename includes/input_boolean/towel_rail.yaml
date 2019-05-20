@@ -1,10 +1,10 @@
-############################################################
+# ############################################################
+# #
+# # xxxxx
+# #
+# ############################################################
 #
-# xxxxx
-#
-############################################################
-
-task_heat_towel_rail:
-  name: Heat the towel rail for 1 hour
-  initial: off
-  icon: mdi:temperature-celsius
+# task_heat_towel_rail:
+#   name: Heat the towel rail for 1 hour
+#   initial: off
+#   icon: mdi:temperature-celsius

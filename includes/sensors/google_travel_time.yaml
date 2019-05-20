@@ -5,7 +5,6 @@
 ############################################################
 
 - platform: google_travel_time
-  id: morning_commute
   name: Morning Commute Home to Work
   api_key: !secret googlemaps_api_key
   origin: zone.home

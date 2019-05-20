@@ -1,0 +1,30 @@
+############################################################
+#
+# RESTful Command
+# Merge named dir
+#
+############################################################
+
+cctv_front_door_restart:
+  url: !secret axis_front_door_restart_url
+  username: !secret axis_front_door_username
+  password: !secret axis_front_door_password
+  method: get
+
+cctv_garage_restart:
+  url: !secret axis_garage_restart_url
+  username: !secret axis_garage_username
+  password: !secret axis_garage_password
+  method: get
+
+cctv_garage2_restart:
+  url: !secret axis_garage2_restart_url
+  username: !secret axis_garage2_username
+  password: !secret axis_garage2_password
+  method: get
+
+cctv_drive_restart:
+  url: !secret axis_front_drive_restart_url
+  username: !secret axis_front_drive_username
+  password: !secret axis_front_drive_password
+  method: get

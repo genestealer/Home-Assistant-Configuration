@@ -36,7 +36,8 @@
     - cumonbatt
     - xoffbatt
     - selftest
-    # - statflag
+    - outputv
+    - itemp
     # - serialno
     # - battdate
     # - firmware

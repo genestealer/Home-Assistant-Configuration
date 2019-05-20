@@ -155,14 +155,16 @@ cctv_group2:
 nest_thermostat_group:
   name: Nest Thermostat
   view: no
+  control: hidden
   entities:
-    - climate.hallway
-    - binary_sensor.hallway_thermostat_online
-    - sensor.hallway_thermostat_humidity
+    - climate.entryway
+    - binary_sensor.entryway_thermostat_online
+    - sensor.entryway_thermostat_humidity
 
 mobiles_group:
   name: Mobiles
   view: no
+  control: hidden
   entities:
     - device_tracker.richard_blueline
     - device_tracker.lucy_taimen
@@ -173,6 +175,7 @@ mobiles_group:
 device_status_summary_group:
   name: Device Status Summary
   view: no
+  control: hidden
   entities:
     - group.device_status_group
 
@@ -204,6 +207,7 @@ cctv_status_group:
 chicken_group:
   name: Chicken Coop
   view: no
+  control: hidden
   entities:
     - cover.chicken_coop_door
     - binary_sensor.chicken_door_status
@@ -222,6 +226,7 @@ gateway_info_summary_group:
 kitchen_climate_group:
   name: Kitchen Climate
   view: no
+  control: hidden
   entities:
     - sensor.kitchen_temperature
     - sensor.kitchen_humidity
@@ -285,6 +290,7 @@ bunny_shed_settings:
 outside_weather_group:
   name: Outside Weather
   view: no
+  control: hidden
   entities:
     - sensor.pws_temp_c
     - sensor.pws_feelslike_c
@@ -302,6 +308,7 @@ outside_weather_group:
 speed_test_group:
   name: Speed Test
   view: no
+  control: hidden
   entities:
    - sensor.speedtest_download
    - sensor.speedtest_ping
@@ -310,10 +317,11 @@ speed_test_group:
 pi_hole:
   name: Pi Hole
   view: no
+  control: hidden
   entities:
-      - sensor.pihole_ads_blocked_today
-      - sensor.pihole_ads_percentage_blocked_today
-      - sensor.pihole_dns_queries_today
+      - sensor.pi_hole_ads_blocked_today
+      - sensor.pi_hole_ads_percentage_blocked_today
+      - sensor.pi_hole_dns_queries_today
 
 irrigation_group:
     name: Irrigation Control
@@ -424,8 +432,8 @@ rf_link_group:
   control: hidden
   entities:
     - binary_sensor.esp_link_status
-    - binary_sensor.rflink_status
-    - sensor.esplink_controller_signal_strength
+    - binary_sensor.rf_link_status
+    - sensor.esp_link_controller_signal_strength
 
 tor_doorbell_info_group:
   name: TOR DoorBell Info
@@ -439,10 +447,12 @@ tor_doorbell_info_group:
     - sensor.tor_db_mac
     - sensor.tor_db_rssi
     - sensor.tor_db_ssid
+    - counter.tor_db_disconnect_counter
 
 ups_data_group:
   name: UPS Data
   view: no
+  control: hidden
   entities:
    - sensor.ups_status
    - sensor.ups_battery
@@ -464,6 +474,7 @@ ups_data_group:
 server_ilo_status_group:
   name: Server Status
   view: no
+  control: hidden
   entities:
     # iLo sensores
     - sensor.server_ilo_temperature_ambient
@@ -524,14 +535,10 @@ bathroom_towel_rail_group:
   view: no
   control: hidden
   entities:
-    - sensor.towelrail_state
-    - script.timed_heat_towel_rail
-    - script.turn_off_heat_towel_rail
-    - script.timer_off
-    - input_number.minute_delay
+    - script.bathroom_towel_rail_timer
+    - input_number.bathroom_towel_on_time
     - automation.dont_heat_towel_rail_mqtt
     - automation.heat_towel_rail_mqtt
-    - input_boolean.task_heat_towel_rail
 
 christmas_lights_group:
     name: Christmas Lights

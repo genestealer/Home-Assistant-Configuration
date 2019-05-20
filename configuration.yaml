@@ -92,9 +92,9 @@ logbook:
       - sensor.dark_sky_hourly_summary
       - sensor.dark_sky_daily_summary
       - sensor.server_server_health
-      - sensor.pihole_ads_blocked_today
-      - sensor.pihole_ads_percentage_blocked_today
-      - sensor.pihole_dns_queries_today
+      - sensor.pi_hole_ads_blocked_today
+      - sensor.pi_hole_ads_percentage_blocked_today
+      - sensor.pi_hole_dns_queries_today
 
 # Enables a map showing the location of tracked devices
 map:
@@ -109,6 +109,7 @@ logger:
     urllib3.connectionpool: error
 
 
+system_health:
 
 ############################################################
 #
@@ -122,7 +123,8 @@ sun:
 
 # Text to speech.
 tts:
-  - platform: google
+  - platform: google_translate
+    service_name: google_say
 
 # Use external MQTT broker.
 mqtt:
@@ -132,13 +134,17 @@ mqtt:
   keepalive: 60
   username: !secret mqtt_username
   password: !secret mqtt_password
+  discovery: true
 
 # Push notification providers.
 notify:
     - name: Google Cloud Notify
       platform: html5
-      gcm_api_key: !secret gcmKey
-      gcm_sender_id: !secret gcmID
+      # gcm_api_key: !secret gcmKey
+      # gcm_sender_id: !secret gcmID
+      vapid_pub_key: !secret vapid_pub_key
+      vapid_prv_key: !secret vapid_prv_key
+      vapid_email: !secret vapid_email
   # - platform: pushover
   #   name: Pushover Notify
   #   api_key:  !secret pushover_api_key
@@ -155,7 +161,7 @@ apcupsd:
 #  host: !secret apcupsdNisIP
 #  port: !secret apcupsdNisPort
 
-# Google Nest integration.
+#Google Nest integration.
 nest:
   client_id: !secret nest_id
   client_secret: !secret nest_secret
@@ -169,9 +175,9 @@ device_tracker:
   - platform: google_maps
     username: google_maps_username
     password: google_maps_password
-  - platform: googlehome
-    host: !secret google_home_hub_ip
-    
+  # - platform: googlehome
+  #   host: !secret google_home_hub_ip
+
   # - platform: ping
   #   hosts:
   #     hostone: 192.168.1.16
@@ -191,34 +197,23 @@ rflink:
   wait_for_ack: True
   reconnect_interval: 1 #1 second
   ignore_devices:
-    - sensor.owl_cm113_ea7f_current2
-    - sensor.owl_cm113_ea7f_current3
-    - sensor.owl_cm113_ea9f_current2
-    - sensor.owl_cm113_ea9f_current3
-    - sensor.owl_cm130_007f_kwatt
-    - sensor.alectov5_*
-    # - sensor.alectov5_000d_raintot
-    # - sensor.blyss_th_0004_hum
-    # - sensor.blyss_th_0004_hum
-    # - sensor.blyss_th_0004_temp
-    # - sensor.blyss_th_2000_hum
-    # - sensor.blyss_th_2000_temp
-    # - sensor.blyss_th_9000_hum
-    # - sensor.blyss_th_9000_temp
-    # - sensor.blyss_th_a880_hum
-    # - sensor.blyss_th_a880_temp
-    - sensor.dkw2012_*
-    # - sensor.dkw2012_0040_bat
-    # - sensor.dkw2012_0040_hum
-    # - sensor.dkw2012_0040_raintot
-    # - sensor.dkw2012_0040_temp
-    # - sensor.dkw2012_0040_windir
-    # - sensor.dkw2012_0040_wings
-    # - sensor.dkw2012_0040_winsp
-    - light.drayton_1180_*
-    - elrodb_72fab739_*
-    - mertik_44_*
-    - drayton_1180_*
+    - owl_cm113_ead1_current3
+    - owl_cm113_ead1_current1
+    # - sensor.owl_cm113_ea7f_current2
+    # - sensor.owl_cm113_ea7f_current3
+    # - sensor.owl_cm113_ea9f_current2
+    # - sensor.owl_cm113_ea9f_current3
+    # - sensor.owl_cm130_007f_kwatt
+
+    # - sensor.alectov5_*
+    # - sensor.v2phoenix_*
+    # - sensor.dkw2012_*
+    # - light.drayton_*
+    # - light.elrodb_*
+    # - light.mertik_*
+    # - light.drayton_*
+    # - light.btf_*
+    # - light.v2phoenix*
 
 
 #Ikea Tradfri ethernet gatway integration.
@@ -275,6 +270,23 @@ google_assistant:
 #       # - sound
 #      trigger_time: 0
 
+# Internet Speed Test
+speedtestdotnet:
+  monitored_conditions:
+   - ping
+   - download
+   - upload
+
+# Number counter
+counter:
+  tor_db_disconnect_counter:
+    name: TOR DB Disconnections
+    initial: 0
+    step: 1
+
+# Proxy video live streams through Home Assistant
+stream:
+
 ############################################################
 #
 # Includes
@@ -284,9 +296,9 @@ google_assistant:
 
 # Single Files
 zone: !include includes/zone.yaml
-camera: !include includes/cameras.yaml
 shell_command: !include includes/shell_commands.yaml
 automation: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
+script: !include scripts.yaml
 
 # Merge List
 automation old: !include_dir_merge_list includes/automation
@@ -295,15 +307,17 @@ light: !include_dir_merge_list includes/lights
 binary_sensor: !include_dir_merge_list includes/binary_sensors
 switch: !include_dir_merge_list includes/switch
 cover: !include_dir_merge_list includes/cover
+camera: !include_dir_merge_list includes/cameras
+
 
 # Merge named dir
-script: !include_dir_merge_named includes/scripts
+# script: !include_dir_merge_named includes/scripts
 input_boolean: !include_dir_merge_named includes/input_boolean
 input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
-
+rest_command: !include_dir_merge_named includes/rest_commands
 # Merge Named
-group: !include includes/group/groups.yaml
+group: !include includes/groups.yaml
 
 
 

@@ -1,88 +1,88 @@
-############################################################
+# ############################################################
+# #
+# # IFTTT Integration - Sleep as Android
+# # http://sleep.urbandroid.org/documentation/integration/ifttt/
+# # Android app triggers IFTTT Maker Applets Webhooks,
+# # which makes make a web request to the scripts below.
+# #
+# ############################################################
 #
-# IFTTT Integration - Sleep as Android
-# http://sleep.urbandroid.org/documentation/integration/ifttt/
-# Android app triggers IFTTT Maker Applets Webhooks,
-# which makes make a web request to the scripts below.
+# ############################################################
+# #
+# # If maker Event "sleep_tracking_started", then make a web request.
+# # Event Name: sleep_tracking_started
+# # Make a web request https://HASSIP/api/services/script/turn_on?api_password=password
+# # Post JSON
+# # {"entity_id":"script.saa_sleep_tracking_started"}
+# #
+# ############################################################
+# saa_sleep_tracking_started:
+#   alias: "Sleep Tracking Started"
+#   sequence:
+#     - service: light.turn_off
+#       entity_id: light.bedroom
 #
-############################################################
-
-############################################################
+# ############################################################
+# #
+# # If maker Event "smart_period", then make a web request.
+# # Event Name: smart_period
+# # Make a web request https://HASSIP/api/services/script/turn_on?api_password=password
+# # Post JSON
+# # {"entity_id":"script.saa_smart_period"}
+# #
+# ############################################################
+# saa_smart_period:
+#   alias: "Sleep Tracking Smart Period"
+#   sequence:
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 10
+#     - delay:
+#         minutes: 8
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 41
+#     - delay:
+#         minutes: 8
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 92
+#     - delay:
+#         minutes: 8
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 143
+#     - delay:
+#         minutes: 8
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 194
+#     - delay:
+#         minutes: 8
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 245
 #
-# If maker Event "sleep_tracking_started", then make a web request.
-# Event Name: sleep_tracking_started
-# Make a web request https://HASSIP/api/services/script/turn_on?api_password=password
-# Post JSON
-# {"entity_id":"script.saa_sleep_tracking_started"}
-#
-############################################################
-saa_sleep_tracking_started:
-  alias: "Sleep Tracking Started"
-  sequence:
-    - service: light.turn_off
-      entity_id: light.bedroom
-
-############################################################
+# ############################################################
+# #
+# # If maker Event "alarm_alert_start", then make a web request.
+# # Event Name: alarm_alert_start
+# # Make a web request https://HASSIP/api/services/script/turn_on?api_password=password
+# # Post JSON
+# # {"entity_id":"script.saa_alarm_alert_start"}
+# #
+# ############################################################
+# saa_alarm_alert_start:
+#   alias: "Sleep Tracking Alarm Alert"
+#   sequence:
+#     - service: light.turn_on
+#       entity_id: light.bedroom
+#       data:
+#         brightness: 255
 # 
-# If maker Event "smart_period", then make a web request.
-# Event Name: smart_period
-# Make a web request https://HASSIP/api/services/script/turn_on?api_password=password
-# Post JSON
-# {"entity_id":"script.saa_smart_period"}
-#
-############################################################
-saa_smart_period:
-  alias: "Sleep Tracking Smart Period"
-  sequence:
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 10
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 41 
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 92
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 143
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 194
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 245
-
-############################################################
-# 
-# If maker Event "alarm_alert_start", then make a web request.
-# Event Name: alarm_alert_start
-# Make a web request https://HASSIP/api/services/script/turn_on?api_password=password
-# Post JSON
-# {"entity_id":"script.saa_alarm_alert_start"}
-#
-############################################################
-saa_alarm_alert_start:
-  alias: "Sleep Tracking Alarm Alert"
-  sequence:
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 255
-      

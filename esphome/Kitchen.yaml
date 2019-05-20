@@ -1,0 +1,41 @@
+#https://esphome.io/components/switch/remote_transmitter.html
+esphome:
+  name: Kitchen
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+
+# manual_ip:
+#   static_ip: 192.168.2.25
+#   gateway: 192.168.2.1
+#   subnet: 255.255.255.0
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: '1Dimension2'
+
+ota:
+  password: '1Dimension2'
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery_prefix: homeassistant
+  discovery: true
+#  topic_prefix: homeassistant
+
+
+
+remote_receiver:
+  pin: GPIO34
+  # dump all signals we find
+  dump: all
+

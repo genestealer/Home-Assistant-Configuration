@@ -19,13 +19,13 @@
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  json_attributes:
-    - ClientName
-    - IP
-    - MAC
-    - RSSI
-    - HostName
-    - ConnectedSSID
+  # json_attributes_topic:
+  #   - ClientName
+  #   - IP
+  #   - MAC
+  #   - RSSI
+  #   - HostName
+  #   - ConnectedSSID
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
@@ -210,11 +210,11 @@
   icon: mdi:signal-variant
 
 
-  ############################################################
-  #
-  # TOR DoorBell Controller Status
-  #
-  ############################################################
+############################################################
+#
+# TOR DoorBell Controller Status
+#
+############################################################
 
 - platform: mqtt
   state_topic: "HUISHS/DoorBell/StatusJSON"
@@ -273,17 +273,18 @@
 
 
 
-    ############################################################
-    #
-    # Chicken Controller Status
-    #
-    ############################################################
+############################################################
+#
+# Chicken Controller Status
+#
+############################################################
 
 - platform: mqtt
   state_topic: "HUISHS/Chickens/Pi/Health"
   name: "CC CPU Load"
   value_template: '{{ value_json.cpu_load }}'
   availability_topic: "HUISHS/Chickens/Door/Status"
+  unit_of_measurement: '%'
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
@@ -293,6 +294,7 @@
   name: "CC CPU Temperature"
   value_template: '{{ value_json.pi_cpu_temp }}'
   availability_topic: "HUISHS/Chickens/Door/Status"
+  device_class: temperature
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic

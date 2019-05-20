@@ -17,7 +17,7 @@
   alias: Open chicken pop hole door at dawn
   trigger:
   - event: sunrise
-    offset: +01:00:00
+    offset: -00:30:00
     platform: sun
   condition: []
   action:
@@ -84,3 +84,15 @@
       message: Master bedroom Tradfri remote battery low. Currently {{ states.sensor.tradfri_wireless_dimmer.state
         }}%
     service: notify.google_cloud_notify
+- id: '1557360744014'
+  alias: Increment TOR DB Disconnect Automation
+  trigger:
+  - entity_id: binary_sensor.tor_db_status
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: counter.tor_db_disconnect_counter
+    service: counter.increment
