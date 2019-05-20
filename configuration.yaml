@@ -309,13 +309,14 @@ switch: !include_dir_merge_list includes/switch
 cover: !include_dir_merge_list includes/cover
 camera: !include_dir_merge_list includes/cameras
 
-
 # Merge named dir
 # script: !include_dir_merge_named includes/scripts
 input_boolean: !include_dir_merge_named includes/input_boolean
 input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
 rest_command: !include_dir_merge_named includes/rest_commands
+
+
 # Merge Named
 group: !include includes/groups.yaml
 
