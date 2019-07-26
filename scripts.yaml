@@ -2,7 +2,7 @@ bedroom_lights_night_mode:
   alias: Bedroom Lights Night mode
   sequence:
   - service: homeassistant.turn_on
-    entity_id: light.richard_bed
+    entity_id: light.richard_bedside
     data:
       brightness: 10
   - service: homeassistant.turn_off

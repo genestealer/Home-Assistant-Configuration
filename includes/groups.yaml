@@ -243,7 +243,7 @@ lighting_group:
     - light.lamp_3
     - light.lamp_4
     - light.bedroom
-    - light.richard_bed
+    - light.richard_bed_2
     - light.lucy_bed
     - light.sitting_room
     - light.sofa_left
@@ -521,7 +521,7 @@ bedroom_master:
   name: Master Bedroom Lights
   view: no
   entities:
-    - light.richard_bed
+    - light.richard_bed_2
     - light.lucy_bed
 
 bedroom_guest:

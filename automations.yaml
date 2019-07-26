@@ -96,3 +96,17 @@
   - data:
       entity_id: counter.tor_db_disconnect_counter
     service: counter.increment
+- id: '1558317969078'
+  alias: CCTV Reboot Each Day
+  trigger:
+  - at: 06:45
+    platform: time
+  condition: []
+  action:
+  - service: rest_command.cctv_front_door_restart
+  - delay: 00:10
+  - service: rest_command.cctv_drive_restart
+  - delay: 00:10
+  - service: rest_command.cctv_garage_restart
+  - delay: 00:10
+  - service: rest_command.cctv_garage2_restart
