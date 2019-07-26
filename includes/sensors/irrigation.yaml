@@ -25,7 +25,7 @@
     pot_irrigation_last_run:
        friendly_name: 'Last Watered'
        # entity_id: switch.pot_irrigation_valve
-       value_template: "{{states.switch.pot_irrigation_valve.last_changed.strftime('%a %D %-I:%M %P')}}"
+       value_template: "{{states.switch.pot_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
 
     pot_irrigation_valve_status:
       friendly_name: 'Valve Status'
@@ -43,7 +43,7 @@
     lawn_irrigation_last_run:
        friendly_name: 'Last Watered'
        # entity_id: switch.lawn_irrigation_valve
-       value_template: "{{states.switch.lawn_irrigation_valve.last_changed.strftime('%a %D %-I:%M %P')}}"
+       value_template: "{{states.switch.lawn_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
 
     lawn_irrigation_valve_status:
       friendly_name: 'Valve Status'
