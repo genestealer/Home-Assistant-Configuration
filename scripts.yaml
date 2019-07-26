@@ -16,7 +16,7 @@ kitchen_extractor_timer:
   - service: switch.turn_off
     entity_id: switch.kitchen_extractor_fan
 lawn_irrigation_timer:
-  alias: Timer
+  alias: Lawn Irrigation Timer
   sequence:
   - service: switch.turn_on
     entity_id: switch.lawn_irrigation_valve
@@ -24,7 +24,7 @@ lawn_irrigation_timer:
   - service: switch.turn_off
     entity_id: switch.lawn_irrigation_valve
 pot_irrigation_timer:
-  alias: Timer
+  alias: Pots Irrigation Timer
   sequence:
   - service: switch.turn_on
     entity_id: switch.pot_irrigation_valve

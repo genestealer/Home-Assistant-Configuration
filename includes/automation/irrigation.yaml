@@ -37,9 +37,10 @@
      # Only run on scheduled days.
      value_template: "{{states.sensor.lawn_irrigation_next_run.state[5:15] == now().date().strftime('%d-%m-%Y')}}"
 
-   - condition: state
-     entity_id: 'binary_sensor.lawn_irrigation_interlock'
-     state: 'off'
+   # Issue with getting rainfall, have turned this off.
+   # - condition: state
+   #   entity_id: 'binary_sensor.lawn_irrigation_interlock'
+   #   state: 'off'
 
   action:
     service: homeassistant.turn_on
@@ -106,6 +107,7 @@
   #   # Only run on scheduled days.
   #    value_template: "{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime('%d-%m-%Y')}}"
 
+  # Issue with getting rainfall, have turned this off.
   #  - condition: state
   #    entity_id: 'binary_sensor.pots_irrigation_interlock'
   #    state: 'off'
