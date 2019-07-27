@@ -259,6 +259,7 @@ panel_iframe:
     url: !secret panel_iframe_Thor_Webmin_URL
 
 # Google Assistant intergration.
+# Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
 google_assistant:
   project_id: !secret google_assistant_project_id
   api_key: !secret google_assistant_api_key
@@ -335,13 +336,9 @@ rest_command: !include_dir_merge_named includes/rest_commands
 group: !include includes/groups.yaml
 
 
-
-
-
-
-# media_player:
-#  # - platform: plex
-#  - platform: cast
+# Plex Sensor
+media_player:
+  - platform: plex
 
 
 

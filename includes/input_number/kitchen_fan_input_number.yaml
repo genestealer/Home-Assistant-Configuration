@@ -1,0 +1,14 @@
+############################################################
+#
+# Kitchen Fan Timer: Sliders - Input Numbers
+#
+############################################################
+
+kitchen_fan_timer_duration:
+  name: Kitchen Fan Run Duration
+  # initial: 30
+  min: 1
+  max: 60
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:clock-end

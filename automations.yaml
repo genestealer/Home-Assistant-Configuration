@@ -162,3 +162,15 @@
   - data:
       entity_id: switch.lawn_irrigation_valve
     service: switch.turn_off
+- id: '1564245956941'
+  alias: Kitchen Fan Script Off to Switch Off
+  trigger:
+  - entity_id: script.kitchen_extractor_timer
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.kitchen_extractor_fan
+    service: switch.turn_off
