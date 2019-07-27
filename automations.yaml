@@ -110,3 +110,55 @@
   - service: rest_command.cctv_garage_restart
   - delay: 00:10
   - service: rest_command.cctv_garage2_restart
+- id: '1564192629041'
+  alias: Pot Irrigation Script Off to Valve Off
+  trigger:
+  - entity_id: script.pot_irrigation_timer
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.pot_irrigation_valve
+    service: switch.turn_off
+- id: '1564192623451'
+  alias: Irrigate Pots at Sunrise
+  trigger:
+  - platform: template
+    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
+  condition:
+  - condition: template
+    value_template: '{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+  - condition: state
+    entity_id: sensor.pots_irrigation_interlock
+    state: No Problem
+  action:
+  - entity_id: script.pot_irrigation_timer
+    service: script.pot_irrigation_timer
+- id: '1564192623452'
+  alias: Irrigate Lawn at Sunrise
+  trigger:
+  - platform: template
+    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
+  condition:
+  - condition: template
+    value_template: '{{states.sensor.lawn_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+  - condition: state
+    entity_id: sensor.lawn_irrigation_interlock
+    state: No Problem
+  action:
+  - entity_id: script.lawn_irrigation_timer
+    service: script.lawn_irrigation_timer
+- id: '1564234217905'
+  alias: Lawn Irrigation Script Off to Valve Off
+  trigger:
+  - entity_id: script.lawn_irrigation_timer
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.lawn_irrigation_valve
+    service: switch.turn_off

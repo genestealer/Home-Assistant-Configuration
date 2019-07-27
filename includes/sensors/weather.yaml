@@ -9,21 +9,16 @@
   units: uk2
   forecast:
     - 0 # Today only
-    - 1
+    # - 1
   # hourly_forecast:
   #   - 0
   #   - 1
   monitored_conditions:
-    - temperature
-    - humidity
-    - summary
-    - daily_summary
-    - hourly_summary
-    - temperature_max
-    - temperature_min
+    - temperature_high
+    - temperature_low
     - precip_intensity
-    - precip_probability
-    - precip_accumulation
+    - wind_speed
+
 
 
 # ############################################################

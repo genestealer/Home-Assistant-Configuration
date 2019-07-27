@@ -79,22 +79,29 @@ conversation:
 
 # Enables support for tracking state changes over time. (Cleared at startup)
 history:
-
-# Tracked history is kept for 12 days. (Not cleared at startup)
-recorder:
-  purge_keep_days: 12
+   exclude:
+    entities:
+      - sensor.server_server_health
+      - sensor.pi_hole_ads_blocked_today
+      - sensor.pi_hole_ads_percentage_blocked_today
+      - sensor.pi_hole_dns_queries_today
+      - sensor.date_time
+      - sensor.time
 
 # View all events in a logbook
 logbook:
    exclude:
     entities:
-      - sensor.dark_sky_summary
-      - sensor.dark_sky_hourly_summary
-      - sensor.dark_sky_daily_summary
       - sensor.server_server_health
       - sensor.pi_hole_ads_blocked_today
       - sensor.pi_hole_ads_percentage_blocked_today
       - sensor.pi_hole_dns_queries_today
+      - sensor.date_time
+      - sensor.time
+
+# Tracked history is kept for 12 days. (Not cleared at startup)
+recorder:
+  purge_keep_days: 12
 
 # Enables a map showing the location of tracked devices
 map:

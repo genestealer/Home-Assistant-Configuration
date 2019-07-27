@@ -22,3 +22,29 @@ pot_irrigation_duration:
   unit_of_measurement: mins
   icon: mdi:clock-end
 
+lawn_irrigation_wind_threshold:
+  name: Lawn Irrigation Wind Threshold
+  # initial: 15
+  min: 0
+  max: 50
+  step: 1
+  unit_of_measurement: MPH
+  icon: mdi:weather-windy
+
+irrigation_temperature_threshold:
+  name: Irrigation Temperature Threshold
+  # initial: 5
+  min: 3
+  max: 10
+  step: 1
+  unit_of_measurement: °C
+  icon: mdi:thermometer
+
+lawn_irrigation_rain_threshold:
+  name: Lawn Irrigation Rain Threshold
+  # initial: 5
+  min: 0
+  max: 15
+  step: 1
+  unit_of_measurement: mm/day
+  icon: mdi:weather-pouring

@@ -4,47 +4,48 @@
 #
 ############################################################
 
-
-# Pots Weather Interlock
-# Only water the lawn if its not too cold 
-  - platform: template
-    sensors:
-      pots_irrigation_interlock:
-        friendly_name: "Weather Interlock"
-        device_class: problem
-        value_template: >
-         {% if
-         states('sensor.pws_temp_low_1d_c') | int > 5 %}
-         false
-         {% else %}
-         true
-         {% endif %}
-         
-# Lawn Weather Interlock
-# Only water the lawn if its not going to rain, its not windy and its not too cold 
-  - platform: template
-    sensors:
-      lawn_irrigation_interlock:
-        friendly_name: "Weather Interlock"
-        device_class: problem
-        value_template: >
-         {% if
-         states('sensor.pws_precip_today_metric') | int < 3
-         and
-         states('sensor.pws_wind_mph') | int < 15
-         and
-         states('sensor.pws_temp_low_1d_c') | int > 5 %}
-         false
-         {% else %}
-         true
-         {% endif %}
+# NO LONGER USED IN LUE OF TEMPLATE SENSORS
+# # Pots Weather Interlock
+# # Only water the lawn if its not too cold
+#   - platform: template
+#     sensors:
+#       pots_irrigation_interlock:
+#         friendly_name: "Weather Interlock"
+#         device_class: problem
+#         value_template: >
+#          {% if
+#          states('sensor.dark_sky_overnight_low_temperature_0d') | int > 5 %}
+#          false
+#          {% else %}
+#          true
+#          {% endif %}
+#
+# # Lawn Weather Interlock
+# # Only water the lawn if its not going to rain, its not windy and its not too cold
+# # sensor.dark_sky_precip_intensity_0d must be multipled by 24 to give a days worth of rain.
+#   - platform: template
+#     sensors:
+#       lawn_irrigation_interlock:
+#         friendly_name: "Weather Interlock"
+#         device_class: problem
+#         value_template: >
+#          {% if
+#          states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int > 5 %}
+#          and
+#          states('sensor.dark_sky_wind_speed') | int < 15
+#          and
+#          states('sensor.dark_sky_overnight_low_temperature_0d') | int > 5 %}
+#          false
+#          {% else %}
+#          true
+#          {% endif %}
 
   - platform: template
     sensors:
         pot_irrigation_valve_position:
             friendly_name: 'Valve Position'
             value_template: "{{ is_state('switch.pot_irrigation_valve', 'on') }}"
-   
+
   - platform: template
     sensors:
         lawn_irrigation_valve_position:
