@@ -36,10 +36,14 @@
         {% endif %}
 
     irrigation_starttime:
-      friendly_name: 'Forcasted Start Time'
+      friendly_name: 'Forecasted Start Time'
       # With 2 hour positive offset to let the sun get up!
       value_template: "{{(as_timestamp(states.sun.sun.attributes.next_rising) + 7200) | timestamp_custom('%H:%M')}}"
 
+    forecast_rain_accumulated:
+      friendly_name: 'Forecasted Accumulated Rain'
+      value_template: "{{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | round(2)}}"
+      unit_of_measurement: "mm"
 
     pot_irrigation_duration:
       friendly_name: 'Run Duration'

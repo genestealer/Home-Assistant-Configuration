@@ -1,14 +1,14 @@
-############################################################
-#
-#  Automation Simulate Presence / Occupancy Simulation
-#  Source: https://github.com/mertenats/Open-Home-Automation/blob/master/openhome/configuration/home_assistant/automation/automation_4a.yaml
-#
-############################################################
+# ############################################################
+# #
+# #  Automation Simulate Presence / Occupancy Simulation
+# #  Source: https://github.com/mertenats/Open-Home-Automation/blob/master/openhome/configuration/home_assistant/automation/automation_4a.yaml
+# # Cant Moved to automation.yaml as it does not support Automation Templating
+# ############################################################
 
 - alias: Simulate Presence
   trigger:
     - platform: state
-      entity_id: group.all_devices
+      entity_id: device_tracker.richard_blueline2
       from: 'home'
       to: 'not_home'
     - platform: sun
@@ -47,7 +47,7 @@
          entity_id: >
            light.lamp_{{ (range(1, 4) | random) }}
     # Keep lamp on for xx minutes)
-    - delay: '00:{{ (range(10, 30) | random) }}:00'  
+    - delay: '00:{{ (range(10, 30) | random) }}:00'
 
     # turn off all lamps
     - service: light.turn_off

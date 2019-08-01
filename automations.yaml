@@ -129,10 +129,10 @@
     value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
   condition:
   - condition: template
-    value_template: '{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+    value_template: '{{states.sensor.pots_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
     entity_id: sensor.pots_irrigation_interlock
-    state: No Problem
+    state: No Problems
   action:
   - entity_id: script.pot_irrigation_timer
     service: script.pot_irrigation_timer
@@ -146,7 +146,7 @@
     value_template: '{{states.sensor.lawn_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
     entity_id: sensor.lawn_irrigation_interlock
-    state: No Problem
+    state: No Problems
   action:
   - entity_id: script.lawn_irrigation_timer
     service: script.lawn_irrigation_timer

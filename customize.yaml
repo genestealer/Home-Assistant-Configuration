@@ -28,6 +28,7 @@ light.lamp_1:
   friendly_name: Lucy Room Lamp
 light.lamp_2:
   friendly_name: Guest Bedroom Lamp
+  google_assistant_type: light
 light.lamp_3:
   friendly_name: Upstairs Hall Light
 binary_sensor.bunny_shed_cooler:
@@ -36,6 +37,7 @@ binary_sensor.bunny_shed_cooler:
 binary_sensor.bunny_shed_heater:
   icon: mdi:fire
 switch.kitchen_extractor_fan:
+  google_assistant_type: fan
   icon: mdi:fan
 switch.bunny_fluff_air_filter:
   icon: mdi:fan
@@ -206,9 +208,6 @@ binary_sensor.lawn_irrigation_valve_position:
   icon: mdi:water
 binary_sensor.pot_irrigation_valve_position:
   icon: mdi:water
-# sensor.entryway_thermostat_humidity:
-#   friendly_name: Nest Hall Humidity
-#     icon: mdi:water-percent
 sensor.entryway_thermostat_operation_mode:
   friendly_name: Nest Heat State
   hidden: true
@@ -221,8 +220,5 @@ sensor.entryway_thermostat_temperature:
 binary_sensor.entryway_thermostat_online:
   device_class: connectivity
   friendly_name: Nest Thermostat Status
-# climate.entryway:
-#   entity_picture: /local/nesticon.png
-#     friendly_name: Nest
 group.chicken_group:
   friendly_name: Chicken Coop Controller Info

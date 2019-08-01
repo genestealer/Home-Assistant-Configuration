@@ -179,8 +179,8 @@ climate:
 
 # Device trackers.
 device_tracker:
-  - platform: owntracks
-    max_gps_accuracy: 250
+  # - platform: owntracks
+  #   max_gps_accuracy: 250
   - platform: google_maps
     username: google_maps_username
     password: google_maps_password

@@ -1,0 +1,54 @@
+esphome:
+  name: back_garden_irritation
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+  
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery_prefix: homeassistant
+  discovery: true
+#  topic_prefix: homeassistant
+
+
+
+switch:
+  ## restart
+  - platform: restart
+    name: "Back Garden Irrigation Restart"
+
+  ## Irrigation Valve
+  - platform: gpio
+    pin: GPIO12
+    name: "Back Garden Pots Irrigation"
+    # id: esp_fishpond_pump
+
+
+## Use time
+time:
+  - platform: homeassistant
+    ## Set your timezone
+    timezone: Africa/Johannesburg
+    on_time:
+      # Switch on on the hour
+      - seconds: 0
+        minutes: 0
+        hours: '*'
+        then:
+          - switch.turn_on: esp_fishpond_pump
+          # Switch off 10 minutes later
+          - delay: 10min
+          - switch.turn_off: esp_fishpond_pump
