@@ -11,6 +11,12 @@
   username: !secret hp_ilo_username
   password: !secret hp_ilo_password
   monitored_variables:
+    - name: Server Power On Time
+      sensor_type: server_power_on_time
+
+    - name: Sever UID Status
+      sensor_type: server_uid_status
+
     - name: Server Fanspeed
       sensor_type: server_health
       unit_of_measurement: '%'
@@ -31,14 +37,21 @@
       unit_of_measurement: '°C'
       value_template: '{{ ilo_data.temperature["12-Sys Exhaust"].currentreading[0] }}'
 
-    # - name: Server Health
-    #   sensor_type: server_health
+    - name: Server Storage Status
+      sensor_type: server_health
+      value_template: '{{ ilo_data.health_at_a_glance["storage"]["status"] }}'
 
-    # - name: Server Storage Status
-    #   sensor_type: server_health
-    #   value_template: '{{ ilo_data.health_at_a_glance["storage"]["status"] }}'
+    - name: Server Temperature Status
+      sensor_type: server_health
+      value_template: '{{ ilo_data.health_at_a_glance["temperature"]["status"] }}'
 
-
+- platform: template
+  sensors:
+    server_power_on_time_months:
+      friendly_name: 'Server Total Power On Time'
+      value_template: '{{states.sensor.server_server_power_on_time.state | float // 43800 }}'
+      unit_of_measurement: 'Months'
+      icon_template: mdi:clock
 
 ############################################################
 #

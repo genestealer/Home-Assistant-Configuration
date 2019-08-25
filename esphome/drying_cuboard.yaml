@@ -1,0 +1,45 @@
+esphome:
+  name: drying_cuboard
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  manual_ip:
+    static_ip: 192.168.2.28
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery_prefix: homeassistant
+  discovery: true
+#  topic_prefix: homeassistant
+
+
+
+
+sensor:
+  - platform: dht
+    pin: GPIO4
+    temperature:
+      name: "Drying Cuboard Temperature"
+    humidity:
+      name: "Drying Cuboard Humidity"
+    update_interval: 60s
+    model: DHT11

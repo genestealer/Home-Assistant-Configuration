@@ -222,3 +222,11 @@ binary_sensor.entryway_thermostat_online:
   friendly_name: Nest Thermostat Status
 group.chicken_group:
   friendly_name: Chicken Coop Controller Info
+sensor.server_server_fanspeed:
+  icon: mdi:fan
+sensor.server_sever_uid_status:
+  icon: mdi:lightbulb
+sensor.server_server_storage_status:
+  icon: mdi:harddisk
+sensor.server_server_temperature_status:
+  icon: mdi:thermometer-lines

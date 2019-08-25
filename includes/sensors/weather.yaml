@@ -18,6 +18,8 @@
     - temperature_low
     - precip_intensity
     - wind_speed
+    - temperature
+    - humidity
 
 
 

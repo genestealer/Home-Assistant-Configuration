@@ -175,7 +175,10 @@ nest:
   client_id: !secret nest_id
   client_secret: !secret nest_secret
 climate:
-  platform: nest
+  - platform: nest
+  # - platform: generic_thermostat
+  #   name: Bunny Shed Thermostat
+
 
 # Device trackers.
 device_tracker:
@@ -183,7 +186,7 @@ device_tracker:
   #   max_gps_accuracy: 250
   - platform: google_maps
     username: google_maps_username
-    password: google_maps_password
+    # password: google_maps_password
   # - platform: googlehome
   #   host: !secret google_home_hub_ip
 

@@ -1,6 +1,6 @@
 #https://esphome.io/components/switch/remote_transmitter.html
 esphome:
-  name: Kitchen
+  name: kitchen
   platform: ESP8266
   board: nodemcuv2
 
@@ -35,7 +35,7 @@ mqtt:
 
 
 remote_receiver:
-  pin: GPIO34
+  pin: GPIO2
   # dump all signals we find
   dump: all
 
