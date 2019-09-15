@@ -244,22 +244,31 @@ emulated_hue:
 
 # Side panel frames, but only externally accessible URLs work.
 panel_iframe:
-  ide:
-    title: IDE
-    icon: mdi:code-braces
-    url: !secret panel_iframe_IDE_URL
-  octobox:
-    title: Portainer
-    icon: mdi:docker
-    url: !secret panel_iframe_Portainer_URL
   webmin1:
     title: StormBreaker Webmin
     icon: mdi:gauge
     url: !secret panel_iframe_StormBreaker_Webmin_URL
-  webmin2:
-    title: Thor Webmin
-    icon: mdi:gauge
-    url: !secret panel_iframe_Thor_Webmin_URL
+  downloads:
+    title: Downloads
+    icon: mdi:mdi-briefcase-download
+    url: !secret panel_iframe_Downloads_URL
+  sonarr:
+    title: Sonarr
+    icon: mdi:mdi-youtube-tv
+    url: !secret panel_iframe_Sonarr_URL
+  radarr:
+    title: Radaar
+    icon: mdi:filmstrip
+    url: !secret panel_iframe_Radarr_URL
+  subsonic:
+    title: Subsonic
+    icon: mdi:mdi-library-music
+    url: !secret panel_iframe_Subsonic_URL
+    # webmin2:
+    #   title: Thor Webmin
+    #   icon: mdi:gauge
+    #   url: !secret panel_iframe_Thor_Webmin_URL
+
 
 # Google Assistant intergration.
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/

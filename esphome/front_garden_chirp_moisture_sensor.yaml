@@ -19,6 +19,7 @@ logger:
 # Enable Home Assistant API
 api:
   password: "hxN#^fPPv5ZRy%7l"
+  reboot_timeout: 0s
 
 ota:
   password: "hxN#^fPPv5ZRy%7l"
@@ -34,17 +35,32 @@ i2c:
   sda: 4
   scl: 5
   scan: True
-  frequency: 100kHz
+  frequency: 50kHz
+
+
   
 sensor:
 - platform: custom
   lambda: |-
-    auto my_sensor = new ChirpCustomSensor();
+    auto my_sensor = new MyCustomSensor();
     App.register_component(my_sensor);
-    return {my_sensor->capacitance_sensor, my_sensor->temperature_sensor};
-# return {my_sensor->capacitance_sensor, my_sensor->temperature_sensor,my_sensor->light_sensor};
+    return {my_sensor};
 
   sensors:
-  - name: "Chirp Capacitance Sensor"
-  - name: "Chirp Temperature Sensor"
-  # - name: "Chirp Light Sensor"
+    name: "My Custom Sensor"
+
+# - platform: custom
+#   # update_interval: 10
+#   lambda: |-
+#     auto my_sensor = new MyCustomSensor();
+#     App.register_component(my_sensor);
+#     return {my_sensor->capacitance_sensor};
+
+# # return {my_sensor->capacitance_sensor, my_sensor->temperature_sensor};
+
+# # return {my_sensor->capacitance_sensor, my_sensor->temperature_sensor,my_sensor->light_sensor};
+
+#   sensors:
+#   - name: "Chirp Capacitance Sensor"
+#   # - name: "Chirp Temperature Sensor"
+#   # - name: "Chirp Light Sensor"

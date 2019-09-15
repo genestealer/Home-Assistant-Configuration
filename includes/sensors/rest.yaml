@@ -3,7 +3,7 @@
 # RESTful Sensor for extra data from Glances which the
 # normal Glances Sensor cannot do.
 #
-# Example !secret = http://192.168.1.210:61208/api/3/fs
+# Example !secret = http://192.168.1.20:61208/api/3/fs
 # /api/3/fs returns a list of system volumes/disks
 # Note, other sensors are in the glances.yaml file
 ############################################################

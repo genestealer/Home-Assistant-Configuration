@@ -216,7 +216,6 @@ sensor.entryway_thermostat_target:
   hidden: true
 sensor.entryway_thermostat_temperature:
   friendly_name: Nest Hall Temperature
-  hidden: true
 binary_sensor.entryway_thermostat_online:
   device_class: connectivity
   friendly_name: Nest Thermostat Status
