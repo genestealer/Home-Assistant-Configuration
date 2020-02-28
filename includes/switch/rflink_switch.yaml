@@ -26,11 +26,14 @@
       name: Bunny Fluff Air Filter
     RFCustom_524643_2: # Status RCS-K09
       name: Wax Melter
-    RFCustom_524643_4: # Status RCS-K09
+    # RFCustom_524643_4: # Status RCS-K09
+    #   name: Plug-In Air Freshener
+    Maclean_0d85_01: #
       name: Plug-In Air Freshener
     ev1527_05d797_0e:
       name: Front Door Sensor
-
+    tristate_0aaaa0_0:
+      name: Smoke Machine
 
 
 

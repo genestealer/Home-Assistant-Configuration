@@ -8,7 +8,7 @@ bedroom_lights_night_mode:
   - service: homeassistant.turn_off
     entity_id: light.lucy_bed
 kitchen_extractor_timer:
-  alias: 'Kitchen Extractor Fan Timer'
+  alias: Kitchen Extractor Fan Timer
   sequence:
   - service: switch.turn_on
     entity_id: switch.kitchen_extractor_fan
@@ -80,13 +80,6 @@ saa_alarm_alert_start:
     entity_id: light.bedroom
     data:
       brightness: 255
-dash_button_google_home_test:
-  alias: Hello World Test
-  sequence:
-    service: tts.google_say
-    entity_id: media_player.kitchen_mini_speaker
-    data:
-      message: Hello World.
 bathroom_towel_rail_timer:
   alias: Bathroom Towel Rail Timer
   sequence:
@@ -104,3 +97,26 @@ bathroom_towel_rail_timer:
     data:
       entity_id: bathroom_towel_rail_timer
     service: script.turn_off
+'1572463035573':
+  alias: Smoke Machine Script Loop
+  sequence:
+  - alias: ''
+    data:
+      entity_id: switch.smoke_machine
+    service: switch.toggle
+  - delay: 00:00:15
+  - data:
+      entity_id: 1572463035573
+    service: script.turn_on
+'1576108013122':
+  alias: Christmas Disco
+  sequence:
+  - data: {}
+    entity_id: light.christmas_bedroom_star
+    service: light.toggle
+  - entity_id: light.christmas_garden_lights
+    service: light.toggle
+  - delay: 00:00:04
+  - entity_id: light.christmas_sitting_room_star
+    service: light.toggle
+  - delay: 00:00:04

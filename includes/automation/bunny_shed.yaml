@@ -7,7 +7,6 @@
  # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
  # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
 - alias: Set shed temp heater slider
-  hide_entity: True
   trigger:
     platform: mqtt
     topic: "HUISHS/BunnyShed/setHeaterTemperature"
@@ -31,7 +30,6 @@
  # This automation script runs when the target temperature slider is moved.
  # It publishes its value to the same MQTT topic it is also subscribed to.
 - alias: Shed temp slider heater moved
-  hide_entity: True
   trigger:
     platform: state
     entity_id: input_number.shed_target_heat_temp
@@ -52,7 +50,6 @@
  # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
  # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
 - alias: Set shed temp cooler slider
-  hide_entity: True
   trigger:
     platform: mqtt
     topic: "HUISHS/BunnyShed/setCoolerTemperature"
@@ -76,7 +73,6 @@
  # This automation script runs when the target temperature slider is moved.
  # It publishes its value to the same MQTT topic it is also subscribed to.
 - alias: Shed temp slider cooler moved
-  hide_entity: True
   trigger:
     platform: state
     entity_id: input_number.shed_target_cool_temp
@@ -95,13 +91,12 @@
 ############################################################
 
 # - alias: Bunny Shed Overtemp
-# #  hide_entity: True
 #   trigger:
 #     platform: numeric_state
-#     entity_id: sensor.bs_temperature
+#     entity_id: sensor.bunny_shed_temperature
 #     above: 30
 #     below: 3
 #   action:
 #     service: notify.google_cloud_notify
 #     title: Bunny Shed Temperature Crital
-#     message: "The bunny shed is {{ states.sensor.bs_temperature.state }}° C."
+#     message: "The bunny shed is {{ states.sensor.bunny_shed_temperature.state }}° C."

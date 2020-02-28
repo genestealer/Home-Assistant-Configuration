@@ -45,7 +45,7 @@ config:
 
 # Enable web interface
 http:
-  api_password: !secret http_password
+#  api_password: !secret http_password
   server_port: 8123
   # SSL is now performed by Apache reverse proxy
   #  ssl_certificate: !secret SSL_cert
@@ -57,11 +57,11 @@ http:
   #trusted_proxies:
   #- 192.168.1.28
 
-  trusted_networks:
-  - 127.0.0.1
-  - 192.168.0.0/24
-  - 172.17.0.0/16 # Docker bridge
-  - 172.30.32.0/23 # Docker hassio
+#  trusted_networks:
+#  - 127.0.0.1
+#  - 192.168.0.0/24
+#  - 172.17.0.0/16 # Docker bridge
+#  - 172.30.32.0/23 # Docker hassio
   # 172.0.0.1 trust docker internal network from addons. https://github.com/home-assistant/home-assistant/issues/15873
   # - !secret myip
   #- ::1
@@ -88,6 +88,8 @@ history:
       - sensor.date_time
       - sensor.time
       - sensor.unscaled_house_consumption_current
+      - sensor.server_server_power_on_time
+
 
 # View all events in a logbook
 logbook:
@@ -100,6 +102,9 @@ logbook:
       - sensor.date_time
       - sensor.time
       - sensor.unscaled_house_consumption_current
+      - sensor.server_server_power_on_time
+      - sensor.cc_cpu_temperature
+      - sensor.cc_cpu_load
 
 # Tracked history is kept for 12 days. (Not cleared at startup)
 recorder:
@@ -184,9 +189,13 @@ climate:
 device_tracker:
   # - platform: owntracks
   #   max_gps_accuracy: 250
-  - platform: google_maps
-    username: google_maps_username
-    # password: google_maps_password
+  - platform: google_maps # Elements per day’ to a limit of 645.
+    username: !secret google_maps_username
+
+  - platform: tile
+    username: !secret tile_username
+    password: !secret tile_password
+    # password: !secret google_maps_password
   # - platform: googlehome
   #   host: !secret google_home_hub_ip
 
@@ -207,7 +216,7 @@ rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
   wait_for_ack: True
-  reconnect_interval: 1 #1 second
+  reconnect_interval: 5 #1 second
   ignore_devices:
     - owl_cm113_ead1_current3
     - owl_cm113_ead1_current1
@@ -233,6 +242,10 @@ tradfri:
   host: !secret Ikea_Tradfri_IP
   allow_tradfri_groups: true
   # api_key: !secret Ikea_Tradfri_KEY
+
+# Pi Hole integration sensor
+pi_hole:
+  host: !secret piHoleIPandPort
 
 # Amazon Alexa integration via emulated Philips hue.
 emulated_hue:
@@ -264,6 +277,7 @@ panel_iframe:
     title: Subsonic
     icon: mdi:mdi-library-music
     url: !secret panel_iframe_Subsonic_URL
+    # mdi:mdi-audiobook
     # webmin2:
     #   title: Thor Webmin
     #   icon: mdi:gauge
@@ -274,7 +288,82 @@ panel_iframe:
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
 google_assistant:
   project_id: !secret google_assistant_project_id
-  api_key: !secret google_assistant_api_key
+  # api_key: !secret google_assistant_api_key
+  service_account: !include private/Home_Assistant-78aa4d65f173.json
+  report_state: true
+  # exposed_domains:
+  #   - switch
+  #   - light
+  entity_config:
+    climate.entryway:
+      expose: false
+    media_player.kitchen_and_bedroom:
+      expose: false
+    media_player.googlehomehub2078:
+      expose: false
+    media_player.bedroom_display:
+      expose: false
+    media_player.kitchen_stereo:
+      expose: false
+    media_player.kitchen_tv:
+      expose: false
+    media_player.googlehome2495:
+      expose: false
+    media_player.office_display:
+      expose: false
+    media_player.chromecast7797:
+      expose: false
+    media_player.living_room_tv:
+      expose: false
+    media_player.googlehome2900:
+      expose: false
+    media_player.googlehomehub5970:
+      expose: false
+    media_player.garage:
+      expose: false
+    media_player.guest_bedroom:
+      expose: false
+    group.all_automations:
+      expose: false # Hide this to avoid telling Google Assistant to shut down everything, it disabling all automations.
+    group.all_covers:
+      expose: false
+    group.all_lights:
+      expose: false
+    group.all_switchs:
+      expose: false
+    group.all_scripts:
+      expose: false
+    group.automation_system_view:
+      expose: false
+    group.bathroom_towel_rail_group:
+      expose: false
+    group.bathroom_view:
+      expose: false
+    group.bedroom_guest:
+      expose: false
+    group.bedroom_master:
+      expose: false
+    group.bunny_shed_controller_info_group:
+      expose: false
+    group.bunny_shed_group:
+      expose: false
+    group.bunny_shed_settings:
+      expose: false
+    group.bunny_shed_view:
+      expose: false
+    group.rf_link_group:
+      expose: false
+    group.server_ilo_status_group:
+      expose: false
+
+
+    group.groups:
+      expose: false
+    group.media_players:
+      expose: false
+    group.media_player:
+      expose: false
+
   # Not needed since release 0.80
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token
@@ -314,6 +403,9 @@ weather:
   - platform: darksky
     api_key: !secret dark_sky_key
     mode: daily
+
+
+
 ############################################################
 #
 # Includes
@@ -349,8 +441,9 @@ group: !include includes/groups.yaml
 
 
 # Plex Sensor
-media_player:
-  - platform: plex
+# plex:
+#   host: !secret plex_server_host
+#   token: !secret plex_server_key
 
 
 

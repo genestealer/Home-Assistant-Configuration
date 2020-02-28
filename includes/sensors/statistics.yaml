@@ -7,4 +7,4 @@
 
 # - platform: statistics
 #   name: "BS Temperature Statistics"
-#   entity_id: sensor.bs_temperature
+#   entity_id: sensor.bunny_shed_temperature

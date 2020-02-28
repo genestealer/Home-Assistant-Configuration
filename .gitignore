@@ -51,3 +51,5 @@ entity_registry.yaml
 emulated_hue_ids.json
 emulated_hue_ids.json
 configuration - Copy.yaml
+/private/*
+/custom_components/hacs/*

@@ -28,3 +28,9 @@ cctv_drive_restart:
   username: !secret axis_front_drive_username
   password: !secret axis_front_drive_password
   method: get
+
+cctv_garden_restart:
+  url: !secret axis_garden_restart_url
+  username: !secret axis_garden_username
+  password: !secret axis_garden_password
+  method: get

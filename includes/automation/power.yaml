@@ -1,57 +1,57 @@
-############################################################
+# ############################################################
+# #
+# # Send Notification when Electricity Voltage is High
+# #
+# ############################################################
 #
-# Send Notification when Electricity Voltage is High
+# - alias: NOTIFY when Electricity Supply Voltage is HIGH
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.ups_input_voltage
+#     above: 254
+#   action:
+#     service: notify.google_cloud_notify
+#     data_template:
+#       title: 'Electricity Supply Voltage High'
+#       message: >
+#         Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts. {{now().strftime('%Y-%m-%d %I:%M %p')}}
+
 #
-############################################################
-
-- alias: NOTIFY when Electricity Supply Voltage is HIGH
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.ups_input_voltage
-    above: 254
-  action:
-    service: notify.google_cloud_notify
-    data_template:
-      title: 'Electricity Supply Voltage High'
-      message: >
-        Electricity Voltage High: {{ states('sensor.ups_input_voltage') }} Volts. {{now().strftime('%Y-%m-%d %I:%M %p')}}
-
-
-############################################################
+# ############################################################
+# #
+# # Send Notification when Electricity Voltage is Low
+# #
+# ############################################################
 #
-# Send Notification when Electricity Voltage is Low
+# - alias: NOTIFY when Electricity Supply Voltage is LOW
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.ups_input_voltage
+#     below: 220
+#   action:
+#     service: notify.google_cloud_notify
+#     data_template:
+#       title: 'Electricity Supply Voltage Low'
+#       message: >
+#         Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts. {{now().strftime('%Y-%m-%d %I:%M %p')}}
 #
-############################################################
-
-- alias: NOTIFY when Electricity Supply Voltage is LOW
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.ups_input_voltage
-    below: 220
-  action:
-    service: notify.google_cloud_notify
-    data_template:
-      title: 'Electricity Supply Voltage Low'
-      message: >
-        Electricity Voltage Low: {{ states('sensor.ups_input_voltage') }} Volts. {{now().strftime('%Y-%m-%d %I:%M %p')}}
 
 
-
-
-#############################################################
-##
-## Send Notification when UPS is about to shutdown (10 mins left)
-##
-#############################################################
-
-- alias: NOTIFY when UPS is close to being depleted
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.ups_time_left
-    below: 10
-  action:
-    service: notify.google_cloud_notify
-    data_template:
-      title: 'WARNING: UPS close to being depleted'
-      message: >
-        UPS is running low: {{ states('sensor.ups_time_left') }} minutes. {{now().strftime('%Y-%m-%d %I:%M %p')}}
+# 
+# #############################################################
+# ##
+# ## Send Notification when UPS is about to shutdown (10 mins left)
+# ##
+# #############################################################
+#
+# - alias: NOTIFY when UPS is close to being depleted
+#   trigger:
+#     platform: numeric_state
+#     entity_id: sensor.ups_time_left
+#     below: 10
+#   action:
+#     service: notify.google_cloud_notify
+#     data_template:
+#       title: 'WARNING: UPS close to being depleted'
+#       message: >
+#         UPS is running low: {{ states('sensor.ups_time_left') }} minutes. {{now().strftime('%Y-%m-%d %I:%M %p')}}

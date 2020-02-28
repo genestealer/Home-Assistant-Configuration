@@ -28,6 +28,7 @@
   alias: Garage CCTV Offline
   trigger:
   - entity_id: binary_sensor.garage_cctv_online
+    for: 00:10:00
     from: 'on'
     platform: state
     to: 'off'
@@ -40,6 +41,7 @@
   alias: Drive CCTV Offline
   trigger:
   - entity_id: binary_sensor.drive_cctv_online
+    for: 00:10:00
     from: 'on'
     platform: state
     to: 'off'
@@ -52,6 +54,7 @@
   alias: Door CCTV Offline
   trigger:
   - entity_id: binary_sensor.front_door_cctv_online
+    for: 00:10:00
     from: 'on'
     platform: state
     to: 'off'
@@ -110,6 +113,8 @@
   - service: rest_command.cctv_garage_restart
   - delay: 00:10
   - service: rest_command.cctv_garage2_restart
+  - delay: 00:10
+  - service: rest_command.cctv_garden_restart
 - id: '1564192629041'
   alias: Pot Irrigation Script Off to Valve Off
   trigger:
@@ -174,3 +179,342 @@
   - data:
       entity_id: switch.kitchen_extractor_fan
     service: switch.turn_off
+- id: '1572464632861'
+  alias: Smoke Machine Automation
+  description: ''
+  trigger:
+  - device_id: f748f07b6b70459db34b99aca1a33d4b
+    domain: light
+    entity_id: light.sofa_left
+    platform: device
+    type: turned_on
+  - event_data: {}
+    event_type: smoke_machine_automation
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: switch.smoke_machine
+    service: switch.toggle
+  - delay: 00:00:15
+  - event: smoke_machine_automation
+    event_data: {}
+- id: '1576597572390'
+  alias: 'Christmas: Outside lights off at night'
+  description: Christmas Light Automation - Turn off outside lights at night
+  trigger:
+  - at: '23:10:00'
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: group.outside_christmas_lights
+    service: homeassistant.turn_off
+- id: '1576597714781'
+  alias: 'Christmas : Outside lights on at sun set'
+  description: Christmas Light Automation - Turn on outside lights at night
+  trigger:
+  - event: sunset
+    offset: 00:30:00
+    platform: sun
+  condition: []
+  action:
+  - entity_id: group.outside_christmas_lights
+    service: homeassistant.turn_on
+- id: '1576598300322'
+  alias: 'Christmas: Inside lights on when home'
+  description: Christmas Light Automation - Turn on inside lights when we get home
+  trigger:
+  - entity_id: group.just_mobiles_group
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - entity_id: group.inside_christmas_lights
+    service: homeassistant.turn_on
+- id: '1576598493358'
+  alias: 'Christmas: Inside lights off when away'
+  description: Christmas Light Automation - Turn off inside lights when we leave home
+  trigger:
+  - entity_id: group.just_mobiles_group
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - entity_id: group.inside_christmas_lights
+    service: homeassistant.turn_off
+- id: '1576599112935'
+  alias: Welcome home Richard
+  description: ''
+  trigger:
+  - entity_id: person.richard
+    for: 00:05:00
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data_template:
+      cache: false
+      entity_id: media_player.ground_floor
+      message: "Welcome home Richard. {% if is_state(\"person.lucy\", \"home\")  %}\
+        \ Lucy is also at home and needs cuddles! {%- else -%}\n    Lucy is currently\
+        \ {{states('person.lucy')}}, at\n{{states('sensor.lucy_street_location')}}.\
+        \ {%- endif %} Outside it's {{states('sensor.dark_sky_temperature')| round(0)}}°C\
+        \ with {{states('sensor.dark_sky_humidity')| round(0) }}% humidity. Inside\
+        \ it's {{states('sensor.entryway_thermostat_temperature')| round(0)}}°C with\
+        \ {{states('sensor.entryway_thermostat_humidity')| round(0)}}% humidity. The\
+        \ heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
+        \ 'temperature')| round(0) }}°C\n"
+    service: tts.google_say
+- id: '1576601014597'
+  alias: Plug-in Air Freshener Start
+  description: Turn on in the morning when someone is home as long as it between certain
+    times. Also turns back on after returning home.
+  trigger:
+  - entity_id: group.just_mobiles_group
+    from: not_home
+    platform: state
+    to: home
+  - at: '10:01:00'
+    platform: time
+  condition:
+  - after: '10:00:00'
+    before: '18:00:00'
+    condition: time
+  action:
+  - entity_id: switch.plug_in_air_freshener
+    service: homeassistant.turn_on
+- id: '1576601191279'
+  alias: Plug-in Air Freshener Stop
+  description: Turn off in the evening or when no one is home.
+  trigger:
+  - at: '18:00:00'
+    platform: time
+  - entity_id: group.all_devices
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - entity_id: switch.plug_in_air_freshener
+    service: homeassistant.turn_off
+- id: '1576601770197'
+  alias: Welcome home Lucy
+  description: ''
+  trigger:
+  - entity_id: person.lucy
+    for: 00:05:00
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data_template:
+      cache: false
+      entity_id: media_player.ground_floor
+      message: "Welcome home Lucy. {% if is_state(\"person.richard\", \"home\")  %}\
+        \ Richard is also at home, please see him for cuddles! {%- else -%}\n    Richard\
+        \ is currently {{states('person.richard')}}, at\n{{states('sensor.richard_street_location')}}.\
+        \ {%- endif %} Inside it's {{states('sensor.entryway_thermostat_temperature')|\
+        \ round(0)}}°C, heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
+        \ 'temperature')| round(0) }}°C\n"
+    service: tts.google_say
+- id: '1576602219341'
+  alias: Keep Nest thermostat aware of our presence
+  description: ''
+  trigger:
+  - minutes: /5
+    platform: time_pattern
+  - event: start
+    platform: homeassistant
+  condition:
+  - condition: state
+    entity_id: group.just_mobiles_group
+    state: home
+  - condition: template
+    value_template: '{{ state_attr(''climate.entryway'', ''preset_mode'') == Away
+      and Eco }}'
+  action:
+  - data:
+      away_mode: home
+    service: nest.set_away_mode
+  - data:
+      message: Nest forced back to heat mode while you are at home.
+    service: notify.google_cloud_notify
+- id: '1576603673930'
+  alias: Close Chicken Door HTML5 notification action button clicked
+  description: Notification HTML5 push notification action button clicked
+  trigger:
+  - event_data:
+      action: close_door
+    event_type: html5_notification.clicked
+    platform: event
+  condition: []
+  action:
+  - entity_id: cover.chicken_coop_door
+    service: cover.close_cover
+- id: '1576603849046'
+  alias: Close Chicken Door HTML5 notification action
+  description: ''
+  trigger:
+  - event: sunset
+    offset: +02:00:00
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: binary_sensor.chicken_coop_status
+    state: 'on'
+  action:
+  - data:
+      data:
+        actions:
+        - action: close_door
+          icon: /static/icons/chicken.png
+          title: Close chicken coop door
+    data_template:
+      message: It's dark, shall I close the chicken coop door?
+      title: Chicken Bed Time? [Home Assistant]
+    service: notify.google_cloud_notify
+- id: '1581770041173'
+  alias: 'Notify: Electricity supply voltage is HIGH'
+  description: Send Notification when Electricity Voltage is High
+  trigger:
+  - above: '254'
+    entity_id: sensor.ups_input_voltage
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: 'Electricity Voltage High: {{ states(''sensor.ups_input_voltage'')
+        }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+        '
+      title: Electricity Supply Voltage High
+    service: notify.google_cloud_notify
+- id: '1581770209868'
+  alias: 'Notify: Electricity supply voltage is LOW'
+  description: ''
+  trigger:
+  - below: '220'
+    entity_id: sensor.ups_input_voltage
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: 'Electricity Voltage Low: {{ states(''sensor.ups_input_voltage'') }}
+        Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+        '
+      title: Electricity Supply Voltage Low
+    service: notify.google_cloud_notify
+- id: '1581770321118'
+  alias: 'Notify: UPS is close to being depleted'
+  description: Send Notification when UPS is about to shutdown (10 mins left)
+  trigger:
+  - below: '10'
+    entity_id: sensor.ups_time_left
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: 'UPS is running low: {{ states(''sensor.ups_time_left'')}}minutes left.
+        {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+        '
+      title: 'WARNING: UPS close to being depleted'
+    service: notify.google_cloud_notify
+- id: '1581773259354'
+  alias: Bunny shed status monitor
+  description: Monitor the health of my gateways
+  trigger:
+  - entity_id: binary_sensor.bs_status
+    for: 00:00:30
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Irrigation Controller has gone offline. {{now().strftime('%Y-%m-%d
+        %I:%M %p')}}
+      title: Irrigation offline
+    service: notify.google_cloud_notify
+- id: '1581773383827'
+  alias: Irrigation controller status monitor
+  description: Monitor the health of my gateways
+  trigger:
+  - entity_id: binary_sensor.ic_status
+    for: 5 seconds
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      message: Irrigation Controller has gone offline. {{now().strftime('%Y-%m-%d
+        %I:%M %p')}}
+      title: Irrigation offline
+    service: notify.google_cloud_notify
+- id: '1581773123827'
+  alias: 'Notify: Possible DDOS attack'
+  trigger:
+  - above: '70000'
+    entity_id: sensor.pi_hole_dns_queries_today
+    platform: numeric_state
+  action:
+  - data:
+      message: 'DNS Queries: {{ states(''sensor.pi_hole_dns_queries_today'') }}
+
+        '
+      title: Possible DDOS Attack from inside network
+    service: notify.google_cloud_notify
+- id: '1581123123827'
+  alias: Simulate presence
+  description: Automation Simulate Presence / Occupancy Simulation
+  trigger:
+  - entity_id: group.just_mobiles_group
+    from: home
+    platform: state
+    to: not_home
+  - event: sunset
+    offset: +00:30:00
+    platform: sun
+  - event_type: event_simulate_presence
+    platform: event
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - before: '23:55:00'
+      condition: time
+    - condition: state
+      entity_id: group.just_mobiles_group
+      state: not_home
+    - condition: state
+      entity_id: input_boolean.simulate_presence_enable
+      state: 'on'
+  action:
+  - data_template:
+      entity_id: 'light.lamp_{{ (range(1, 4) | random) }}
+
+        '
+    service: light.turn_on
+  - delay: 00:{{ (range(10, 30) | random) }}:00
+  - data_template:
+      entity_id: 'light.lamp_{{ (range(1, 4) | random) }}
+
+        '
+    service: light.turn_on
+  - delay: 00:{{ (range(10, 30) | random) }}:00
+  - entity_id:
+    - light.lamp_1
+    - light.lamp_2
+    - light.lamp_3
+    service: light.turn_off
+  - delay: 00:00:{{ (range(3, 10) | random) }}
+  - event: event_simulate_presence

@@ -1,17 +1,17 @@
 ############################################################
 #
-# Home Assistant Views
+# Home Assistant # views
 #
 ############################################################
 
-# default_view:
-#    view: yes
+# default_# view:
+#    # view: yes
 #    entities:
 #      - group.speed_test
 
-main_view:
+main_# view:
   name: Main
-  view: yes
+  # view: yes
   entities:
     - group.cctv_group1
     - group.cctv_group2
@@ -26,9 +26,9 @@ main_view:
     - group.speed_test_group
 
 
-irrigation_view:
+irrigation_# view:
   name: Irrigation
-  view: yes
+  # view: yes
   entities:
     - camera.front_door
     - group.lawn_irrigation_group
@@ -36,15 +36,15 @@ irrigation_view:
     - group.irrigation_controller_info_group
     - group.outside_weather_group
 
-bathroom_view:
+bathroom_# view:
   name: Bathroom
-  view: yes
+  # view: yes
   entities:
     - group.bathroom_towel_rail_group
 
-kitchen_view:
+kitchen_# view:
   name: Kitchen
-  view: yes
+  # view: yes
   entities:
     - group.kitchen_climate_group
     - light.kitchen_under_counter_lights
@@ -55,27 +55,27 @@ kitchen_view:
     - script.kitchen_extractor_timer
     - automation.kitchen_extractor_enable_auto_off
 
-chickens_view:
+chickens_# view:
   name: Chickens
-  view: yes
+  # view: yes
   entities:
     - group.chicken_group
 
 
-lights_view:
+lights_# view:
   name: Lights
-  view: yes
+  # view: yes
   entities:
     - group.lighting_group
-    - group.all_lights # Unhide group in customizations https://community.home-assistant.io/t/add-auto-generated-groups-e-g-group-all-lights-to-custom-default-view/7291/2
+    - group.all_lights # Unhide group in customizations https://community.home-assistant.io/t/add-auto-generated-groups-e-g-group-all-lights-to-custom-default-# view/7291/2
     - group.christmas_lights_group
     - group.inside_christmas_lights_group
     - group.outside_christmas_lights_group
 
 
-bunny_shed_view:
+bunny_shed_# view:
   name: Shed
-  view: yes
+  # view: yes
   entities:
     - group.bunny_shed_group
     - group.bunny_shed_controller_info_group
@@ -86,32 +86,32 @@ bunny_shed_view:
 
 
 
-bedrooms_view:
+bedrooms_# view:
   name: Bedrooms
-  view: yes
+  # view: yes
   entities:
     - group.bedroom_master
     - group.bedroom_guest
 
-sitting_room_view:
+sitting_room_# view:
   name: Sitting Room
-  view: yes
+  # view: yes
   entities:
     - switch.plugin_air_freshener
     - light.sofa_left
     - light.sofa_right
     - light.sitting_room_light
 
-cctv_view:
+cctv_# view:
   name: CCTV
-  view: yes
+  # view: yes
   entities:
     - group.cctv_group1
     - group.cctv_group2
 
-automation_system_view:
+automation_system_# view:
   name: Automation
-  view: yes
+  # view: yes
   entities:
     - group.server_ilo_status_group
     - group.ups_data_group
@@ -142,14 +142,14 @@ automation_system_view:
 
 cctv_group1:
   name: CCTV1
-  view: no
+  # view: no
   entities:
     - camera.front_door
     - camera.garage
 
 cctv_group2:
   name: CCTV2
-  view: no
+  # view: no
   entities:
     - camera.front_of_house
     - camera.bunny_camera
@@ -157,8 +157,8 @@ cctv_group2:
 
 nest_thermostat_group:
   name: Nest Thermostat
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - climate.entryway
     - binary_sensor.entryway_thermostat_online
@@ -166,26 +166,34 @@ nest_thermostat_group:
 
 mobiles_group:
   name: Mobiles
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
-    - device_tracker.richard_blueline
-    - device_tracker.lucy_taimen
+    - device_tracker.google_maps_118405357218131797203
+    - device_tracker.google_maps_114635444798949098363
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
+
+# just_mobiles_group:
+#   name: Mobiles
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - device_tracker.google_maps_118405357218131797203
+#     - device_tracker.google_maps_114635444798949098363
 
 
 device_status_summary_group:
   name: Device Status Summary
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - group.device_status_group
 
 device_status_group:
   name: Device Status
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.bs_status
     - binary_sensor.rfg_status
@@ -199,8 +207,8 @@ device_status_group:
 
 cctv_status_group:
   name: CCTV Online Status
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.bunny_cctv_online
     - binary_sensor.drive_cctv_online
@@ -209,8 +217,8 @@ cctv_status_group:
 
 chicken_group:
   name: Chicken Coop
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - cover.chicken_coop_door
     - binary_sensor.chicken_door_status
@@ -218,8 +226,8 @@ chicken_group:
 
 gateway_info_summary_group:
   name: Gateways Info
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - group.rf_gateway_info_group
     - group.bunny_shed_controller_info_group
@@ -228,15 +236,15 @@ gateway_info_summary_group:
 
 kitchen_climate_group:
   name: Kitchen Climate
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - sensor.kitchen_temperature
     - sensor.kitchen_humidity
 
 lighting_group:
   name: Lighting
-  view: no
+  # view: no
   entities:
     - light.upstairs_hall_light
     - light.kitchen_under_counter_lights
@@ -255,13 +263,13 @@ lighting_group:
 
 bunny_shed_group:
   name: Bunny Shed Climate Control
-  view: no
-  control: hidden
+  # view: no
+  # # control: hidden
   entities:
     - sensor.dark_sky_temperature
     - sensor.dark_sky_humidity
 
-    - sensor.bs_temperature
+    - sensor.bunny_shed_temperature
     - sensor.bs_humidity
 
     - binary_sensor.bunny_shed_heater
@@ -272,18 +280,18 @@ bunny_shed_group:
     - sensor.bunny_shed_target_cool_temperature
 
 
-    - sensor.bs_temperature_highest
-    - sensor.bs_temperature_lowest
+    - sensor.bunny_shed_temperature_highest
+    - sensor.bunny_shed_temperature_lowest
 
     - sensor.heater_on_last_24_hours
     - sensor.cooler_on_last_24_hours
-    - sensor.bs_temperature_statistics_mean
+    - sensor.bunny_shed_temperature_statistics_mean
     - group.bunny_shed_settings
 
 bunny_shed_settings:
   name: Setting
-  view: no
-  control: hidden
+  # view: no
+  # # control: hidden
   icon: mdi:settings
   entities:
     - input_number.shed_target_heat_temp
@@ -292,8 +300,8 @@ bunny_shed_settings:
 
 outside_weather_group:
   name: Outside Weather
-  view: no
-  control: hidden
+  # view: no
+  # # control: hidden
   entities:
     - sensor.dark_sky_daytime_high_temperature_0d
     - sensor.dark_sky_overnight_low_temperature_0d
@@ -305,8 +313,8 @@ outside_weather_group:
 
 speed_test_group:
   name: Speed Test
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
    - sensor.speedtest_download
    - sensor.speedtest_ping
@@ -314,8 +322,8 @@ speed_test_group:
 
 pi_hole:
   name: Pi Hole
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
       - sensor.pi_hole_ads_blocked_today
       - sensor.pi_hole_ads_percentage_blocked_today
@@ -323,16 +331,16 @@ pi_hole:
 
 irrigation_group:
     name: Irrigation Control
-    view: no
-    control: hidden
+    # view: no
+    # control: hidden
     entities:
       - group.lawn_irrigation_group
       - group.pots_irrigation_group
 
 lawn_irrigation_group:
   name: Lawn Irrigation
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - sensor.lawn_irrigation_valve_status
     - binary_sensor.lawn_irrigation_valve_position
@@ -345,8 +353,8 @@ lawn_irrigation_group:
 
 lawn_irrigation_settings:
   name: Settings
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   icon: mdi:settings
   entities:
     - automation.irrigate_lawn_at_sunrise
@@ -364,8 +372,8 @@ lawn_irrigation_settings:
 
 pots_irrigation_group:
   name: Plant Pot Irrigation
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - sensor.pot_irrigation_valve_status
     - binary_sensor.pot_irrigation_valve_position
@@ -379,9 +387,9 @@ pots_irrigation_group:
 
 pots_irrigation_settings:
   name: Settings
-  view: no
+  # view: no
   icon: mdi:settings
-  control: hidden
+  # control: hidden
   entities:
     - automation.irrigate_pots_at_sunrise
     - input_number.pot_irrigation_duration
@@ -394,8 +402,8 @@ pots_irrigation_settings:
 # controller_info_groups
 bunny_shed_controller_info_group:
   name: Bunny Shed Controller Info
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.bs_status
     - sensor.bs_client_name
@@ -407,8 +415,8 @@ bunny_shed_controller_info_group:
 
 rf_gateway_info_group:
   name: RF Gatway Info
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.rfg_status
     - sensor.rfg_client_name
@@ -420,8 +428,8 @@ rf_gateway_info_group:
 
 irrigation_controller_info_group:
   name: Irrigation Controller Info
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.ic_status
     - sensor.ic_client_name
@@ -433,8 +441,8 @@ irrigation_controller_info_group:
 
 rf_link_group:
   name: RF Link
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.esp_link_status
     - binary_sensor.rf_link_status
@@ -442,8 +450,8 @@ rf_link_group:
 
 tor_doorbell_info_group:
   name: TOR DoorBell Info
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - binary_sensor.tor_db_status
     - sensor.tor_db_client_name
@@ -456,8 +464,8 @@ tor_doorbell_info_group:
 
 ups_data_group:
   name: UPS Data
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
    - sensor.ups_status
    - sensor.ups_battery
@@ -478,8 +486,8 @@ ups_data_group:
 
 server_ilo_status_group:
   name: Server Status
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     # iLo sensores
     - sensor.server_ilo_temperature_ambient
@@ -523,22 +531,22 @@ server_ilo_status_group:
 
 bedroom_master:
   name: Master Bedroom Lights
-  view: no
+  # view: no
   entities:
     - light.richard_bed_2
     - light.lucy_bed
 
 bedroom_guest:
   name: Guest Bedroom Lights
-  view: no
+  # view: no
   entities:
     - light.lamp_2
 
 
 bathroom_towel_rail_group:
   name: Bathroom Towel Rail
-  view: no
-  control: hidden
+  # view: no
+  # control: hidden
   entities:
     - script.bathroom_towel_rail_timer
     - input_number.bathroom_towel_on_time
@@ -547,13 +555,13 @@ bathroom_towel_rail_group:
 
 christmas_lights_group:
     name: Christmas Lights
-    view: no
+    # view: no
     entities:
       - group.outside_christmas_lights
       - group.inside_christmas_lights
 outside_christmas_lights:
   name: Outside Christmas Lights
-  view: no
+  # view: no
   entities:
     - light.christmas_master_bedroom_star
     - light.christmas_sitting_room_star
@@ -563,6 +571,6 @@ outside_christmas_lights:
 
 inside_christmas_lights:
   name: Inside Christmas Lights
-  view: no
+  # view: no
   entities:
     - light.christmas_tree_bling

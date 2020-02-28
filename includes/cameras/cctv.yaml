@@ -30,6 +30,12 @@
   password: !secret axis_garage2_password
 
 - platform: mjpeg
+  mjpeg_url: !secret axis_garden_IP_mjpg
+  name: Garden
+  username: !secret axis_garden_username
+  password: !secret axis_garden_password
+
+- platform: mjpeg
   mjpeg_url: !secret Bunny_CCTV_mjpg
   name: Bunny Camera
   username: !secret Bunny_CCTV_username

@@ -25,7 +25,7 @@
 - platform: google_travel_time
   name: Richard Travel Home
   api_key: !secret googlemaps_api_key
-  origin: device_tracker.richard_blueline
+  origin: device_tracker.google_maps_118405357218131797203
   destination: zone.home
   scan_interval: 900 #15 mins
   options:

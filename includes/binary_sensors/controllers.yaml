@@ -101,8 +101,18 @@
 
 - platform: mqtt
   state_topic: "HUISHS/Chickens/Door/Status"
-  name: "CC Status"
+  name: "Chicken Coop Status"
   qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  device_class: connectivity
+
+
+
+- platform: mqtt
+  state_topic: "chickenhouseesphuzzah/status"
+  qos: 2
+  name: "Chicken ESP Status"
   payload_on: "online"
   payload_off: "offline"
   device_class: connectivity

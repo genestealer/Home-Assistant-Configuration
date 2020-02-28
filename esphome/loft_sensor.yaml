@@ -1,0 +1,46 @@
+esphome:
+  name: loft_sensor
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  manual_ip:
+    static_ip: 192.168.2.20
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"
+
+mqtt:
+  broker: !secret mqtt_broker
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery_prefix: homeassistant
+  discovery: true
+#  topic_prefix: homeassistant
+
+status_led:
+  pin: GPIO16
+
+
+sensor:
+  - platform: dht
+    pin: GPIO2
+    temperature:
+      name: "Loft Temperature"
+    humidity:
+      name: "Loft Humidity"
+    update_interval: 60s
+    model: DHT22

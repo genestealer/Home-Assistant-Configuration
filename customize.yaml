@@ -229,3 +229,7 @@ sensor.server_server_storage_status:
   icon: mdi:harddisk
 sensor.server_server_temperature_status:
   icon: mdi:thermometer-lines
+cover.chicken_coop_door:
+  device_class: door
+light.christmas_bedroom_star:
+  icon: mdi:star

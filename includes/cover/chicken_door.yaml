@@ -19,3 +19,4 @@
   optimistic: true
   retain: true
   qos: 2
+  device_class: door

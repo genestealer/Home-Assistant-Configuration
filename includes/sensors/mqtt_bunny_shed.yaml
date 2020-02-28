@@ -6,18 +6,18 @@
 
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/StatusJSON"
-  name: "BS Temperature"
+  name: "Bunny Shed Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.Temperature }}'
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  device_class: temperature 
+  device_class: temperature
 
 # Icon done in # Done in homeassistant:customize
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/StatusJSON"
-  name: "BS Humidity"
+  name: "Bunny Shed Humidity"
   unit_of_measurement: '%'
   value_template: '{{ value_json.Humidity }}'
   availability_topic: "HUISHS/BunnyShed/Status"
@@ -43,7 +43,7 @@
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  device_class: temperature 
+  device_class: temperature
 
 
 ############################################################
@@ -69,3 +69,10 @@
   end: '{{ now() }}'
   duration:
       days: 1
+
+- platform: template
+  sensors:
+    heater_running_cost:
+      friendly_name: "Shed Heater Running Cost"
+      unit_of_measurement: '£'
+      value_template: "{{states.sensor.heater_on_last_24_hours.state | multiply(0.065) | round(4)}}" # Assume 0.5KW at 13 pence a KWH, so runtime x 6.5p per hour

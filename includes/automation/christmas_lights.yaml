@@ -1,74 +1,78 @@
 ############################################################
 #
-#  Christmas Light Automation - Turn off outside lights late at night
+#  Christmas Light Automation - Turn off outside lights at night
+#  Moved to GUI automation editor Dec 2019.
 #
 ############################################################
 
-- alias: "Outside Christmas Lights OFF at midnight"
-  trigger:
-    platform: time
-    # Possible values: sunset, sunrise
-    at: '23:59:00'
-  action:
-    service: homeassistant.turn_off
-    entity_id: group.outside_christmas_lights
+# - alias: "Outside Christmas Lights OFF"
+#   trigger:
+#     platform: time
+#     # Possible values: sunset, sunrise
+#     at: '22:00:00'
+#   action:
+#     service: homeassistant.turn_off
+#     entity_id: group.outside_christmas_lights
 
 
 ############################################################
 #
 # Christmas Light Automation - Turn on outside lights at night
+# Moved to GUI automation editor Dec 2019.
 #
 ############################################################
 
-- alias: "Outside Christmas Lights ON at sun set"
-  trigger:
-    platform: sun
-    # Possible values: sunset, sunrise
-    event: sunset
-    # Optional time offset. This example is 45 minutes after sunset
-    offset: '+00:45:00'
-  action:
-    service: homeassistant.turn_on
-    entity_id: group.outside_christmas_lights
+# - alias: "Outside Christmas Lights ON at sun set"
+#   trigger:
+#     platform: sun
+#     # Possible values: sunset, sunrise
+#     event: sunset
+#     # Optional time offset. This example is 45 minutes after sunset
+#     offset: '+00:45:00'
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: group.outside_christmas_lights
 
 ############################################################
 #
 # Christmas Light Automation - Turn on inside lights when we get home
+# Moved to GUI automation editor Dec 2019.
 #
 ############################################################
 
-- alias: "Inside Christmas Lights ON when home"
-  trigger:
-    # platform: zone
-    # entity_id: device_tracker.richard_sailfish
-    # zone: zone.home
-    # # Event is either enter or leave
-    # event: enter  # or "leave"
-    platform: state
-    entity_id: group.all_devices
-    from: 'not_home'
-    to: 'home'
-  action:
-    service: homeassistant.turn_on
-    entity_id: group.inside_christmas_lights
+# - alias: "Inside Christmas Lights ON when home"
+#   trigger:
+#     # platform: zone
+#     # entity_id: device_tracker.richard_sailfish
+#     # zone: zone.home
+#     # # Event is either enter or leave
+#     # event: enter  # or "leave"
+#     platform: state
+#     entity_id: group.all_devices
+#     from: 'not_home'
+#     to: 'home'
+#   action:
+#     service: homeassistant.turn_on
+#     entity_id: group.inside_christmas_lights
 
 ############################################################
 #
 # Christmas Light Automation - Turn off inside lights when we leave home
+# Moved to GUI automation editor Dec 2019.
 #
 ############################################################
 
-- alias: "Inside Christmas Lights OFF when not home"
-  trigger:
-    # platform: zone
-    # entity_id: device_tracker.richard_sailfish
-    # zone: zone.home
-    # # Event is either enter or leave
-    # event: leave  # or "enter"
-    platform: state
-    entity_id: group.all_devices
-    from: 'home'
-    to: 'not_home'
-  action:
-    service: homeassistant.turn_off
-    entity_id: group.inside_christmas_lights
+# - alias: "Inside Christmas Lights OFF when not home"
+#   trigger:
+#     # platform: zone
+#     # entity_id: device_tracker.richard_sailfish
+#     # zone: zone.home
+#     # # Event is either enter or leave
+#     # event: leave  # or "enter"
+#     platform: state
+#     entity_id: group.all_devices
+#     from: 'home'
+#     to: 'not_home'
+#   action:
+#     service: homeassistant.turn_off
+#     entity_id: group.inside_christmas_lights
