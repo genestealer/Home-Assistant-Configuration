@@ -247,7 +247,7 @@
     service: homeassistant.turn_off
 - id: '1576599112935'
   alias: Welcome home Richard
-  description: ''
+  description: 'Note: These actions can only be edited with YAML'
   trigger:
   - entity_id: person.richard
     for: 00:05:00
@@ -259,15 +259,13 @@
   - data_template:
       cache: false
       entity_id: media_player.ground_floor
-      message: "Welcome home Richard. {% if is_state(\"person.lucy\", \"home\")  %}\
-        \ Lucy is also at home and needs cuddles! {%- else -%}\n    Lucy is currently\
-        \ {{states('person.lucy')}}, at\n{{states('sensor.lucy_street_location')}}.\
-        \ {%- endif %} Outside it's {{states('sensor.dark_sky_temperature')| round(0)}}°C\
-        \ with {{states('sensor.dark_sky_humidity')| round(0) }}% humidity. Inside\
-        \ it's {{states('sensor.entryway_thermostat_temperature')| round(0)}}°C with\
-        \ {{states('sensor.entryway_thermostat_humidity')| round(0)}}% humidity. The\
-        \ heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
-        \ 'temperature')| round(0) }}°C\n"
+      message: "Welcome home Richard. {% if is_state('person.lucy', 'home')  %} Lucy\
+        \ is also at home and needs cuddles! {%- else -%}\n    Lucy is away at {{state_attr('device_tracker.google_maps_114635444798949098363',\
+        \ 'address')}}.\n {%- endif %}\n    Outside {{states('sensor.dark_sky_temperature')|\
+        \ round(0)}}C {{states('sensor.dark_sky_humidity')| round(0) }}% Inside {{states('sensor.entryway_thermostat_temperature')|\
+        \ round(0)}}C \n{{states('sensor.entryway_thermostat_humidity')| round(0)}}%\
+        \ {% if is_state('climate.entryway', 'heat') %} Heating on and set to {{state_attr('climate.entryway',\
+        \ 'temperature')| round(0) }}°C\n{%- endif %}\n"
     service: tts.google_say
 - id: '1576601014597'
   alias: Plug-in Air Freshener Start
@@ -303,7 +301,7 @@
     service: homeassistant.turn_off
 - id: '1576601770197'
   alias: Welcome home Lucy
-  description: ''
+  description: 'Note: These actions can only be edited with YAML'
   trigger:
   - entity_id: person.lucy
     for: 00:05:00
@@ -318,8 +316,7 @@
       message: "Welcome home Lucy. {% if is_state(\"person.richard\", \"home\")  %}\
         \ Richard is also at home, please see him for cuddles! {%- else -%}\n    Richard\
         \ is currently {{states('person.richard')}}, at\n{{states('sensor.richard_street_location')}}.\
-        \ {%- endif %} Inside it's {{states('sensor.entryway_thermostat_temperature')|\
-        \ round(0)}}°C, heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
+        \ {%- endif %} The heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
         \ 'temperature')| round(0) }}°C\n"
     service: tts.google_say
 - id: '1576602219341'
