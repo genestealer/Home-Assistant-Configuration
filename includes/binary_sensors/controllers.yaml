@@ -36,19 +36,31 @@
 
 ############################################################
 #
-# Irrigation Controller Status
+# Irrigation Front Garden Controller Status
 #
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/Status"
-  name: "IC Status"
+  state_topic: "HUISHS/Irrigation1/Status"
+  name: "IC Front Status"
   qos: 0
   payload_on: "online"
   payload_off: "offline"
   device_class: connectivity
 
+############################################################
+#
+# Irrigation Back Garden Controller Status
+#
+############################################################
 
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/Status"
+  name: "IC Back Status"
+  qos: 0
+  payload_on: "online"
+  payload_off: "offline"
+  device_class: connectivity
 
 ############################################################
 #

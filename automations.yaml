@@ -128,33 +128,47 @@
       entity_id: switch.pot_irrigation_valve
     service: switch.turn_off
 - id: '1564192623451'
-  alias: Irrigate Pots at Sunrise
+  alias: Irrigate Front Garden Pots at Sunrise
   trigger:
   - platform: template
     value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
   condition:
   - condition: template
-    value_template: '{{states.sensor.pot_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+    value_template: '{{states.sensor.front_garden_pot_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
-    entity_id: sensor.pots_irrigation_interlock
+    entity_id: sensor.front_garden_pots_irrigation_interlock
     state: No Problems
   action:
-  - entity_id: script.pot_irrigation_timer
-    service: script.pot_irrigation_timer
+  - entity_id: script.front_garden_pot_irrigation_timer
+    service: script.front_garden_pot_irrigation_timer
+- id: '1564192123451'
+  alias: Irrigate Back Garden at Sunrise
+  trigger:
+  - platform: template
+    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
+  condition:
+  - condition: template
+    value_template: '{{states.sensor.back_garden_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+  - condition: state
+    entity_id: sensor.back_garden_irrigation_interlock
+    state: No Problems
+  action:
+  - entity_id: script.back_garden_irrigation_timer
+    service: script.back_garden_pot_irrigation_timer
 - id: '1564192623452'
-  alias: Irrigate Lawn at Sunrise
+  alias: Irrigate Front Lawn at Sunrise
   trigger:
   - platform: template
     value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
   condition:
   - condition: template
-    value_template: '{{states.sensor.lawn_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+    value_template: '{{states.sensor.front_garden_lawn_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
-    entity_id: sensor.lawn_irrigation_interlock
+    entity_id: sensor.front_garden_lawn_irrigation_interlock
     state: No Problems
   action:
-  - entity_id: script.lawn_irrigation_timer
-    service: script.lawn_irrigation_timer
+  - entity_id: script.front_garden_lawn_irrigation_timer
+    service: script.front_garden_lawn_irrigation_timer
 - id: '1564234217905'
   alias: Lawn Irrigation Script Off to Valve Off
   trigger:
@@ -272,26 +286,38 @@
   description: Turn on in the morning when someone is home as long as it between certain
     times. Also turns back on after returning home.
   trigger:
-  - entity_id: group.just_mobiles_group
+  - entity_id: person.lucy
+    for: 00:05:00
     from: not_home
     platform: state
     to: home
   - at: '10:01:00'
     platform: time
+  - entity_id: person.richard
+    for: 00:05:00
+    from: not_home
+    platform: state
+    to: home
   condition:
   - after: '10:00:00'
     before: '18:00:00'
     condition: time
+  - condition: state
+    entity_id: input_boolean.plugin_air_freshener_enable
+    state: 'on'
   action:
   - entity_id: switch.plug_in_air_freshener
     service: homeassistant.turn_on
+  - data:
+      message: Plug in air freshener turned on
+    service: notify.google_cloud_notify
 - id: '1576601191279'
   alias: Plug-in Air Freshener Stop
   description: Turn off in the evening or when no one is home.
   trigger:
   - at: '18:00:00'
     platform: time
-  - entity_id: group.all_devices
+  - entity_id: group.mobiles_group
     from: home
     platform: state
     to: not_home
@@ -299,6 +325,9 @@
   action:
   - entity_id: switch.plug_in_air_freshener
     service: homeassistant.turn_off
+  - data:
+      message: Plug in air freshener turned on
+    service: notify.google_cloud_notify
 - id: '1576601770197'
   alias: Welcome home Lucy
   description: 'Note: These actions can only be edited with YAML'
@@ -321,19 +350,24 @@
     service: tts.google_say
 - id: '1576602219341'
   alias: Keep Nest thermostat aware of our presence
-  description: ''
+  description: contindion template {{ state_attr('climate.entryway', 'preset_mode')
+    == Away and Eco }}
   trigger:
-  - minutes: /5
+  - minutes: /10
     platform: time_pattern
   - event: start
     platform: homeassistant
+  - entity_id: binary_sensor.huishs_away
+    from: 'off'
+    platform: state
+    to: 'on'
   condition:
   - condition: state
-    entity_id: group.just_mobiles_group
+    entity_id: group.mobiles_group
     state: home
-  - condition: template
-    value_template: '{{ state_attr(''climate.entryway'', ''preset_mode'') == Away
-      and Eco }}'
+  - condition: state
+    entity_id: binary_sensor.huishs_away
+    state: 'on'
   action:
   - data:
       away_mode: home
@@ -443,7 +477,7 @@
   alias: Irrigation controller status monitor
   description: Monitor the health of my gateways
   trigger:
-  - entity_id: binary_sensor.ic_status
+  - entity_id: binary_sensor.ic_front_status
     for: 5 seconds
     from: 'on'
     platform: state
@@ -515,3 +549,45 @@
     service: light.turn_off
   - delay: 00:00:{{ (range(3, 10) | random) }}
   - event: event_simulate_presence
+- id: '1586039811102'
+  alias: Busylight Controller Free Button Pressed
+  description: ''
+  trigger:
+  - device_id: 881a0e3accbc43d7b2bbc2b4559863b4
+    domain: binary_sensor
+    entity_id: binary_sensor.button_a
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - data: {}
+    entity_id: script.1585906019835
+    service: script.turn_on
+- id: '1586039888917'
+  alias: Busylight Controller Working Button Pressed
+  description: ''
+  trigger:
+  - device_id: 881a0e3accbc43d7b2bbc2b4559863b4
+    domain: binary_sensor
+    entity_id: binary_sensor.button_b
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - data: {}
+    entity_id: script.1585906111236
+    service: script.turn_on
+- id: '1586039921673'
+  alias: Busylight Controller On Call Button Pressed
+  description: ''
+  trigger:
+  - device_id: 881a0e3accbc43d7b2bbc2b4559863b4
+    domain: binary_sensor
+    entity_id: binary_sensor.button_c
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - data: {}
+    entity_id: script.1585905714103
+    service: script.turn_on

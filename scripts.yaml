@@ -1,12 +1,14 @@
 bedroom_lights_night_mode:
   alias: Bedroom Lights Night mode
   sequence:
-  - service: homeassistant.turn_on
-    entity_id: light.richard_bedside
-    data:
+  - data:
       brightness: 10
-  - service: homeassistant.turn_off
+    entity_id: light.richard_bed
+    service: homeassistant.turn_on
+  - device_id: 4a98c5f9680b4e09bdb996ca7a9ebeba
+    domain: light
     entity_id: light.lucy_bed
+    type: turn_off
 kitchen_extractor_timer:
   alias: Kitchen Extractor Fan Timer
   sequence:
@@ -15,22 +17,30 @@ kitchen_extractor_timer:
   - delay: 00:{{states.input_number.kitchen_fan_timer_duration.state | round(0)}}
   - service: switch.turn_off
     entity_id: switch.kitchen_extractor_fan
-lawn_irrigation_timer:
+front_garden_lawn_irrigation_timer:
   alias: Lawn Irrigation Timer
   sequence:
   - service: switch.turn_on
-    entity_id: switch.lawn_irrigation_valve
-  - delay: 00:{{states.input_number.lawn_irrigation_duration.state | round(0)}}
+    entity_id: switch.front_garden_lawn_irrigation_valve
+  - delay: 00:{{states.input_number.front_garden_lawn_irrigation_duration.state | round(0)}}
   - service: switch.turn_off
-    entity_id: switch.lawn_irrigation_valve
-pot_irrigation_timer:
+    entity_id: switch.front_garden_lawn_irrigation_valve
+front_garden_pot_irrigation_timer:
   alias: Pots Irrigation Timer
   sequence:
   - service: switch.turn_on
-    entity_id: switch.pot_irrigation_valve
-  - delay: 00:{{states.input_number.pot_irrigation_duration.state | round(0)}}
+    entity_id: switch.front_garden_pot_irrigation_valve
+  - delay: 00:{{states.input_number.front_garden_pot_irrigation_duration.state | round(0)}}
   - service: switch.turn_off
-    entity_id: switch.pot_irrigation_valve
+    entity_id: switch.front_garden_pot_irrigation_valve
+back_garden_irrigation_timer:
+  alias: Garden Irrigation Timer
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.back_garden_irrigation_valve
+  - delay: 00:{{states.input_number.gargen_irrigation_duration.state | round(0)}}
+  - service: switch.turn_off
+    entity_id: switch.back_garden_irrigation_valve
 saa_sleep_tracking_started:
   alias: Sleep Tracking Started
   sequence:
@@ -120,3 +130,220 @@ bathroom_towel_rail_timer:
   - entity_id: light.christmas_sitting_room_star
     service: light.toggle
   - delay: 00:00:04
+'1585905714103':
+  alias: I'm On A Call
+  sequence:
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+'1585906019835':
+  alias: I'm Free
+  sequence:
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+'1585906111236':
+  alias: I'm Working
+  sequence:
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+'1586361703646':
+  alias: I'm Offline
+  sequence:
+  - entity_id: light.busy_light_1
+    service: light.turn_off
+  - entity_id: light.busy_light_2
+    service: light.turn_off

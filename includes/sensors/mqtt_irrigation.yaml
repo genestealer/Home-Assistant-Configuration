@@ -1,24 +1,49 @@
 ############################################################
 #
-# Irrigation Sensors: MQTT
+# Front Garden Irrigation Sensors: MQTT
 #
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/StatusJSON"
-  name: "Soil Temperature"
+  state_topic: "HUISHS/Irrigation1/StatusJSON"
+  name: "Front Garden Soil Temperature"
   unit_of_measurement: '°C'
   value_template: '{{ value_json.SoilTemperature }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
 
 # Icon added in # Done in homeassistant:customize
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/StatusJSON"
-  name: "Soil Capacitance"
+  state_topic: "HUISHS/Irrigation1/StatusJSON"
+  name: "Front Garden Soil Capacitance"
   #unit_of_measurement: '%'
   value_template: '{{ value_json.SoilCapacitance }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+
+############################################################
+#
+# Back Garden Irrigation Sensors: MQTT
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/StatusJSON"
+  name: "Back Garden Soil Temperature"
+  unit_of_measurement: '°C'
+  value_template: '{{ value_json.SoilTemperature }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+
+# Icon added in # Done in homeassistant:customize
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/StatusJSON"
+  name: "Back Garden Soil Capacitance"
+  #unit_of_measurement: '%'
+  value_template: '{{ value_json.SoilCapacitance }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"

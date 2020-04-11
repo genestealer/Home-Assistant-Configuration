@@ -136,65 +136,126 @@
 
 ############################################################
 #
-# Irrigation Controller Status
+# Front Garden Irrigation Controller Status
 #
 ############################################################
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
-  name: "IC Client Name"
+  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+  name: "IC Front Client Name"
   value_template: '{{ value_json.ClientName }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
-  name: "IC IP"
+  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+  name: "IC Front IP"
   value_template: '{{ value_json.IP }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
-  name: "IC MAC"
+  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+  name: "IC Front MAC"
   value_template: '{{ value_json.MAC }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
-  name: "IC RSSI"
+  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+  name: "IC Front RSSI"
   unit_of_measurement: "dBm"
   value_template: '{{ value_json.RSSI }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:signal-variant
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
-  name: "IC Host"
+  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+  name: "IC Front Host"
   value_template: '{{ value_json.HostName }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
 - platform: mqtt
-  state_topic: "HUISHS/Irrigation/NodeHealthJSON"
-  name: "IC SSID"
+  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+  name: "IC Front SSID"
   value_template: '{{ value_json.ConnectedSSID }}'
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:radio-tower
 
+
+############################################################
+#
+# Back Garden Irrigation Controller Status
+#
+############################################################
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+  name: "IC Back Client Name"
+  value_template: '{{ value_json.ClientName }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+  name: "IC Back IP"
+  value_template: '{{ value_json.IP }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+  name: "IC Back MAC"
+  value_template: '{{ value_json.MAC }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+  name: "IC Back RSSI"
+  unit_of_measurement: "dBm"
+  value_template: '{{ value_json.RSSI }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:signal-variant
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+  name: "IC Back Host"
+  value_template: '{{ value_json.HostName }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:desktop-classic
+
+- platform: mqtt
+  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+  name: "IC Back SSID"
+  value_template: '{{ value_json.ConnectedSSID }}'
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  icon: mdi:radio-tower
 ############################################################
 #
 # ESP-Link Controller Status

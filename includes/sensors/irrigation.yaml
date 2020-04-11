@@ -8,10 +8,12 @@
 ############################################################
 
 
-
+############################################################
+# Weather Interlock
+############################################################
 - platform: template
   sensors:
-    lawn_irrigation_interlock:
+    front_garden_lawn_irrigation_interlock:
       friendly_name: 'Lawn Irrigation Weather Interlock'
       value_template: >
         {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.lawn_irrigation_wind_threshold') | int %}
@@ -26,7 +28,7 @@
 
 - platform: template
   sensors:
-    pots_irrigation_interlock:
+    front_garden_pots_irrigation_interlock:
       friendly_name: 'Pots Irrigation Weather Interlock'
       value_template: >
         {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
@@ -35,6 +37,20 @@
           No Problems
         {% endif %}
 
+- platform: template
+  sensors:
+    back_garden_irrigation_interlock:
+      friendly_name: 'Garden Irrigation Weather Interlock'
+      value_template: >
+        {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
+          Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
+        {% else %}
+          No Problems
+        {% endif %}
+
+############################################################
+# Global Settings
+############################################################
     irrigation_starttime:
       friendly_name: 'Forecasted Start Time'
       # With 2 hour positive offset to let the sun get up!
@@ -45,44 +61,70 @@
       value_template: "{{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | round(2)}}"
       unit_of_measurement: "mm"
 
-    pot_irrigation_duration:
+############################################################
+# Front Garden Plant Pots Settings
+############################################################
+    front_garden_pot_irrigation_duration:
       friendly_name: 'Run Duration'
-      # entity_id: input_number.pot_irrigation_duration
-      value_template: '{{states.input_number.pot_irrigation_duration.state | round(1)}} minutes'
+      value_template: '{{states.input_number.front_garden_pot_irrigation_duration.state | round(1)}} minutes'
 
-    pot_irrigation_last_run:
+    front_garden_pot_irrigation_last_run:
        friendly_name: 'Last Watered'
-       # entity_id: switch.pot_irrigation_valve
-       value_template: "{{states.switch.pot_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
+       value_template: "{{states.switch.front_garden_pot_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
 
-    pot_irrigation_valve_status:
+    front_garden_pot_irrigation_valve_status:
       friendly_name: 'Valve Status'
-      value_template: "{% if states.switch.pot_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date_time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.pot_irrigation_valve.last_changed)) / 60) | round(1) }} minutes ago{% else %}Closed{% endif %}"
+      value_template: "{% if states.switch.front_garden_pot_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date_time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.front_garden_pot_irrigation_valve.last_changed)) / 60) | round(1) }} minutes ago{% else %}Closed{% endif %}"
 
-    pot_irrigation_schedule:
+    front_garden_pot_irrigation_schedule:
       friendly_name: 'Schedule'
-      value_template: "{{ states.input_select.pots_irrigation_schedule.state }}"
+      value_template: "{{ states.input_select.front_garden_pots_irrigation_schedule.state }}"
 
-    lawn_irrigation_duration:
+############################################################
+# Front Garden Lawn Settings
+############################################################
+    front_garden_lawn_irrigation_duration:
       friendly_name: 'Run Duration'
-      # entity_id: input_number.lawn_irrigation_duration
-      value_template: '{{states.input_number.lawn_irrigation_duration.state | round(1)}} minutes'
+      value_template: '{{states.input_number.front_garden_lawn_irrigation_duration.state | round(1)}} minutes'
 
-    lawn_irrigation_last_run:
+    front_garden_lawn_irrigation_last_run:
        friendly_name: 'Last Watered'
-       # entity_id: switch.lawn_irrigation_valve
-       value_template: "{{states.switch.lawn_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
+       value_template: "{{states.switch.front_garden_lawn_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
 
-    lawn_irrigation_valve_status:
+    front_garden_lawn_irrigation_valve_status:
       friendly_name: 'Valve Status'
-      value_template: "{% if states.switch.lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date_time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.lawn_irrigation_valve.last_changed)) / 60) | round(1) }} minutes ago{% else %}Closed{% endif %}"
+      value_template: "{% if states.switch.front_garden_lawn_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date_time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.front_garden_lawn_irrigation_valve.last_changed)) / 60) | round(1) }} minutes ago{% else %}Closed{% endif %}"
 
-    lawn_irrigation_schedule:
+    front_garden_lawn_irrigation_schedule:
       friendly_name: 'Schedule'
       value_template: "{{ states.input_select.lawn_irrigation_schedule.state }}"
 
+############################################################
+# Back Garden Settings
+############################################################
+    back_garden_irrigation_duration:
+      friendly_name: 'Run Duration'
+      # entity_id: input_number.lawn_irrigation_duration
+      value_template: '{{states.input_number.back_garden_irrigation_duration.state | round(1)}} minutes'
 
-    pot_irrigation_next_run:
+    back_garden_irrigation_last_run:
+      friendly_name: 'Last Watered'
+      # entity_id: switch.lawn_irrigation_valve
+      value_template: "{{states.switch.back_garden_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
+
+    back_garden_irrigation_valve_status:
+      friendly_name: 'Valve Status'
+      value_template: "{% if states.switch.back_garden_irrigation_valve.state == 'on'%}Opened {{((as_timestamp(strptime(states.sensor.date_time.state, '%Y-%m-%d, %H:%M')) - as_timestamp(states.switch.back_garden_irrigation_valve.last_changed)) / 60) | round(1) }} minutes ago{% else %}Closed{% endif %}"
+
+    back_garden_irrigation_schedule:
+      friendly_name: 'Schedule'
+      value_template: "{{ states.input_select.back_garden_irrigation_schedule.state }}"
+
+
+############################################################
+# Front Garden Plant Pots Schedule
+############################################################
+    front_garden_pot_irrigation_next_run:
        friendly_name: 'Next Scheduled Run'
        value_template: >
           {# runDay set to 9 = Not Set #}
@@ -110,25 +152,25 @@
               {%- endif -%}
           {%- endmacro -%}
           {# set configured runDay from input_select #}
-          {% if states.input_select.pots_irrigation_schedule.state == "Monday" %}
+          {% if states.input_select.front_garden_pots_irrigation_schedule.state == "Monday" %}
               {% set runDay = 0 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Tuesday" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Tuesday" %}
               {% set runDay = 1 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Wednesday" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Wednesday" %}
               {% set runDay = 2 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Thursday" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Thursday" %}
               {% set runDay = 3 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Friday" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Friday" %}
               {% set runDay = 4 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Saturday" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Saturday" %}
               {% set runDay = 5 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Sunday" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Sunday" %}
               {% set runDay = 6 |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Mon/Thu" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Mon/Thu" %}
               {% set runDay = monthu() |int -%}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
               {% set runDay = monwedfrisun() |int %}
-          {% elif states.input_select.pots_irrigation_schedule.state == "Every Day" %}
+          {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Every Day" %}
               {% set runDay = currentDay |int %}
           {% endif %}
           {# determine the next runday #}
@@ -144,11 +186,11 @@
                       {# than we need to fake tomorrow #}
                       {% set currentDay = (currentDay + 1) |int %}
                       {# and calculate new runDay in case we have a list of multiple run days in in a week #}
-                      {% if states.input_select.pots_irrigation_schedule.state == "Mon/Thu" %}
+                      {% if states.input_select.front_garden_pots_irrigation_schedule.state == "Mon/Thu" %}
                           {% set runDay = monthu() |int -%}
-                      {% elif states.input_select.pots_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+                      {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
                           {% set runDay = monwedfrisun() |int %}
-                      {% elif states.input_select.pots_irrigation_schedule.state == "Every Day" %}
+                      {% elif states.input_select.front_garden_pots_irrigation_schedule.state == "Every Day" %}
                           {% set runDay = currentDay |int %}
                       {% endif %}
                   {% endif %}
@@ -169,7 +211,7 @@
               {% endif %}
           {% endif %}
           {# all done #}
-          {# set states.sensor.pot_irrigation_next_run.state = runDate #}
+          {# set states.sensor.front_garden_pot_irrigation_next_run.state = runDate #}
           {% if runDay == 9 %}
               {# schedule not active #}
               {{runDate}}
@@ -177,7 +219,10 @@
               {{weekday}}, {{runDate[8:10]}}-{{runDate[5:7]}}-{{runDate[0:4]}} at {{states.sensor.irrigation_starttime.state}}
           {% endif %}
 
-    lawn_irrigation_next_run:
+############################################################
+# Front Garden Lawn Schedule
+############################################################
+    front_garden_lawn_irrigation_next_run:
        friendly_name: 'Next Scheduled Run'
        value_template: >
           {# runDay set to 9 = Not Set #}
@@ -205,25 +250,25 @@
               {%- endif -%}
           {%- endmacro -%}
           {# set configured runDay from input_select #}
-          {% if states.input_select.lawn_irrigation_schedule.state == "Monday" %}
+          {% if states.input_select.front_garden_lawn_irrigation_schedule.state == "Monday" %}
               {% set runDay = 0 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Tuesday" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Tuesday" %}
               {% set runDay = 1 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Wednesday" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Wednesday" %}
               {% set runDay = 2 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Thursday" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Thursday" %}
               {% set runDay = 3 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Friday" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Friday" %}
               {% set runDay = 4 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Saturday" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Saturday" %}
               {% set runDay = 5 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Sunday" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Sunday" %}
               {% set runDay = 6 |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Mon/Thu" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Mon/Thu" %}
               {% set runDay = monthu() |int -%}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
               {% set runDay = monwedfrisun() |int %}
-          {% elif states.input_select.lawn_irrigation_schedule.state == "Every Day" %}
+          {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Every Day" %}
               {% set runDay = currentDay |int %}
           {% endif %}
           {# determine the next runday #}
@@ -239,11 +284,11 @@
                       {# than we need to fake tomorrow #}
                       {% set currentDay = (currentDay + 1) |int %}
                       {# and calculate new runDay in case we have a list of multiple run days in in a week #}
-                      {% if states.input_select.lawn_irrigation_schedule.state == "Mon/Thu" %}
+                      {% if states.input_select.front_garden_lawn_irrigation_schedule.state == "Mon/Thu" %}
                           {% set runDay = monthu() |int -%}
-                      {% elif states.input_select.lawn_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+                      {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
                           {% set runDay = monwedfrisun() |int %}
-                      {% elif states.input_select.lawn_irrigation_schedule.state == "Every Day" %}
+                      {% elif states.input_select.front_garden_lawn_irrigation_schedule.state == "Every Day" %}
                           {% set runDay = currentDay |int %}
                       {% endif %}
                   {% endif %}
@@ -264,7 +309,105 @@
               {% endif %}
           {% endif %}
           {# all done #}
-          {# set states.sensor.lawn_irrigation_next_run.state = runDate #}
+          {# set states.sensor.front_garden_lawn_irrigation_next_run.state = runDate #}
+          {% if runDay == 9 %}
+              {# schedule not active #}
+              {{runDate}}
+          {% else %}
+              {{weekday}}, {{runDate[8:10]}}-{{runDate[5:7]}}-{{runDate[0:4]}} at {{states.sensor.irrigation_starttime.state}}
+          {% endif %}
+
+############################################################
+# Back Garden Schedule
+############################################################
+    back_garden_irrigation_next_run:
+       friendly_name: 'Next Scheduled Run'
+       value_template: >
+          {# runDay set to 9 = Not Set #}
+          {% set runDay = 9 |int %}
+          {# Set todays day #}
+          {% set currentDay = now().weekday() |int %}
+          {%- macro monthu() -%}
+              {%- if currentDay == 0 -%}
+                  {{0}}
+              {%- elif  currentDay <= 3 -%}
+                  {{3}}
+              {%- else -%}
+                  {{0}}
+              {%- endif -%}
+          {%- endmacro -%}
+          {%- macro monwedfrisun() -%}
+              {%- if currentDay == 0 -%}
+                  {{0}}
+              {%- elif  currentDay <= 2 -%}
+                  {{2}}
+              {%- elif  currentDay <= 4 -%}
+                  {{4}}
+              {%- elif  currentDay <= 6 -%}
+                  {{6}}
+              {%- endif -%}
+          {%- endmacro -%}
+          {# set configured runDay from input_select #}
+          {% if states.input_select.back_gardenirrigation_schedule.state == "Monday" %}
+              {% set runDay = 0 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Tuesday" %}
+              {% set runDay = 1 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Wednesday" %}
+              {% set runDay = 2 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Thursday" %}
+              {% set runDay = 3 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Friday" %}
+              {% set runDay = 4 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Saturday" %}
+              {% set runDay = 5 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Sunday" %}
+              {% set runDay = 6 |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Mon/Thu" %}
+              {% set runDay = monthu() |int -%}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+              {% set runDay = monwedfrisun() |int %}
+          {% elif states.input_select.back_gardenirrigation_schedule.state == "Every Day" %}
+              {% set runDay = currentDay |int %}
+          {% endif %}
+          {# determine the next runday #}
+          {% if runDay == 9 %}
+              {# schedule not active #}
+              {% set runDate = "Not set" %}
+          {% else %}
+              {# schedule is active so determine next run #}
+              {# first check if runDay = today #}
+              {% if currentDay == runDay %}
+                  {# are we passed the scheduled time? #}
+                  {% if states.sensor.irrigation_starttime.state < now().time().strftime("%H:%M") %}
+                      {# than we need to fake tomorrow #}
+                      {% set currentDay = (currentDay + 1) |int %}
+                      {# and calculate new runDay in case we have a list of multiple run days in in a week #}
+                      {% if states.input_select.back_gardenirrigation_schedule.state == "Mon/Thu" %}
+                          {% set runDay = monthu() |int -%}
+                      {% elif states.input_select.back_gardenirrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+                          {% set runDay = monwedfrisun() |int %}
+                      {% elif states.input_select.back_gardenirrigation_schedule.state == "Every Day" %}
+                          {% set runDay = currentDay |int %}
+                      {% endif %}
+                  {% endif %}
+              {% endif %}
+              {# Now we can determine next runDate base on now().weekday() and not currentDay as that can be set to fake tomorrow #}
+              {% if currentDay <= runDay %}
+                  {% set Days = runDay - now().weekday() |int %}
+              {% else %}
+                  {% set Days = runDay + 7 - now().weekday() |int %}
+              {% endif %}
+              {% set runDate = ((as_timestamp(now()) + (86400 * Days)) | timestamp_local) %}
+              {# we also want to show the weekday of the next date #}
+              {% set weekdayList = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] %}
+              {% if now().weekday()+ Days < 7 %}
+                  {% set weekday = weekdayList[(now().weekday()+ Days)] %}
+              {% else %}
+                  {% set weekday = weekdayList[(now().weekday()+ Days)- 7] %}
+              {% endif %}
+          {% endif %}
+          {# all done #}
+          {# set states.sensor.back_gardenirrigation_next_run.state = runDate #}
           {% if runDay == 9 %}
               {# schedule not active #}
               {{runDate}}

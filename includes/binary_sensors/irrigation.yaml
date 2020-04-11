@@ -40,14 +40,20 @@
 #          true
 #          {% endif %}
 
-  - platform: template
-    sensors:
-        pot_irrigation_valve_position:
-            friendly_name: 'Valve Position'
-            value_template: "{{ is_state('switch.pot_irrigation_valve', 'on') }}"
+- platform: template
+  sensors:
+      front_garden_pot_irrigation_valve_position:
+          friendly_name: 'Valve Position'
+          value_template: "{{ is_state('switch.front_garden_pot_irrigation_valve', 'on') }}"
 
-  - platform: template
-    sensors:
-        lawn_irrigation_valve_position:
-            friendly_name: 'Valve Position'
-            value_template: "{{ is_state('switch.lawn_irrigation_valve', 'on') }}"
+- platform: template
+  sensors:
+      front_garden_lawn_irrigation_valve_position:
+          friendly_name: 'Valve Position'
+          value_template: "{{ is_state('switch.front_garden_lawn_irrigation_valve', 'on') }}"
+
+- platform: template
+  sensors:
+      back_garden_irrigation_valve_position:
+          friendly_name: 'Valve Position'
+          value_template: "{{ is_state('switch.back_garden_irrigation_valve', 'on') }}"

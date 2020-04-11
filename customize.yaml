@@ -165,37 +165,52 @@ switch.plugin_air_freshener:
   icon: mdi:power-socket-uk
 switch.wax_melter:
   icon: mdi:power-socket-uk
-switch.pot_irrigation_valve:
+switch.front_garden_pot_irrigation_valve:
   icon: mdi:water
-switch.lawn_irrigation_valve:
+switch.front_garden_lawn_irrigation_valve:
   icon: mdi:water
-sensor.lawn_irrigation_valve_status:
+sensor.front_garden_lawn_irrigation_valve_status:
   icon: mdi:water-pump
-sensor.lawn_irrigation_valve_position:
+sensor.front_garden_lawn_irrigation_valve_position:
   icon: mdi:water
-sensor.pot_irrigation_valve_position:
+sensor.front_garden_pot_irrigation_valve_position:
   icon: mdi:water
-sensor.lawn_irrigation_last_run:
+sensor.front_garden_lawn_irrigation_last_run:
   icon: mdi:history
-sensor.lawn_irrigation_next_run:
+sensor.front_garden_lawn_irrigation_next_run:
   icon: mdi:calendar-clock
-sensor.lawn_irrigation_schedule:
+sensor.front_garden_lawn_irrigation_schedule:
   icon: mdi:calendar
 sensor.irrigation_starttime:
   hidden: true
   icon: mdi:clock
-sensor.lawn_irrigation_duration:
+sensor.front_garden_lawn_irrigation_duration:
   icon: mdi:timer-sand
-sensor.pot_irrigation_valve_status:
+sensor.front_garden_pot_irrigation_valve_status:
   icon: mdi:water-pump
-sensor.pot_irrigation_last_run:
+sensor.front_garden_pot_irrigation_last_run:
   icon: mdi:history
-sensor.pot_irrigation_next_run:
+sensor.front_garden_pot_irrigation_next_run:
   icon: mdi:calendar-clock
-sensor.pot_irrigation_schedule:
+sensor.front_garden_pot_irrigation_schedule:
   icon: mdi:calendar
-sensor.pot_irrigation_duration:
+sensor.front_garden_pot_irrigation_duration:
   icon: mdi:timer-sand
+
+sensor.back_garden_irrigation_duration:
+  icon: mdi:timer-sand
+sensor.back_garden_irrigation_valve_status:
+  icon: mdi:water-pump
+sensor.back_garden_irrigation_last_run:
+  icon: mdi:history
+sensor.back_garden_irrigation_next_run:
+  icon: mdi:calendar-clock
+sensor.backgardent_irrigation_schedule:
+  icon: mdi:calendar
+sensor.back_garden_irrigation_duration:
+  icon: mdi:timer-sand
+
+
 input_number.shed_target_cool_temp:
   friendly_name: Shed Cool Target
 input_number.shed_target_heat_temp:
@@ -204,9 +219,11 @@ sensor.bunny_shed_target_cool_temperature:
   icon: mdi:target
 sensor.bunny_shed_target_heat_temperature:
   icon: mdi:target
-binary_sensor.lawn_irrigation_valve_position:
+binary_sensor.front_garden_lawn_irrigation_valve_position:
   icon: mdi:water
-binary_sensor.pot_irrigation_valve_position:
+binary_sensor.front_garden_pot_irrigation_valve_position:
+  icon: mdi:water
+binary_sensor.back_garden_irrigation_valve_position:
   icon: mdi:water
 sensor.entryway_thermostat_operation_mode:
   friendly_name: Nest Heat State
@@ -233,3 +250,7 @@ cover.chicken_coop_door:
   device_class: door
 light.christmas_bedroom_star:
   icon: mdi:star
+person.richard:
+  entity_picture: /local/RichardFace.jpg
+person.lucy:
+  entity_picture: /local/LucyFace.jpg

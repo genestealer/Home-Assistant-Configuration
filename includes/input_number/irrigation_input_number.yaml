@@ -4,7 +4,7 @@
 #
 ############################################################
 
-lawn_irrigation_duration:
+front_garden_lawn_irrigation_duration:
   name: Lawn Irrigation Duration
   # initial: 30
   min: 1
@@ -13,8 +13,8 @@ lawn_irrigation_duration:
   unit_of_measurement: mins
   icon: mdi:clock-end
 
-pot_irrigation_duration:
-  name: Pot Irrigation Duration
+front_garden_pot_irrigation_duration:
+  name: Front Pots Irrigation Duration
   # initial: 40
   min: 1
   max: 60
@@ -22,7 +22,7 @@ pot_irrigation_duration:
   unit_of_measurement: mins
   icon: mdi:clock-end
 
-lawn_irrigation_wind_threshold:
+front_garden_lawn_irrigation_wind_threshold:
   name: Lawn Irrigation Wind Threshold
   # initial: 15
   min: 0
@@ -40,7 +40,7 @@ irrigation_temperature_threshold:
   unit_of_measurement: °C
   icon: mdi:thermometer
 
-lawn_irrigation_rain_threshold:
+front_garden_lawn_irrigation_rain_threshold:
   name: Lawn Irrigation Rain Threshold
   # initial: 5
   min: 0
@@ -48,3 +48,12 @@ lawn_irrigation_rain_threshold:
   step: 1
   unit_of_measurement: mm/day
   icon: mdi:weather-pouring
+
+back_garden_irrigation_duration:
+  name: Garden Irrigation Duration
+  # initial: 40
+  min: 1
+  max: 60
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:clock-end

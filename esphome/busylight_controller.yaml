@@ -1,0 +1,186 @@
+esphome:
+  name: busylight_controller
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  # # Enable fallback hotspot (captive portal) in case wifi connection fails
+  # ap:
+  #   ssid: "Busylight Fallback Hotspot"
+  #   password: "zdoX33BvuU3U"
+  manual_ip:
+    static_ip: 192.168.2.35
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Busylight Controller"
+    password: "KUpLg5tenLoK"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "of4zH*IxKw49yt@H"
+
+ota:
+  password: "of4zH*IxKw49yt@H"
+
+
+
+
+
+      
+# status_led:
+#   pin: GPIO02
+# image:
+#   - file: "images/busy.png"
+#     id: my_image
+
+
+remote_receiver:
+  pin:
+      number: GPIO13
+      inverted: True
+  dump: raw
+
+remote_transmitter:
+  pin: GPIO15
+  carrier_duty_percent: 50%
+
+switch:
+  - platform: template
+    name: Sony Stereo Power
+    
+    turn_on_action:
+      remote_transmitter.transmit_sony:
+        data: 2689
+        nbits: 12
+        repeat:
+          times: 10
+          wait_time: 20ms
+    turn_off_action:
+      remote_transmitter.transmit_sony:
+        data: 2689
+        nbits: 12
+        repeat:
+          times: 10
+          wait_time: 20ms
+  - platform: template
+    name: Sony Stereo Power Raw
+    
+    turn_on_action:
+      remote_transmitter.transmit_raw:
+        repeat:
+          times: 5
+          wait_time: 10ms
+        code: [+2400,-600,+1200,-600,+1200,-600,+1200,-600,+1200,-600,+600,-600,+1200,-600,+600,-600,+600,-600,+1200,-600,+600,-600,+1200,-600,+1200,-600,+600,-600,+1200,-600,+600,-600,+600,-600,+600,-600,+600,-600,+1200,-600,+600,-1260]
+     
+
+
+font:
+  - file: "fonts/arial.ttf"
+    id: my_font
+    size: 22
+  - file: "fonts/arial.ttf"
+    id: my_fontbismall
+    size: 19
+i2c:
+  sda: GPIO4
+  scl: GPIO5
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    # reset_pin: D0
+    address: 0x3C
+    lambda: |-
+      it.print(0, 0, id(my_font), "Free");
+      it.print(0, 22, id(my_font), "Working");
+      it.print(0, 44, id(my_font), "On Call");
+      it.printf(it.get_width(), 0, id(my_fontbismall), TextAlign::TOP_RIGHT, "%s", id(confirmed_selected_state_text).state.c_str());
+  # it.image(0, 0, id(my_image));
+
+sensor:
+  - platform: template
+    name: "Busy State Number"
+    id: template_state_number
+
+  - platform: wifi_signal
+    name: "Busy Light Controller RSSI"
+    update_interval: 60s
+    
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: Busy Light Controller IP
+    ssid:
+      name: Busy Light Controller SSID
+  # State set via buttons
+  - platform: template
+    name: "Seleted State Text"
+    id: selected_state_text
+    update_interval: 10s    
+   
+  # State confirmed back from Home Assistant
+  - platform: homeassistant
+    name: "Busy State From Home Assistant"
+    entity_id: sensor.seleted_state_text
+    id: confirmed_selected_state_text
+    
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button A"
+    on_press:
+      then:
+        - sensor.template.publish:
+            id: template_state_number
+            state: "0"
+        - text_sensor.template.publish:
+            id: selected_state_text
+            state: "Free"
+            
+  - platform: gpio
+    pin: 
+      number: GPIO16
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button B"
+    on_press:
+      then:
+        - sensor.template.publish:
+            id: template_state_number
+            state: "1"
+        - text_sensor.template.publish:
+            id: selected_state_text
+            state: "Working"
+
+  - platform: gpio
+    pin:
+      number: GPIO2
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button C"
+    on_press:
+      then:
+        - sensor.template.publish:
+            id: template_state_number
+            state: "2"
+        - text_sensor.template.publish:
+            id: selected_state_text
+            state: "On Call"
+
+
+

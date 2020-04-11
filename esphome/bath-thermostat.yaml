@@ -1,0 +1,25 @@
+esphome:
+  name: bath-thermostat
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: "111"
+  password: "111"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Bath-Thermostat Fallback Hotspot"
+    password: "2d6ytcGHbnk4"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "of4zH*IxKw49yt@H"
+
+ota:
+  password: "of4zH*IxKw49yt@H"

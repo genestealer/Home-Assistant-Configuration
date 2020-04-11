@@ -1,0 +1,82 @@
+esphome:
+  name: busylight02
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  # # Enable fallback hotspot (captive portal) in case wifi connection fails
+  # ap:
+  #   ssid: "Busylight Fallback Hotspot"
+  #   password: "zdoX33BvuU3U"
+  manual_ip:
+    static_ip: 192.168.2.34
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"
+  
+sensor:
+  - platform: wifi_signal
+    name: "Busy Light 2 RSSI"
+    update_interval: 60s
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: Busy Light 2 IP
+    ssid:
+      name: Busy Light 2 SSID
+
+# mqtt:
+#   broker: !secret mqtt_broker
+#   username: !secret mqtt_username
+#   password: !secret mqtt_password
+#   discovery_prefix: homeassistant
+#   discovery: true
+# #  topic_prefix: homeassistant
+
+status_led:
+  pin: GPIO02
+
+
+light:
+  - platform: neopixelbus
+    method: ESP8266_UART1
+    type: GRB
+    pin: GPIO2
+    num_leds: 1
+    name: "Busy Light 2"
+    effects:
+      - random:
+          name: "My Slow Random Effect"
+          transition_length: 30s
+          update_interval: 30s
+      - random:
+          name: "My Fast Random Effect"
+          transition_length: 4s
+          update_interval: 5s
+      - random:
+          name: "My Mid Random Effect"
+          transition_length: 9s
+          update_interval: 10s
+      - flicker:
+          name: Flicker Effect With Custom Values
+          alpha: 95%
+          intensity: 1.5%
+      - addressable_flicker:
+          name: Flicker Effect With Custom Values2
+          update_interval: 16ms
+          intensity: 5%

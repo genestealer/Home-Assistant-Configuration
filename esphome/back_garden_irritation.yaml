@@ -34,7 +34,6 @@ switch:
   - platform: gpio
     pin: GPIO12
     name: "Back Garden Pots Irrigation"
-    # id: esp_fishpond_pump
 
 
 ## Use time

@@ -1,17 +1,17 @@
 ############################################################
 #
-# MQTT Irrigation Switch 1
+# Front Garden MQTT Irrigation Switch 1
 #
 ############################################################
 
 - platform: mqtt
-  name: "Lawn Irrigation Valve"
-  state_topic: "HUISHS/Irrigation/StatusJSON"
+  name: "Front Garden Lawn Irrigation Valve"
+  state_topic: "HUISHS/Irrigation1/StatusJSON"
   value_template: '{{ value_json.Valve1 }}'
   payload_on: "1"
   payload_off: "0"
-  command_topic: "HUISHS/Irrigation/OutputOne/Command"
-  availability_topic: "HUISHS/Irrigation/Status"
+  command_topic: "HUISHS/Irrigation1/OutputOne/Command"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   optimistic: false
@@ -19,18 +19,38 @@
 
 ############################################################
 #
-# MQTT Irrigation Switch 2
+# Front Garden MQTT Irrigation Switch 2
 #
 ############################################################
 - platform: mqtt
-  name: "Pot Irrigation Valve"
-  state_topic: "HUISHS/Irrigation/StatusJSON"
+  name: "Front Garden Pot Irrigation Valve"
+  state_topic: "HUISHS/Irrigation1/StatusJSON"
   value_template: '{{ value_json.Valve2 }}'
-  command_topic: "HUISHS/Irrigation/OutputTwo/Command"
+  command_topic: "HUISHS/Irrigation1/OutputTwo/Command"
   payload_on: "1"
   payload_off: "0"
-  availability_topic: "HUISHS/Irrigation/Status"
+  availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   optimistic: false
   retain: false
+
+############################################################
+#
+# Back Garden MQTT Irrigation Switch 1
+#
+############################################################
+
+- platform: mqtt
+  name: "Back Garden Irrigation Valve"
+  state_topic: "HUISHS/Irrigation2/StatusJSON"
+  value_template: '{{ value_json.Valve1 }}'
+  payload_on: "1"
+  payload_off: "0"
+  command_topic: "HUISHS/Irrigation2/OutputOne/Command"
+  availability_topic: "HUISHS/Irrigation2/Status"
+  payload_available: "online"
+  payload_not_available: "offline"
+  optimistic: false
+  retain: false
+

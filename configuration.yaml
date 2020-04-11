@@ -115,7 +115,7 @@ map:
 
 # https://github.com/home-assistant/home-assistant/issues/1806
 logger:
-  default: debug
+  default: fatal
   logs:
     requests.packages.urllib3.connectionpool: critical
     rflink.protocol: fatal

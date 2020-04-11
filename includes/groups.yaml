@@ -31,8 +31,8 @@ irrigation_# view:
   # view: yes
   entities:
     - camera.front_door
-    - group.lawn_irrigation_group
-    - group.pots_irrigation_group
+    - group.front_garden_lawn_irrigation_group
+    - group.front_garden_pots_irrigation_group
     - group.irrigation_controller_info_group
     - group.outside_weather_group
 
@@ -169,8 +169,8 @@ mobiles_group:
   # view: no
   # control: hidden
   entities:
-    - device_tracker.google_maps_118405357218131797203
-    - device_tracker.google_maps_114635444798949098363
+    # - device_tracker.google_maps_118405357218131797203
+    # - device_tracker.google_maps_114635444798949098363
     - sensor.richard_phone_battery
     - sensor.lucy_phone_battery
 
@@ -197,7 +197,8 @@ device_status_group:
   entities:
     - binary_sensor.bs_status
     - binary_sensor.rfg_status
-    - binary_sensor.ic_status
+    - binary_sensor.ic_front_status
+    - binary_sensor.ic_back_status
     - binary_sensor.entryway_thermostat_online
     - binary_sensor.esp_link_status
     - binary_sensor.tor_db_status
@@ -334,69 +335,95 @@ irrigation_group:
     # view: no
     # control: hidden
     entities:
-      - group.lawn_irrigation_group
-      - group.pots_irrigation_group
+      - group.front_garden_lawn_irrigation_group
+      - group.front_garden_pots_irrigation_group
 
-lawn_irrigation_group:
+front_garden_lawn_irrigation_group:
   name: Lawn Irrigation
   # view: no
   # control: hidden
   entities:
-    - sensor.lawn_irrigation_valve_status
-    - binary_sensor.lawn_irrigation_valve_position
-    - sensor.lawn_irrigation_last_run
-    - sensor.lawn_irrigation_next_run
-    - sensor.lawn_irrigation_schedule
-    - sensor.lawn_irrigation_duration
-    - sensor.lawn_irrigation_interlock
-    - group.lawn_irrigation_settings
+    - sensor.front_garden_lawn_irrigation_valve_status
+    - binary_sensor.front_garden_lawn_irrigation_valve_position
+    - sensor.front_garden_lawn_irrigation_last_run
+    - sensor.front_garden_lawn_irrigation_next_run
+    - sensor.front_garden_lawn_irrigation_schedule
+    - sensor.front_garden_lawn_irrigation_duration
+    - sensor.front_garden_lawn_irrigation_interlock
+    - group.front_garden_lawn_irrigation_settings
 
-lawn_irrigation_settings:
+front_garden_lawn_irrigation_settings:
   name: Settings
   # view: no
   # control: hidden
   icon: mdi:settings
   entities:
     - automation.irrigate_lawn_at_sunrise
-    - input_number.lawn_irrigation_duration
-    - input_select.lawn_irrigation_schedule
+    - input_number.front_garden_lawn_irrigation_duration
+    - input_select.front_garden_lawn_irrigation_schedule
     - input_number.irrigation_temperature_threshold
-    - input_number.lawn_irrigation_rain_threshold
-    - input_number.lawn_irrigation_wind_threshold
-    - script.lawn_irrigation_timer
-    - switch.lawn_irrigation_valve
+    - input_number.front_garden_lawn_irrigation_rain_threshold
+    - input_number.front_garden_lawn_irrigation_wind_threshold
+    - script.front_garden_lawn_irrigation_timer
+    - switch.front_garden_lawn_irrigation_valve
+
+back_garden_irrigation_settings:
+  name: Settings
+  # view: no
+  # control: hidden
+  icon: mdi:settings
+  entities:
+    - automation.irrigate_back_garden_at_sunrise
+    - input_number.back_garden_irrigation_duration
+    - input_select.back_garden_irrigation_schedule
+    - input_number.irrigation_temperature_threshold
+    - input_number.back_garden_irrigation_rain_threshold
+    - input_number.back_garden_irrigation_wind_threshold
+    - script.back_garden_irrigation_timer
+    - switch.back_garden_irrigation_valve
 
 
 
-
-
-pots_irrigation_group:
+front_garden_pots_irrigation_group:
   name: Plant Pot Irrigation
   # view: no
   # control: hidden
   entities:
-    - sensor.pot_irrigation_valve_status
-    - binary_sensor.pot_irrigation_valve_position
-    - sensor.pot_irrigation_last_run
-    - sensor.pot_irrigation_next_run
-    - sensor.pot_irrigation_schedule
-    - sensor.pot_irrigation_duration
-    - sensor.pots_irrigation_interlock
-    - group.pots_irrigation_settings
+    - sensor.front_garden_pot_irrigation_valve_status
+    - binary_sensor.front_garden_pot_irrigation_valve_position
+    - sensor.front_garden_pot_irrigation_last_run
+    - sensor.front_garden_pot_irrigation_next_run
+    - sensor.front_garden_pot_irrigation_schedule
+    - sensor.front_garden_pot_irrigation_duration
+    - sensor.front_garden_pots_irrigation_interlock
+    - group.front_garden_pots_irrigation_settings
 
 
-pots_irrigation_settings:
+front_garden_pots_irrigation_settings:
   name: Settings
   # view: no
   icon: mdi:settings
   # control: hidden
   entities:
     - automation.irrigate_pots_at_sunrise
-    - input_number.pot_irrigation_duration
-    - input_select.pots_irrigation_schedule
+    - input_number.front_garden_pot_irrigation_duration
+    - input_select.front_garden_pots_irrigation_schedule
     - input_number.irrigation_temperature_threshold
-    - script.pot_irrigation_timer
-    - switch.pot_irrigation_valve
+    - script.front_garden_pot_irrigation_timer
+    - switch.front_garden_pot_irrigation_valve
+
+back_garden_irrigation_settings:
+  name: Settings
+  # view: no
+  icon: mdi:settings
+  # control: hidden
+  entities:
+    - automation.irrigate_back_garden_at_sunrise
+    - input_number.back_garden_irrigation_duration
+    - input_select.back_garden_irrigation_schedule
+    - input_number.irrigation_temperature_threshold
+    - script.back_garden_irrigation_timer
+    - switch.back_garden_irrigation_valve
 
 
 # controller_info_groups
