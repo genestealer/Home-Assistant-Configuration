@@ -1,0 +1,1876 @@
+{
+    "data": {
+        "config": {
+            "title": "Huish Home",
+            "views": [
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "aspect_ratio": "50%",
+                            "entity": "camera.front_door",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.front_of_house",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.garage_2",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.garage",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.garden",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.bunny_camera",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "sensor.house_wattage",
+                            "max": 1,
+                            "min": 0,
+                            "name": "Baseline Energy Use",
+                            "severity": {
+                                "green": 0,
+                                "red": 1,
+                                "yellow": 0.7
+                            },
+                            "theme": "default",
+                            "type": "gauge"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.house_wattage"
+                                },
+                                {
+                                    "entity": "sensor.ups_input_voltage"
+                                }
+                            ],
+                            "hours_to_show": 168,
+                            "refresh_interval": 0,
+                            "title": "House Power Usage - 1 week",
+                            "type": "history-graph"
+                        },
+                        {
+                            "entity": "climate.entryway",
+                            "type": "thermostat"
+                        },
+                        {
+                            "columns": 5,
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.bunny_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.drive_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.front_door_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.garage_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.garden_cctv_online"
+                                }
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": false,
+                            "title": "CCTV Status",
+                            "type": "glance"
+                        },
+                        {
+                            "columns": 5,
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.bs_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.rfg_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.ic_front_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.ic_back_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.entryway_thermostat_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.esp_link_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.tor_db_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.usp_network_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.ikea_tradfri_gateway_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.chicken_coop_status"
+                                }
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": false,
+                            "title": "Device Status",
+                            "type": "glance"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "hide_if_unavailable": true,
+                                    "name": "CCTV",
+                                    "type": "cast",
+                                    "view": "cctv_view"
+                                }
+                            ],
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "device_tracker.google_maps_118405357218131797203"
+                                },
+                                {
+                                    "entity": "device_tracker.google_maps_114635444798949098363"
+                                },
+                                {
+                                    "entity": "sensor.richard_phone_battery"
+                                },
+                                {
+                                    "entity": "sensor.lucy_phone_battery"
+                                },
+                                {
+                                    "entity": "person.richard"
+                                },
+                                {
+                                    "entity": "person.lucy"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Mobiles",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "sensor.kitchen_temperature",
+                                "sensor.kitchen_humidity"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Kitchen Climate",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "sensor.dark_sky_daytime_high_temperature_0d",
+                                "sensor.dark_sky_overnight_low_temperature_0d",
+                                "sensor.dark_sky_precip_intensity",
+                                "sensor.dark_sky_precip_intensity_0d",
+                                "sensor.dark_sky_wind_speed",
+                                "sensor.dark_sky_wind_speed_0d"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Outside Weather",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.dark_sky_temperature",
+                                    "name": "Outside Temperature"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_humidity",
+                                    "name": "Outside Humidity"
+                                },
+                                {
+                                    "entity": "sensor.entryway_thermostat_temperature",
+                                    "name": "Hallway Temperature"
+                                },
+                                {
+                                    "entity": "sensor.entryway_thermostat_humidity",
+                                    "name": "Hallway Humidity"
+                                },
+                                {
+                                    "entity": "sensor.drying_cuboard_temperature"
+                                },
+                                {
+                                    "entity": "sensor.drying_cuboard_humidity"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_humidity"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_temperature"
+                                },
+                                {
+                                    "entity": "sensor.chicken_house_humidity"
+                                },
+                                {
+                                    "entity": "sensor.chicken_house_temperature"
+                                },
+                                {
+                                    "entity": "sensor.loft_temperature"
+                                },
+                                {
+                                    "entity": "sensor.loft_humidity"
+                                }
+                            ],
+                            "hours_to_show": 24,
+                            "refresh_interval": 0,
+                            "title": "House Temperatures",
+                            "type": "history-graph"
+                        },
+                        {
+                            "entities": [
+                                "sensor.speedtest_download",
+                                "sensor.speedtest_ping",
+                                "sensor.speedtest_upload"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Speed Test",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "sensor.pi_hole_ads_blocked_today",
+                                "sensor.pi_hole_ads_percentage_blocked_today",
+                                "sensor.pi_hole_dns_queries_today"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Pi Hole",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "sensor.pi_hole_ads_percentage_blocked_today",
+                            "max": 100,
+                            "min": 0,
+                            "name": "Ads Blocked",
+                            "severity": {
+                                "green": 0,
+                                "red": 80,
+                                "yellow": 60
+                            },
+                            "theme": "default",
+                            "type": "gauge"
+                        },
+                        {
+                            "entities": [
+                                "switch.plug_in_air_freshener",
+                                "switch.kitchen_extractor_fan",
+                                "switch.front_door_sensor",
+                                "switch.bunny_fluff_air_filter",
+                                "switch.wax_melter",
+                                "switch.holiday_house_office_blinds"
+                            ],
+                            "title": "Switch",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "media_player.chromecast7797"
+                                },
+                                {
+                                    "entity": "media_player.googlehome2495"
+                                },
+                                {
+                                    "entity": "media_player.googlehome2900"
+                                },
+                                {
+                                    "entity": "media_player.googlehomehub2078"
+                                },
+                                {
+                                    "entity": "media_player.googlehomehub5970"
+                                },
+                                {
+                                    "entity": "media_player.kitchen_mini_speaker"
+                                }
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "type": "glance"
+                        },
+                        {
+                            "entity": "sensor.drying_cuboard_humidity",
+                            "graph": "line",
+                            "hours_to_show": 48,
+                            "name": "Drying Humidity ",
+                            "type": "sensor"
+                        },
+                        {
+                            "dark_mode": false,
+                            "default_zoom": 12,
+                            "entities": [
+                                {
+                                    "entity": "device_tracker.google_maps_118405357218131797203"
+                                },
+                                {
+                                    "entity": "device_tracker.google_maps_114635444798949098363"
+                                }
+                            ],
+                            "type": "map"
+                        },
+                        {
+                            "entity": "sensor.drying_cuboard_temperature",
+                            "graph": "line",
+                            "name": "Drying Temp",
+                            "type": "sensor"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.drying_cuboard_temperature"
+                                },
+                                {
+                                    "entity": "sensor.drying_cuboard_humidity"
+                                }
+                            ],
+                            "title": "Drying Cupboard",
+                            "type": "glance"
+                        },
+                        {
+                            "entity": "sensor.plex_server",
+                            "type": "sensor"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.dark_sky_temperature",
+                                    "name": "Outside Temperature"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_humidity",
+                                    "name": "Outside Humidity"
+                                },
+                                {
+                                    "entity": "sensor.entryway_thermostat_temperature",
+                                    "name": "Hallway Temperature"
+                                },
+                                {
+                                    "entity": "sensor.entryway_thermostat_humidity",
+                                    "name": "Hallway Humidity"
+                                }
+                            ],
+                            "hours_to_show": 48,
+                            "title": "House Temperature",
+                            "type": "history-graph"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "switch.smoke_machine"
+                                },
+                                {
+                                    "entity": "script.1572463035573"
+                                },
+                                {
+                                    "entity": "automation.smoke_machine_automation"
+                                }
+                            ],
+                            "title": "Smoke Machine",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.loft_temperature"
+                                },
+                                {
+                                    "entity": "sensor.loft_humidity"
+                                }
+                            ],
+                            "type": "entities"
+                        },
+                        {
+                            "aspect_ratio": "50%",
+                            "entity": "camera.garden",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.huishs_away"
+                                }
+                            ],
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "default_view",
+                    "title": "Home"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.front_garden_lawn_irrigation_valve_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.front_garden_lawn_irrigation_valve_position"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_lawn_irrigation_last_run"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_lawn_irrigation_next_run"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_lawn_irrigation_schedule"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_lawn_irrigation_duration"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_lawn_irrigation_interlock"
+                                },
+                                {
+                                    "entity": "group.front_garden_lawn_irrigation_settings"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Lawn Irrigation",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.front_garden_pot_irrigation_valve_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.front_garden_pot_irrigation_valve_position"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_pot_irrigation_last_run"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_pot_irrigation_next_run"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_pot_irrigation_schedule"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_pot_irrigation_duration"
+                                },
+                                {
+                                    "entity": "sensor.front_garden_pots_irrigation_interlock"
+                                },
+                                {
+                                    "entity": "group.front_garden_pots_irrigation_settings"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Pots Irrigation",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.back_garden_irrigation_valve_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.back_garden_irrigation_valve_position"
+                                },
+                                {
+                                    "entity": "sensor.back_garden_irrigation_last_run"
+                                },
+                                {
+                                    "entity": "sensor.back_garden_irrigation_next_run"
+                                },
+                                {
+                                    "entity": "sensor.back_garden_irrigation_schedule"
+                                },
+                                {
+                                    "entity": "sensor.back_garden_irrigation_duration"
+                                },
+                                {
+                                    "entity": "sensor.back_garden_irrigation_interlock"
+                                },
+                                {
+                                    "entity": "group.back_garden_irrigation_settings"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Garden Irrigation",
+                            "type": "entities"
+                        },
+                        {
+                            "columns": 3,
+                            "entities": [
+                                {
+                                    "entity": "script.front_garden_pot_irrigation_timer",
+                                    "tap_action": {
+                                        "action": "toggle"
+                                    }
+                                },
+                                {
+                                    "entity": "script.front_garden_lawn_irrigation_timer",
+                                    "tap_action": {
+                                        "action": "toggle"
+                                    }
+                                },
+                                {
+                                    "entity": "script.back_garden_irrigation_timer",
+                                    "tap_action": {
+                                        "action": "toggle"
+                                    }
+                                },
+                                {
+                                    "entity": "switch.front_garden_pot_irrigation_valve",
+                                    "tap_action": {
+                                        "action": "toggle"
+                                    }
+                                },
+                                {
+                                    "entity": "switch.front_garden_lawn_irrigation_valve",
+                                    "tap_action": {
+                                        "action": "toggle"
+                                    }
+                                },
+                                {
+                                    "entity": "switch.back_garden_irrigation_valve",
+                                    "tap_action": {
+                                        "action": "toggle"
+                                    }
+                                }
+                            ],
+                            "title": "Irrigation Manual Control",
+                            "type": "glance"
+                        },
+                        {
+                            "entity": "camera.front_door",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.dark_sky_daytime_high_temperature_0d"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_overnight_low_temperature_0d"
+                                },
+                                {
+                                    "entity": "sensor.forecast_rain_accumulated"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_precip_intensity"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_precip_intensity_0d"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_wind_speed"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_wind_speed_0d"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Outside Weather",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "weather.dark_sky",
+                            "name": "Local Weather",
+                            "type": "weather-forecast"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.ic_front_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.ic_back_status"
+                                }
+                            ],
+                            "title": "Online Status",
+                            "type": "glance"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.ic_front_status"
+                                },
+                                {
+                                    "entity": "sensor.ic_front_client_name"
+                                },
+                                {
+                                    "entity": "sensor.ic_front_host"
+                                },
+                                {
+                                    "entity": "sensor.ic_front_ip"
+                                },
+                                {
+                                    "entity": "sensor.ic_front_mac"
+                                },
+                                {
+                                    "entity": "sensor.ic_front_rssi"
+                                },
+                                {
+                                    "entity": "sensor.ic_front_ssid"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Front Irrigation Controller Info",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.ic_back_status"
+                                },
+                                {
+                                    "entity": "sensor.ic_back_client_name"
+                                },
+                                {
+                                    "entity": "sensor.ic_back_host"
+                                },
+                                {
+                                    "entity": "sensor.ic_back_ip"
+                                },
+                                {
+                                    "entity": "sensor.ic_back_mac"
+                                },
+                                {
+                                    "entity": "sensor.ic_back_rssi"
+                                },
+                                {
+                                    "entity": "sensor.ic_back_ssid"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Back Irrigation Controller Info",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "irrigation_view",
+                    "title": "Irrigation"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                "script.bathroom_towel_rail_timer",
+                                "input_number.bathroom_towel_on_time",
+                                "automation.dont_heat_towel_rail_mqtt",
+                                "automation.heat_towel_rail_mqtt"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Bathroom Towel Rail",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "script.bathroom_towel_rail_timer",
+                            "hold_action": {
+                                "action": "more-info"
+                            },
+                            "icon_height": "63px",
+                            "name": "Heat Bathroom Towel Rail",
+                            "show_icon": true,
+                            "show_name": true,
+                            "tap_action": {
+                                "action": "toggle"
+                            },
+                            "type": "entity-button"
+                        }
+                    ],
+                    "path": "bathroom_view",
+                    "title": "Bathroom"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "cover.chicken_coop_door"
+                                },
+                                {
+                                    "entity": "binary_sensor.chicken_door_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.chicken_coop_status"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Chicken Coop",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.chicken_house_temperature"
+                                },
+                                {
+                                    "entity": "sensor.chicken_house_humidity"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "chicken coop climate",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "chickens_view",
+                    "title": "Chickens"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                "sensor.kitchen_temperature",
+                                "sensor.kitchen_humidity"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Kitchen Climate",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "automation.bunny_fluff_filter_schedule_on",
+                                "automation.bunny_fluff_filter_schedule_off"
+                            ],
+                            "title": "Automation",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "light.kitchen_under_counter_lights"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Light",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "script.kitchen_extractor_timer"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Script",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "switch.bunny_fluff_air_filter",
+                                "switch.kitchen_extractor_fan"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Switch",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "kitchen_view",
+                    "title": "Kitchen"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "detail": 2,
+                            "entity": "sensor.bunny_shed_temperature",
+                            "graph": "line",
+                            "hours_to_show": 24,
+                            "name": "Bunny Shed 24 Hour",
+                            "theme": "default",
+                            "type": "sensor"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.bunny_shed_target_heat_temperature",
+                                    "name": "Target Heat"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_temperature",
+                                    "name": "Actual Shed Temperature"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_humidity",
+                                    "name": "Actual Shed Humidity"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_target_cool_temperature",
+                                    "name": "Target Cool"
+                                },
+                                {
+                                    "entity": "binary_sensor.bunny_shed_cooler",
+                                    "name": "Cooler"
+                                },
+                                {
+                                    "entity": "binary_sensor.bunny_shed_heater",
+                                    "name": "Heater"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_temperature",
+                                    "name": "Outside Temperature"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_humidity",
+                                    "name": "Outside Humidity"
+                                }
+                            ],
+                            "hours_to_show": 48,
+                            "refresh_interval": 0,
+                            "title": "2-day Bunny Shed Inside Temperature",
+                            "type": "history-graph"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.bunny_shed_temperature"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_humidity"
+                                },
+                                {
+                                    "entity": "binary_sensor.bunny_shed_heater"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_target_heat_temperature"
+                                },
+                                {
+                                    "entity": "binary_sensor.bunny_shed_cooler"
+                                },
+                                {
+                                    "entity": "sensor.bunny_shed_target_cool_temperature"
+                                },
+                                {
+                                    "entity": "sensor.heater_on_last_24_hours"
+                                },
+                                {
+                                    "entity": "sensor.cooler_on_last_24_hours"
+                                },
+                                {
+                                    "entity": "sensor.bs_temperature_highest"
+                                },
+                                {
+                                    "entity": "sensor.bs_temperature_lowest"
+                                },
+                                {
+                                    "entity": "sensor.bs_temperature_statistics_mean"
+                                },
+                                {
+                                    "entity": "sensor.heater_running_cost"
+                                },
+                                {
+                                    "entity": "group.bunny_shed_settings"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Bunny Shed Climate Control",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "binary_sensor.bs_status",
+                                "sensor.bs_client_name",
+                                "sensor.bs_host",
+                                "sensor.bs_ip",
+                                "sensor.bs_mac",
+                                "sensor.bs_rssi",
+                                "sensor.bs_ssid"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Bunny Shed Controller Info",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "bunny_shed_view",
+                    "title": "Shed"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.richard_bed"
+                                },
+                                {
+                                    "entity": "light.lucy_bed"
+                                }
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Master Bedroom Lights",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "light.lamp_2"
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Guest Bedroom Lights",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "light.lucy_bed",
+                            "name": "Lucy Bedside Light",
+                            "theme": "Backend-selected",
+                            "type": "light"
+                        },
+                        {
+                            "entity": "light.richard_bed",
+                            "name": "Richard Bedside Light",
+                            "type": "light"
+                        }
+                    ],
+                    "path": "bedrooms_view",
+                    "title": "Bedrooms"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.esp_link_status"
+                                },
+                                {
+                                    "entity": "light.kitchen_under_counter_lights"
+                                },
+                                {
+                                    "entity": "light.lamp_1"
+                                },
+                                {
+                                    "entity": "light.lamp_2"
+                                },
+                                {
+                                    "entity": "light.lamp_3"
+                                },
+                                {
+                                    "entity": "light.dining_room_light"
+                                },
+                                {
+                                    "entity": "light.sitting_room_bookcase_light"
+                                },
+                                {
+                                    "entity": "binary_sensor.ikea_tradfri_gateway_online"
+                                },
+                                {
+                                    "entity": "light.office"
+                                },
+                                {
+                                    "entity": "light.sitting_room"
+                                },
+                                {
+                                    "entity": "light.sofa_left"
+                                },
+                                {
+                                    "entity": "light.sofa_right"
+                                },
+                                {
+                                    "entity": "light.bedroom"
+                                },
+                                {
+                                    "entity": "light.richard_bed"
+                                },
+                                {
+                                    "entity": "light.lucy_bed"
+                                }
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Lighting",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "group.outside_christmas_lights",
+                                "group.inside_christmas_lights"
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Christmas Lights",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.christmas_bedroom_star"
+                                },
+                                {
+                                    "entity": "light.christmas_sitting_room_star"
+                                },
+                                {
+                                    "entity": "light.christmas_guest_bedroom_star"
+                                },
+                                {
+                                    "entity": "light.christmas_garden_lights"
+                                }
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Outside Christmas Lights",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "light.christmas_tree_bling"
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Inside Christmas Lights",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "light.busy_light_1",
+                            "type": "light"
+                        },
+                        {
+                            "entity": "light.busy_light_2",
+                            "type": "light"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.busy_light_1"
+                                },
+                                {
+                                    "entity": "light.busy_light_2"
+                                }
+                            ],
+                            "title": "Busy Lights",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "lights_view",
+                    "title": "Lights"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entity": "light.sitting_room",
+                            "name": "Sofa Lights",
+                            "type": "light"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.sofa_left"
+                                },
+                                {
+                                    "entity": "light.sofa_right"
+                                },
+                                {
+                                    "entity": "light.sitting_room_bookcase_light"
+                                }
+                            ],
+                            "title": "Light",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "switch.plug_in_air_freshener",
+                            "hold_action": {
+                                "action": "more-info"
+                            },
+                            "show_icon": true,
+                            "show_name": true,
+                            "tap_action": {
+                                "action": "toggle"
+                            },
+                            "type": "entity-button"
+                        }
+                    ],
+                    "path": "sitting_room_view",
+                    "title": "Sitting Room"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "aspect_ratio": "62%",
+                            "camera_image": "camera.front_door",
+                            "camera_view": "live",
+                            "entity": "camera.front_door",
+                            "show_name": false,
+                            "show_state": false,
+                            "type": "picture-entity"
+                        },
+                        {
+                            "aspect_ratio": "62%",
+                            "camera_view": "live",
+                            "entity": "camera.garage",
+                            "show_name": false,
+                            "show_state": false,
+                            "type": "picture-entity"
+                        },
+                        {
+                            "aspect_ratio": "62%",
+                            "camera_view": "live",
+                            "entity": "camera.front_of_house",
+                            "show_name": false,
+                            "show_state": false,
+                            "type": "picture-entity"
+                        },
+                        {
+                            "aspect_ratio": "62%",
+                            "camera_view": "live",
+                            "entity": "camera.garage_2",
+                            "show_name": false,
+                            "show_state": false,
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.bunny_camera",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "aspect_ratio": "50%",
+                            "entity": "camera.garden",
+                            "type": "picture-entity"
+                        }
+                    ],
+                    "panel": false,
+                    "path": "cctv_view",
+                    "title": "CCTV"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "columns": 5,
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.bs_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.rfg_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.ic_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.entryway_thermostat_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.esp_link_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.tor_db_status"
+                                },
+                                {
+                                    "entity": "binary_sensor.usp_network_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.ikea_tradfri_gateway_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.chicken_coop_status"
+                                }
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": true,
+                            "title": "Device Status",
+                            "type": "glance"
+                        },
+                        {
+                            "columns": 5,
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.bunny_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.drive_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.front_door_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.garage_cctv_online"
+                                },
+                                {
+                                    "entity": "binary_sensor.garden_cctv_online"
+                                }
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": true,
+                            "title": "CCTV Status",
+                            "type": "glance"
+                        },
+                        {
+                            "cards": [
+                                {
+                                    "entity": "sensor.disk_use_percent_home",
+                                    "max": 100,
+                                    "min": 0,
+                                    "name": "Pi Disk Use",
+                                    "severity": {
+                                        "green": 0,
+                                        "red": 100,
+                                        "yellow": 75
+                                    },
+                                    "theme": "default",
+                                    "type": "gauge"
+                                },
+                                {
+                                    "entity": "sensor.memory_use_percent",
+                                    "max": 100,
+                                    "min": 0,
+                                    "name": "Pi Disk Use",
+                                    "severity": {
+                                        "green": 0,
+                                        "red": 100,
+                                        "yellow": 75
+                                    },
+                                    "theme": "default",
+                                    "type": "gauge"
+                                }
+                            ],
+                            "type": "horizontal-stack"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.disk_use_percent_home"
+                                },
+                                {
+                                    "entity": "sensor.memory_free"
+                                },
+                                {
+                                    "entity": "sensor.memory_use_percent"
+                                },
+                                {
+                                    "entity": "sensor.load_1m"
+                                },
+                                {
+                                    "entity": "sensor.load_5m"
+                                },
+                                {
+                                    "entity": "sensor.processor_use"
+                                },
+                                {
+                                    "entity": "sensor.swap_use_percent"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Pi 4 System Information ",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "sensor.pi_hole_ads_percentage_blocked_today",
+                            "max": 100,
+                            "min": 0,
+                            "name": "Ad Blocked",
+                            "severity": {
+                                "green": 0,
+                                "red": 100,
+                                "yellow": 70
+                            },
+                            "theme": "default",
+                            "type": "gauge"
+                        },
+                        {
+                            "entities": [
+                                "sensor.pi_hole_ads_blocked_today",
+                                "sensor.pi_hole_ads_percentage_blocked_today",
+                                "sensor.pi_hole_dns_queries_today"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Pi Hole",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.server_server_inlet_temperature",
+                                    "name": "Inlet Temperature"
+                                },
+                                {
+                                    "entity": "sensor.server_server_exhaust_temperature",
+                                    "name": "Exhaust Temperature"
+                                },
+                                {
+                                    "entity": "sensor.server_server_raid_controller_temperature",
+                                    "name": "RAID Temperature"
+                                },
+                                {
+                                    "entity": "sensor.load_1m"
+                                },
+                                {
+                                    "entity": "sensor.dark_sky_temperature",
+                                    "name": "Outside Temperature"
+                                }
+                            ],
+                            "hours_to_show": 24,
+                            "refresh_interval": 0,
+                            "title": "Server Load / Thermals ",
+                            "type": "history-graph"
+                        },
+                        {
+                            "entity": "sensor.glances_ram_used_percent",
+                            "max": 100,
+                            "min": 0,
+                            "name": "Server RAM",
+                            "severity": {
+                                "green": 30,
+                                "red": 80,
+                                "yellow": 60
+                            },
+                            "theme": "default",
+                            "type": "gauge"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.server_power_on_time_months"
+                                },
+                                {
+                                    "entity": "sensor.server_sever_uid_status"
+                                },
+                                {
+                                    "entity": "sensor.server_server_temperature_status"
+                                },
+                                {
+                                    "entity": "sensor.server_server_storage_status"
+                                },
+                                {
+                                    "entity": "sensor.server_server_inlet_temperature"
+                                },
+                                {
+                                    "entity": "sensor.server_server_exhaust_temperature"
+                                },
+                                {
+                                    "entity": "sensor.server_server_raid_controller_temperature"
+                                },
+                                {
+                                    "entity": "sensor.server_server_fanspeed"
+                                },
+                                {
+                                    "entity": "sensor.load_5m"
+                                },
+                                {
+                                    "entity": "sensor.glances_ram_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_running"
+                                },
+                                {
+                                    "entity": "sensor.glances_thread"
+                                },
+                                {
+                                    "entity": "sensor.glances_total"
+                                },
+                                {
+                                    "entity": "sensor.glances_swap_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.swap_use_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_c_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_c_free"
+                                },
+                                {
+                                    "entity": "sensor.glances_d_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_d_free"
+                                },
+                                {
+                                    "entity": "sensor.glances_g_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_g_free"
+                                },
+                                {
+                                    "entity": "sensor.glances_h_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_h_free"
+                                },
+                                {
+                                    "entity": "sensor.glances_k_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_k_free"
+                                },
+                                {
+                                    "entity": "sensor.glances_m_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_m_free"
+                                },
+                                {
+                                    "entity": "sensor.glances_n_used_percent"
+                                },
+                                {
+                                    "entity": "sensor.glances_n_free"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Server Status",
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "sensor.ups_load",
+                            "max": 100,
+                            "min": 0,
+                            "name": "UPS Load",
+                            "severity": {
+                                "green": 0,
+                                "red": 80,
+                                "yellow": 50
+                            },
+                            "theme": "default",
+                            "type": "gauge"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.ups_status"
+                                },
+                                {
+                                    "entity": "sensor.ups_battery"
+                                },
+                                {
+                                    "entity": "sensor.ups_time_left"
+                                },
+                                {
+                                    "entity": "sensor.ups_load"
+                                },
+                                {
+                                    "entity": "sensor.ups_input_voltage"
+                                },
+                                {
+                                    "entity": "sensor.ups_internal_temperature"
+                                },
+                                {
+                                    "entity": "sensor.ups_output_voltage"
+                                },
+                                {
+                                    "entity": "sensor.ups_time_on_battery"
+                                },
+                                {
+                                    "entity": "sensor.ups_total_time_on_battery"
+                                },
+                                {
+                                    "entity": "sensor.ups_transfer_count"
+                                },
+                                {
+                                    "entity": "sensor.ups_battery_voltage"
+                                },
+                                {
+                                    "entity": "sensor.ups_input_voltage"
+                                },
+                                {
+                                    "entity": "sensor.ups_last_self_test"
+                                },
+                                {
+                                    "entity": "sensor.ups_last_transfer"
+                                },
+                                {
+                                    "entity": "sensor.ups_transfer_from_battery"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "UPS Data",
+                            "type": "entities"
+                        },
+                        {
+                            "columns": 4,
+                            "entities": [
+                                "binary_sensor.rfg_status",
+                                "sensor.rfg_client_name",
+                                "sensor.rfg_host",
+                                "sensor.rfg_ip",
+                                "sensor.rfg_mac",
+                                "sensor.rfg_rssi",
+                                "sensor.rfg_ssid"
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": true,
+                            "title": "RF Gatway Info",
+                            "type": "glance"
+                        },
+                        {
+                            "columns": 4,
+                            "entities": [
+                                "binary_sensor.ic_status",
+                                "sensor.ic_client_name",
+                                "sensor.ic_host",
+                                "sensor.ic_ip",
+                                "sensor.ic_mac",
+                                "sensor.ic_rssi",
+                                "sensor.ic_ssid"
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": true,
+                            "title": "Irrigation Controller Info",
+                            "type": "glance"
+                        },
+                        {
+                            "columns": 4,
+                            "entities": [
+                                "binary_sensor.bs_status",
+                                "sensor.bs_client_name",
+                                "sensor.bs_host",
+                                "sensor.bs_ip",
+                                "sensor.bs_mac",
+                                "sensor.bs_rssi",
+                                "sensor.bs_ssid"
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": true,
+                            "title": "Bunny Shed Controller Info",
+                            "type": "glance"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "binary_sensor.esp_link_status"
+                                },
+                                {
+                                    "entity": "sensor.esp_link_controller_signal_strength"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "RF Link",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "binary_sensor.tor_db_status",
+                                "sensor.tor_db_client_name",
+                                "sensor.tor_db_host",
+                                "sensor.tor_db_ip",
+                                "sensor.tor_db_mac",
+                                "sensor.tor_db_rssi",
+                                "sensor.tor_db_rssi_2",
+                                "sensor.tor_db_ssid",
+                                "counter.tor_db_disconnect_counter"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "TOR DoorBell Info",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "binary_sensor.entryway_thermostat_online",
+                                "sensor.entryway_thermostat_humidity"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Nest Thermostat",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "script.saa_smart_period"
+                                },
+                                {
+                                    "entity": "script.kitchen_extractor_timer"
+                                },
+                                {
+                                    "entity": "script.saa_sleep_tracking_started"
+                                },
+                                {
+                                    "entity": "script.saa_alarm_alert_start"
+                                },
+                                {
+                                    "entity": "script.bedroom_lights_night_mode"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Script",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "input_boolean.bunny_fluff_air_filter_enable",
+                                "input_boolean.wax_melter_enable",
+                                "input_boolean.plugin_air_freshener_enable",
+                                "input_boolean.simulate_presence_enable"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Input boolean",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.house_current_consumption"
+                                },
+                                {
+                                    "entity": "sensor.house_wattage"
+                                },
+                                {
+                                    "entity": "sensor.ups_input_voltage"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "House Power",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "switch.plug_in_air_freshener"
+                                },
+                                {
+                                    "entity": "input_boolean.plugin_air_freshener_enable"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Air Fresher",
+                            "type": "entities"
+                        },
+                        {
+                            "cards": [
+                                {
+                                    "entities": [
+                                        {
+                                            "entity": "sensor.disk_use_percent_home"
+                                        },
+                                        {
+                                            "entity": "sensor.memory_free"
+                                        },
+                                        {
+                                            "entity": "sensor.memory_use_percent"
+                                        },
+                                        {
+                                            "entity": "sensor.load_1m"
+                                        },
+                                        {
+                                            "entity": "sensor.load_5m"
+                                        },
+                                        {
+                                            "entity": "sensor.processor_use"
+                                        },
+                                        {
+                                            "entity": "sensor.swap_use_percent"
+                                        }
+                                    ],
+                                    "show_header_toggle": false,
+                                    "title": "Pi 4 System Information ",
+                                    "type": "entities"
+                                },
+                                {
+                                    "cards": [
+                                        {
+                                            "entity": "sensor.disk_use_percent_home",
+                                            "max": 100,
+                                            "min": 0,
+                                            "name": "Pi Disk Use",
+                                            "severity": {
+                                                "green": 0,
+                                                "red": 100,
+                                                "yellow": 75
+                                            },
+                                            "theme": "default",
+                                            "type": "gauge"
+                                        },
+                                        {
+                                            "entity": "sensor.memory_use_percent",
+                                            "max": 100,
+                                            "min": 0,
+                                            "name": "Pi Disk Use",
+                                            "severity": {
+                                                "green": 0,
+                                                "red": 100,
+                                                "yellow": 75
+                                            },
+                                            "theme": "default",
+                                            "type": "gauge"
+                                        }
+                                    ],
+                                    "type": "horizontal-stack"
+                                }
+                            ],
+                            "type": "vertical-stack"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.busy_light_1"
+                                },
+                                {
+                                    "entity": "sensor.busy_light_1_ip"
+                                },
+                                {
+                                    "entity": "sensor.busy_light_1_rssi"
+                                },
+                                {
+                                    "entity": "sensor.busy_light_1_ssid"
+                                }
+                            ],
+                            "title": "Busy Light 1",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "light.busy_light_2",
+                                "sensor.busy_light_2_ip",
+                                "sensor.busy_light_2_rssi",
+                                "sensor.busy_light_2_ssid"
+                            ],
+                            "title": "Busy Light 2",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                "sensor.busy_light_controller_ip",
+                                "sensor.busy_light_controller_rssi",
+                                "sensor.busy_light_controller_ssid",
+                                "sensor.busy_state_from_home_assistant",
+                                "sensor.busy_state_number",
+                                "binary_sensor.button_a",
+                                "binary_sensor.button_b_2",
+                                "binary_sensor.button_c",
+                                "sensor.seleted_state_text",
+                                "switch.sony_stereo_power",
+                                "switch.sony_stereo_power_raw"
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Busy Light Controller",
+                            "type": "entities"
+                        }
+                    ],
+                    "panel": false,
+                    "path": "automation_system_view",
+                    "title": "System"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entity": "media_player.whole_house",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.ground_floor",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.bedroom_display",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.googlehome2495",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.guest_bedroom",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.googlehomehub2078",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.kitchen_stereo",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.office_display",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.garage",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.shield_2",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.googlehome2900",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.plex_shield_android_tv_2",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.plex_bd_player_bd_h6500",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.plex_aftt",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.plex_plex_for_android_mobile_pixel_3",
+                            "type": "media-control"
+                        },
+                        {
+                            "entity": "media_player.plex_pixel_2_xl",
+                            "type": "media-control"
+                        }
+                    ],
+                    "path": "media-devices",
+                    "title": "Media Devices"
+                },
+                {
+                    "badges": [],
+                    "cards": [
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.busy_state_number"
+                                },
+                                {
+                                    "entity": "sensor.busy_state_from_home_assistant"
+                                },
+                                {
+                                    "entity": "sensor.seleted_state_text"
+                                },
+                                {
+                                    "entity": "binary_sensor.button_a"
+                                },
+                                {
+                                    "entity": "binary_sensor.button_b"
+                                },
+                                {
+                                    "entity": "binary_sensor.button_c"
+                                }
+                            ],
+                            "type": "entities"
+                        },
+                        {
+                            "entity": "light.busy_light_1",
+                            "type": "light"
+                        },
+                        {
+                            "entity": "light.busy_light_2",
+                            "type": "light"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.busy_light_1"
+                                },
+                                {
+                                    "entity": "light.busy_light_2"
+                                }
+                            ],
+                            "title": "Busy Lights",
+                            "type": "entities"
+                        }
+                    ],
+                    "path": "office",
+                    "title": "Office"
+                }
+            ]
+        }
+    },
+    "key": "lovelace",
+    "version": 1
+}
