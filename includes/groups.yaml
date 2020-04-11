@@ -361,7 +361,7 @@ front_garden_lawn_irrigation_settings:
     - automation.irrigate_lawn_at_sunrise
     - input_number.front_garden_lawn_irrigation_duration
     - input_select.front_garden_lawn_irrigation_schedule
-    - input_number.irrigation_temperature_threshold
+    - input_number.front_garden_lawn_irrigation_wind_threshold
     - input_number.front_garden_lawn_irrigation_rain_threshold
     - input_number.front_garden_lawn_irrigation_wind_threshold
     - script.front_garden_lawn_irrigation_timer
@@ -376,9 +376,7 @@ back_garden_irrigation_settings:
     - automation.irrigate_back_garden_at_sunrise
     - input_number.back_garden_irrigation_duration
     - input_select.back_garden_irrigation_schedule
-    - input_number.irrigation_temperature_threshold
     - input_number.back_garden_irrigation_rain_threshold
-    - input_number.back_garden_irrigation_wind_threshold
     - script.back_garden_irrigation_timer
     - switch.back_garden_irrigation_valve
 
@@ -408,7 +406,7 @@ front_garden_pots_irrigation_settings:
     - automation.irrigate_pots_at_sunrise
     - input_number.front_garden_pot_irrigation_duration
     - input_select.front_garden_pots_irrigation_schedule
-    - input_number.irrigation_temperature_threshold
+    - input_number.front_garden_lawn_irrigation_wind_threshold
     - script.front_garden_pot_irrigation_timer
     - switch.front_garden_pot_irrigation_valve
 
@@ -421,7 +419,7 @@ back_garden_irrigation_settings:
     - automation.irrigate_back_garden_at_sunrise
     - input_number.back_garden_irrigation_duration
     - input_select.back_garden_irrigation_schedule
-    - input_number.irrigation_temperature_threshold
+    - input_number.front_garden_lawn_irrigation_wind_threshold
     - script.back_garden_irrigation_timer
     - switch.back_garden_irrigation_valve
 

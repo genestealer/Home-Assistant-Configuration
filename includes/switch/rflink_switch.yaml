@@ -30,8 +30,8 @@
     #   name: Plug-In Air Freshener
     Maclean_0d85_01: #
       name: Plug-In Air Freshener
-    ev1527_05d797_0e:
-      name: Front Door Sensor
+    # ev1527_05d797_0e:
+    #   name: Front Door Sensor
     tristate_0aaaa0_0:
       name: Smoke Machine
 

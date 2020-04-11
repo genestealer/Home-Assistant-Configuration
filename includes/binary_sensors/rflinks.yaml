@@ -1,0 +1,13 @@
+  ############################################################
+  #
+  # RFLink Binary Sensor
+  #
+  ############################################################
+
+- platform: rflink
+  devices:
+    ev1527_05d797_0e:
+      name: 'Front Door'
+      device_class: door
+      off_delay: 4
+      force_update: true    

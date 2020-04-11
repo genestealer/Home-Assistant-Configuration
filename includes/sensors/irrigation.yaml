@@ -14,12 +14,12 @@
 - platform: template
   sensors:
     front_garden_lawn_irrigation_interlock:
-      friendly_name: 'Lawn Irrigation Weather Interlock'
+      friendly_name: 'Interlock'
       value_template: >
-        {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.lawn_irrigation_wind_threshold') | int %}
-          Inhibited: Forecasted rain {{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int}}mm, threshold is {{states('input_number.lawn_irrigation_wind_threshold') | int}}mm
-        {% elif states('sensor.dark_sky_wind_speed') | int > states('input_number.lawn_irrigation_wind_threshold') | int %}
-          Too windy at {{states('sensor.dark_sky_wind_speed')}}mph, threshold is {{states('input_number.lawn_irrigation_wind_threshold') | int}}mph
+        {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.front_garden_lawn_irrigation_wind_threshold') | int %}
+          Inhibited: Forecasted rain {{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int}}mm, threshold is {{states('input_number.front_garden_lawn_irrigation_wind_threshold') | int}}mm
+        {% elif states('sensor.dark_sky_wind_speed') | int > states('input_number.front_garden_lawn_irrigation_wind_threshold') | int %}
+          Too windy at {{states('sensor.dark_sky_wind_speed')}}mph, threshold is {{states('input_number.front_garden_lawn_irrigation_wind_threshold') | int}}mph
         {% elif states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
           Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
         {% else %}
@@ -29,7 +29,7 @@
 - platform: template
   sensors:
     front_garden_pots_irrigation_interlock:
-      friendly_name: 'Pots Irrigation Weather Interlock'
+      friendly_name: 'Interlock'
       value_template: >
         {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
           Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
@@ -40,7 +40,7 @@
 - platform: template
   sensors:
     back_garden_irrigation_interlock:
-      friendly_name: 'Garden Irrigation Weather Interlock'
+      friendly_name: 'Interlock'
       value_template: >
         {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
           Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
@@ -97,19 +97,17 @@
 
     front_garden_lawn_irrigation_schedule:
       friendly_name: 'Schedule'
-      value_template: "{{ states.input_select.lawn_irrigation_schedule.state }}"
+      value_template: "{{ states.input_select.front_garden_lawn_irrigation_schedule.state }}"
 
 ############################################################
 # Back Garden Settings
 ############################################################
     back_garden_irrigation_duration:
       friendly_name: 'Run Duration'
-      # entity_id: input_number.lawn_irrigation_duration
       value_template: '{{states.input_number.back_garden_irrigation_duration.state | round(1)}} minutes'
 
     back_garden_irrigation_last_run:
       friendly_name: 'Last Watered'
-      # entity_id: switch.lawn_irrigation_valve
       value_template: "{{states.switch.back_garden_irrigation_valve.last_changed.strftime('%a %D %-I:%M %p')}}"
 
     back_garden_irrigation_valve_status:
@@ -348,25 +346,25 @@
               {%- endif -%}
           {%- endmacro -%}
           {# set configured runDay from input_select #}
-          {% if states.input_select.back_gardenirrigation_schedule.state == "Monday" %}
+          {% if states.input_select.back_garden_irrigation_schedule.state == "Monday" %}
               {% set runDay = 0 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Tuesday" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Tuesday" %}
               {% set runDay = 1 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Wednesday" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Wednesday" %}
               {% set runDay = 2 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Thursday" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Thursday" %}
               {% set runDay = 3 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Friday" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Friday" %}
               {% set runDay = 4 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Saturday" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Saturday" %}
               {% set runDay = 5 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Sunday" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Sunday" %}
               {% set runDay = 6 |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Mon/Thu" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Mon/Thu" %}
               {% set runDay = monthu() |int -%}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
               {% set runDay = monwedfrisun() |int %}
-          {% elif states.input_select.back_gardenirrigation_schedule.state == "Every Day" %}
+          {% elif states.input_select.back_garden_irrigation_schedule.state == "Every Day" %}
               {% set runDay = currentDay |int %}
           {% endif %}
           {# determine the next runday #}
@@ -382,11 +380,11 @@
                       {# than we need to fake tomorrow #}
                       {% set currentDay = (currentDay + 1) |int %}
                       {# and calculate new runDay in case we have a list of multiple run days in in a week #}
-                      {% if states.input_select.back_gardenirrigation_schedule.state == "Mon/Thu" %}
+                      {% if states.input_select.back_garden_irrigation_schedule.state == "Mon/Thu" %}
                           {% set runDay = monthu() |int -%}
-                      {% elif states.input_select.back_gardenirrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
+                      {% elif states.input_select.back_garden_irrigation_schedule.state == "Mon/Wed/Fri/Sun" %}
                           {% set runDay = monwedfrisun() |int %}
-                      {% elif states.input_select.back_gardenirrigation_schedule.state == "Every Day" %}
+                      {% elif states.input_select.back_garden_irrigation_schedule.state == "Every Day" %}
                           {% set runDay = currentDay |int %}
                       {% endif %}
                   {% endif %}
@@ -407,7 +405,7 @@
               {% endif %}
           {% endif %}
           {# all done #}
-          {# set states.sensor.back_gardenirrigation_next_run.state = runDate #}
+          {# set states.sensor.back_garden_irrigation_next_run.state = runDate #}
           {% if runDay == 9 %}
               {# schedule not active #}
               {{runDate}}

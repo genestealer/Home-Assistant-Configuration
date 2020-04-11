@@ -1,18 +1,4 @@
-- id: '1529279555355'
-  alias: Reset Front Door Sensor
-  trigger:
-  - entity_id: switch.front_door_sensor
-    from: 'off'
-    platform: state
-    to: 'on'
-  - event: start
-    platform: homeassistant
-  condition: []
-  action:
-  - delay: 00:00:05
-  - data:
-      entity_id: switch.front_door_sensor
-    service: switch.turn_off
+
 - id: '1529366648322'
   alias: Open chicken pop hole door at dawn
   trigger:
@@ -118,14 +104,14 @@
 - id: '1564192629041'
   alias: Pot Irrigation Script Off to Valve Off
   trigger:
-  - entity_id: script.pot_irrigation_timer
+  - entity_id: script.front_garden_pot_irrigation_timer
     from: 'on'
     platform: state
     to: 'off'
   condition: []
   action:
   - data:
-      entity_id: switch.pot_irrigation_valve
+      entity_id: switch.front_garden_pot_irrigation_valve
     service: switch.turn_off
 - id: '1564192623451'
   alias: Irrigate Front Garden Pots at Sunrise
@@ -172,14 +158,14 @@
 - id: '1564234217905'
   alias: Lawn Irrigation Script Off to Valve Off
   trigger:
-  - entity_id: script.lawn_irrigation_timer
+  - entity_id: script.front_garden_lawn_irrigation_timer
     from: 'on'
     platform: state
     to: 'off'
   condition: []
   action:
   - data:
-      entity_id: switch.lawn_irrigation_valve
+      entity_id: switch.front_garden_lawn_irrigation_valve
     service: switch.turn_off
 - id: '1564245956941'
   alias: Kitchen Fan Script Off to Switch Off
