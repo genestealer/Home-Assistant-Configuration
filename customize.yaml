@@ -169,6 +169,8 @@ switch.front_garden_pot_irrigation_valve:
   icon: mdi:water
 switch.front_garden_lawn_irrigation_valve:
   icon: mdi:water
+switch.back_garden_irrigation_valve:
+  icon: mdi:water
 sensor.front_garden_lawn_irrigation_valve_status:
   icon: mdi:water-pump
 sensor.front_garden_lawn_irrigation_valve_position:
@@ -205,7 +207,7 @@ sensor.back_garden_irrigation_last_run:
   icon: mdi:history
 sensor.back_garden_irrigation_next_run:
   icon: mdi:calendar-clock
-sensor.backgardent_irrigation_schedule:
+sensor.back_garden_irrigation_schedule:
   icon: mdi:calendar
 sensor.back_garden_irrigation_duration:
   icon: mdi:timer-sand

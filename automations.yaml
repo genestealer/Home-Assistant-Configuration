@@ -154,7 +154,7 @@
     state: No Problems
   action:
   - entity_id: script.back_garden_irrigation_timer
-    service: script.back_garden_pot_irrigation_timer
+    service: script.back_garden_irrigation_timer
 - id: '1564192623452'
   alias: Irrigate Front Lawn at Sunrise
   trigger:
