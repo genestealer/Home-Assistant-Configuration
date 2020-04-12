@@ -61,6 +61,8 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - [Homemade 433Mhz MQTT transmitter gatway](https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway)
 - [Homemade 433Mhz bunny shed heating contoller](https://github.com/Genestealer/Bunny-Shed-Climate-Control)
 - [Home Assistant to RFLink Gateway Controller](https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266)
+- [Controllino-Irrigation](https://github.com/genestealer/Controllino-Irrigation)
+- [Irrigation-Controller](https://github.com/genestealer/Irrigation-Controller)
 
 
 ## Example
