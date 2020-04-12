@@ -1,3 +1,36 @@
+#***************************************************
+#   BusyLight Presence Indicator
+#     Controller Component
+#   Richard Huish 2020
+#   I built so my family can know when I'm busy and working in my Home Office.
+#   ESP8266 based with local home-assistant.io GUI with controller with physical buttons and mini display
+#   See busylight.yaml for Light Component
+#   ----------
+#   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
+#   ----------
+#   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
+#   API: Locally hosted native API component https://esphome.io/components/api.html
+#   OTA updates: https://esphome.io/components/ota.html
+#   ----------
+#   The circuit:
+#     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
+#     Adafruit FeatherWing OLED - 128x32 OLED Add-on For Feather https://www.adafruit.com/product/2900
+#   Inputs:
+#     3 x buttons on Adafruit FeatherWing OLED
+#   Outputs:
+#     Adafruit FeatherWing OLED
+#     OtherBusyLight indicators on my network
+#   Home Assistant Automations
+#    Buttons on controller trigger automations:
+#     E.G. "Busylight Controller Free Button Pressed"
+#     Automations run script to set BusyLights, E.G. "I'm Free"
+#   See:
+#    https://github.com/genestealer/Home-Assistant-Configuration/blob/master/scripts.yaml
+#    https://github.com/genestealer/Home-Assistant-Configuration/blob/master/automations.yaml
+#
+#****************************************************
+
+
 esphome:
   name: busylight_controller
   platform: ESP8266
@@ -6,22 +39,10 @@ esphome:
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
-
-  # # Enable fallback hotspot (captive portal) in case wifi connection fails
-  # ap:
-  #   ssid: "Busylight Fallback Hotspot"
-  #   password: "zdoX33BvuU3U"
   manual_ip:
     static_ip: 192.168.2.35
     gateway: 192.168.2.1
     subnet: 255.255.255.0
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: "Busylight Controller"
-    password: "KUpLg5tenLoK"
-
-captive_portal:
 
 # Enable logging
 logger:
@@ -34,56 +55,9 @@ ota:
   password: "of4zH*IxKw49yt@H"
 
 
-
-
-
       
 # status_led:
 #   pin: GPIO02
-# image:
-#   - file: "images/busy.png"
-#     id: my_image
-
-
-remote_receiver:
-  pin:
-      number: GPIO13
-      inverted: True
-  dump: raw
-
-remote_transmitter:
-  pin: GPIO15
-  carrier_duty_percent: 50%
-
-switch:
-  - platform: template
-    name: Sony Stereo Power
-    
-    turn_on_action:
-      remote_transmitter.transmit_sony:
-        data: 2689
-        nbits: 12
-        repeat:
-          times: 10
-          wait_time: 20ms
-    turn_off_action:
-      remote_transmitter.transmit_sony:
-        data: 2689
-        nbits: 12
-        repeat:
-          times: 10
-          wait_time: 20ms
-  - platform: template
-    name: Sony Stereo Power Raw
-    
-    turn_on_action:
-      remote_transmitter.transmit_raw:
-        repeat:
-          times: 5
-          wait_time: 10ms
-        code: [+2400,-600,+1200,-600,+1200,-600,+1200,-600,+1200,-600,+600,-600,+1200,-600,+600,-600,+600,-600,+1200,-600,+600,-600,+1200,-600,+1200,-600,+600,-600,+1200,-600,+600,-600,+600,-600,+600,-600,+600,-600,+1200,-600,+600,-1260]
-     
-
 
 font:
   - file: "fonts/arial.ttf"

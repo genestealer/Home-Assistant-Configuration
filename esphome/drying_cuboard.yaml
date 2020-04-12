@@ -23,16 +23,6 @@ api:
 ota:
   password: "hxN#^fPPv5ZRy%7l"
 
-# mqtt:
-#   broker: !secret mqtt_broker
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
-#   discovery_prefix: homeassistant
-#   discovery: true
-# #  topic_prefix: homeassistant
-
-
-
 
 sensor:
   - platform: dht

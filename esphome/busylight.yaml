@@ -1,3 +1,28 @@
+#***************************************************
+#   BusyLight Presence Indicator
+#     Light Component
+#   Richard Huish 2020
+#   I built so my family can know when I'm busy and working in my Home Office.
+#   ESP8266 based with local home-assistant.io GUI with controller with physical buttons and mini display
+#   See busylight_controller.yaml for Controller Component
+#   ----------
+#   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
+#   ----------
+#   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
+#   API: Locally hosted native API component https://esphome.io/components/api.html
+#   OTA updates: https://esphome.io/components/ota.html
+#   ----------
+#   The circuit:
+#     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
+#     Breadboard-friendly RGB Smart NeoPixel https://www.adafruit.com/product/1312
+#     4-channel I2C-safe Bi-directional Logic Level Converter - BSS138 https://www.adafruit.com/product/757
+#     Ping pong ball to diffuse 
+#   Inputs:
+#     BusyLight Presence Indicator Controller via Home Assistant
+#   Outputs:
+#     NeoPixel, via Logic Level Converter as NeoPixel needs 5V and ESP8266 is 3.3V.
+#****************************************************
+
 esphome:
   name: busylight01
   platform: ESP8266
@@ -6,17 +31,10 @@ esphome:
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
-
-  # # Enable fallback hotspot (captive portal) in case wifi connection fails
-  # ap:
-  #   ssid: "Busylight Fallback Hotspot"
-  #   password: "zdoX33BvuU3U"
   manual_ip:
     static_ip: 192.168.2.33
     gateway: 192.168.2.1
     subnet: 255.255.255.0
-
-captive_portal:
 
 # Enable logging
 logger:
@@ -27,7 +45,6 @@ api:
 
 ota:
   password: "hxN#^fPPv5ZRy%7l"
-  
   
 sensor:
   - platform: wifi_signal
@@ -41,17 +58,8 @@ text_sensor:
     ssid:
       name: Busy Light 1 SSID
 
-# mqtt:
-#   broker: !secret mqtt_broker
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
-#   discovery_prefix: homeassistant
-#   discovery: true
-# #  topic_prefix: homeassistant
-
 status_led:
   pin: GPIO02
-
 
 light:
   - platform: neopixelbus
@@ -60,16 +68,3 @@ light:
     pin: GPIO2
     num_leds: 1
     name: "Busy Light 1"
-    effects:
-      - random:
-          name: "My Slow Random Effect"
-          transition_length: 30s
-          update_interval: 30s
-      - random:
-          name: "My Fast Random Effect"
-          transition_length: 4s
-          update_interval: 5s
-      - random:
-          name: "My Mid Random Effect"
-          transition_length: 9s
-          update_interval: 10s       
