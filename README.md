@@ -31,6 +31,9 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 ### ESPHome Things
  - Busylight, I built so my family can know when I'm busy and working in my Home Office. See [busylight.yaml](https://github.com/genestealer/Home-Assistant-Configuration/blob/master/esphome/busylight.yaml) and [busylight_controller.yaml](https://github.com/genestealer/Home-Assistant-Configuration/blob/master/esphome/busylight_controller.yaml)
 
+| BusyLight Controller  | BusyLight Light |
+| ------------- | ------------- |
+| ![Diagram](https://raw.githubusercontent.com/genestealer/Home-Assistant-Configuration/master/esphome/images/busylight_controller.jpg)  | ![Diagram](https://raw.githubusercontent.com/genestealer/Home-Assistant-Configuration/master/esphome/images/busylight_light.jpg)  |
 
 ## Devices
 
