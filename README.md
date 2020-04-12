@@ -13,10 +13,23 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Original Home Assistant: Python folder, home assistant run command run at start-up from shortcut in Windows start-up folder.
 - 2nd OS: Ubuntu Server 16.04.1 LTS virtualization on Windows Server 2016 Hyper-V.
 - 2nd Home Assistant: Python virtual environment with homeassistant user. As per [Manual installation on a Raspberry Pi](https://www.home-assistant.io/docs/installation/raspberry-pi/). [HASSCTL](https://github.com/dale3h/hassctl) Used for management.
-- Current OS: Ubuntu Server 18.04.1 LTS virtualization on Windows Server 2016 Hyper-V
-- Current Home Assistant: Hass.IO in Docker on Ubuntu Server 18.04, as per [these instructions](https://bonani.tech/how-to-install-hass.io-on-ubuntu-server-18.04/)
-- MQTT: Locally hosted on same Ubuntu Server, but outside of HASS.IO for the moment, [Mosquitto](https://mosquitto.org/) MQTT broker 
-- HTTPS SSL Certificate originally generated via by home assistant via [Let's Encript Instructions](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/), with scripts to auto-update and automations to alert via HTML5 push notification if renew date threshold is close. (Search my repository for [ssl_cert.yaml](https://github.com/Genestealer/Home-Assistant-Configuration/blob/master/includes/automation/ssl_cert.yaml))
+- 3rd OS: Ubuntu Server 18.04.1 LTS virtualization on Windows Server 2016 Hyper-V
+- 3rd Home Assistant: Hass.IO in Docker on Ubuntu Server 18.04, as per [these instructions](https://bonani.tech/how-to-install-hass.io-on-ubuntu-server-18.04/)
+- Current OS: HASS.IO on Raspberry Pi 4 Model B
+- Current Home Assistant: Hass.IO for Raspberry Pi 4 Model B 32bit
+### HASSIO Add-ons
+- MQTT: [Mosquitto broker](https://github.com/home-assistant/hassio-addons/tree/master/mosquitto) MQTT broker add.
+- HTTPS Certificate: [Nginx Proxy Manager](https://github.com/hassio-addons/addon-nginx-proxy-manager)
+- OLD HTTPS Certificate originally generated via by home assistant via [Let's Encript Instructions](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/), with scripts to auto-update and automations to alert via HTML5 push notification if renew date threshold is close. (Search my repository for [ssl_cert.yaml](https://github.com/Genestealer/Home-Assistant-Configuration/blob/master/includes/automation/ssl_cert.yaml))
+- [Dasshio](https://github.com/danimtb/dasshio) Hass.io add-on to easily use Amazon Dash Buttons with Home Assistant
+- [ESPHome](https://esphome.io/) ESPHome is a system to control your ESP8266/ESP32 by simple yet powerful configuration files and control them remotely through Home Automation systems. Also required MariaDB to be installed.
+- [Samba share](https://home-assistant.io/addons/samba/)
+- [APC UPS Daemon (No USB)](https://github.com/korylprince/hassio-apcupsd/tree/master/apcupsd_net) View information from APC Network UPSs.
+- [AdGuard Home](https://github.com/hassio-addons/addon-adguard-home) Network-wide ads & trackers blocking DNS server.
+
+
+#### ESPHome Things
+
 
 ## Devices
 
