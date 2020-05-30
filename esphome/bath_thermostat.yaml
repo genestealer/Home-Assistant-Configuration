@@ -1,0 +1,22 @@
+esphome:
+  name: bath_thermostat
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+  manual_ip:
+    static_ip: 192.168.2.37
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"

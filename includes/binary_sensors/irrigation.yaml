@@ -57,3 +57,15 @@
       back_garden_irrigation_valve_position:
           friendly_name: 'Valve Position'
           value_template: "{{ is_state('switch.back_garden_irrigation_valve', 'on') }}"
+
+- platform: template
+  sensors:
+      back_garden_lawn_1_irrigation_valve_position:
+          friendly_name: 'Valve 1 Position'
+          value_template: "{{ is_state('switch.back_garden_lawn_1_irrigation_valve', 'on') }}"
+
+- platform: template
+  sensors:
+      back_garden_lawn_2_irrigation_valve_position:
+          friendly_name: 'Valve 2 Position'
+          value_template: "{{ is_state('switch.back_garden_lawn_2_irrigation_valve', 'on') }}"

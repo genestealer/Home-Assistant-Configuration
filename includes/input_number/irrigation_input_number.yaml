@@ -22,8 +22,8 @@ front_garden_pot_irrigation_duration:
   unit_of_measurement: mins
   icon: mdi:clock-end
 
-front_garden_lawn_irrigation_wind_threshold:
-  name: Wind Threshold
+lawns_irrigation_wind_threshold:
+  name: Lawns Wind Threshold
   # initial: 15
   min: 0
   max: 50
@@ -40,8 +40,8 @@ irrigation_temperature_threshold:
   unit_of_measurement: °C
   icon: mdi:thermometer
 
-front_garden_lawn_irrigation_rain_threshold:
-  name: Rain Threshold
+lawns_irrigation_rain_threshold:
+  name: Lawns Rain Threshold
   # initial: 5
   min: 0
   max: 15
@@ -57,3 +57,50 @@ back_garden_irrigation_duration:
   step: 1
   unit_of_measurement: mins
   icon: mdi:clock-end
+
+back_garden_lawn_irrigation_duration:
+  name: Duration
+  # initial: 40
+  min: 1
+  max: 60
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:clock-end
+
+
+
+front_garden_lawn_irrigation_sunrise_offset:
+  name: Sunrise Offset
+  # initial: 30
+  min: 1
+  max: 360
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:weather-sunset-up
+
+front_garden_pot_irrigation_sunrise_offset:
+  name: Sunrise Offset
+  # initial: 40
+  min: 1
+  max: 360
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:weather-sunset-up
+
+back_garden_irrigation_sunrise_offset:
+  name: Sunrise Offset
+  # initial: 40
+  min: 1
+  max: 360
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:weather-sunset-up
+
+back_garden_lawn_irrigation_sunrise_offset:
+  name: Sunrise Offset
+  # initial: 40
+  min: 1
+  max: 360
+  step: 1
+  unit_of_measurement: mins
+  icon: mdi:weather-sunset-up

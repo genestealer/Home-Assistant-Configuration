@@ -1,0 +1,185 @@
+esphome:
+  name: doorbell_controller
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+  manual_ip:
+    static_ip: 192.168.2.36
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"
+  
+sensor:
+  - platform: wifi_signal
+    name: "Doorbell Controller RSSI"
+    update_interval: 60s
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Doorbell Controller IP"
+    ssid:
+      name: "Doorbell Controller SSID"
+    bssid:
+      name: "Doorbell Controller BSSID" 
+
+status_led:
+  pin: D4 # GPIO2 D0 # GPIO16
+
+switch:
+  - platform: gpio
+    pin: 
+      number: D1 # GPIO05
+      mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
+      inverted: true
+    id: bellRelay
+    
+  - platform: template
+    name: "Doorbell Ringer"
+    icon: "mdi:alarm-bell"
+    turn_on_action:
+    - switch.turn_on: bellRelay
+    - delay: 1500ms
+    - switch.turn_off: bellRelay
+    
+  - platform: gpio
+    pin:
+      number: D5  # GPIO12
+      mode: OUTPUT_OPEN_DRAIN
+      # inverted: true
+    name: "Action to CCTV"
+    
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D6  # GPIO14
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Action by CCTV"
+    
+  - platform: gpio
+    pin:
+      number: GPIO04 # D2
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Doorbell Button"
+    filters:
+      - delayed_off: 100ms
+    on_press:
+      then:
+        - logger.log: "Button pressed"
+        - light.turn_off:
+            id: doorbell_light
+        - light.turn_on:
+            id: doorbell_light
+            brightness: 100%
+            # red: 100%
+            # green: 100%
+            # blue: 100%
+            effect: "Color Wipe Effect With Custom Values"
+        - switch.turn_on: bellRelay
+        - delay: 750ms # set how long to ring the door bell
+        - switch.turn_off: bellRelay
+        # - delay: 250ms
+        # - light.turn_on:
+        #     id: doorbell_light
+        #     brightness: 100%
+        #     red: 0%
+        #     green: 100%
+        #     blue: 0%
+        - delay: 2000ms # Inhibit pressing the button for a moment
+        - light.turn_on:
+            id: doorbell_light
+            effect: "Slow Rainbow Effect With Custom Values"
+        
+        
+    # on_release:
+    #   then:
+    #     - light.turn_on:
+    #         id: doorbell_light
+    #         brightness: 100%
+    #         red: 0%
+    #         green: 100%
+    #         blue: 0%
+    # on_press:
+    #   then:
+    #   - switch.turn_on: bellRelay
+    #   - delay: 500ms
+    #   - switch.turn_off: bellRelay
+    # on_double_click:
+    #   min_length: 50ms
+    #   max_length: 5000ms
+    #   then:
+    #   - switch.turn_on: bellRelay
+    #   - delay: 5000ms
+    # #   - switch.turn_off: bellRelay
+    # on_multi_click:
+    # # - timing:
+    # #     - ON for at most 1s
+    # #     - OFF for at most 10s
+    # #     - ON for at most 3s
+    # #     - OFF for at least 0.2s
+    # #   then:
+    # #     - logger.log: "Double Clicked"
+
+    # - timing:
+    #     - ON for 1s to 2s
+    #     - OFF for at least 0.5s
+    #   then:
+    #     - logger.log: "Single Long Clicked"
+    #     - switch.turn_on: bellRelay
+    #     - delay: 5000ms
+    #     - switch.turn_off: bellRelay
+    # - timing:
+    #     - ON for at most 1s
+    #     - OFF for at least 0.5s
+    #   then:
+    #     - logger.log: "Single Short Clicked"
+    #     - switch.turn_on: bellRelay
+    #     - delay: 1000ms
+    #     - switch.turn_off: bellRelay
+
+light:
+  - platform: neopixelbus
+    method: ESP8266_UART1
+    id: doorbell_light
+    type: GRB
+    pin: GPIO2 # D4
+    num_leds: 2
+    name: "Doorbell Button Lights"
+    restore_mode: ALWAYS_ON
+    effects:
+      - addressable_rainbow:
+          name: Slow Rainbow Effect With Custom Values
+          speed: 2
+          width: 50
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+      - addressable_color_wipe:
+      - addressable_color_wipe:
+          name: Color Wipe Effect With Custom Values
+          colors:
+            - red: 100%
+              green: 100%
+              blue: 100%
+              num_leds: 1
+            - red: 0%
+              green: 0%
+              blue: 0%
+              num_leds: 1
+          add_led_interval: 100ms
+          reverse: False

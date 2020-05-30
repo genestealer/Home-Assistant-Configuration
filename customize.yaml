@@ -171,6 +171,10 @@ switch.front_garden_lawn_irrigation_valve:
   icon: mdi:water
 switch.back_garden_irrigation_valve:
   icon: mdi:water
+switch.back_garden_lawn_1_irrigation_valve:
+  icon: mdi:water
+switch.back_garden_lawn_2_irrigation_valve:
+  icon: mdi:water
 sensor.front_garden_lawn_irrigation_valve_status:
   icon: mdi:water-pump
 sensor.front_garden_lawn_irrigation_valve_position:
@@ -209,9 +213,17 @@ sensor.back_garden_irrigation_next_run:
   icon: mdi:calendar-clock
 sensor.back_garden_irrigation_schedule:
   icon: mdi:calendar
-sensor.back_garden_irrigation_duration:
-  icon: mdi:timer-sand
 
+sensor.back_garden_lawn_irrigation_duration:
+  icon: mdi:timer-sand
+sensor.back_garden_lawn_irrigation_valve_status:
+  icon: mdi:water-pump
+sensor.back_garden_lawn_irrigation_last_run:
+  icon: mdi:history
+sensor.back_garden_lawn_irrigation_next_run:
+  icon: mdi:calendar-clock
+sensor.back_garden_lawn_irrigation_schedule:
+  icon: mdi:calendar
 
 input_number.shed_target_cool_temp:
   friendly_name: Shed Cool Target
@@ -226,6 +238,10 @@ binary_sensor.front_garden_lawn_irrigation_valve_position:
 binary_sensor.front_garden_pot_irrigation_valve_position:
   icon: mdi:water
 binary_sensor.back_garden_irrigation_valve_position:
+  icon: mdi:water
+binary_sensor.back_garden_lawn_1_irrigation_valve_position:
+  icon: mdi:water
+binary_sensor.back_garden_lawn_2_irrigation_valve_position:
   icon: mdi:water
 sensor.entryway_thermostat_operation_mode:
   friendly_name: Nest Heat State

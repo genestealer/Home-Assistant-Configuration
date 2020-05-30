@@ -1,51 +1,49 @@
 esphome:
-  name: drying_cuboard
+  name: indoor_bunny_house
   platform: ESP8266
-  board: d1_mini
+  board: nodemcuv2
 
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
-
   manual_ip:
-    static_ip: 192.168.2.28
+    static_ip: 192.168.2.37
     gateway: 192.168.2.1
     subnet: 255.255.255.0
-
 
 # Enable logging
 logger:
 
 # Enable Home Assistant API
 api:
-  password: "hxN#^fPPv5ZRy%7l"
+  password: "of4zH*IxKw49yt@H"
 
 ota:
-  password: "hxN#^fPPv5ZRy%7l"
+  password: "of4zH*IxKw49yt@H"
 
 status_led:
-  pin: GPIO02
+  pin: D0 #GPIO16
+
 
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "Drying Cuboard IP"
+      name: "Indoor Bunny House Sensor IP"
     ssid:
-      name: "Drying Cuboard SSID"
+      name: "Indoor Bunny House SSID"
     bssid:
-      name: "Drying Cuboard Connected BSSID"
- 
-
+      name: "Indoor Bunny House Connected BSSID"
+      
 sensor:
   - platform: wifi_signal
-    name: "Drying Cuboard RSSI"
+    name: "Indoor Bunny House RSSI"
     update_interval: 60s
     
   - platform: dht
-    pin: GPIO4
+    pin: D1 # GPIO5
     temperature:
-      name: "Drying Cuboard Temperature"
+      name: "Indoor Bunny House Temperature"
     humidity:
-      name: "Drying Cuboard Humidity"
+      name: "Indoor Bunny House Humidity"
     update_interval: 60s
-    model: DHT11
+    model: DHT22

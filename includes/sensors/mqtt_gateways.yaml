@@ -48,7 +48,7 @@
 - platform: mqtt
   state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS RSSI"
-  unit_of_measurement: "dBm"
+  unit_of_measurement: "dB"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
@@ -109,7 +109,7 @@
 - platform: mqtt
   state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG RSSI"
-  unit_of_measurement: "dBm"
+  unit_of_measurement: "dB"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
@@ -170,7 +170,7 @@
 - platform: mqtt
   state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front RSSI"
-  unit_of_measurement: "dBm"
+  unit_of_measurement: "dB"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
@@ -232,7 +232,7 @@
 - platform: mqtt
   state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back RSSI"
-  unit_of_measurement: "dBm"
+  unit_of_measurement: "dB"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
@@ -264,8 +264,8 @@
 
 - platform: mqtt
   state_topic: "HUISHS/esp-link"
-  name: "ESP-Link Controller Signal Strength"
-  unit_of_measurement: "dBm"
+  name: "ESP-Link Controller RSSI"
+  unit_of_measurement: "dB"
   expire_after: 125 # MQTT messages are only every 60 seconds, so 125 will permit it to miss two messages.
   value_template: '{{ value_json.rssi }}'
   icon: mdi:signal-variant
@@ -307,7 +307,7 @@
 - platform: mqtt
   state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB RSSI"
-  unit_of_measurement: "dBm"
+  unit_of_measurement: "dB"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
@@ -381,7 +381,7 @@
 - platform: mqtt
   state_topic: "HUISHS/Chickens/Pi/Health"
   name: "TOR DB RSSI"
-  unit_of_measurement: "dBm"
+  unit_of_measurement: "dB"
   value_template: '{{ value_json.RSSI }}'
   availability_topic: "HUISHS/Chickens/Door/Status"
   payload_available: "online"

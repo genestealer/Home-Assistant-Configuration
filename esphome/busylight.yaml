@@ -49,14 +49,16 @@ ota:
 sensor:
   - platform: wifi_signal
     name: "Busy Light 1 RSSI"
-    update_interval: 60s
+    update_interval: 300s
     
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: Busy Light 1 IP
+      name: "Busy Light 1 IP"
     ssid:
-      name: Busy Light 1 SSID
+      name: "Busy Light 1 SSID"
+    bssid:
+      name: "Busy Light 1 BSSID" 
 
 status_led:
   pin: GPIO02

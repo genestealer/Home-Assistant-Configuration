@@ -55,6 +55,22 @@ back_garden_irrigation_schedule:
     - Sunday
   icon: mdi:calendar
 
+back_garden_lawn_irrigation_schedule:
+  name: Schedule
+  options:
+    - None
+    - Every Day
+    - Mon/Wed/Fri/Sun
+    - Mon/Thu
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    - Sunday
+  icon: mdi:calendar
+
   # - None - Close Valve
   # - Run Now
   # - Every Day

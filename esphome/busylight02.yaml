@@ -53,9 +53,11 @@ sensor:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: Busy Light2 IP
+      name: "Busy Light 2 IP"
     ssid:
-      name: Busy Light 2 SSID
+      name: "Busy Light 2 SSID"
+    bssid:
+      name: "Busy Light 2 BSSID" 
 
 status_led:
   pin: GPIO02

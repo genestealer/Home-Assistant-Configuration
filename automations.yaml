@@ -1,4 +1,3 @@
-
 - id: '1529366648322'
   alias: Open chicken pop hole door at dawn
   trigger:
@@ -58,8 +57,7 @@
   condition: []
   action:
   - data:
-      message: Sitting room Tradfri remote battery low. Currently {{ states.sensor.tradfri_remote_control.state
-        }}%
+      message: Sitting room Tradfri remote battery low. Currently {{ states('sensor.tradfri_remote_control')}}%
     service: notify.google_cloud_notify
 - id: '1544967729500'
   alias: Battery Low tradfri_wireless_dimmer
@@ -70,8 +68,8 @@
   condition: []
   action:
   - data:
-      message: Master bedroom Tradfri remote battery low. Currently {{ states.sensor.tradfri_wireless_dimmer.state
-        }}%
+      message: 'Master bedroom Tradfri remote battery low. Currently {{ states(''sensor.tradfri_wireless_dimmer'')
+        }}% '
     service: notify.google_cloud_notify
 - id: '1557360744014'
   alias: Increment TOR DB Disconnect Automation
@@ -93,16 +91,18 @@
   condition: []
   action:
   - service: rest_command.cctv_front_door_restart
-  - delay: 00:10
+  - delay: '10:00'
   - service: rest_command.cctv_drive_restart
-  - delay: 00:10
+  - delay: '10:00'
   - service: rest_command.cctv_garage_restart
-  - delay: 00:10
+  - delay: '10:00'
   - service: rest_command.cctv_garage2_restart
-  - delay: 00:10
+  - delay: '10:00'
   - service: rest_command.cctv_garden_restart
 - id: '1564192629041'
-  alias: Pot Irrigation Script Off to Valve Off
+  alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
+  description: 'If script is turned off manually, then close valve, else it will stay
+    open. '
   trigger:
   - entity_id: script.front_garden_pot_irrigation_timer
     from: 'on'
@@ -114,49 +114,73 @@
       entity_id: switch.front_garden_pot_irrigation_valve
     service: switch.turn_off
 - id: '1564192623451'
-  alias: Irrigate Front Garden Pots at Sunrise
+  alias: 'Irrigation: Irrigate Front Garden Pots at Sunrise'
   trigger:
   - platform: template
-    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
+    value_template: '{{states(''sensor.time'') == states(''sensor.front_garden_pot_irrigation_next_run'')[19:24]}}'
   condition:
   - condition: template
-    value_template: '{{states.sensor.front_garden_pot_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+    value_template: '{{states(''sensor.front_garden_pot_irrigation_next_run'')[5:15]
+      == now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
     entity_id: sensor.front_garden_pots_irrigation_interlock
     state: No Problems
   action:
+  - delay: 3 hours
   - entity_id: script.front_garden_pot_irrigation_timer
     service: script.front_garden_pot_irrigation_timer
 - id: '1564192123451'
-  alias: Irrigate Back Garden at Sunrise
+  alias: 'Irrigation: Irrigate Back Garden at Sunrise'
+  description: With editable offset
   trigger:
   - platform: template
-    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
+    value_template: '{{states(''sensor.time'') == states(''sensor.back_garden_irrigation_next_run'')[19:24]}}'
   condition:
   - condition: template
-    value_template: '{{states.sensor.back_garden_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+    value_template: '{{states(''sensor.back_garden_irrigation_next_run'')[5:15] ==
+      now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
     entity_id: sensor.back_garden_irrigation_interlock
-    state: No Problems
+    state: Uninhibited
   action:
   - entity_id: script.back_garden_irrigation_timer
     service: script.back_garden_irrigation_timer
-- id: '1564192623452'
-  alias: Irrigate Front Lawn at Sunrise
+- id: '1564192123123'
+  alias: 'Irrigation: Irrigate Back Garden Lawn at Sunrise'
   trigger:
   - platform: template
-    value_template: '{{states.sensor.time.state == states.sensor.irrigation_starttime.state}}'
+    value_template: '{{states(''sensor.time'') == states(''sensor.back_garden_lawn_irrigation_next_run'')[19:24]}}'
   condition:
   - condition: template
-    value_template: '{{states.sensor.front_garden_lawn_irrigation_next_run.state[5:15] == now().date().strftime(''%d-%m-%Y'')}}'
+    value_template: '{{states(''sensor.back_garden_lawn_irrigation_next_run'')[5:15]
+      == now().date().strftime(''%d-%m-%Y'')}}'
+  - condition: state
+    entity_id: sensor.back_garden_lawn_irrigation_interlock
+    state: No Problems
+  action:
+  - delay: 1 hour
+  - entity_id: script.back_garden_lawn_irrigation_timer
+    service: script.back_garden_lawn_irrigation_timer
+- id: '1564192623452'
+  alias: 'Irrigation: Irrigate Front Lawn at Sunrise'
+  trigger:
+  - platform: template
+    value_template: '{{states(''sensor.time'') == states(''sensor.front_garden_lawn_irrigation_next_run'')[19:24]}}'
+  condition:
+  - condition: template
+    value_template: '{{states(''sensor.front_garden_lawn_irrigation_next_run'')[5:15]
+      == now().date().strftime(''%d-%m-%Y'')}}'
   - condition: state
     entity_id: sensor.front_garden_lawn_irrigation_interlock
     state: No Problems
   action:
+  - delay: 1 hour
   - entity_id: script.front_garden_lawn_irrigation_timer
     service: script.front_garden_lawn_irrigation_timer
 - id: '1564234217905'
-  alias: Lawn Irrigation Script Off to Valve Off
+  alias: 'Irrigation: Lawn Irrigation Script Off to Valve Off'
+  description: 'If script is turned off manually, then close valve, else it will stay
+    open. '
   trigger:
   - entity_id: script.front_garden_lawn_irrigation_timer
     from: 'on'
@@ -166,6 +190,35 @@
   action:
   - data:
       entity_id: switch.front_garden_lawn_irrigation_valve
+    service: switch.turn_off
+- id: '1512334217905'
+  alias: 'Irrigation: Garden Irrigation Script Off to Valve Off'
+  description: 'If script is turned off manually, then close valve, else it will stay
+    open. '
+  trigger:
+  - entity_id: script.back_garden_irrigation_timer
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.back_garden_irrigation_valve
+    service: switch.turn_off
+- id: '1512331237905'
+  alias: 'Irrigation: Garden Lawn Irrigation Script Off to Valve Off'
+  description: 'If script is turned off manually, then close valve, else it will stay
+    open. '
+  trigger:
+  - entity_id: script.back_garden_lawn_irrigation_timer
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - entity_id: switch.back_garden_lawn_1_irrigation_valve
+    service: switch.turn_off
+  - entity_id: switch.back_garden_lawn_2_irrigation_valve
     service: switch.turn_off
 - id: '1564245956941'
   alias: Kitchen Fan Script Off to Switch Off
@@ -464,7 +517,7 @@
   description: Monitor the health of my gateways
   trigger:
   - entity_id: binary_sensor.ic_front_status
-    for: 5 seconds
+    for: '5 minutes '
     from: 'on'
     platform: state
     to: 'off'
@@ -577,3 +630,54 @@
   - data: {}
     entity_id: script.1585905714103
     service: script.turn_on
+- id: '1586868059957'
+  alias: Doorbell Button Notify
+  description: https://github.com/home-assistant/core/issues/32236
+  trigger:
+  - device_id: 35a55440ecb04017852c01f8fa4e9d0b
+    domain: binary_sensor
+    entity_id: binary_sensor.doorbell_button
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - data:
+      message: Ding Dong! Someone is at the door. Get the biohazard suit out!
+      title: Doorbell Alert☣️
+    service: notify.pushover_notify_doorbell
+  - data:
+      entity_id: camera.front_door
+      filename: /config/www/tmp/front_door.jpg
+    service: camera.snapshot
+  - data:
+      data:
+        attachment: /config/www/tmp/front_door.jpg
+      message: Photo of the infectious!
+      title: Doorbell CCTV Photo
+    service: notify.pushover_notify_doorbell
+- id: '1587600361094'
+  alias: Busylight Controller Away Button Pressed
+  description: ''
+  trigger:
+  - device_id: 90dc8f86fc67483880990d09cd5cf02c
+    domain: binary_sensor
+    entity_id: binary_sensor.button_away
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - data: {}
+    entity_id: script.1586361703646
+    service: script.turn_on
+- id: '1590103997253'
+  alias: 'Server Getting Hot '
+  description: ''
+  trigger:
+  - above: '65'
+    entity_id: sensor.server_server_raid_controller_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Server is getting HOT!
+    service: notify.google_cloud_notify

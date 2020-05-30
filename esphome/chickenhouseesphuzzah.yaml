@@ -31,6 +31,15 @@ ota:
 # #  topic_prefix: homeassistant
 
 
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Chicken House IP"
+    ssid:
+      name: "Chicken House SSID"
+    bssid:
+      name: "Chicken House BSSID" 
 
 
 sensor:
@@ -42,3 +51,7 @@ sensor:
       name: "Chicken House Humidity"
     update_interval: 60s
     model: DHT11
+    
+  - platform: wifi_signal
+    name: "Chicken House RSSI"
+    update_interval: 60s

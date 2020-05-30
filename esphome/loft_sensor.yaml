@@ -23,19 +23,24 @@ api:
 ota:
   password: "hxN#^fPPv5ZRy%7l"
 
-# mqtt:
-#   broker: !secret mqtt_broker
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
-#   discovery_prefix: homeassistant
-#   discovery: true
-# #  topic_prefix: homeassistant
-
 status_led:
   pin: GPIO16
 
 
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Loft Sensor IP"
+    ssid:
+      name: "Loft Sensor SSID"
+    bssid:
+      name: "Loft Sensor Connected BSSID"
+      
 sensor:
+  - platform: wifi_signal
+    name: "Loft Sensor RSSI"
+    update_interval: 60s
+    
   - platform: dht
     pin: GPIO2
     temperature:

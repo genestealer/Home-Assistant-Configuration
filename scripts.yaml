@@ -12,35 +12,48 @@ bedroom_lights_night_mode:
 kitchen_extractor_timer:
   alias: Kitchen Extractor Fan Timer
   sequence:
-  - service: switch.turn_on
-    entity_id: switch.kitchen_extractor_fan
-  - delay: 00:{{states.input_number.kitchen_fan_timer_duration.state | round(0)}}
-  - service: switch.turn_off
-    entity_id: switch.kitchen_extractor_fan
+  - entity_id: switch.kitchen_extractor_fan
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.kitchen_fan_timer_duration') | round(0)}}
+  - entity_id: switch.kitchen_extractor_fan
+    service: switch.turn_off
 front_garden_lawn_irrigation_timer:
   alias: Lawn Irrigation Timer
   sequence:
-  - service: switch.turn_on
-    entity_id: switch.front_garden_lawn_irrigation_valve
-  - delay: 00:{{states.input_number.front_garden_lawn_irrigation_duration.state | round(0)}}
-  - service: switch.turn_off
-    entity_id: switch.front_garden_lawn_irrigation_valve
+  - entity_id: switch.front_garden_lawn_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.front_garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.front_garden_lawn_irrigation_valve
+    service: switch.turn_off
 front_garden_pot_irrigation_timer:
   alias: Pots Irrigation Timer
   sequence:
-  - service: switch.turn_on
-    entity_id: switch.front_garden_pot_irrigation_valve
-  - delay: 00:{{states.input_number.front_garden_pot_irrigation_duration.state | round(0)}}
-  - service: switch.turn_off
-    entity_id: switch.front_garden_pot_irrigation_valve
+  - entity_id: switch.front_garden_pot_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.front_garden_pot_irrigation_duration') | round(0)}}
+  - entity_id: switch.front_garden_pot_irrigation_valve
+    service: switch.turn_off
 back_garden_irrigation_timer:
   alias: Garden Irrigation Timer
   sequence:
-  - service: switch.turn_on
-    entity_id: switch.back_garden_irrigation_valve
-  - delay: 00:{{states.input_number.gargen_irrigation_duration.state | round(0)}}
-  - service: switch.turn_off
-    entity_id: switch.back_garden_irrigation_valve
+  - entity_id: switch.back_garden_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.back_garden_irrigation_valve
+    service: switch.turn_off
+back_garden_lawn_irrigation_timer:
+  alias: Garden Lawn Irrigation Timer
+  sequence:
+  - entity_id: switch.back_garden_lawn_1_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.back_garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.back_garden_lawn_1_irrigation_valve
+    service: switch.turn_off
+  - entity_id: switch.back_garden_lawn_2_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.back_garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.back_garden_lawn_2_irrigation_valve
+    service: switch.turn_off
 saa_sleep_tracking_started:
   alias: Sleep Tracking Started
   sequence:
@@ -95,14 +108,13 @@ bathroom_towel_rail_timer:
   sequence:
   - data:
       entity_id: climate.entryway
-      temperature: '30'
+      temperature: '25'
     service: climate.set_temperature
-  - delay: 00:15
+  - delay: 00:{{ states.input_number.minute_delay.state | int }}
   - data:
       entity_id: climate.entryway
       temperature: '15'
     service: climate.set_temperature
-  - delay: 00:{{ states.input_number.minute_delay.state | int }}
   - alias: ''
     data:
       entity_id: bathroom_towel_rail_timer
@@ -131,7 +143,7 @@ bathroom_towel_rail_timer:
     service: light.toggle
   - delay: 00:00:04
 '1585905714103':
-  alias: I'm On A Call
+  alias: BusyLight - I'm On A Call
   sequence:
   - data:
       brightness: 148
@@ -201,7 +213,7 @@ bathroom_towel_rail_timer:
     entity_id: light.busy_light_2
     service: light.turn_on
 '1585906019835':
-  alias: I'm Free
+  alias: BusyLight - I'm Free
   sequence:
   - data:
       brightness: 148
@@ -271,7 +283,7 @@ bathroom_towel_rail_timer:
     entity_id: light.busy_light_2
     service: light.turn_on
 '1585906111236':
-  alias: I'm Working
+  alias: BusyLight - I'm Working
   sequence:
   - data:
       brightness: 148
@@ -341,8 +353,13 @@ bathroom_towel_rail_timer:
     entity_id: light.busy_light_2
     service: light.turn_on
 '1586361703646':
-  alias: I'm Offline
+  alias: BusyLight - I'm Away
   sequence:
+  - entity_id: light.busy_light_1
+    service: light.turn_off
+  - entity_id: light.busy_light_2
+    service: light.turn_off
+  - delay: 00:00:06
   - entity_id: light.busy_light_1
     service: light.turn_off
   - entity_id: light.busy_light_2

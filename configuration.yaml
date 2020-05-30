@@ -17,6 +17,8 @@ homeassistant:
   longitude: !secret longitude
   # Impacts weather/sunrise data
   elevation: !secret elevation
+  external_url: !secret Base_url
+  # internal_url: !secret internal_ip
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: Europe/London
@@ -27,6 +29,10 @@ homeassistant:
    - type: homeassistant
    # uncomment this to enable backwards compatible API password support
    # - type: legacy_api_password
+  # whitelist_external_dirs:
+  #   - /www
+  #   - /tmp
+
 
 ############################################################
 #
@@ -50,7 +56,7 @@ http:
   # SSL is now performed by Apache reverse proxy
   #  ssl_certificate: !secret SSL_cert
   #  ssl_key: !secret SSL_key
-  base_url: !secret Base_url
+  # base_url: !secret Base_url # removed in rev 0.110
   ip_ban_enabled: False
   login_attempts_threshold: 20
   #use_x_forwarded_for: True
@@ -71,8 +77,6 @@ updater:
 
 # Discover some devices automatically
 discovery:
-  ignore:
-    - roku
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -152,18 +156,23 @@ mqtt:
 
 # Push notification providers.
 notify:
-    - name: Google Cloud Notify
-      platform: html5
-      # gcm_api_key: !secret gcmKey
-      # gcm_sender_id: !secret gcmID
-      vapid_pub_key: !secret vapid_pub_key
-      vapid_prv_key: !secret vapid_prv_key
-      vapid_email: !secret vapid_email
-  # - platform: pushover
-  #   name: Pushover Notify
-  #   api_key:  !secret pushover_api_key
-  #   user_key:  !secret pushover_user_key
+  - name: Google Cloud Notify
+    platform: html5
+    # gcm_api_key: !secret gcmKey
+    # gcm_sender_id: !secret gcmID
+    vapid_pub_key: !secret vapid_pub_key
+    vapid_prv_key: !secret vapid_prv_key
+    vapid_email: !secret vapid_email
 
+  - platform: pushover
+    name: Pushover Notify
+    api_key:  !secret pushover_api_key
+    user_key:  !secret pushover_user_key
+
+  - platform: pushover
+    name: Pushover Notify Doorbell
+    api_key:  !secret pushover_api_key_doorbell
+    user_key:  !secret pushover_user_key
   # - name: Facebook Notify
   #   platform: facebook
   #   page_access_token: !secret FB_Key
@@ -362,6 +371,8 @@ google_assistant:
     group.media_players:
       expose: false
     group.media_player:
+      expose: false
+    light.bedroom:
       expose: false
 
   # Not needed since release 0.80

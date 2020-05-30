@@ -60,12 +60,12 @@ ota:
 #   pin: GPIO02
 
 font:
-  - file: "fonts/arial.ttf"
+  - file: "fonts/comic.ttf"
     id: my_font
-    size: 22
-  - file: "fonts/arial.ttf"
+    size: 20
+  - file: "fonts/comic.ttf"
     id: my_fontbismall
-    size: 19
+    size: 17
 i2c:
   sda: GPIO4
   scl: GPIO5
@@ -77,9 +77,10 @@ display:
     address: 0x3C
     lambda: |-
       it.print(0, 0, id(my_font), "Free");
-      it.print(0, 22, id(my_font), "Working");
-      it.print(0, 44, id(my_font), "On Call");
+      it.print(0, 20, id(my_font), "Working");
+      it.print(0, 40, id(my_font), "On Call");
       it.printf(it.get_width(), 0, id(my_fontbismall), TextAlign::TOP_RIGHT, "%s", id(confirmed_selected_state_text).state.c_str());
+  #    it.printf(it.get_width(), 22, id(my_fontbismall), TextAlign::TOP_RIGHT, "%s", id(bssid).state.c_str());
   # it.image(0, 0, id(my_image));
 
 sensor:
@@ -95,9 +96,12 @@ sensor:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: Busy Light Controller IP
+      name: "Busy Light Controller IP"
     ssid:
-      name: Busy Light Controller SSID
+      name: "Busy Light Controller SSID"
+    bssid:
+      name: "Busy Light Controller Connected BSSID"
+      id: bssid
   # State set via buttons
   - platform: template
     name: "Seleted State Text"
@@ -109,6 +113,7 @@ text_sensor:
     name: "Busy State From Home Assistant"
     entity_id: sensor.seleted_state_text
     id: confirmed_selected_state_text
+    
     
 binary_sensor:
   - platform: gpio
@@ -125,6 +130,91 @@ binary_sensor:
         - text_sensor.template.publish:
             id: selected_state_text
             state: "Free"
+  # - platform: gpio
+  #   pin:
+  #     number: GPIO0
+  #     mode: INPUT_PULLUP
+  #     inverted: True
+  #   name: "Button Away"
+  #   on_multi_click:
+  #   - timing:
+  #       - ON for at most 1s
+  #       - OFF for at most 1s
+  #       - ON for at most 1s
+  #       - OFF for at least 0.2s
+  #     then:
+  #       - logger.log: "Double Clicked"
+  #       - sensor.template.publish:
+  #           id: template_state_number
+  #           state: "3"
+  #       - text_sensor.template.publish:
+  #           id: selected_state_text
+  #           state: "Away"
+  #   - timing:
+  #       - ON for 1s to 2s
+  #       - OFF for at least 0.5s
+  #     then:
+  #       - logger.log: "Single Long Clicked"
+  #       - sensor.template.publish:
+  #           id: template_state_number
+  #           state: "3"
+  #       - text_sensor.template.publish:
+  #           id: selected_state_text
+  #           state: "Away"
+  #   - timing:
+  #       - ON for at most 1s
+  #       - OFF for at least 0.5s
+  #     then:
+  #       - logger.log: "Single Short Clicked"
+  #       - sensor.template.publish:
+  #           id: template_state_number
+  #           state: "0"
+  #       - text_sensor.template.publish:
+  #           id: selected_state_text
+  #           state: "Free"
+ 
+  # - platform: gpio
+  #   pin:
+  #     number: GPIO0
+  #     mode: INPUT_PULLUP
+  #     inverted: True
+  #   name: "Button Away"
+  #   on_multi_click:
+  #   - timing:
+  #       - ON for at most 1s
+  #       - OFF for at most 1s
+  #       - ON for at most 1s
+  #       - OFF for at least 0.2s
+  #     then:
+  #       - logger.log: "Double Clicked"
+  #       - sensor.template.publish:
+  #           id: template_state_number
+  #           state: "3"
+  #       - text_sensor.template.publish:
+  #           id: selected_state_text
+  #           state: "Away"
+  #   - timing:
+  #       - ON for 1s to 2s
+  #       - OFF for at least 0.5s
+  #     then:
+  #       - logger.log: "Single Long Clicked"
+  #       - sensor.template.publish:
+  #           id: template_state_number
+  #           state: "3"
+  #       - text_sensor.template.publish:
+  #           id: selected_state_text
+  #           state: "Away"
+  #   - timing:
+  #       - ON for at most 1s
+  #       - OFF for at least 0.5s
+  #     then:
+  #       - logger.log: "Single Short Clicked"
+  #       - sensor.template.publish:
+  #           id: template_state_number
+  #           state: "0"
+  #       - text_sensor.template.publish:
+  #           id: selected_state_text
+  #           state: "Free"
             
   - platform: gpio
     pin: 
@@ -155,6 +245,7 @@ binary_sensor:
         - text_sensor.template.publish:
             id: selected_state_text
             state: "On Call"
+
 
 
 
