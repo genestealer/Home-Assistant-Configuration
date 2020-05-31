@@ -25,6 +25,16 @@
         {% else %}
           Uninhibited
         {% endif %}
+      icon_template: >-
+          {% if is_state('sensor.front_garden_lawn_irrigation_interlock', 'Uninhibited') %}
+            mdi:check
+          {% elif 'Too windy' in states('sensor.front_garden_lawn_irrigation_interlock') %}
+            mdi:weather-windy
+          {% elif 'Too cold' in states('sensor.front_garden_lawn_irrigation_interlock') %}
+            mdi:snowflake-alert
+          {% else %}
+            mdi:alert
+          {% endif %}
 
 - platform: template
   sensors:
@@ -36,6 +46,16 @@
         {% else %}
           Uninhibited
         {% endif %}
+      icon_template: >-
+          {% if is_state('sensor.front_garden_pots_irrigation_interlock', 'Uninhibited') %}
+            mdi:check
+          {% elif 'Too windy' in states('sensor.front_garden_pots_irrigation_interlock') %}
+            mdi:weather-windy
+          {% elif 'Too cold' in states('sensor.front_garden_pots_irrigation_interlock') %}
+            mdi:snowflake-alert
+          {% else %}
+            mdi:alert
+          {% endif %}
 
 - platform: template
   sensors:
@@ -47,7 +67,16 @@
         {% else %}
           Uninhibited
         {% endif %}
-
+      icon_template: >-
+          {% if is_state('sensor.back_garden_irrigation_interlock', 'Uninhibited') %}
+            mdi:check
+          {% elif 'Too windy' in states('sensor.back_garden_irrigation_interlock') %}
+            mdi:weather-windy
+          {% elif 'Too cold' in states('sensor.back_garden_irrigation_interlock') %}
+            mdi:snowflake-alert
+          {% else %}
+            mdi:alert
+          {% endif %}
 
 - platform: template
   sensors:
@@ -63,6 +92,17 @@
         {% else %}
           Uninhibited
         {% endif %}
+      icon_template: >-
+          {% if is_state('sensor.back_garden_lawn_irrigation_interlock', 'Uninhibited') %}
+            mdi:check
+          {% elif 'Too windy' in states('sensor.back_garden_lawn_irrigation_interlock') %}
+            mdi:weather-windy
+          {% elif 'Too cold' in states('sensor.back_garden_lawn_irrigation_interlock') %}
+            mdi:snowflake-alert
+          {% else %}
+            mdi:alert
+          {% endif %}
+
 ############################################################
 # Global Settings
 ############################################################
