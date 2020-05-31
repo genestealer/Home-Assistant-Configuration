@@ -4,24 +4,35 @@
   #
   ############################################################
 
-# OWL CM113 sends Amps / Current and not Watts
+# OWL CM113 sends Amps / Current in hexadecimal and not Watts, but you will have to convert it from hex to dec.
+# Home assistant will error each time the send value is not in dec.
+# Ref: https://github.com/home-assistant/core/issues/9564
 - platform: rflink
   #automatic_add: false
   devices:
     owl_cm113_ea23_current2:
       sensor_type: current_phase_1
       name: 'Unscaled House Consumption Current'
-      unit_of_measurement: A
-
-
+      unit_of_measurement: A in HEX
+# Convert the hex to dec.
+# Ref: https://github.com/home-assistant/core/issues/9564
 - platform: template
   sensors:
     house_current_consumption:
-      value_template: "{{states('sensor.unscaled_house_consumption_current') | int / 10}}"
+      # value_template: "{{states('sensor.unscaled_house_consumption_current') |int(base=16)  |int / 10 * 0.997 }}"
+      value_template: "{{states('sensor.unscaled_house_consumption_current') |int(base=16)  |int / 10 }}"
       friendly_name: 'House Current Consumption'
       unit_of_measurement: 'A'
       availability_template: "{% if is_state('binary_sensor.esp_link_status', 'on') %} true {% endif %}"
 
+
+- platform: template
+  sensors:
+    true_house_current_consumption:
+      value_template: "{{states('sensor.unscaled_house_consumption_current') | int / 10}}"
+      friendly_name: 'House Current Consumption'
+      unit_of_measurement: 'A'
+      availability_template: "{% if is_state('binary_sensor.esp_link_status', 'on') %} true {% endif %}"
 
 # Using live measured voltage from UPS calculate total wattage
 - platform: template
