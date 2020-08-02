@@ -25,7 +25,23 @@ sensor:
   - platform: wifi_signal
     name: "Doorbell Controller RSSI"
     update_interval: 60s
-    
+
+
+############################
+# Non-Invasive Power Meter #
+############################
+# 1000 pulses from the LED should equal 1kWh
+  - platform: pulse_counter
+    pin:
+     number: D7
+    # inverted: True
+     mode: INPUT
+    unit_of_measurement: 'kW'
+    name: 'House Power Meter'
+    update_interval: 60s
+    filters:
+      - multiply: 0.06
+      
 text_sensor:
   - platform: wifi_info
     ip_address:
@@ -62,6 +78,9 @@ switch:
     name: "Action to CCTV"
     
 binary_sensor:
+  - platform: status
+    name: "Doorbell Controller Status"
+    
   - platform: gpio
     pin:
       number: D6  # GPIO14

@@ -23,9 +23,9 @@
     Maclean_0d82_03:
       name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
     Maclean_0d85_04:
-      name: Sitting Room Bookcase Light
+      name: Living Room Bookcase Light
 
-# 433MHz Lights
+# 433MHz Energenie Lights
 - platform: rflink
   device_defaults:
     # For this Energenie wall light switch,
@@ -37,6 +37,12 @@
       name: Lamp_3 # renamed in customise.yaml to 'Upstairs Hall Light'
     Eurodomest_0fca2c_00: # Energenie MIHO026
       name: 'Dining Room Light'
+    # Eurodomest_02940f_00: # Energenie MIHO071
+    #   name: 'Kitchen Light Left'
+    # Eurodomest_02940f_02: # Energenie MIHO071
+    #   name: 'Kitchen Light Right'
+    Eurodomest_02940f_03: # Energenie MIHO071
+      name: 'Living Room Ceiling Light'
 
 # 433MHz Christmas Lights
 - platform: rflink
@@ -57,7 +63,7 @@
     Unitec_9573_02: # UK branded as Silvercrest 303937
       name: Christmas Bedroom Star
     Maclean_0d82_02:
-      name: Christmas Sitting Room Star
+      name: Christmas Living Room Star
     Unitec_9573_03: # UK branded as Silvercrest 303937
       name: Christmas Tree Bling
     # Maclean_0d85_01:

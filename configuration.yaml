@@ -18,7 +18,7 @@ homeassistant:
   # Impacts weather/sunrise data
   elevation: !secret elevation
   external_url: !secret Base_url
-  # internal_url: !secret internal_ip
+  internal_url: !secret internal_ip
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: Europe/London
@@ -32,6 +32,10 @@ homeassistant:
   # whitelist_external_dirs:
   #   - /www
   #   - /tmp
+  # packages: 
+  #   garden: !include_dir_merge_named packages/garden
+  packages: !include_dir_named packages/
+  # packages: !include_dir_merge_named packages/
 
 
 ############################################################
@@ -43,11 +47,56 @@ homeassistant:
 # Enables the frontend
 frontend:
 
+# https://github.com/thomasloven/hass-browser_mod
+browser_mod:
+
+# https://github.com/thomasloven/hass-lovelace_gen
+lovelace_gen:
+
+lovelace:
+  mode: storage
+  resources:
+    # - url: browser_mod.js
+    #   type: js
+    - url: /browser_mod.js
+      type: module
+    - url: browser_mod.js
+      type: module
+    - url: /local/community/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /local/community/lovelace-hui-element/hui-element.js
+      type: module
+    - url: /local/community/button-card/button-card.js
+      type: module
+    - url: /local/community/config-template-card/config-template-card.js
+      type: module
+    - url: /local/community/mini-graph-card/mini-graph-card-bundle.js
+      type: module
+    - url: /local/community/lovelace-layout-card/layout-card.js
+      type: module
+    - url: /local/community/lovelace-state-switch/state-switch.js
+      type: module
+    - url: /local/community/lovelace-time-picker-card/time-picker-card.js
+      type: module
+    # - url: /local/community/lovelace-multiple-entity-row/multiple-entity-row.js
+    #   type: module
+    # - url: /local/community/stack-in-card/stack-in-card.js
+    #   type: module
+  # Add yaml dashboards
+  dashboards:
+    lovelace-garden:
+      mode: yaml
+      title: Garden
+      icon: mdi:script
+      show_in_sidebar: true
+      filename: myirrigation.yaml
 # Enables configuration UI
 config:
 
+scene: !include scenes.yaml
+
 #Home Assistant Cloud - NOPE!
-#cloud:
+cloud:
 
 # Enable web interface
 http:
@@ -112,7 +161,24 @@ logbook:
 
 # Tracked history is kept for 12 days. (Not cleared at startup)
 recorder:
-  purge_keep_days: 12
+  purge_keep_days: 24
+  #db_url: !secret mariadb_db_url
+  exclude:
+    # domains:
+    #   - automation
+    #   - updater
+    entities:
+      - binary_sensor.cctv_garden_p3354_vmd3_0
+      - binary_sensor.cctv_garden_p3354_vmd4_camera1profileany
+      - binary_sensor.cctv_garden_p3354_vmd4_camera1profile1
+      - binary_sensor.cctv_garden_p3354_vmd3_0
+      - binary_sensor.cctv_garden_p3354_vmd3_0
+      - binary_sensor.cctv_garden_p3354_vmd3_0
+      # - binary_sensor.binary_sensor.p3364_l_0_vmd3_0
+      # - binary_sensor.p3364_l_0_vmd4_camera1profileany
+      # - binary_sensor.p3364_l_0_vmd4_camera1profile1
+      # - sensor.cpu_temperature
+
 
 # Enables a map showing the location of tracked devices
 map:
@@ -128,6 +194,8 @@ logger:
 
 
 system_health:
+
+default_config:
 
 ############################################################
 #
@@ -201,9 +269,11 @@ device_tracker:
   - platform: google_maps # Elements per day’ to a limit of 645.
     username: !secret google_maps_username
 
-  - platform: tile
-    username: !secret tile_username
-    password: !secret tile_password
+# Moved to integrations UI from Rev 0.112
+  # - platform: tile
+  #   username: !secret tile_username
+  #   password: !secret tile_password
+
     # password: !secret google_maps_password
   # - platform: googlehome
   #   host: !secret google_home_hub_ip
@@ -252,9 +322,9 @@ tradfri:
   allow_tradfri_groups: true
   # api_key: !secret Ikea_Tradfri_KEY
 
-# Pi Hole integration sensor
-pi_hole:
-  host: !secret piHoleIPandPort
+# # Pi Hole integration sensor
+# pi_hole:
+#   host: !secret piHoleIPandPort
 
 # Amazon Alexa integration via emulated Philips hue.
 emulated_hue:
@@ -272,11 +342,11 @@ panel_iframe:
     url: !secret panel_iframe_StormBreaker_Webmin_URL
   downloads:
     title: Downloads
-    icon: mdi:mdi-briefcase-download
+    icon: mdi:briefcase-download
     url: !secret panel_iframe_Downloads_URL
   sonarr:
     title: Sonarr
-    icon: mdi:mdi-youtube-tv
+    icon: mdi:youtube-tv
     url: !secret panel_iframe_Sonarr_URL
   radarr:
     title: Radaar
@@ -284,7 +354,7 @@ panel_iframe:
     url: !secret panel_iframe_Radarr_URL
   subsonic:
     title: Subsonic
-    icon: mdi:mdi-library-music
+    icon: mdi:library-music
     url: !secret panel_iframe_Subsonic_URL
     # mdi:mdi-audiobook
     # webmin2:
@@ -297,12 +367,18 @@ panel_iframe:
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
 google_assistant:
   project_id: !secret google_assistant_project_id
-  # api_key: !secret google_assistant_api_key
+  # api_key: !secret google_assistant_api_key # deprecated and will be removed in 0.105
   service_account: !include private/Home_Assistant-78aa4d65f173.json
   report_state: true
+  # # exposed_domains:
+  # #   - switch
+  # #   - light
+  # expose_by_default: false
+
   # exposed_domains:
   #   - switch
   #   - light
+
   entity_config:
     climate.entryway:
       expose: false
@@ -414,8 +490,21 @@ weather:
   - platform: darksky
     api_key: !secret dark_sky_key
     mode: daily
+    # forecast:
+    #   - 0
+    # monitored_conditions:
+    #   - temperature_high           
+    #   - minutely_summary 
 
-
+utility_meter:
+  energy_cumulative_month:
+    source: sensor.house_power_meter
+    cycle: monthly
+    # tariffs:
+    #   - 
+  energy_cumulative_daily:
+    source: sensor.house_power_meter
+    cycle: daily
 
 ############################################################
 #
@@ -544,3 +633,13 @@ group: !include includes/groups.yaml
 #       #   service: notify.notify
 #       #   data_template:
 #       #     message: Api.ai has send a request
+
+
+# https://github.com/kloggy/HA-Irrigation-Version2/blob/master/prerequisites.yaml
+input_text:
+  notifications_user1_name:
+    min: 0
+    max: 20
+  notifications_user2_name:
+    min: 0
+    max: 20

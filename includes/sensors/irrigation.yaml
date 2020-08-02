@@ -5,6 +5,8 @@
 # Note, "now()" replaced with "as_timestamp(strptime(states.sensor.date__time.state, '%Y-%m-%d, %H:%M'"
 # as now() will noy trigger templated sensor updates.
 #
+# I think this was based on https://github.com/kloggy/HA-Irrigation-Version1
+#
 ############################################################
 
 
@@ -623,3 +625,38 @@
           {% else %}
               {{weekday}}, {{runDate[8:10]}}-{{runDate[5:7]}}-{{runDate[0:4]}} at {{states.sensor.back_garden_lawn_irrigation_starttime.state}}
           {% endif %}
+
+
+# https://github.com/kloggy/HA-Irrigation-Version2/blob/master/prerequisites.yaml
+    weather_just_icon:
+        friendly_name: "mdi Real Weather Icon"
+        icon_template: >-
+            {% if is_state("sensor.dark_sky_current_icon","clear-day") %} mdi:weather-sunny 
+            {% elif is_state("sensor.dark_sky_current_icon","clear-night") %} mdi:weather-night 
+            {% elif is_state("sensor.dark_sky_current_icon","rain") %} mdi:weather-rainy
+            {% elif is_state("sensor.dark_sky_current_icon","snow") %} mdi:weather-snowy
+            {% elif is_state("sensor.dark_sky_current_icon","fog") %} mdi:weather-fog
+            {% elif is_state("sensor.dark_sky_current_icon","sleet") %} mdi:weather-partly-snowy-rainy
+            {% elif is_state("sensor.dark_sky_current_icon","wind") %} mdi:weather-windy
+            {% elif is_state("sensor.dark_sky_current_icon","cloudy") %} mdi:weather-cloudy
+            {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-day") %} mdi:weather-partly-cloudy
+            {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
+            {% elif is_state("sensor.dark_sky_current_icon","hail") %} mdi:weather-hail
+            {% elif is_state("sensor.dark_sky_current_icon","lightning") %} mdi:weather-lightning
+            {% elif is_state("sensor.dark_sky_current_icon","thunderstorm") %} mdi:weather-lightning-rainy
+            {% endif %}
+        value_template: >-
+            {% if is_state("sensor.dark_sky_current_icon","clear-day") %} weather-sunny 
+            {% elif is_state("sensor.dark_sky_current_icon","clear-night") %} weather-night 
+            {% elif is_state("sensor.dark_sky_current_icon","rain") %} weather-rainy
+            {% elif is_state("sensor.dark_sky_current_icon","snow") %} weather-snowy
+            {% elif is_state("sensor.dark_sky_current_icon","fog") %} weather-fog
+            {% elif is_state("sensor.dark_sky_current_icon","sleet") %} weather-partly-snowy-rainy
+            {% elif is_state("sensor.dark_sky_current_icon","wind") %} weather-windy
+            {% elif is_state("sensor.dark_sky_current_icon","cloudy") %} weather-cloudy
+            {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-day") %} weather-partly-cloudy
+            {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-night") %} weather-night-partly-cloudy
+            {% elif is_state("sensor.dark_sky_current_icon","hail") %} weather-hail
+            {% elif is_state("sensor.dark_sky_current_icon","lightning") %} weather-lightning
+            {% elif is_state("sensor.dark_sky_current_icon","thunderstorm") %} weather-lightning-rainy
+            {% endif %}

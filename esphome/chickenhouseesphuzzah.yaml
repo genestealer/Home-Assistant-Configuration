@@ -30,7 +30,9 @@ ota:
 #   discovery: true
 # #  topic_prefix: homeassistant
 
-
+binary_sensor:
+  - platform: status
+    name: "Chicken House Status"
     
 text_sensor:
   - platform: wifi_info

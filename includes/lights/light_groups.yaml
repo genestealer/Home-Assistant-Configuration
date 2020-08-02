@@ -1,0 +1,14 @@
+############################################################
+#
+# Light Group
+# https://www.home-assistant.io/integrations/light.group/
+#
+############################################################
+
+- platform: group
+  name: Living Room Lights
+  entities:
+    - light.sofa_left
+    - light.sofa_right
+    - light.living_room_bookcase_light
+    - light.living_room_ceiling_light

@@ -4,10 +4,22 @@
   #
   ############################################################
 
+# - platform: rflink
+#   devices:
+#     ev1527_05d797_0e:
+#       name: 'Front Door'
+#       device_class: door
+#       off_delay: 4
+#       force_update: true    
+
+# Repurposed door sensor for parcel box
 - platform: rflink
   devices:
     ev1527_05d797_0e:
-      name: 'Front Door'
-      device_class: door
+      name: 'Parcel Box Sensor'
+      device_class: opening
       off_delay: 4
-      force_update: true    
+      force_update: true
+    # aliases:
+    #   - eurodomest_2a2868_01
+

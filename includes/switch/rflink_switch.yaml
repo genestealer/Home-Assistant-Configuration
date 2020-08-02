@@ -35,7 +35,18 @@
     tristate_0aaaa0_0:
       name: Smoke Machine
 
-
+    chuango_103d16_02:
+      name: 433 next door doorbell
+    chuango_351536_02:
+      name: 433 may also next door doorbell 1
+    chuango_6a2a6c_02:
+      name: 433 may also next door doorbell 2
+    conrad_95d593_06:
+      name: 433 may also next door doorbell 3
+    elrodb_224c562b_1:
+      name: 433 Someones doorbell
+      # 20;4F;ElroDB;ID=224c562b;SWITCH=1;CMD=ON;CHIME=01;
+       # 20;55;FA500;ID=0000895f;SWITCH=04;CMD=OFF;
 
 # # Feb 2018: Removed and moved to "mqtt_switch.yaml" using my 433mhz MQTT controller
 # # https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway

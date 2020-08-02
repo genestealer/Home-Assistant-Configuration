@@ -45,7 +45,14 @@ api:
 
 ota:
   password: "hxN#^fPPv5ZRy%7l"
+
+status_led:
+  pin: GPIO02
   
+binary_sensor:
+  - platform: status
+    name: "Busy Light 1 Status"
+
 sensor:
   - platform: wifi_signal
     name: "Busy Light 1 RSSI"
@@ -59,9 +66,6 @@ text_sensor:
       name: "Busy Light 1 SSID"
     bssid:
       name: "Busy Light 1 BSSID" 
-
-status_led:
-  pin: GPIO02
 
 light:
   - platform: neopixelbus

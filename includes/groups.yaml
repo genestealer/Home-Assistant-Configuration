@@ -93,14 +93,14 @@ bedrooms_# view:
     - group.bedroom_master
     - group.bedroom_guest
 
-sitting_room_# view:
-  name: Sitting Room
+living_room_# view:
+  name: living Room
   # view: yes
   entities:
     - switch.plugin_air_freshener
     - light.sofa_left
     - light.sofa_right
-    - light.sitting_room_light
+    - light.living_room_light
 
 cctv_# view:
   name: CCTV
@@ -256,7 +256,7 @@ lighting_group:
     - light.bedroom
     - light.richard_bedside
     - light.lucy_bed
-    - light.sitting_room
+    - light.living_room
     - light.sofa_left
     - light.sofa_right
 
@@ -590,7 +590,7 @@ outside_christmas_lights:
   # view: no
   entities:
     - light.christmas_master_bedroom_star
-    - light.christmas_sitting_room_star
+    - light.christmas_living_room_star
     - light.christmas_mess_room_star
     - light.christmas_guest_bedroom_star
     - light.christmas_garden_lights

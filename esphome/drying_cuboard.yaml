@@ -25,7 +25,11 @@ ota:
 
 status_led:
   pin: GPIO02
-
+  
+binary_sensor:
+  - platform: status
+    name: "Drying Cuboard Status"
+    
 text_sensor:
   - platform: wifi_info
     ip_address:

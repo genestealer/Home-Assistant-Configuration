@@ -25,7 +25,10 @@ ota:
 
 status_led:
   pin: GPIO16
-
+  
+binary_sensor:
+  - platform: status
+    name: "Loft Sensor Status"
 
 text_sensor:
   - platform: wifi_info

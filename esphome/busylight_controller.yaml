@@ -116,6 +116,9 @@ text_sensor:
     
     
 binary_sensor:
+  - platform: status
+    name: "Busy Light Controller Status"
+    
   - platform: gpio
     pin:
       number: GPIO0

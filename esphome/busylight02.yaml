@@ -45,11 +45,19 @@ api:
 ota:
   password: "hxN#^fPPv5ZRy%7l"
   
+status_led:
+  pin: GPIO02
+  
+binary_sensor:
+  - platform: status
+    name: "Busy Light 2 Status"  
+    
 sensor:
   - platform: wifi_signal
     name: "Busy Light 2 RSSI"
     update_interval: 60s
     
+        
 text_sensor:
   - platform: wifi_info
     ip_address:
@@ -59,9 +67,6 @@ text_sensor:
     bssid:
       name: "Busy Light 2 BSSID" 
 
-status_led:
-  pin: GPIO02
-
 light:
   - platform: neopixelbus
     method: ESP8266_UART1
@@ -69,3 +74,13 @@ light:
     pin: GPIO2
     num_leds: 1
     name: "Busy Light 2"
+    
+
+
+    
+    
+    
+    
+    
+    
+    

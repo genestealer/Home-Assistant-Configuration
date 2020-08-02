@@ -1,0 +1,285 @@
+
+#==================
+#=== Input Numbers
+#==================
+input_number:
+
+  #=====================================
+  #=== Cycle 3 zone durations (Sliders)
+  #=====================================
+  irrigation_cycle3_zone1_duration: 
+    name: Cycle 3 Zone1 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-1-box-outline
+
+  irrigation_cycle3_zone2_duration: 
+    name: Cycle 3 Zone2 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-2-box-outline
+
+  irrigation_cycle3_zone3_duration: 
+    name: Cycle 3 Zone3 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-3-box-outline
+
+  irrigation_cycle3_zone4_duration: 
+    name: Cycle 3 Zone4 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-4-box-outline
+
+  irrigation_cycle3_zone5_duration: 
+    name: Cycle 3 Zone5 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-5-box-outline
+
+  irrigation_cycle3_zone6_duration: 
+    name: Cycle 3 Zone6 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-6-box-outline
+
+  irrigation_cycle3_zone7_duration: 
+    name: Cycle 3 Zone7 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-7-box-outline
+
+  irrigation_cycle3_zone8_duration: 
+    name: Cycle 3 Zone8 Duration
+    min: 0
+    max: 60
+    unit_of_measurement: min
+    icon: mdi:numeric-8-box-outline
+
+  #=========================================
+  #=== Cycle 3 zone durations (Input Boxes)
+  #=========================================
+  irrigation_cycle3_zone1_duration_box: 
+    name: Cycle 3 Zone 1 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-1-box-outline
+
+  irrigation_cycle3_zone2_duration_box: 
+    name: Cycle 3 Zone 2 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-2-box-outline
+
+  irrigation_cycle3_zone3_duration_box: 
+    name: Cycle 3 Zone 3 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-3-box-outline
+
+  irrigation_cycle3_zone4_duration_box: 
+    name: Cycle 3 Zone 4 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-4-box-outline
+
+  irrigation_cycle3_zone5_duration_box: 
+    name: Cycle 3 Zone 5 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-5-box-outline
+
+  irrigation_cycle3_zone6_duration_box: 
+    name: Cycle 3 Zone 6 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-6-box-outline
+
+  irrigation_cycle3_zone7_duration_box: 
+    name: Cycle 3 Zone 7 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-7-box-outline
+
+  irrigation_cycle3_zone8_duration_box: 
+    name: Cycle 3 Zone 8 Duration
+    min: 0
+    max: 60
+    mode: box
+    unit_of_measurement: min
+    icon: mdi:numeric-8-box-outline
+
+
+#================
+#=== Input Texts
+#================
+input_text:
+
+  #====================
+  #=== Name of Cycle 3
+  #====================
+  irrigation_cycle3_name:
+    name: Cycle 3 Name
+    min: 1
+    max: 15
+
+
+#===================
+#=== Input Booleans
+#===================
+input_boolean:
+
+  #=======================
+  #=== Cycle 3 is Running
+  #=======================
+  irrigation_cycle3_running:
+    name: Cycle 3 Running
+    icon: mdi:play-circle-outline
+    initial: 'off'
+
+
+#============
+#=== Sensors
+#============
+sensor:
+  - platform: template
+    sensors:
+      #=== Cycle 3 Duration In Seconds
+      irrigation_cycle3_duration_in_seconds:
+        friendly_name: Cycle 3 Duration In Seconds
+        entity_id:
+          - input_number.irrigation_number_of_zones
+          - sensor.irrigation_cycle3_zone1_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone2_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone3_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone4_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone5_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone6_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone7_actual_duration_in_seconds
+          - sensor.irrigation_cycle3_zone8_actual_duration_in_seconds
+        value_template: >
+          {% set ns = namespace(duration = 0) %}
+          {% for zone in states.sensor if zone.object_id.startswith('irrigation_cycle3_zone') and 
+                                          zone.object_id.endswith('_actual_duration_in_seconds') %}
+            {% if loop.index <= states('input_number.irrigation_number_of_zones') | int %}
+              {% set ns.duration = ns.duration + (zone.state | int) %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.duration }}
+
+      #=== Actual Zone durations in seconds
+      irrigation_cycle3_zone1_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 1 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone1_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone2_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 2 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone2_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone3_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 3 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone3_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone4_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 4 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone4_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone5_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 5 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone5_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone6_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 6 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone6_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone7_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 7 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone7_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}
+
+
+      irrigation_cycle3_zone8_actual_duration_in_seconds:
+        friendly_name: Cycle 3 Zone 8 Actual Duration In Seconds
+        value_template: >
+          {% set duration = states('input_number.irrigation_cycle3_zone8_duration') | float %}
+
+          {% if is_state('input_boolean.irrigation_testing_mode', 'on') %}
+            {{ duration | round() }}
+          {% else %}
+            {{ (duration * 60) | round() }}
+          {% endif %}

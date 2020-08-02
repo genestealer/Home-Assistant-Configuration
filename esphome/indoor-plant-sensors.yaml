@@ -1,0 +1,95 @@
+esphome:
+  name: indoor_plant_sensors
+  platform: ESP32
+  board: lolin_d32
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  manual_ip:
+    static_ip: 192.168.2.29
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"
+
+
+
+
+
+
+status_led:
+  pin: GPIO5
+  
+
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Indoor Plant Sensors IP"
+    ssid:
+      name: "Indoor Plant Sensor SSID"
+    bssid:
+      name: "Indoor Plant Sensor Connected BSSID"
+ 
+
+sensor:
+  - platform: wifi_signal
+    name: "Indoor Plant Sensor RSSI"
+    update_interval: 60s
+    
+  # - platform: dht
+  #   pin: GPIO4
+  #   temperature:
+  #     name: "Indoor Plant Sensor Temperature"
+  #   humidity:
+  #     name: "Indoor Plant Sensor Humidity"
+  #   update_interval: 60s
+  #   model: DHT11
+
+  - platform: adc
+    pin: A0
+    name: "Indoor Plant Sensor 1"
+    update_interval: 600s
+    attenuation: 11db
+    filters:
+      - lambda: |-
+          if (x > 2.1) {
+            return 0; 
+          } else if (x < 1.21) {
+            return 100;
+          } else {
+            return ((2.1-x) / (2.1-1.21)) * 100;
+          }
+
+      # if (x > 2.1) { #max is 3.1, but when in contact with soil it will not get higher than about 2.1v
+      #   return 0; # soil is dry
+      # } else if (x < 1.25) { # value when submerged in wet soil
+      #   return 100; #soil is wet
+      # } else {
+      #   return ((2.1-x) / (2.1-1.25)) * 100;
+      # }         
+    unit_of_measurement: "%"
+    
+#   1.05v = 100% wet in water
+# ~ 1.21v = wet in soil
+# ~ 2.10v = dry in soil
+#   3.10v = dry in air
+ 
+# https://www.reddit.com/r/homeassistant/comments/bqw3dw/esphome_and_home_assistant_soil_capacitance/
+              # if (x > 3.1) {
+          #   return 0;
+          # } else if (x < 1.05) {
+          #   return 100;
+          # } else {
+          #   return (3.1-x) / (3.1-1.05) * 100.0;

@@ -14,7 +14,7 @@ kitchen_extractor_timer:
   sequence:
   - entity_id: switch.kitchen_extractor_fan
     service: switch.turn_on
-  - delay: 00:{{states('input_number.kitchen_fan_timer_duration') | round(0)}}
+  - delay: 00:{{states('input_number.kitchen_fan_timer_duration') | round(0)}}:00
   - entity_id: switch.kitchen_extractor_fan
     service: switch.turn_off
 front_garden_lawn_irrigation_timer:
@@ -38,7 +38,7 @@ back_garden_irrigation_timer:
   sequence:
   - entity_id: switch.back_garden_irrigation_valve
     service: switch.turn_on
-  - delay: 00:{{states('input_number.garden_lawn_irrigation_duration') | round(0)}}
+  - delay: 00:{{states('input_number.back_garden_irrigation_duration') | round(0)}}
   - entity_id: switch.back_garden_irrigation_valve
     service: switch.turn_off
 back_garden_lawn_irrigation_timer:
@@ -107,13 +107,13 @@ bathroom_towel_rail_timer:
   alias: Bathroom Towel Rail Timer
   sequence:
   - data:
-      entity_id: climate.entryway
-      temperature: '25'
+      temperature: '29'
+    entity_id: climate.entryway
     service: climate.set_temperature
   - delay: 00:{{ states.input_number.minute_delay.state | int }}
   - data:
-      entity_id: climate.entryway
       temperature: '15'
+    entity_id: climate.entryway
     service: climate.set_temperature
   - alias: ''
     data:
@@ -139,7 +139,7 @@ bathroom_towel_rail_timer:
   - entity_id: light.christmas_garden_lights
     service: light.toggle
   - delay: 00:00:04
-  - entity_id: light.christmas_sitting_room_star
+  - entity_id: light.christmas_living_room_star
     service: light.toggle
   - delay: 00:00:04
 '1585905714103':

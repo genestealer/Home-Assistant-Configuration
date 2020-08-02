@@ -12,7 +12,7 @@ light.christmas_tree_bling:
   icon: mdi:pine-tree
 light.christmas_master_bedroom_star:
   icon: mdi:star
-light.christmas_sitting_room_star:
+light.christmas_living_room_star:
   icon: mdi:star
 light.christmas_mess_room_star:
   icon: mdi:star
@@ -202,7 +202,6 @@ sensor.front_garden_pot_irrigation_schedule:
   icon: mdi:calendar
 sensor.front_garden_pot_irrigation_duration:
   icon: mdi:timer-sand
-
 sensor.back_garden_irrigation_duration:
   icon: mdi:timer-sand
 sensor.back_garden_irrigation_valve_status:
@@ -213,7 +212,6 @@ sensor.back_garden_irrigation_next_run:
   icon: mdi:calendar-clock
 sensor.back_garden_irrigation_schedule:
   icon: mdi:calendar
-
 sensor.back_garden_lawn_irrigation_duration:
   icon: mdi:timer-sand
 sensor.back_garden_lawn_irrigation_valve_status:
@@ -224,7 +222,6 @@ sensor.back_garden_lawn_irrigation_next_run:
   icon: mdi:calendar-clock
 sensor.back_garden_lawn_irrigation_schedule:
   icon: mdi:calendar
-
 input_number.shed_target_cool_temp:
   friendly_name: Shed Cool Target
 input_number.shed_target_heat_temp:
@@ -272,3 +269,15 @@ person.richard:
   entity_picture: /local/RichardFace.jpg
 person.lucy:
   entity_picture: /local/LucyFace.jpg
+device_tracker.tile_e3515bffc0aa4462:
+  friendly_name: Lucy's Car Keys
+device_tracker.tile_43f3fdfb680a819c:
+  friendly_name: Richard's Car Keys
+device_tracker.tile_73203604725b0930:
+  friendly_name: Lucy's Insulin Tester
+device_tracker.tile_9882a988b9924a6b:
+  friendly_name: Richard's Wallet
+device_tracker.tile_68e86c68fbc39631:
+  friendly_name: Richard's Ford Keys
+device_tracker.tile_b9471611824e0154:
+  friendly_name: Mark's Garage Keys

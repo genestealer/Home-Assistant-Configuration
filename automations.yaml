@@ -57,7 +57,7 @@
   condition: []
   action:
   - data:
-      message: Sitting room Tradfri remote battery low. Currently {{ states('sensor.tradfri_remote_control')}}%
+      message: Living room Tradfri remote battery low. Currently {{ states('sensor.tradfri_remote_control')}}%
     service: notify.google_cloud_notify
 - id: '1544967729500'
   alias: Battery Low tradfri_wireless_dimmer
@@ -119,14 +119,15 @@
   - platform: template
     value_template: '{{states(''sensor.time'') == states(''sensor.front_garden_pot_irrigation_next_run'')[19:24]}}'
   condition:
-  - condition: template
-    value_template: '{{states(''sensor.front_garden_pot_irrigation_next_run'')[5:15]
-      == now().date().strftime(''%d-%m-%Y'')}}'
-  - condition: state
-    entity_id: sensor.front_garden_pots_irrigation_interlock
-    state: No Problems
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{states(''sensor.front_garden_pot_irrigation_next_run'')[5:15]
+        == now().date().strftime(''%d-%m-%Y'')}}'
+    - condition: state
+      entity_id: sensor.front_garden_pots_irrigation_interlock
+      state: Uninhibited
   action:
-  - delay: 3 hours
   - entity_id: script.front_garden_pot_irrigation_timer
     service: script.front_garden_pot_irrigation_timer
 - id: '1564192123451'
@@ -136,12 +137,14 @@
   - platform: template
     value_template: '{{states(''sensor.time'') == states(''sensor.back_garden_irrigation_next_run'')[19:24]}}'
   condition:
-  - condition: template
-    value_template: '{{states(''sensor.back_garden_irrigation_next_run'')[5:15] ==
-      now().date().strftime(''%d-%m-%Y'')}}'
-  - condition: state
-    entity_id: sensor.back_garden_irrigation_interlock
-    state: Uninhibited
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{states(''sensor.back_garden_irrigation_next_run'')[5:15]
+        == now().date().strftime(''%d-%m-%Y'')}}'
+    - condition: state
+      entity_id: sensor.back_garden_irrigation_interlock
+      state: Uninhibited
   action:
   - entity_id: script.back_garden_irrigation_timer
     service: script.back_garden_irrigation_timer
@@ -151,12 +154,14 @@
   - platform: template
     value_template: '{{states(''sensor.time'') == states(''sensor.back_garden_lawn_irrigation_next_run'')[19:24]}}'
   condition:
-  - condition: template
-    value_template: '{{states(''sensor.back_garden_lawn_irrigation_next_run'')[5:15]
-      == now().date().strftime(''%d-%m-%Y'')}}'
-  - condition: state
-    entity_id: sensor.back_garden_lawn_irrigation_interlock
-    state: No Problems
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{states(''sensor.back_garden_lawn_irrigation_next_run'')[5:15]
+        == now().date().strftime(''%d-%m-%Y'')}}'
+    - condition: state
+      entity_id: sensor.back_garden_lawn_irrigation_interlock
+      state: Uninhibited
   action:
   - delay: 1 hour
   - entity_id: script.back_garden_lawn_irrigation_timer
@@ -167,14 +172,15 @@
   - platform: template
     value_template: '{{states(''sensor.time'') == states(''sensor.front_garden_lawn_irrigation_next_run'')[19:24]}}'
   condition:
-  - condition: template
-    value_template: '{{states(''sensor.front_garden_lawn_irrigation_next_run'')[5:15]
-      == now().date().strftime(''%d-%m-%Y'')}}'
-  - condition: state
-    entity_id: sensor.front_garden_lawn_irrigation_interlock
-    state: No Problems
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{states(''sensor.front_garden_lawn_irrigation_next_run'')[5:15]
+        == now().date().strftime(''%d-%m-%Y'')}}'
+    - condition: state
+      entity_id: sensor.front_garden_lawn_irrigation_interlock
+      state: Uninhibited
   action:
-  - delay: 1 hour
   - entity_id: script.front_garden_lawn_irrigation_timer
     service: script.front_garden_lawn_irrigation_timer
 - id: '1564234217905'
@@ -631,10 +637,10 @@
     entity_id: script.1585905714103
     service: script.turn_on
 - id: '1586868059957'
-  alias: Doorbell Button Notify
+  alias: House Doorbell Button External Notify
   description: https://github.com/home-assistant/core/issues/32236
   trigger:
-  - device_id: 35a55440ecb04017852c01f8fa4e9d0b
+  - device_id: b03ab12c707340e8849888171a79caed
     domain: binary_sensor
     entity_id: binary_sensor.doorbell_button
     platform: device
@@ -681,3 +687,81 @@
   - data:
       message: Server is getting HOT!
     service: notify.google_cloud_notify
+- id: '1592486159377'
+  alias: Parcel Box Opened Nofity
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.parcel_box_sensor
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Parcel box has just been opened
+      title: Delivery
+    service: notify.pushover_notify
+  - data:
+      filename: /config/www/tmp/drive.jpg
+    entity_id: camera.p3364_l_0
+    service: camera.snapshot
+  - data:
+      data:
+        attachment: /config/www/tmp/drive.jpg
+      message: Delivery person?
+      title: Driveway CCTV Photo
+    service: notify.pushover_notify
+  - data:
+      cache: false
+      entity_id: media_player.whole_house
+      message: Parcel box has just been opened
+    service: tts.google_say
+- id: '1592498327466'
+  alias: House Doorbell Button Local Notify
+  description: ''
+  trigger:
+  - device_id: b03ab12c707340e8849888171a79caed
+    domain: binary_sensor
+    entity_id: binary_sensor.doorbell_button
+    platform: device
+    type: turned_on
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: person.richard
+      state: home
+    - condition: state
+      entity_id: person.lucy
+      state: home
+  action:
+  - data:
+      cache: false
+      entity_id: media_player.living_room_speaker
+      message: Ding! Dong! Someone is at the door
+    service: tts.google_say
+  - data:
+      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+      media_content_type: image/jpg
+    entity_id: media_player.office_display
+    service: media_player.play_media
+  - data:
+      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+      media_content_type: image/jpg
+    entity_id: media_player.bedroom_display
+    service: media_player.play_media
+  - data:
+      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+      media_content_type: image/jpg
+    entity_id: media_player.kitchen_display
+    service: media_player.play_media
+  - data:
+      cache: false
+      entity_id: media_player.lucys_room_speaker
+      message: Ding! Dong! Someone is at the door
+    service: tts.google_say
+  - data:
+      cache: false
+      entity_id: media_player.garage
+      message: Ding! Dong! Someone is at the door
+    service: tts.google_say

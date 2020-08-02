@@ -1,0 +1,91 @@
+# lovelace_gen
+
+#==================
+#=== SETTINGS LINE
+#==================
+type: custom:button-card
+entity: {{ entity }}
+show_state: true
+state_display: >
+  [[[
+    var unit = '{{ unit }}';
+    var round = '{{ round }}';
+    var unit_om = entity.attributes.unit_of_measurement ? entity.attributes.unit_of_measurement : '';
+    var statestr = entity.state;
+
+    if (isNaN(statestr))
+      return statestr;
+    else if(unit.length > 0)
+      return parseFloat(statestr).toFixed(round) + ' ' + unit;
+    else
+      return parseFloat(statestr).toFixed(round) + ' ' + unit_om;
+  ]]]
+name: {{ name }}
+icon: {{ icon }}
+show_label: true
+label: {{ label }}
+size: 30%
+tap_action:
+  action: {{ tap_action | default('call-service') }}
+  service: browser_mod.popup
+  service_data:
+    title: >
+      [[[
+        var units = entity.attributes.unit_of_measurement ? ' (' + entity.attributes.unit_of_measurement + ')' : '';
+        var name = '{{ name }}'
+        return name + units;
+      ]]]
+    card:
+      type: entities
+      entities:
+        - entity: {{ entity }}
+          name: ' '
+          icon: {{ icon }}
+      style: >
+        ha-card {
+          border-radius: 0em 0em 1em 1em
+        }
+    deviceID:
+      - this
+    style:
+      font-family: >
+        [[[
+          return states['input_text.irrigation_ui_font_family'].state
+        ]]]
+      box-shadow: 0em 0em 0.5em
+      border-radius: 1em
+      overflow: hidden
+      opacity: 0.9
+styles:
+  grid:
+    - grid-template-areas: >
+        [[[
+          if ('{{ label }}' == '')
+            return '"i n s"  "i n s"';
+          else
+            return '"i n s"  "i l s"';
+        ]]]
+    - grid-template-columns: 15% auto 15%
+    - grid-template-rows: min-content min-content
+  card:
+    - font-family: "[[[ return states['input_text.irrigation_ui_font_family'].state ]]]"
+    - font-size: 15px
+    - padding: {{ padding | default('0em 0em 0.5em 0em') }}
+    - background: none
+    - box-shadow: none
+    - display: "{{ display_condition }}"
+  name: 
+    - justify-self: start
+    - padding: {{ name_padding }}
+  label:
+    - justify-self: start
+    - color: var(--secondary-text-color)
+state:
+  - value: unavailable
+    styles:
+      icon:
+        - color: var(--accent-color)
+        - animation: blink 2s ease infinite
+      state:
+        - color: var(--accent-color)
+        - animation: blink 2s ease infinite

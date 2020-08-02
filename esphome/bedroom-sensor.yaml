@@ -1,0 +1,54 @@
+esphome:
+  name: bedroom_sensor
+  platform: ESP8266
+  board: nodemcuv2
+
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+
+  manual_ip:
+    static_ip: 192.168.2.38
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: "hxN#^fPPv5ZRy%7l"
+
+ota:
+  password: "hxN#^fPPv5ZRy%7l"
+
+#status_led:
+ # pin: D0
+  
+binary_sensor:
+  - platform: status
+    name: "Bedroom Sensor Status"
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "Bedroom Sensor IP"
+    ssid:
+      name: "Bedroom Sensor SSID"
+    bssid:
+      name: "Bedroom Sensor Connected BSSID"
+      
+sensor:
+  - platform: wifi_signal
+    name: "Bedroom Sensor RSSI"
+    update_interval: 60s
+    
+  - platform: dht
+    pin: D8
+    temperature:
+      name: "Bedroom Temperature"
+    humidity:
+      name: "Bedroom Humidity"
+    update_interval: 10s
+    model: DHT22

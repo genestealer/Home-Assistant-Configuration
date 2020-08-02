@@ -40,5 +40,5 @@
     house_wattage:
       value_template: "{{states('sensor.house_current_consumption') | int * (states('sensor.ups_input_voltage') | int / 1000)}}"
       friendly_name: 'House Wattage'
-      unit_of_measurement: 'KW'
+      unit_of_measurement: 'kW'
       availability_template: "{% if is_state('binary_sensor.esp_link_status',  'on' and states('binary_sensor.usp_network_online')) %} true {% endif %}"

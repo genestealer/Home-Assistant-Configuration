@@ -955,7 +955,7 @@
                                     "entity": "light.dining_room_light"
                                 },
                                 {
-                                    "entity": "light.sitting_room_bookcase_light"
+                                    "entity": "light.living_room_bookcase_light"
                                 },
                                 {
                                     "entity": "binary_sensor.ikea_tradfri_gateway_online"
@@ -964,7 +964,7 @@
                                     "entity": "light.office"
                                 },
                                 {
-                                    "entity": "light.sitting_room"
+                                    "entity": "light.living_room"
                                 },
                                 {
                                     "entity": "light.sofa_left"
@@ -1001,7 +1001,7 @@
                                     "entity": "light.christmas_bedroom_star"
                                 },
                                 {
-                                    "entity": "light.christmas_sitting_room_star"
+                                    "entity": "light.christmas_living_room_star"
                                 },
                                 {
                                     "entity": "light.christmas_guest_bedroom_star"
@@ -1050,7 +1050,7 @@
                     "badges": [],
                     "cards": [
                         {
-                            "entity": "light.sitting_room",
+                            "entity": "light.living_room",
                             "name": "Sofa Lights",
                             "type": "light"
                         },
@@ -1063,7 +1063,7 @@
                                     "entity": "light.sofa_right"
                                 },
                                 {
-                                    "entity": "light.sitting_room_bookcase_light"
+                                    "entity": "light.living_room_bookcase_light"
                                 }
                             ],
                             "title": "Light",
@@ -1082,8 +1082,8 @@
                             "type": "entity-button"
                         }
                     ],
-                    "path": "sitting_room_view",
-                    "title": "Sitting Room"
+                    "path": "living_room_view",
+                    "title": "living Room"
                 },
                 {
                     "badges": [],
