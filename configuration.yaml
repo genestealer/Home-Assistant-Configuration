@@ -102,24 +102,18 @@ cloud:
 http:
 #  api_password: !secret http_password
   server_port: 8123
-  # SSL is now performed by Apache reverse proxy
+  # SSL is now performed by reverse proxy
   #  ssl_certificate: !secret SSL_cert
   #  ssl_key: !secret SSL_key
-  # base_url: !secret Base_url # removed in rev 0.110
-  ip_ban_enabled: False
+  cors_allowed_origins:
+    - https://google.com
+    - https://www.home-assistant.io
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 10.0.0.200
+    - 172.30.33.0/24
+  ip_ban_enabled: true
   login_attempts_threshold: 20
-  #use_x_forwarded_for: True
-  #trusted_proxies:
-  #- 192.168.1.28
-
-#  trusted_networks:
-#  - 127.0.0.1
-#  - 192.168.0.0/24
-#  - 172.17.0.0/16 # Docker bridge
-#  - 172.30.32.0/23 # Docker hassio
-  # 172.0.0.1 trust docker internal network from addons. https://github.com/home-assistant/home-assistant/issues/15873
-  # - !secret myip
-  #- ::1
 
 # Checks for available updates
 updater:
@@ -185,12 +179,13 @@ map:
 
 # https://github.com/home-assistant/home-assistant/issues/1806
 logger:
-  default: fatal
+  default: error
   logs:
     requests.packages.urllib3.connectionpool: critical
     rflink.protocol: fatal
     homeassistant.components.sensor.plex: fatal
     urllib3.connectionpool: error
+    homeassistant.components.recorder: fatal
 
 
 system_health:
@@ -368,20 +363,33 @@ panel_iframe:
 google_assistant:
   project_id: !secret google_assistant_project_id
   # api_key: !secret google_assistant_api_key # deprecated and will be removed in 0.105
-  service_account: !include private/Home_Assistant-78aa4d65f173.json
+  service_account: !include private/report_state Home Assistant hassio-214617-7388b38a261c.json
   report_state: true
-  # # exposed_domains:
-  # #   - switch
-  # #   - light
-  # expose_by_default: false
-
-  # exposed_domains:
-  #   - switch
-  #   - light
+  expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
+  exposed_domains: # This has no effect if expose_by_default is set to false.
+    - switch
+    - light
+    - cover
+    - camera
 
   entity_config:
+    script.bedroom_lights_night_mode:
+      expose: true
+    script.front_garden_lawn_irrigation_timer:
+      expose: true
+    script.front_garden_pot_irrigation_timer:
+      expose: true
+    script.back_garden_irrigation_timer:
+      expose: true
+    script.back_garden_lawn_irrigation_timer:
+      expose: true
+
+    light.bedroom:
+      expose: false
+
     climate.entryway:
       expose: false
+
     media_player.kitchen_and_bedroom:
       expose: false
     media_player.googlehomehub2078:
@@ -408,6 +416,7 @@ google_assistant:
       expose: false
     media_player.guest_bedroom:
       expose: false
+
     group.all_automations:
       expose: false # Hide this to avoid telling Google Assistant to shut down everything, it disabling all automations.
     group.all_covers:
@@ -440,16 +449,14 @@ google_assistant:
       expose: false
     group.server_ilo_status_group:
       expose: false
-
-
     group.groups:
       expose: false
     group.media_players:
       expose: false
     group.media_player:
       expose: false
-    light.bedroom:
-      expose: false
+
+
 
   # Not needed since release 0.80
   # client_id: !secret google_assistant_client_id

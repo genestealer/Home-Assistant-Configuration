@@ -37,10 +37,10 @@
       name: Lamp_3 # renamed in customise.yaml to 'Upstairs Hall Light'
     Eurodomest_0fca2c_00: # Energenie MIHO026
       name: 'Dining Room Light'
-    # Eurodomest_02940f_00: # Energenie MIHO071
-    #   name: 'Kitchen Light Left'
-    # Eurodomest_02940f_02: # Energenie MIHO071
-    #   name: 'Kitchen Light Right'
+    Eurodomest_02940f_00: # Energenie MIHO071
+      name: 'Downstairs Hall Light'
+    Eurodomest_02940f_02: # Energenie MIHO071
+      name: 'Upstairs Light Right'
     Eurodomest_02940f_03: # Energenie MIHO071
       name: 'Living Room Ceiling Light'
 
