@@ -371,6 +371,7 @@ google_assistant:
     - light
     - cover
     - camera
+    - script
 
   entity_config:
     script.bedroom_lights_night_mode:
