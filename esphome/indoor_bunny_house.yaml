@@ -1,14 +1,14 @@
-#############################################################
+####################################################
 # Richard Huish 2020
-# https://github.com/genestealer/Home-Assistant-Configuration
-#############################################################
+####################################################
 # Config Header for Device
 ####################################################
 substitutions:
-  devicename: doorbell_controller
-  upper_devicename: Doorbell Controller
-  ip: 192.168.2.36
-  pass: hxN#^fPPv5ZRy%7l
+  devicename: indoor_bunny_house
+  upper_devicename: Indoor Bunny House
+  ip: 192.168.2.37
+  pass: of4zH*IxKw49yt@H
+  
 ####################################################
 # Shared code from all my projects
 ####################################################
@@ -38,6 +38,9 @@ status_led:
 ####################################################
 # Non-Shared Code (May contain shared code)
 ####################################################
+binary_sensor: #Device online status reported back.
+  - platform: status
+    name: ${upper_devicename} Sensor Status
 
 text_sensor:
   - platform: wifi_info
@@ -53,184 +56,11 @@ sensor:
     name: ${upper_devicename} RSSI
     update_interval: 300s
     
-####################################################
-# Non-Invasive Power Meter for House Electricity
-# Uses SFH 314-2/3 Osram Opto, 80 ° Visible
-# Light NPN Phototransistor RS Stock No. 654-8851
-###
-# 3.3V wired to phototransistor Collector.
-# Phototransistor Emmitter wired to D7.
-# D7 is pulled to GND via 10K resistor.
-# When light phototransistor D7 becomes high.
-# When dark phototransistor D7 becomes low.
-####################################################
-# 1000 pulses from the LED should equal 1kWh
-  - platform: pulse_counter
-    pin:
-     number: D7 # GPIO13
-    # inverted: True
-     mode: INPUT
-    unit_of_measurement: 'kW'
-    name: 'House Power Meter'
-    update_interval: 60s
-    filters:
-      - multiply: 0.06
-      
-####################################################
-# Doorbell button with LEDs and relay output to bell
-####################################################
-# Doorbell Button Lights
-light:
-  - platform: neopixelbus
-    method: ESP8266_UART1
-    id: doorbell_light
-    type: GRB
-    pin: D4 # GPIO2
-    num_leds: 2
-    name: "Doorbell Button Lights"
-    restore_mode: ALWAYS_ON
-    effects:
-      - addressable_rainbow:
-          name: Slow Rainbow Effect With Custom Values
-          speed: 2
-          width: 50
-      - addressable_rainbow:
-          name: Rainbow Effect With Custom Values
-          speed: 10
-          width: 50
-      - addressable_color_wipe:
-      - addressable_color_wipe:
-          name: Color Wipe Effect With Custom Values
-          colors:
-            - red: 100%
-              green: 100%
-              blue: 100%
-              num_leds: 1
-            - red: 0%
-              green: 0%
-              blue: 0%
-              num_leds: 1
-          add_led_interval: 100ms
-          reverse: False
-
-# Doorbell relay output
-switch:
-  - platform: gpio
-    pin: 
-      number: D1 # GPIO05
-      mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
-      inverted: true
-    id: bellRelay
-    
-  - platform: template
-    name: "Doorbell Ringer"
-    icon: "mdi:alarm-bell"
-    turn_on_action:
-    - switch.turn_on: bellRelay
-    - delay: 1500ms
-    - switch.turn_off: bellRelay
-    
-  - platform: gpio
-    pin:
-      number: D5  # GPIO12
-      mode: OUTPUT_OPEN_DRAIN
-      # inverted: true
-    name: "Action to CCTV"
-
-    
-binary_sensor:
-  - platform: status # Devive avaliablity
-    name: ${upper_devicename} Status
-    
-    # Trying output to CCTV GPIO 
-  - platform: gpio
-    pin:
-      number: D6  # GPIO14
-      mode: INPUT_PULLUP
-      inverted: true
-    name: "Action by CCTV"
-  
-  # Doorbell button sensor  
-  - platform: gpio
-    pin:
-      number: D2 # GPIO04
-      mode: INPUT_PULLUP
-      inverted: true
-    name: "Doorbell Button"
-    filters:
-      - delayed_off: 100ms
-    on_press:
-      then:
-        - logger.log: "Button pressed"
-        - light.turn_off:
-            id: doorbell_light
-        - light.turn_on:
-            id: doorbell_light
-            brightness: 100%
-            # red: 100%
-            # green: 100%
-            # blue: 100%
-            effect: "Color Wipe Effect With Custom Values"
-        - switch.turn_on: bellRelay
-        - delay: 750ms # set how long to ring the door bell
-        - switch.turn_off: bellRelay
-        # - delay: 250ms
-        # - light.turn_on:
-        #     id: doorbell_light
-        #     brightness: 100%
-        #     red: 0%
-        #     green: 100%
-        #     blue: 0%
-        - delay: 2000ms # Inhibit pressing the button for a moment
-        - light.turn_on:
-            id: doorbell_light
-            effect: "Slow Rainbow Effect With Custom Values"
-        
-        
-    # on_release:
-    #   then:
-    #     - light.turn_on:
-    #         id: doorbell_light
-    #         brightness: 100%
-    #         red: 0%
-    #         green: 100%
-    #         blue: 0%
-    # on_press:
-    #   then:
-    #   - switch.turn_on: bellRelay
-    #   - delay: 500ms
-    #   - switch.turn_off: bellRelay
-    # on_double_click:
-    #   min_length: 50ms
-    #   max_length: 5000ms
-    #   then:
-    #   - switch.turn_on: bellRelay
-    #   - delay: 5000ms
-    # #   - switch.turn_off: bellRelay
-    # on_multi_click:
-    # # - timing:
-    # #     - ON for at most 1s
-    # #     - OFF for at most 10s
-    # #     - ON for at most 3s
-    # #     - OFF for at least 0.2s
-    # #   then:
-    # #     - logger.log: "Double Clicked"
-
-    # - timing:
-    #     - ON for 1s to 2s
-    #     - OFF for at least 0.5s
-    #   then:
-    #     - logger.log: "Single Long Clicked"
-    #     - switch.turn_on: bellRelay
-    #     - delay: 5000ms
-    #     - switch.turn_off: bellRelay
-    # - timing:
-    #     - ON for at most 1s
-    #     - OFF for at least 0.5s
-    #   then:
-    #     - logger.log: "Single Short Clicked"
-    #     - switch.turn_on: bellRelay
-    #     - delay: 1000ms
-    #     - switch.turn_off: bellRelay
-
-
+  - platform: dht
+    pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
+    temperature:
+      name: ${upper_devicename} Temperature
+    humidity:
+      name: ${upper_devicename} Humidity
+    update_interval: 300s
+    model: DHT22

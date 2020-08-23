@@ -1,13 +1,14 @@
-####################################################
+#############################################################
 # Richard Huish 2020
-####################################################
+# https://github.com/genestealer/Home-Assistant-Configuration
+#############################################################
 # Config Header for Device
 ####################################################
 substitutions:
   devicename: doorbell_controller
   upper_devicename: Doorbell Controller
   ip: 192.168.2.36
-  
+  pass: hxN#^fPPv5ZRy%7l
 ####################################################
 # Shared code from all my projects
 ####################################################
@@ -15,7 +16,6 @@ esphome:
   name: $devicename
   platform: ESP8266
   board: nodemcuv2
-  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
@@ -27,35 +27,18 @@ wifi:
 logger: # Enable logging
 
 api: # Enable Home Assistant API
-  password: "hxN#^fPPv5ZRy%7l"
+  password: $pass
 
 ota: # Enable over the air updates
-  password: "hxN#^fPPv5ZRy%7l"
+  password: $pass
 
 status_led:
-  pin: D4 # GPIO2 D0 # GPIO16
+  pin: D0 # GPIO16 - NodeMCU on-board LED
 
-sensor:
-  - platform: wifi_signal
-    name: ${upper_devicename} RSSI
-    update_interval: 60s
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################
 
-
-############################
-# Non-Invasive Power Meter #
-############################
-# 1000 pulses from the LED should equal 1kWh
-  - platform: pulse_counter
-    pin:
-     number: D7
-    # inverted: True
-     mode: INPUT
-    unit_of_measurement: 'kW'
-    name: 'House Power Meter'
-    update_interval: 60s
-    filters:
-      - multiply: 0.06
-      
 text_sensor:
   - platform: wifi_info
     ip_address:
@@ -65,7 +48,72 @@ text_sensor:
     bssid:
       name: ${upper_devicename} BSSID
 
+sensor:
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    
+####################################################
+# Non-Invasive Power Meter for House Electricity
+# Uses SFH 314-2/3 Osram Opto, 80 ° Visible
+# Light NPN Phototransistor RS Stock No. 654-8851
+###
+# 3.3V wired to phototransistor Collector.
+# Phototransistor Emmitter wired to D7.
+# D7 is pulled to GND via 10K resistor.
+# When light phototransistor D7 becomes high.
+# When dark phototransistor D7 becomes low.
+####################################################
+# 1000 pulses from the LED should equal 1kWh
+  - platform: pulse_counter
+    pin:
+     number: D7 # GPIO13
+    # inverted: True
+     mode: INPUT
+    unit_of_measurement: 'kW'
+    name: 'House Power Meter'
+    update_interval: 60s
+    filters:
+      - multiply: 0.06
+      
+####################################################
+# Doorbell button with LEDs and relay output to bell
+####################################################
+# Doorbell Button Lights
+light:
+  - platform: neopixelbus
+    method: ESP8266_UART1
+    id: doorbell_light
+    type: GRB
+    pin: D4 # GPIO2
+    num_leds: 2
+    name: "Doorbell Button Lights"
+    restore_mode: ALWAYS_ON
+    effects:
+      - addressable_rainbow:
+          name: Slow Rainbow Effect With Custom Values
+          speed: 2
+          width: 50
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+      - addressable_color_wipe:
+      - addressable_color_wipe:
+          name: Color Wipe Effect With Custom Values
+          colors:
+            - red: 100%
+              green: 100%
+              blue: 100%
+              num_leds: 1
+            - red: 0%
+              green: 0%
+              blue: 0%
+              num_leds: 1
+          add_led_interval: 100ms
+          reverse: False
 
+# Doorbell relay output
 switch:
   - platform: gpio
     pin: 
@@ -88,21 +136,24 @@ switch:
       mode: OUTPUT_OPEN_DRAIN
       # inverted: true
     name: "Action to CCTV"
+
     
 binary_sensor:
-  - platform: status
+  - platform: status # Devive avaliablity
     name: ${upper_devicename} Status
     
+    # Trying output to CCTV GPIO 
   - platform: gpio
     pin:
       number: D6  # GPIO14
       mode: INPUT_PULLUP
       inverted: true
     name: "Action by CCTV"
-    
+  
+  # Doorbell button sensor  
   - platform: gpio
     pin:
-      number: GPIO04 # D2
+      number: D2 # GPIO04
       mode: INPUT_PULLUP
       inverted: true
     name: "Doorbell Button"
@@ -182,35 +233,4 @@ binary_sensor:
     #     - delay: 1000ms
     #     - switch.turn_off: bellRelay
 
-light:
-  - platform: neopixelbus
-    method: ESP8266_UART1
-    id: doorbell_light
-    type: GRB
-    pin: GPIO2 # D4
-    num_leds: 2
-    name: "Doorbell Button Lights"
-    restore_mode: ALWAYS_ON
-    effects:
-      - addressable_rainbow:
-          name: Slow Rainbow Effect With Custom Values
-          speed: 2
-          width: 50
-      - addressable_rainbow:
-          name: Rainbow Effect With Custom Values
-          speed: 10
-          width: 50
-      - addressable_color_wipe:
-      - addressable_color_wipe:
-          name: Color Wipe Effect With Custom Values
-          colors:
-            - red: 100%
-              green: 100%
-              blue: 100%
-              num_leds: 1
-            - red: 0%
-              green: 0%
-              blue: 0%
-              num_leds: 1
-          add_led_interval: 100ms
-          reverse: False
+
