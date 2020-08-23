@@ -1,29 +1,43 @@
+####################################################
+# Richard Huish 2020
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: doorbell_controller
+  upper_devicename: Doorbell Controller
+  ip: 192.168.2.36
+  
+####################################################
+# Shared code from all my projects
+####################################################
 esphome:
-  name: doorbell_controller
+  name: $devicename
   platform: ESP8266
   board: nodemcuv2
-
+  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
   manual_ip:
-    static_ip: 192.168.2.36
+    static_ip: $ip
     gateway: 192.168.2.1
     subnet: 255.255.255.0
 
-# Enable logging
-logger:
+logger: # Enable logging
 
-# Enable Home Assistant API
-api:
+api: # Enable Home Assistant API
   password: "hxN#^fPPv5ZRy%7l"
 
-ota:
+ota: # Enable over the air updates
   password: "hxN#^fPPv5ZRy%7l"
-  
+
+status_led:
+  pin: D4 # GPIO2 D0 # GPIO16
+
 sensor:
   - platform: wifi_signal
-    name: "Doorbell Controller RSSI"
+    name: ${upper_devicename} RSSI
     update_interval: 60s
 
 
@@ -45,14 +59,12 @@ sensor:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "Doorbell Controller IP"
+      name: ${upper_devicename} IP
     ssid:
-      name: "Doorbell Controller SSID"
+      name: ${upper_devicename} SSID
     bssid:
-      name: "Doorbell Controller BSSID" 
+      name: ${upper_devicename} BSSID
 
-status_led:
-  pin: D4 # GPIO2 D0 # GPIO16
 
 switch:
   - platform: gpio
@@ -79,7 +91,7 @@ switch:
     
 binary_sensor:
   - platform: status
-    name: "Doorbell Controller Status"
+    name: ${upper_devicename} Status
     
   - platform: gpio
     pin:

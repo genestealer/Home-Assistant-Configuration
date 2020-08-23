@@ -16,6 +16,7 @@
 # 433MHz Lights
 - platform: rflink
   device_defaults:
+    fire_event: true
     signal_repetitions: 3
   devices:
     Maclean_0d52_04:
@@ -35,13 +36,13 @@
   devices:
     Eurodomest_0fca6c_00: # Energenie MIHO026
       name: Lamp_3 # renamed in customise.yaml to 'Upstairs Hall Light'
-    Eurodomest_0fca2c_00: # Energenie MIHO026
+    Eurodomest_0fca2c_00: # Energenie MIHO026 one gang light switch
       name: 'Dining Room Light'
-    Eurodomest_02940f_00: # Energenie MIHO071
+    Eurodomest_02940f_00: # Energenie MIHO093 two gang light switch
       name: 'Downstairs Hall Light'
-    Eurodomest_02940f_02: # Energenie MIHO071
-      name: 'Upstairs Light Right'
-    Eurodomest_02940f_03: # Energenie MIHO071
+    Eurodomest_02940f_02: # Energenie MIHO093 two gang light switch
+      name: 'Upstairs Hall Light'
+    Eurodomest_02940f_03: # Energenie MIHO026 one gang light switch
       name: 'Living Room Ceiling Light'
 
 # 433MHz Christmas Lights
@@ -73,13 +74,7 @@
 
 
 
-#Saved Energenie remote control commands.
-#Eurodomest_0fca6c_00:
-# Off: Decimal: 219454 (24Bit) Binary: 000000110101100100111110 Tri-State: not applicable PulseLength: 309 microseconds Protocol: 1
-# OFF Raw data: 9588,280,924,280,928,276,928,276,924,284,924,280,928,868,336,868,348,264,932,868,344,264,940,864,340,860,348,264,936,268,944,852,348,260,944,260,944,860,344,856,352,852,352,852,352,852,360,252,952,
 
-# on Decimal: 219455 (24Bit) Binary: 000000110101100100111111 Tri-State: not applicable PulseLength: 309 microseconds Protocol: 1
-# ON Raw data: 9588,280,928,272,928,276,932,272,932,268,928,284,920,872,344,864,344,268,940,860,340,264,940,864,340,860,348,264,940,264,944,856,352,256,948,256,952,860,344,860,348,852,352,852,364,840,360,848,360,
 
 
 # 2.4GHz Lights
@@ -92,3 +87,21 @@
       name: Kitchen Under Counter Lights
       aliases: Ansluta_ce30_0
       # type: hybrid # Ikea Ansluta have two brightness modes. Note hybrid is not compatible with signal repetition.
+
+
+###############################################
+# Energenie MIHO003 Hand Controller, scan capture 
+# Button   On Command                                   Off Command
+# 1        Eurodomest;ID=02940f;SWITCH=00;CMD=ON;       Eurodomest;ID=02940f;SWITCH=00;CMD=OFF;
+# 2        Eurodomest;ID=02940f;SWITCH=03;CMD=ON;       Eurodomest;ID=02940f;SWITCH=03;CMD=OFF;
+# 3        Eurodomest;ID=02940f;SWITCH=02;CMD=ON;       Eurodomest;ID=02940f;SWITCH=02;CMD=OFF;
+# 4        Eurodomest;ID=02940f;SWITCH=06;CMD=ALLOFF;   Eurodomest;ID=02940f;SWITCH=06;CMD=ALLON;
+# ALL      Eurodomest;ID=02940f;SWITCH=01;CMD=ON;       Eurodomest;ID=02940f;SWITCH=01;CMD=OFF;
+###############################################
+#Saved Energenie remote control commands via RF-Link
+#Eurodomest_0fca6c_00:
+# Off: Decimal: 219454 (24Bit) Binary: 000000110101100100111110 Tri-State: not applicable PulseLength: 309 microseconds Protocol: 1
+# OFF Raw data: 9588,280,924,280,928,276,928,276,924,284,924,280,928,868,336,868,348,264,932,868,344,264,940,864,340,860,348,264,936,268,944,852,348,260,944,260,944,860,344,856,352,852,352,852,352,852,360,252,952,
+
+# on Decimal: 219455 (24Bit) Binary: 000000110101100100111111 Tri-State: not applicable PulseLength: 309 microseconds Protocol: 1
+# ON Raw data: 9588,280,928,272,928,276,932,272,932,268,928,284,920,872,344,864,344,268,940,860,340,264,940,864,340,860,348,264,940,264,944,856,352,256,948,256,952,860,344,860,348,852,352,852,364,840,360,848,360,

@@ -289,8 +289,8 @@ ifttt:
 rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
-  wait_for_ack: True
-  reconnect_interval: 5 #1 second
+  wait_for_ack: true
+  reconnect_interval: 7 #1 second
   ignore_devices:
     - owl_cm113_ead1_current3
     - owl_cm113_ead1_current1

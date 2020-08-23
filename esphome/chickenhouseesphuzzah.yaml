@@ -1,59 +1,66 @@
+####################################################
+# Richard Huish 2020
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: chickenhouseesphuzzah
+  upper_devicename: Chicken House
+  ip: 192.168.2.35
+  pass: hxN#^fPPv5ZRy%7l
+  
+####################################################
+# Shared code from all my projects
+####################################################
 esphome:
-  name: chickenhouseesphuzzah
+  name: $devicename
   platform: ESP8266
   board: huzzah
-
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
-
   manual_ip:
-    static_ip: 192.168.2.25
+    static_ip: $ip
     gateway: 192.168.2.1
     subnet: 255.255.255.0
 
-# Enable logging
-logger:
+logger: # Enable logging
 
-# Enable Home Assistant API
-api:
-  password: "hxN#^fPPv5ZRy%7l"
+api: # Enable Home Assistant API
+  password: $pass
 
-ota:
-  password: "hxN#^fPPv5ZRy%7l"
-  
-# mqtt:
-#   broker: !secret mqtt_broker
-#   username: !secret mqtt_username
-#   password: !secret mqtt_password
-#   discovery_prefix: homeassistant
-#   discovery: true
-# #  topic_prefix: homeassistant
+ota: # Enable over the air updates
+  password: $pass
 
-binary_sensor:
+# status_led:
+#   pin: D0 # GPIO16 - NodeMCU on-board LED
+
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################
+binary_sensor: #Device online status reported back.
   - platform: status
-    name: "Chicken House Status"
-    
+    name: ${upper_devicename} Sensor Status
+
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "Chicken House IP"
+      name: ${upper_devicename} IP
     ssid:
-      name: "Chicken House SSID"
+      name: ${upper_devicename} SSID
     bssid:
-      name: "Chicken House BSSID" 
-
+      name: ${upper_devicename} BSSID
 
 sensor:
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    
   - platform: dht
     pin: GPIO2
     temperature:
-      name: "Chicken House Temperature"
+      name: ${upper_devicename} Temperature
     humidity:
-      name: "Chicken House Humidity"
-    update_interval: 60s
-    model: DHT11
-    
-  - platform: wifi_signal
-    name: "Chicken House RSSI"
-    update_interval: 60s
+      name: ${upper_devicename} Humidity
+    update_interval: 300s
+    model: DHT22

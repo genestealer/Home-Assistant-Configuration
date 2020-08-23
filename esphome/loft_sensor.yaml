@@ -1,54 +1,67 @@
+####################################################
+# Richard Huish 2020
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: loft_sensor
+  upper_devicename: Loft Sensor
+  ip: 192.168.2.20
+  pass: hxN#^fPPv5ZRy%7l
+  
+####################################################
+# Shared code from all my projects
+####################################################
 esphome:
-  name: loft_sensor
+  name: $devicename
   platform: ESP8266
   board: nodemcuv2
-
+  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
-
   manual_ip:
-    static_ip: 192.168.2.20
+    static_ip: $ip
     gateway: 192.168.2.1
     subnet: 255.255.255.0
 
+logger: # Enable logging
 
-# Enable logging
-logger:
+api: # Enable Home Assistant API
+  password: $pass
 
-# Enable Home Assistant API
-api:
-  password: "hxN#^fPPv5ZRy%7l"
-
-ota:
-  password: "hxN#^fPPv5ZRy%7l"
+ota: # Enable over the air updates
+  password: $pass
 
 status_led:
-  pin: GPIO16
-  
-binary_sensor:
+  pin: D0 # GPIO16 - NodeMCU on-board LED
+
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################
+binary_sensor: #Device online status reported back.
   - platform: status
-    name: "Loft Sensor Status"
+    name: ${upper_devicename} Sensor Status
 
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "Loft Sensor IP"
+      name: ${upper_devicename} IP
     ssid:
-      name: "Loft Sensor SSID"
+      name: ${upper_devicename} SSID
     bssid:
-      name: "Loft Sensor Connected BSSID"
-      
+      name: ${upper_devicename} BSSID
+
 sensor:
   - platform: wifi_signal
-    name: "Loft Sensor RSSI"
-    update_interval: 60s
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
     
   - platform: dht
-    pin: GPIO2
+    pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
     temperature:
-      name: "Loft Temperature"
+      name: ${upper_devicename} Temperature
     humidity:
-      name: "Loft Humidity"
-    update_interval: 60s
+      name: ${upper_devicename} Humidity
+    update_interval: 300s
     model: DHT22
