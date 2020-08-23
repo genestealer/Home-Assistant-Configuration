@@ -36,9 +36,10 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 | ![Diagram](https://raw.githubusercontent.com/genestealer/Home-Assistant-Configuration/master/esphome/images/busylight_controller.jpg)  | ![Diagram](https://raw.githubusercontent.com/genestealer/Home-Assistant-Configuration/master/esphome/images/busylight_light.jpg)  |
 
  - Doorbell with Neopixel LED buttons and external sounder bell. See [doorbell_controller.yaml](https://github.com/genestealer/Home-Assistant-Configuration/blob/master/esphome/doorbell_controller.yaml)
+ ![Diagram](https://raw.githubusercontent.com/genestealer/Home-Assistant-Configuration/master/esphome/images/doorbell.jpg)
  
  - Non-Invasive Power Meter for House Electricity with visible light phototransistor on LED of electricity meter. See [doorbell_controller.yaml](https://github.com/genestealer/Home-Assistant-Configuration/blob/master/esphome/doorbell_controller.yaml)
- 
+  ![Diagram](https://raw.githubusercontent.com/genestealer/Home-Assistant-Configuration/master/esphome/images/powermeter.jpg)
 
 ## Devices
 
