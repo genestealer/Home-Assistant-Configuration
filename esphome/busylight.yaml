@@ -21,56 +21,66 @@
 #     BusyLight Presence Indicator Controller via Home Assistant
 #   Outputs:
 #     NeoPixel, via Logic Level Converter as NeoPixel needs 5V and ESP8266 is 3.3V.
-#****************************************************
-
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: busylight01
+  upper_devicename: Busy Light 1
+  ip: 192.168.2.33
+  pass: hxN#^fPPv5ZRy%7l
+  
+####################################################
+# Shared code from all my projects
+####################################################
 esphome:
-  name: busylight01
+  name: $devicename
   platform: ESP8266
   board: huzzah
-
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
   manual_ip:
-    static_ip: 192.168.2.33
+    static_ip: $ip
     gateway: 192.168.2.1
     subnet: 255.255.255.0
 
-# Enable logging
-logger:
+logger: # Enable logging
 
-# Enable Home Assistant API
-api:
-  password: "hxN#^fPPv5ZRy%7l"
+api: # Enable Home Assistant API
+  password: $pass
 
-ota:
-  password: "hxN#^fPPv5ZRy%7l"
+ota: # Enable over the air updates
+  password: $pass
 
 status_led:
   pin: GPIO02
-  
+
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################  
 binary_sensor:
   - platform: status
-    name: "Busy Light 1 Status"
-
-sensor:
-  - platform: wifi_signal
-    name: "Busy Light 1 RSSI"
-    update_interval: 300s
+    name:  ${upper_devicename} Status
     
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "Busy Light 1 IP"
+      name: ${upper_devicename} IP
     ssid:
-      name: "Busy Light 1 SSID"
+      name: ${upper_devicename} SSID
     bssid:
-      name: "Busy Light 1 BSSID" 
+      name: ${upper_devicename} BSSID
 
+sensor:
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    
 light:
   - platform: neopixelbus
     method: ESP8266_UART1
     type: GRB
     pin: GPIO2
     num_leds: 1
-    name: "Busy Light 1"
+    name: ${upper_devicename}

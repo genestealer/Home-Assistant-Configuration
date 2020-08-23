@@ -1,59 +1,69 @@
+####################################################
+# Richard Huish 2020
+# https://github.com/genestealer/Home-Assistant-Configuration
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: indoor_plant_sensors
+  upper_devicename: Indoor Plant Sensors
+  ip: 192.168.2.29
+  pass: hxN#^fPPv5ZRy%7l
+  
+####################################################
+# Shared code from all my projects
+####################################################
 esphome:
-  name: indoor_plant_sensors
+  name: $devicename
   platform: ESP32
   board: lolin_d32
-
+  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
-
   manual_ip:
-    static_ip: 192.168.2.29
+    static_ip: $ip
     gateway: 192.168.2.1
     subnet: 255.255.255.0
 
+logger: # Enable logging
 
-# Enable logging
-logger:
+api: # Enable Home Assistant API
+  password: $pass
 
-# Enable Home Assistant API
-api:
-  password: "hxN#^fPPv5ZRy%7l"
-
-ota:
-  password: "hxN#^fPPv5ZRy%7l"
-
-
-
-
-
+ota: # Enable over the air updates
+  password: $pass
 
 status_led:
-  pin: GPIO5
-  
+  pin: GPIO5 # on-board LED
 
-    
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################
+binary_sensor: #Device online status reported back.
+  - platform: status
+    name: ${upper_devicename} Sensor Status
+
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "Indoor Plant Sensors IP"
+      name: ${upper_devicename} IP
     ssid:
-      name: "Indoor Plant Sensor SSID"
+      name: ${upper_devicename} SSID
     bssid:
-      name: "Indoor Plant Sensor Connected BSSID"
- 
+      name: ${upper_devicename} BSSID
 
 sensor:
   - platform: wifi_signal
-    name: "Indoor Plant Sensor RSSI"
-    update_interval: 60s
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
     
   # - platform: dht
   #   pin: GPIO4
   #   temperature:
-  #     name: "Indoor Plant Sensor Temperature"
+  #     name: ${upper_devicename} Temperature"
   #   humidity:
-  #     name: "Indoor Plant Sensor Humidity"
+  #     name: ${upper_devicename} Humidity"
   #   update_interval: 60s
   #   model: DHT11
 

@@ -53,18 +53,19 @@ sensor:
     name: ${upper_devicename} RSSI
     update_interval: 300s
     
-####################################################
-# Non-Invasive Power Meter for House Electricity
-# Uses SFH 314-2/3 Osram Opto, 80 ° Visible
-# Light NPN Phototransistor RS Stock No. 654-8851
-###
-# 3.3V wired to phototransistor Collector.
-# Phototransistor Emmitter wired to D7.
-# D7 is pulled to GND via 10K resistor.
-# When light phototransistor D7 becomes high.
-# When dark phototransistor D7 becomes low.
-####################################################
-# 1000 pulses from the LED should equal 1kWh
+    ####################################################
+    # Non-Invasive Power Meter for House Electricity
+    # Uses SFH 314-2/3 Osram Opto, 80 ° Visible
+    # Light NPN Phototransistor RS Stock No. 654-8851
+    ###
+    # 3.3V wired to phototransistor Collector.
+    # Phototransistor Emmitter wired to D7.
+    # D7 is pulled to GND via 10K resistor.
+    # When light phototransistor D7 becomes high.
+    # When dark phototransistor D7 becomes low.
+    ####################################################
+    # 1000 pulses from the LED should equal 1kWh
+    ####################################################
   - platform: pulse_counter
     pin:
      number: D7 # GPIO13
@@ -79,7 +80,7 @@ sensor:
 ####################################################
 # Doorbell button with LEDs and relay output to bell
 ####################################################
-# Doorbell Button Lights
+# Neopixel Doorbell Button Lights
 light:
   - platform: neopixelbus
     method: ESP8266_UART1
@@ -113,15 +114,16 @@ light:
           add_led_interval: 100ms
           reverse: False
 
-# Doorbell relay output
 switch:
+  # Doorbell relay output, pull low (to GND) to switch relay on.
   - platform: gpio
     pin: 
       number: D1 # GPIO05
       mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
       inverted: true
     id: bellRelay
-    
+  
+  #Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
   - platform: template
     name: "Doorbell Ringer"
     icon: "mdi:alarm-bell"
@@ -150,7 +152,7 @@ binary_sensor:
       inverted: true
     name: "Action by CCTV"
   
-  # Doorbell button sensor  
+  # Doorbell button sensor and actions to make the doorbell sounder activate.
   - platform: gpio
     pin:
       number: D2 # GPIO04
