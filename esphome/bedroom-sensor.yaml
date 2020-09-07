@@ -63,5 +63,5 @@ sensor:
       name: ${upper_devicename} Temperature
     humidity:
       name: ${upper_devicename} Humidity
-    update_interval: 300s
+    update_interval: 6s
     model: DHT22

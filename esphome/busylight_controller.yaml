@@ -40,6 +40,16 @@ esphome:
   name: $devicename
   platform: ESP8266
   board: huzzah
+
+  # on_boot:
+  #   priority: -100
+  #   then:
+  #     - sensor.template.publish:
+  #         id: template_state_number
+  #         state: "3"
+  #     - text_sensor.template.publish:
+  #         id: selected_state_text
+  #         state: "Away"
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
@@ -47,6 +57,7 @@ wifi:
     static_ip: $ip
     gateway: 192.168.2.1
     subnet: 255.255.255.0
+
 
 logger: # Enable logging
 

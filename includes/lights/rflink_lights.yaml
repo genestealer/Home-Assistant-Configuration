@@ -17,7 +17,7 @@
 - platform: rflink
   device_defaults:
     fire_event: true
-    signal_repetitions: 3
+    signal_repetitions: 5
   devices:
     Maclean_0d52_04:
       name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
@@ -48,7 +48,7 @@
 # 433MHz Christmas Lights
 - platform: rflink
   device_defaults:
-    signal_repetitions: 3
+    signal_repetitions: 5
     # fire_event: true
   devices:
     # RFCustom_524643_6: # Status RCS-K09

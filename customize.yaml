@@ -281,3 +281,7 @@ device_tracker.tile_68e86c68fbc39631:
   friendly_name: Richard's Ford Keys
 device_tracker.tile_b9471611824e0154:
   friendly_name: Mark's Garage Keys
+switch.plug_in_air_freshener_1:
+  icon: mdi:spray
+switch.plug_in_air_freshener_2:
+  icon: mdi:spray

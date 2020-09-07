@@ -332,47 +332,69 @@
     times. Also turns back on after returning home.
   trigger:
   - entity_id: person.lucy
-    for: 00:05:00
+    for: 00:10:00
     from: not_home
     platform: state
     to: home
   - at: '10:01:00'
     platform: time
   - entity_id: person.richard
-    for: 00:05:00
+    for: 00:10:00
     from: not_home
     platform: state
     to: home
   condition:
-  - after: '10:00:00'
-    before: '18:00:00'
-    condition: time
-  - condition: state
-    entity_id: input_boolean.plugin_air_freshener_enable
-    state: 'on'
+  - condition: and
+    conditions:
+    - after: '10:00:00'
+      before: '18:00:00'
+      condition: time
+    - condition: state
+      entity_id: input_boolean.plugin_air_freshener_enable
+      state: 'on'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: person.richard
+        state: home
+      - condition: state
+        entity_id: person.lucy
+        state: home
   action:
-  - entity_id: switch.plug_in_air_freshener
-    service: homeassistant.turn_on
+  - data: {}
+    entity_id: switch.plug_in_air_freshener_1
+    service: switch.turn_on
+  - data: {}
+    entity_id: switch.plug_in_air_freshener_2
+    service: switch.turn_on
   - data:
       message: Plug in air freshener turned on
     service: notify.google_cloud_notify
+  mode: single
 - id: '1576601191279'
   alias: Plug-in Air Freshener Stop
   description: Turn off in the evening or when no one is home.
   trigger:
   - at: '18:00:00'
     platform: time
-  - entity_id: group.mobiles_group
+  - entity_id: person.richard
+    from: home
+    platform: state
+    to: not_home
+  - entity_id: person.lucy
     from: home
     platform: state
     to: not_home
   condition: []
   action:
-  - entity_id: switch.plug_in_air_freshener
-    service: homeassistant.turn_off
+  - entity_id: switch.plug_in_air_freshener_1
+    service: switch.turn_off
+  - entity_id: switch.plug_in_air_freshener_2
+    service: switch.turn_off
   - data:
       message: Plug in air freshener turned on
     service: notify.google_cloud_notify
+  mode: single
 - id: '1576601770197'
   alias: Welcome home Lucy
   description: 'Note: These actions can only be edited with YAML'
@@ -663,18 +685,23 @@
     service: notify.pushover_notify_doorbell
 - id: '1587600361094'
   alias: Busylight Controller Away Button Pressed
-  description: ''
+  description: Set to turn off lights when controller goes offline
   trigger:
   - device_id: 90dc8f86fc67483880990d09cd5cf02c
     domain: binary_sensor
-    entity_id: binary_sensor.button_away
+    entity_id: binary_sensor.busy_light_controller_status
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
     platform: device
-    type: turned_on
+    type: not_connected
   condition: []
   action:
   - data: {}
     entity_id: script.1586361703646
     service: script.turn_on
+  mode: single
 - id: '1590103997253'
   alias: 'Server Getting Hot '
   description: ''
