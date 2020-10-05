@@ -857,13 +857,13 @@
   trigger:
   - type: motion
     platform: device
-    device_id: ccc09be601b711eb9a44ef615b04224f
-    entity_id: binary_sensor.p3364_l_1_vmd4_camera1profile2
+    device_id: bafbbdad065c11ebb103a1a52230f009
+    entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
     domain: binary_sensor
   - type: motion
     platform: device
-    device_id: 22ebcf6c4968442fb0bd2876fb7bcfa2
-    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile2
+    device_id: 99689212065c11ebbd2ecbef1587dfe1
+    entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
   condition: []
   action:
