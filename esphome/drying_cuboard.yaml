@@ -51,5 +51,5 @@ sensor:
       name: "Drying Cuboard Temperature"
     humidity:
       name: "Drying Cuboard Humidity"
-    update_interval: 60s
+    update_interval: 300s
     model: DHT11

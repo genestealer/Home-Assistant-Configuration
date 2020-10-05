@@ -28,13 +28,17 @@
       name: Wax Melter
     # RFCustom_524643_4: # Status RCS-K09
     #   name: Plug-In Air Freshener
-    Maclean_0d85_01: #
+
+    # Maclean_0d85_01: #
+    Eurodomest_0d25be_01: #
       name: Plug-In Air Freshener 1
     # ev1527_05d797_0e:
+
     #   name: Front Door Sensor
     tristate_0aaaa0_0:
       name: Smoke Machine
-    Eurodomest_0d25be_00: # Energenie MIHO002 plug in stockets
+
+    Eurodomest_0d25be_00: # Energenie MIHO002 plug in socket
        name: Plug-In Air Freshener 2
        signal_repetitions: 8 # It takes a few tried
 
@@ -51,7 +55,15 @@
     #   # 20;4F;ElroDB;ID=224c562b;SWITCH=1;CMD=ON;CHIME=01;
     #    # 20;55;FA500;ID=0000895f;SWITCH=04;CMD=OFF;
 
-
+# Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
+# Will genirate a 20;xx;CMD UNKNOWN; reponce 
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 1
+    fire_event: false
+  devices:
+    fake_fake_0:
+        name: RFLink Fake Keep Alive Switch
 
 
     

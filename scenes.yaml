@@ -1,3 +1,11 @@
 - id: '1593956401387'
   name: TEST
   entities: {}
+- id: '1601166654813'
+  name: New Scene
+  entities:
+    light.richard_bed:
+      brightness: 67
+      friendly_name: Richard Bed
+      supported_features: 33
+      state: 'on'

@@ -1,0 +1,18 @@
+############################################################
+#
+# Binary TCP Sensors
+#
+############################################################
+
+
+
+# Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
+# - platform: tcp
+#   name: RFLink Keep Alive TCP
+#   host: !secret RF_Link_IP
+#   port: !secret RF_Link_Port
+#   payload: '10;PING'
+#   # value_on: 1
+#   # value_template: '{{ value }}'
+#   scan_interval: 15  #not sure if this works?
+#   value_template: "{{ value.split(';')[2] }}"

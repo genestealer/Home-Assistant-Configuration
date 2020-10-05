@@ -392,7 +392,7 @@
   - entity_id: switch.plug_in_air_freshener_2
     service: switch.turn_off
   - data:
-      message: Plug in air freshener turned on
+      message: Plug in air freshener turned off
     service: notify.google_cloud_notify
   mode: single
 - id: '1576601770197'
@@ -674,15 +674,16 @@
       title: Doorbell Alert☣️
     service: notify.pushover_notify_doorbell
   - data:
-      entity_id: camera.front_door
       filename: /config/www/tmp/front_door.jpg
     service: camera.snapshot
+    entity_id: camera.front_door_11
   - data:
       data:
         attachment: /config/www/tmp/front_door.jpg
       message: Photo of the infectious!
       title: Doorbell CCTV Photo
     service: notify.pushover_notify_doorbell
+  mode: single
 - id: '1587600361094'
   alias: Busylight Controller Away Button Pressed
   description: Set to turn off lights when controller goes offline
@@ -730,7 +731,7 @@
     service: notify.pushover_notify
   - data:
       filename: /config/www/tmp/drive.jpg
-    entity_id: camera.p3364_l_0
+    entity_id: camera.drive_high_16
     service: camera.snapshot
   - data:
       data:
@@ -743,9 +744,12 @@
       entity_id: media_player.whole_house
       message: Parcel box has just been opened
     service: tts.google_say
+  mode: single
 - id: '1592498327466'
   alias: House Doorbell Button Local Notify
-  description: ''
+  description: CCTV needs to have anonymous viewer enabled or I need to pass the username
+    in the media_content_id. Note, during testing you need to turn off the media_player
+    device after each test, else is will not show the video again.
   trigger:
   - device_id: b03ab12c707340e8849888171a79caed
     domain: binary_sensor
@@ -792,3 +796,108 @@
       entity_id: media_player.garage
       message: Ding! Dong! Someone is at the door
     service: tts.google_say
+  mode: single
+- id: '1601035873447'
+  alias: Secondary Zone Failure
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.google_maps_113691586554404814686
+    zone: zone.outer_perimeter
+    event: enter
+  condition: []
+  action:
+  - service: notify.google_cloud_notify
+    data:
+      message: Secondary zone failure
+  - service: notify.pushover_notify
+    data:
+      message: Secondary zone failure
+      title: Secondary zone failure
+      data:
+        sound: tugboat
+        priority: 0
+  - data:
+      cache: false
+      entity_id: media_player.whole_house
+      message: Notice! Secondary Zone Failure!
+    service: tts.google_say
+  mode: single
+- id: '1601037277352'
+  alias: Primary Zone Failure
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: device_tracker.google_maps_113691586554404814686
+    zone: zone.inner_perimeter
+    event: enter
+  condition: []
+  action:
+  - service: notify.google_cloud_notify
+    data:
+      message: Primary zone failure
+  - service: notify.pushover_notify
+    data:
+      message: Primary zone failure
+      title: Primary zone failure
+      data:
+        sound: alien
+        priority: 1
+  - data:
+      cache: false
+      entity_id: media_player.whole_house
+      message: ALERT:Warning! Primary Zone Failure! Warning! Primary Zone Failure!
+        Warning! Primary Zone Failure! Close the fucking doors and windows for the
+        love of bunnies hide!
+    service: tts.google_say
+  mode: single
+- id: '1601317646616'
+  alias: Front Lawn Anti Cat Defences
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: ccc09be601b711eb9a44ef615b04224f
+    entity_id: binary_sensor.p3364_l_1_vmd4_camera1profile2
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 22ebcf6c4968442fb0bd2876fb7bcfa2
+    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile2
+    domain: binary_sensor
+  condition: []
+  action:
+  - delay: 00:00:05
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.front_garden_lawn_irrigation_valve
+  - delay: 00:00:06
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.front_garden_lawn_irrigation_valve
+  mode: single
+- id: '1601593330216'
+  alias: House Doorbell Button Local Notify (Duplicate)
+  description: 'CCTV needs to have anonymous viewer enabled or I need to pass the
+    username in the media_content_id:'
+  trigger: []
+  condition: []
+  action:
+  - service: camera.play_stream
+    data:
+      media_player: media_player.office_display
+    entity_id: camera.front_door_p3364_l
+  mode: single
+- id: '1601593900895'
+  alias: House Doorbell Button Local Notify (Duplicate) (Duplicate)
+  description: 'CCTV needs to have anonymous viewer enabled or I need to pass the
+    username in the media_content_id:'
+  trigger: []
+  condition: []
+  action:
+  - data:
+      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+      media_content_type: image/jpg
+    entity_id: media_player.kitchen_display
+    service: media_player.play_media
+  mode: single

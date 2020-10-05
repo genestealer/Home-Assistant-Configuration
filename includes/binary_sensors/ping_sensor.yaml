@@ -46,7 +46,7 @@
     host: !secret axis_garage2_IP
     scan_interval: 30
 
-# Garden CCTV 2
+# Garden CCTV
   - platform: ping
     name: "Garden CCTV Online"
     host: !secret axis_garden_IP

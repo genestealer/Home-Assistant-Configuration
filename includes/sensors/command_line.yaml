@@ -10,3 +10,26 @@
   # If errors occur, make sure configuration file is encoded as UTF-8
   unit_of_measurement: "°C"
   value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+  #I have not worked out yet how to get the responce back and process that into a true/false value.
+- platform: command_line
+  name: RFLink Keep Alive Command
+  command: 'echo "10;PING;" | nc 192.168.2.22 23'
+  scan_interval: 60 #seconds
+  # value_template: "{{ value.split(';')[2] }}"
+  
+#   # device_class: connectivity
+#   # value_template: '{{ value }}'
+#     # payload_on: 'active'
+#   # payload_off: 'inactive'
+
+
+# - platform: command_line
+#   name: rflink_ping_command_sensor
+#   command: 'echo "10;PING;" | nc 192.168.2.22 23'
+#   value_template: '{{ value }}'
+#   scan_interval: 20
+
+# # - platform: command_line
+# #   name: rflink_ping2
+# #   command: 'echo "10;PING;" | /bin/nc -N 192.168.2.22 23'

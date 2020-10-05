@@ -182,7 +182,7 @@ logger:
   default: error
   logs:
     requests.packages.urllib3.connectionpool: critical
-    rflink.protocol: fatal
+    rflink.protocol: error #fatal
     homeassistant.components.sensor.plex: fatal
     urllib3.connectionpool: error
     homeassistant.components.recorder: fatal
@@ -264,6 +264,9 @@ device_tracker:
   - platform: google_maps # Elements per day’ to a limit of 645.
     username: !secret google_maps_username
 
+  - platform: google_maps # Elements per day’ to a limit of 645.
+    username: !secret google_maps_username2
+
 # Moved to integrations UI from Rev 0.112
   # - platform: tile
   #   username: !secret tile_username
@@ -286,6 +289,9 @@ ifttt:
   key: !secret ifttt_key
 
 # RFLink gateway integration, via ethernet bridge.
+#     Try socat pty,link=/config/serialport-rflink,echo=0 tcp:x.x.x.x:xxxx,forever,reuseaddr,keepalive,keepidle=10,keepintvl=10,keepcnt=2
+#       https://github.com/home-assistant/core/issues/23577
+#         Will not work, as socat is not in HASSIO!
 rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port

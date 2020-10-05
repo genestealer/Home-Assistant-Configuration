@@ -32,3 +32,8 @@
 # #Working backup upgrade_hass: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh </dev/null >> /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.log 2>&1 &
 # # Note path to includes would have to be updated to match any changes to configuration location. This is a bug: https://community.home-assistant.io/t/using-secrets-yaml-with-shell-commands/4478
 # #update_and_restart_hass_with_logging: /bin/bash /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.sh </dev/null >> /home/homeassistant/.homeassistant/includes/shell_scripts/update_hass.log 2>&1 &
+
+# Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
+rflink_ping: 'echo "10;PING;" | nc 192.168.2.22 23'  #This works!
+
+rflink_dim_kitchen_lights: 'echo "10;Ansluta;ce30;0;SET_LEVEL=8;" | nc 192.168.2.22 23'

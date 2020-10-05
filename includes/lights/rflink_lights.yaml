@@ -89,6 +89,22 @@
       # type: hybrid # Ikea Ansluta have two brightness modes. Note hybrid is not compatible with signal repetition.
 
 
+
+# # Workaround for dimming the Ikea Ansluta lgiths
+# Moved to a script to turn them on first
+# - platform: template
+#   lights:
+#     kitchen_lights:
+#       friendly_name: "Kitchen Under Counter Lights 2"
+#       turn_on:
+#         service: light.turn_on
+#         entity_id: light.kitchen_under_counter_lights
+#       turn_off:
+#         service: light.turn_off
+#         entity_id: light.kitchen_under_counter_lights
+#       set_level:
+#         service: shell_command.rflink_dim_kitchen_lights
+
 ###############################################
 # Energenie MIHO003 Hand Controller, scan capture 
 # Button   On Command                                   Off Command

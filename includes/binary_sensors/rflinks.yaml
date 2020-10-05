@@ -20,6 +20,6 @@
       device_class: opening
       off_delay: 4
       force_update: true
-    # aliases:
-    #   - eurodomest_2a2868_01
+      aliases:
+        - ev1527_01e9f5_07
 

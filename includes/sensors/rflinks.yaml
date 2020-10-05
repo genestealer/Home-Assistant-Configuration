@@ -42,3 +42,16 @@
       friendly_name: 'House Wattage'
       unit_of_measurement: 'kW'
       availability_template: "{% if is_state('binary_sensor.esp_link_status',  'on' and states('binary_sensor.usp_network_online')) %} true {% endif %}"
+
+
+
+# # Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
+# - platform: tcp
+#   name: RFLink Keep Alive TCP
+#   host: !secret RF_Link_IP
+#   port: !secret RF_Link_Port
+#   payload: '10;PING'
+#   # value_on: 1
+#   # value_template: '{{ value }}'
+#   scan_interval: 18  #not sure if this works?
+#   value_template: "{{ value.split(';')[2] }}"

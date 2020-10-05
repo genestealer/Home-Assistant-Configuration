@@ -364,3 +364,12 @@ bathroom_towel_rail_timer:
     service: light.turn_off
   - entity_id: light.busy_light_2
     service: light.turn_off
+turn_on_then_dim_kitchen_under_counter_lights:
+  alias: Kitchen Lights Night Mode
+  sequence:
+  - service: light.turn_on
+    data: {}
+    entity_id: light.kitchen_under_counter_lights
+  - service: shell_command.rflink_dim_kitchen_lights
+    data: {}
+  mode: single

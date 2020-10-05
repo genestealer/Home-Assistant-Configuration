@@ -4,43 +4,43 @@
 #
 ############################################################
 
-- platform: mjpeg
-  mjpeg_url: !secret axis_front_door_ip_mjpg
-  name: Front Door
-  username: !secret axis_front_door_username
-  password: !secret axis_front_door_password
+# - platform: mjpeg
+#   mjpeg_url: !secret axis_front_door_ip_mjpg
+#   name: Front Door
+#   username: !secret axis_front_door_username
+#   password: !secret axis_front_door_password
 
-- platform: generic
-  still_image_url: axis_front_door_ip_still
-  stream_source: !secret axis_front_door_stream_source
-  name: Front Door Generic
-  username: !secret axis_front_door_username
-  password: !secret axis_front_door_password
+# - platform: generic
+#   still_image_url: axis_front_door_ip_still
+#   stream_source: !secret axis_front_door_stream_source
+#   name: Front Door Generic
+#   username: !secret axis_front_door_username
+#   password: !secret axis_front_door_password
 
-- platform: mjpeg
-  mjpeg_url: !secret axis_front_drive_IP_mjpg
-  name: Front of House
-  username: !secret axis_front_drive_username
-  password: !secret axis_front_drive_password
+# - platform: mjpeg
+#   mjpeg_url: !secret axis_front_drive_IP_mjpg
+#   name: Front of House
+#   username: !secret axis_front_drive_username
+#   password: !secret axis_front_drive_password
 
 
-- platform: mjpeg
-  mjpeg_url: !secret axis_garage_IP_mjpg
-  name: Garage
-  username: !secret axis_garage_username
-  password: !secret axis_garage_password
+# - platform: mjpeg
+#   mjpeg_url: !secret axis_garage_IP_mjpg
+#   name: Garage
+#   username: !secret axis_garage_username
+#   password: !secret axis_garage_password
 
-- platform: mjpeg
-  mjpeg_url: !secret axis_garage2_IP_mjpg
-  name: Garage 2
-  username: !secret axis_garage2_username
-  password: !secret axis_garage2_password
+# - platform: mjpeg
+#   mjpeg_url: !secret axis_garage2_IP_mjpg
+#   name: Garage 2
+#   username: !secret axis_garage2_username
+#   password: !secret axis_garage2_password
 
-- platform: mjpeg
-  mjpeg_url: !secret axis_garden_IP_mjpg
-  name: Garden
-  username: !secret axis_garden_username
-  password: !secret axis_garden_password
+# - platform: mjpeg
+#   mjpeg_url: !secret axis_garden_IP_mjpg
+#   name: Garden
+#   username: !secret axis_garden_username
+#   password: !secret axis_garden_password
 
 - platform: mjpeg
   mjpeg_url: !secret Bunny_CCTV_mjpg
