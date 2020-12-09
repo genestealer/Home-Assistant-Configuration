@@ -13,7 +13,7 @@
 ############################################################
 
 
-# 433MHz Lights
+# 433MHz Maclean Plug in sockets conected to lights
 - platform: rflink
   device_defaults:
     fire_event: true
@@ -23,8 +23,12 @@
       name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
     Maclean_0d82_03:
       name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
-    Maclean_0d85_04:
-      name: Living Room Bookcase Light
+    # Maclean_0d85_02:
+    #   name: Christmas Guest Bedroom Star
+    # Maclean_0d82_02:
+    #   name: Christmas Living Room Star
+#    Maclean_0d85_04:
+#      name: Living Room Bookcase Light
 
 # 433MHz Energenie Lights
 - platform: rflink
@@ -44,13 +48,37 @@
       name: 'Upstairs Hall Light'
     Eurodomest_02940f_03: # Energenie MIHO026 one gang light switch
       name: 'Living Room Ceiling Light'
+    Eurodomest_061e5d_00: # Energenie MIHO026 one gang light switch
+      name: 'Guest Bedroom Ceiling Light'
+    Eurodomest_061e5d_01: # Energenie MIHO026 one gang light switch
+      name: 'Bedroom Ceiling Light'
 
-# 433MHz Christmas Lights
+
+# 433MHz UK branded as Silvercrest 303937 switch range is 0 to 4 with 00 being all off.
 - platform: rflink
   device_defaults:
-    signal_repetitions: 5
+    signal_repetitions: 10
     # fire_event: true
   devices:
+    Unitec_9573_01:
+      name: Christmas Garden Lights
+    Unitec_9573_02:
+      name: Christmas Bedroom Star
+    Unitec_9573_03: 
+      name: Christmas Tree Lights
+    Unitec_9573_04:
+      name: Christmas Library Star
+    Unitec_42d7_01:
+      name: Christmas Guest Bedroom Star
+    Unitec_42d7_02:
+      name: Christmas Living Room Star
+
+
+
+
+    # Maclean_0d85_01:
+    #   name: Christmas Mess Room Star
+
     # RFCustom_524643_6: # Status RCS-K09
     #   name: Christmas Garden Lights
     # RFCustom_524643_8: # Status RCS-K09
@@ -59,18 +87,6 @@
     #   name: Christmas Garden Lights
     # RFCustom_524643_0: # Status RCS-K09
     #   name: Christmas Master Bedroom Star
-    Unitec_9573_01: # UK branded as Silvercrest 303937
-      name: Christmas Garden Lights
-    Unitec_9573_02: # UK branded as Silvercrest 303937
-      name: Christmas Bedroom Star
-    Maclean_0d82_02:
-      name: Christmas Living Room Star
-    Unitec_9573_03: # UK branded as Silvercrest 303937
-      name: Christmas Tree Bling
-    # Maclean_0d85_01:
-    #   name: Christmas Mess Room Star
-    Maclean_0d85_02:
-      name: Christmas Guest Bedroom Star
 
 
 
@@ -80,7 +96,7 @@
 # 2.4GHz Lights
 - platform: rflink
   device_defaults:
-    signal_repetitions: 3
+    signal_repetitions: 5
     fire_event: true
   devices:
     ansluta_ce30_0:

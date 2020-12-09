@@ -16,7 +16,7 @@
 # 433MHz switchs
 - platform: rflink
   device_defaults:
-    signal_repetitions: 3
+    signal_repetitions: 10
     fire_event: true
   devices:
     EMW100_a140_0: # Ikea ANSLUTA E1202
@@ -28,32 +28,14 @@
       name: Wax Melter
     # RFCustom_524643_4: # Status RCS-K09
     #   name: Plug-In Air Freshener
-
-    # Maclean_0d85_01: #
-    Eurodomest_0d25be_01: #
-      name: Plug-In Air Freshener 1
-    # ev1527_05d797_0e:
-
-    #   name: Front Door Sensor
     tristate_0aaaa0_0:
       name: Smoke Machine
-
+    Eurodomest_0d25be_01: # Energenie MIHO002 plug in socket
+      name: Plug-In Air Freshener 1
     Eurodomest_0d25be_00: # Energenie MIHO002 plug in socket
-       name: Plug-In Air Freshener 2
-       signal_repetitions: 8 # It takes a few tried
+      name: Plug-In Air Freshener 2
 
-    # chuango_103d16_02:
-    #   name: 433 next door doorbell
-    # chuango_351536_02:
-    #   name: 433 may also next door doorbell 1
-    # chuango_6a2a6c_02:
-    #   name: 433 may also next door doorbell 2
-    # conrad_95d593_06:
-    #   name: 433 may also next door doorbell 3
-    # elrodb_224c562b_1:
-    #   name: 433 Someones doorbell
-    #   # 20;4F;ElroDB;ID=224c562b;SWITCH=1;CMD=ON;CHIME=01;
-    #    # 20;55;FA500;ID=0000895f;SWITCH=04;CMD=OFF;
+
 
 # Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
 # Will genirate a 20;xx;CMD UNKNOWN; reponce 

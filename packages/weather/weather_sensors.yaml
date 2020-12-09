@@ -1,0 +1,272 @@
+#============
+#=== Sensors
+#============
+####################################################
+# WIND COMPASS                                     #
+####################################################
+sensor:
+  - platform: rflink
+    devices:
+      alectov5_00a3_rain:
+        sensor_type: light_intensity
+        name: 'Local Light Intensity'    
+
+      alectov5_00a3_temp:
+        sensor_type: uv_intensity
+        name: 'Local UV Intensity'
+
+      dkw2012_001c_windir:
+        sensor_type: winddirection
+        name: 'Local Wind Direction'
+        
+      dkw2012_001c_winsp:
+        sensor_type: windspeed
+        name: 'Local Wind Speed'
+        
+      dkw2012_001c_wings:
+        sensor_type: windgusts
+        name: 'Local Wind Speed Gusts'        
+   
+      dkw2012_001c_rain:
+        sensor_type: total_rain
+        name: 'Local Total Rain'
+
+      alectov5_00a3_bat:
+        sensor_type: battery
+        name: 'Weather Station Battery'
+
+      dkw2012_001c_temp:
+        sensor_type: temperature
+        name: 'Local Outside Temperature'
+
+      dkw2012_001c_hum:
+        sensor_type: humidity
+        name: 'Local Outside Humidity'
+
+
+  - platform: statistics
+    name: Local Rain 24 Hours Statistics
+    entity_id: sensor.local_total_rain
+    sampling_size: 4320 # Enough for 3 readings a minute
+    max_age:
+      hours: 24
+
+  - platform: template
+    sensors:
+      template_rain_last_24_hours:
+        friendly_name: "Local Rain 24 Hours"
+        unit_of_measurement: 'mm'
+        value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics', 'change') }}"
+        
+        
+  # - platform: template
+  #   sensors: 
+  #     wind_compass_abbreviation:
+  #       value_template: >-
+  #         {% if 354.38 <= states('sensor.weather_wind_direction')|float <= 5.62 %}
+  #            N
+  #         {% elif 5.63 <= states('sensor.weather_wind_direction')|float <= 16.87 %}
+  #            NbE
+  #         {% elif 16.88 <= states('sensor.weather_wind_direction')|float <= 28.12 %}
+  #            NNE
+  #         {% elif 28.13 <= states('sensor.weather_wind_direction')|float <= 39.37 %}
+  #            NEbN
+  #         {% elif 39.38 <= states('sensor.weather_wind_direction')|float <= 50.62 %}
+  #            NE
+  #         {% elif 50.63 <= states('sensor.weather_wind_direction')|float <= 61.87 %}
+  #            NEbE
+  #         {% elif 61.88 <= states('sensor.weather_wind_direction')|float <= 73.12 %}
+  #            ENE
+  #         {% elif 73.13 <= states('sensor.weather_wind_direction')|float <= 84.37 %}
+  #            EbN
+  #         {% elif 84.38 <= states('sensor.weather_wind_direction')|float <= 95.62 %}
+  #            E
+  #         {% elif 95.63 <= states('sensor.weather_wind_direction')|float <= 106.87 %}
+  #            EbS
+  #         {% elif 106.88 <= states('sensor.weather_wind_direction')|float <= 118.12 %}
+  #            ESE
+  #         {% elif 118.13 <= states('sensor.weather_wind_direction')|float <= 129.37 %}
+  #            SEbE
+  #         {% elif 129.38 <= states('sensor.weather_wind_direction')|float <= 140.62 %}
+  #            SE
+  #         {% elif 140.63 <= states('sensor.weather_wind_direction')|float <= 151.87 %}
+  #            SEbS
+  #         {% elif 151.88 <= states('sensor.weather_wind_direction')|float <= 163.12 %}
+  #            SSE
+  #         {% elif 163.13 <= states('sensor.weather_wind_direction')|float <= 174.37 %}
+  #            SbE
+  #         {% elif 174.38 <= states('sensor.weather_wind_direction')|float <= 185.62 %}
+  #            S
+  #         {% elif 185.63 <= states('sensor.weather_wind_direction')|float <= 196.87 %}
+  #            SbW
+  #         {% elif 196.88 <= states('sensor.weather_wind_direction')|float <= 208.12 %}
+  #            SSW
+  #         {% elif 208.13 <= states('sensor.weather_wind_direction')|float <= 219.37 %}
+  #            SWbS
+  #         {% elif 219.38 <= states('sensor.weather_wind_direction')|float <= 230.62 %}
+  #            SW
+  #         {% elif 230.63 <= states('sensor.weather_wind_direction')|float <= 241.87 %}
+  #            SWbW
+  #         {% elif 241.88 <= states('sensor.weather_wind_direction')|float <= 253.12 %}
+  #            WSW
+  #         {% elif 253.13 <= states('sensor.weather_wind_direction')|float <= 264.37 %}
+  #            WbS
+  #         {% elif 264.38 <= states('sensor.weather_wind_direction')|float <= 275.62 %}
+  #            W
+  #         {% elif 275.63 <= states('sensor.weather_wind_direction')|float <= 286.87 %}
+  #            WbN
+  #         {% elif 286.88 <= states('sensor.weather_wind_direction')|float <= 298.12 %}
+  #            WNW
+  #         {% elif 298.13 <= states('sensor.weather_wind_direction')|float <= 309.37 %}
+  #            NWbW
+  #         {% elif 309.38 <= states('sensor.weather_wind_direction')|float <= 320.62 %}
+  #            NW
+  #         {% elif 320.63 <= states('sensor.weather_wind_direction')|float <= 331.87 %}
+  #            NWbN
+  #         {% elif 331.88 <= states('sensor.weather_wind_direction')|float <= 343.12 %}
+  #            NNW
+  #         {% elif 343.13 <= states('sensor.weather_wind_direction')|float <= 354.37 %}
+  #            NbW
+  #         {% endif %}
+
+  # - platform: template
+  #   sensors: 
+  #     wind_compass_point:
+  #       value_template: >-
+  #         {% if 354.38 <= states('sensor.weather_wind_direction')|float <= 5.62 %}
+  #            North 
+  #         {% elif 5.63 <= states('sensor.weather_wind_direction')|float <= 16.87 %}
+  #            North by east 
+  #         {% elif 16.88 <= states('sensor.weather_wind_direction')|float <= 28.12 %}
+  #            North-northeast
+  #         {% elif 28.13 <= states('sensor.weather_wind_direction')|float <= 39.37 %}
+  #            Northeast by north
+  #         {% elif 39.38 <= states('sensor.weather_wind_direction')|float <= 50.62 %}
+  #            Northeast
+  #         {% elif 50.63 <= states('sensor.weather_wind_direction')|float <= 61.87 %}
+  #            Northeast by east 
+  #         {% elif 61.88 <= states('sensor.weather_wind_direction')|float <= 73.12 %}
+  #            East-northeast 
+  #         {% elif 73.13 <= states('sensor.weather_wind_direction')|float <= 84.37 %}
+  #            East by north 
+  #         {% elif 84.38 <= states('sensor.weather_wind_direction')|float <= 95.62 %}
+  #            East 
+  #         {% elif 95.63 <= states('sensor.weather_wind_direction')|float <= 106.87 %}
+  #            East by south
+  #         {% elif 106.88 <= states('sensor.weather_wind_direction')|float <= 118.12 %}
+  #            East-southeast 
+  #         {% elif 118.13 <= states('sensor.weather_wind_direction')|float <= 129.37 %}
+  #            Southeast by east
+  #         {% elif 129.38 <= states('sensor.weather_wind_direction')|float <= 140.62 %}
+  #            Southeast
+  #         {% elif 140.63 <= states('sensor.weather_wind_direction')|float <= 151.87 %}
+  #            Southeast by south
+  #         {% elif 151.88 <= states('sensor.weather_wind_direction')|float <= 163.12 %}
+  #            South-southeast 
+  #         {% elif 163.13 <= states('sensor.weather_wind_direction')|float <= 174.37 %}
+  #            South by east
+  #         {% elif 174.38 <= states('sensor.weather_wind_direction')|float <= 185.62 %}
+  #            South
+  #         {% elif 185.63 <= states('sensor.weather_wind_direction')|float <= 196.87 %}
+  #            South by west 
+  #         {% elif 196.88 <= states('sensor.weather_wind_direction')|float <= 208.12 %}
+  #            South-southwest
+  #         {% elif 208.13 <= states('sensor.weather_wind_direction')|float <= 219.37 %}
+  #            Southwest by south
+  #         {% elif 219.38 <= states('sensor.weather_wind_direction')|float <= 230.62 %}
+  #            Southwest
+  #         {% elif 230.63 <= states('sensor.weather_wind_direction')|float <= 241.87 %}
+  #            Southwest by west
+  #         {% elif 241.88 <= states('sensor.weather_wind_direction')|float <= 253.12 %}
+  #            West-southwest 
+  #         {% elif 253.13 <= states('sensor.weather_wind_direction')|float <= 264.37 %}
+  #            West by south 
+  #         {% elif 264.38 <= states('sensor.weather_wind_direction')|float <= 275.62 %}
+  #            West
+  #         {% elif 275.63 <= states('sensor.weather_wind_direction')|float <= 286.87 %}
+  #            West by north
+  #         {% elif 286.88 <= states('sensor.weather_wind_direction')|float <= 298.12 %}
+  #            West-northwest
+  #         {% elif 298.13 <= states('sensor.weather_wind_direction')|float <= 309.37 %}
+  #            Northwest by west
+  #         {% elif 309.38 <= states('sensor.weather_wind_direction')|float <= 320.62 %}
+  #            Northwest 
+  #         {% elif 320.63 <= states('sensor.weather_wind_direction')|float <= 331.87 %}
+  #            Northwest by north
+  #         {% elif 331.88 <= states('sensor.weather_wind_direction')|float <= 343.12 %}
+  #            North-northwest
+  #         {% elif 343.13 <= states('sensor.weather_wind_direction')|float <= 354.37 %}
+  #            North by west
+  #         {% endif %}
+
+  #     wind_compass: 
+  #       friendly_name: "Wind direction"
+  #       value_template: '{{ states.sensor.weather_wind_direction.state }}'
+  #       friendly_name_template: "Wind direction - {{ states.sensor.wind_compass_point.state }}"
+  #       unit_of_measurement: '°'
+  #       entity_picture_template: >-
+  #         {% if 354.38 <= states('sensor.weather_wind_direction')|float <= 5.62 %}
+  #            /local/Pictures/WindCompass/0.png
+  #         {% elif 5.63 <= states('sensor.weather_wind_direction')|float <= 16.87 %}
+  #             /local/Pictures/WindCompass/11.png
+  #         {% elif 16.88 <= states('sensor.weather_wind_direction')|float <= 28.12 %}
+  #             /local/Pictures/WindCompass/22.png
+  #         {% elif 28.13 <= states('sensor.weather_wind_direction')|float <= 39.37 %}
+  #             /local/Pictures/WindCompass/33.png
+  #         {% elif 39.38 <= states('sensor.weather_wind_direction')|float <= 50.62 %}
+  #             /local/Pictures/WindCompass/45.png
+  #         {% elif 50.63 <= states('sensor.weather_wind_direction')|float <= 61.87 %}
+  #             /local/Pictures/WindCompass/56.png
+  #         {% elif 61.88 <= states('sensor.weather_wind_direction')|float <= 73.12 %}
+  #             /local/Pictures/WindCompass/67.png
+  #         {% elif 73.13 <= states('sensor.weather_wind_direction')|float <= 84.37 %}
+  #             /local/Pictures/WindCompass/78.png
+  #         {% elif 84.38 <= states('sensor.weather_wind_direction')|float <= 95.62 %}
+  #             /local/Pictures/WindCompass/90.png
+  #         {% elif 95.63 <= states('sensor.weather_wind_direction')|float <= 106.87 %}
+  #             /local/Pictures/WindCompass/101.png
+  #         {% elif 106.88 <= states('sensor.weather_wind_direction')|float <= 118.12 %}
+  #             /local/Pictures/WindCompass/112.png
+  #         {% elif 118.13 <= states('sensor.weather_wind_direction')|float <= 129.37 %}
+  #             /local/Pictures/WindCompass/123.png
+  #         {% elif 129.38 <= states('sensor.weather_wind_direction')|float <= 140.62 %}
+  #             /local/Pictures/WindCompass/135.png
+  #         {% elif 140.63 <= states('sensor.weather_wind_direction')|float <= 151.87 %}
+  #             /local/Pictures/WindCompass/146.png
+  #         {% elif 151.88 <= states('sensor.weather_wind_direction')|float <= 163.12 %}
+  #             /local/Pictures/WindCompass/157.png
+  #         {% elif 163.13 <= states('sensor.weather_wind_direction')|float <= 174.37 %}
+  #             /local/Pictures/WindCompass/168.png
+  #         {% elif 174.38 <= states('sensor.weather_wind_direction')|float <= 185.62 %}
+  #             /local/Pictures/WindCompass/180.png
+  #         {% elif 185.63 <= states('sensor.weather_wind_direction')|float <= 196.87 %}
+  #             /local/Pictures/WindCompass/191.png
+  #         {% elif 196.88 <= states('sensor.weather_wind_direction')|float <= 208.12 %}
+  #             /local/Pictures/WindCompass/202.png
+  #         {% elif 208.13 <= states('sensor.weather_wind_direction')|float <= 219.37 %}
+  #             /local/Pictures/WindCompass/213.png
+  #         {% elif 219.38 <= states('sensor.weather_wind_direction')|float <= 230.62 %}
+  #             /local/Pictures/WindCompass/225.png
+  #         {% elif 230.63 <= states('sensor.weather_wind_direction')|float <= 241.87 %}
+  #             /local/Pictures/WindCompass/236.png
+  #         {% elif 241.88 <= states('sensor.weather_wind_direction')|float <= 253.12 %}
+  #             /local/Pictures/WindCompass/247.png
+  #         {% elif 253.13 <= states('sensor.weather_wind_direction')|float <= 264.37 %}
+  #             /local/Pictures/WindCompass/258.png
+  #         {% elif 264.38 <= states('sensor.weather_wind_direction')|float <= 275.62 %}
+  #             /local/Pictures/WindCompass/270.png
+  #         {% elif 275.63 <= states('sensor.weather_wind_direction')|float <= 286.87 %}
+  #             /local/Pictures/WindCompass/281.png
+  #         {% elif 286.88 <= states('sensor.weather_wind_direction')|float <= 298.12 %}
+  #             /local/Pictures/WindCompass/292.png
+  #         {% elif 298.13 <= states('sensor.weather_wind_direction')|float <= 309.37 %}
+  #             /local/Pictures/WindCompass/303.png
+  #         {% elif 309.38 <= states('sensor.weather_wind_direction')|float <= 320.62 %}
+  #             /local/Pictures/WindCompass/315.png
+  #         {% elif 320.63 <= states('sensor.weather_wind_direction')|float <= 331.87 %}
+  #             /local/Pictures/WindCompass/326.png
+  #         {% elif 331.88 <= states('sensor.weather_wind_direction')|float <= 343.12 %}
+  #             /local/Pictures/WindCompass/337.png
+  #         {% elif 343.13 <= states('sensor.weather_wind_direction')|float <= 354.37 %}
+  #            /local/Pictures/WindCompass/348.png
+  #         {% endif %}

@@ -251,8 +251,8 @@ apcupsd:
 nest:
   client_id: !secret nest_id
   client_secret: !secret nest_secret
-climate:
-  - platform: nest
+# climate:
+#   - platform: nest
   # - platform: generic_thermostat
   #   name: Bunny Shed Thermostat
 
@@ -261,11 +261,13 @@ climate:
 device_tracker:
   # - platform: owntracks
   #   max_gps_accuracy: 250
+
+  # - platform: google_maps # Elements per day’ to a limit of 645.
+  #   username: !secret google_maps_username2
   - platform: google_maps # Elements per day’ to a limit of 645.
     username: !secret google_maps_username
 
-  - platform: google_maps # Elements per day’ to a limit of 645.
-    username: !secret google_maps_username2
+
 
 # Moved to integrations UI from Rev 0.112
   # - platform: tile
@@ -285,8 +287,8 @@ device_tracker:
   #   baseoid: 1.3.6.1.2.1.2.2
 
 # IFTT integration.
-ifttt:
-  key: !secret ifttt_key
+# ifttt:
+#   key: !secret ifttt_key
 
 # RFLink gateway integration, via ethernet bridge.
 #     Try socat pty,link=/config/serialport-rflink,echo=0 tcp:x.x.x.x:xxxx,forever,reuseaddr,keepalive,keepidle=10,keepintvl=10,keepcnt=2

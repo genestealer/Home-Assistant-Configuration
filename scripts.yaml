@@ -17,6 +17,7 @@ kitchen_extractor_timer:
   - delay: 00:{{states('input_number.kitchen_fan_timer_duration') | round(0)}}:00
   - entity_id: switch.kitchen_extractor_fan
     service: switch.turn_off
+  mode: restart
 front_garden_lawn_irrigation_timer:
   alias: Lawn Irrigation Timer
   sequence:

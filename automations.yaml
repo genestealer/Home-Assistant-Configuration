@@ -228,6 +228,7 @@
     service: switch.turn_off
 - id: '1564245956941'
   alias: Kitchen Fan Script Off to Switch Off
+  description: Not sure why I wrote this?
   trigger:
   - entity_id: script.kitchen_extractor_timer
     from: 'on'
@@ -238,6 +239,7 @@
   - data:
       entity_id: switch.kitchen_extractor_fan
     service: switch.turn_off
+  mode: single
 - id: '1572464632861'
   alias: Smoke Machine Automation
   description: ''
@@ -284,19 +286,28 @@
   alias: 'Christmas: Inside lights on when home'
   description: Christmas Light Automation - Turn on inside lights when we get home
   trigger:
-  - entity_id: group.just_mobiles_group
-    from: not_home
+  - from: not_home
     platform: state
+    to: home
+    entity_id: person.richard
+  - platform: state
+    entity_id: person.lucy
+    from: not_home
     to: home
   condition: []
   action:
   - entity_id: group.inside_christmas_lights
     service: homeassistant.turn_on
+  mode: single
 - id: '1576598493358'
   alias: 'Christmas: Inside lights off when away'
   description: Christmas Light Automation - Turn off inside lights when we leave home
   trigger:
-  - entity_id: group.just_mobiles_group
+  - entity_id: person.richard
+    from: home
+    platform: state
+    to: not_home
+  - entity_id: person.lucy
     from: home
     platform: state
     to: not_home
@@ -304,6 +315,7 @@
   action:
   - entity_id: group.inside_christmas_lights
     service: homeassistant.turn_off
+  mode: single
 - id: '1576599112935'
   alias: Welcome home Richard
   description: 'Note: These actions can only be edited with YAML'
@@ -573,7 +585,7 @@
   alias: Simulate presence
   description: Automation Simulate Presence / Occupancy Simulation
   trigger:
-  - entity_id: group.just_mobiles_group
+  - entity_id: person.richard
     from: home
     platform: state
     to: not_home
@@ -582,6 +594,10 @@
     platform: sun
   - event_type: event_simulate_presence
     platform: event
+  - entity_id: person.lucy
+    from: home
+    platform: state
+    to: not_home
   condition:
   - condition: and
     conditions:
@@ -591,11 +607,14 @@
     - before: '23:55:00'
       condition: time
     - condition: state
-      entity_id: group.just_mobiles_group
-      state: not_home
-    - condition: state
       entity_id: input_boolean.simulate_presence_enable
       state: 'on'
+    - condition: state
+      entity_id: person.lucy
+      state: not_home
+    - condition: state
+      entity_id: person.richard
+      state: not_home
   action:
   - data_template:
       entity_id: 'light.lamp_{{ (range(1, 4) | random) }}
@@ -616,6 +635,7 @@
     service: light.turn_off
   - delay: 00:00:{{ (range(3, 10) | random) }}
   - event: event_simulate_presence
+  mode: single
 - id: '1586039811102'
   alias: Busylight Controller Free Button Pressed
   description: ''
@@ -865,7 +885,10 @@
     device_id: 99689212065c11ebbd2ecbef1587dfe1
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
-  condition: []
+  condition:
+  - condition: time
+    after: '18:00'
+    before: 09:00
   action:
   - delay: 00:00:05
   - service: switch.turn_on
