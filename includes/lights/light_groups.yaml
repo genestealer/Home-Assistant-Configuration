@@ -12,3 +12,18 @@
     - light.sofa_right
     - light.living_room_bookcase_light
     - light.living_room_ceiling_light
+
+
+- platform: group
+  name: Outside Christmas Lights 
+  entities:
+    - light.christmas_garden_lights
+    - light.christmas_living_room_star
+    - light.christmas_bedroom_star
+    - light.christmas_library_star
+    - light.christmas_guest_bedroom_star
+
+- platform: group
+  name: Inside Christmas Lights 
+  entities:
+    - light.christmas_tree_lights

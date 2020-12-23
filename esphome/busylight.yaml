@@ -54,7 +54,9 @@ ota: # Enable over the air updates
   password: $pass
 
 status_led:
-  pin: GPIO02
+  pin:
+    number: LED_RED
+    # inverted: True
 
 ####################################################
 # Non-Shared Code (May contain shared code)
@@ -62,6 +64,27 @@ status_led:
 binary_sensor:
   - platform: status
     name:  ${upper_devicename} Status
+
+  - platform: gpio
+    pin: 13
+    name: "Kichen PIR Sensor"
+    device_class: motion
+
+switch:
+  - platform: gpio
+    pin:
+      number: 12
+      mode: OUTPUT
+    id: PIR_PWR
+    restore_mode: ALWAYS_ON 
+    
+output:
+  - platform: gpio
+    pin:
+      number: 15
+      mode: OUTPUT_OPEN_DRAIN
+    id: PIR_GND
+    
     
 text_sensor:
   - platform: wifi_info
@@ -81,6 +104,6 @@ light:
   - platform: neopixelbus
     method: ESP8266_UART1
     type: GRB
-    pin: GPIO2
+    pin: 2
     num_leds: 1
     name: ${upper_devicename}

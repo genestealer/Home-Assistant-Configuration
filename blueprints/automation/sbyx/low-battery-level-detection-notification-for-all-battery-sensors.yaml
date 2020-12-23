@@ -1,0 +1,135 @@
+blueprint:
+  name: Low battery level detection & notification for all battery sensors
+  description: Regularly test all sensors with 'battery' device-class for crossing
+    a certain battery level threshold and if so execute an action.
+  domain: automation
+  input:
+    threshold:
+      name: Battery warning level threshold
+      description: Battery sensors below threshold are assumed to be low-battery (as
+        well as binary battery sensors with value 'on').
+      default: 20
+      selector:
+        number:
+          min: 5.0
+          max: 100.0
+          unit_of_measurement: '%'
+          mode: slider
+          step: 5.0
+    time:
+      name: Time to test on
+      description: Test is run at configured time
+      default: '10:00:00'
+      selector:
+        time: {}
+    day:
+      name: Weekday to test on
+      description: 'Test is run at configured time either everyday (0) or on a given
+        weekday (1: Monday ... 7: Sunday)'
+      default: 0
+      selector:
+        number:
+          min: 0.0
+          max: 7.0
+          mode: slider
+          step: 1.0
+    actions:
+      name: Actions
+      description: Notifications or similar to be run. {{sensors}} is replaced with
+        the names of sensors being low on battery.
+      selector:
+        action: {}
+    exclude0:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude1:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude2:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude3:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude4:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude5:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude6:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude7:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude8:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+    exclude9:
+      name: Exclude Sensor
+      default: none
+      selector:
+        entity:
+          device_class: battery
+  source_url: https://community.home-assistant.io/t/low-battery-level-detection-notification-for-all-battery-sensors/258664
+variables:
+  day: !input 'day'
+  threshold: !input 'threshold'
+  exclude0: !input 'exclude0'
+  exclude1: !input 'exclude1'
+  exclude2: !input 'exclude2'
+  exclude3: !input 'exclude3'
+  exclude4: !input 'exclude4'
+  exclude5: !input 'exclude5'
+  exclude6: !input 'exclude6'
+  exclude7: !input 'exclude7'
+  exclude8: !input 'exclude8'
+  exclude9: !input 'exclude9'
+  sensors: "{% set result = namespace(sensors=[]) %} {% set exclude = [exclude0, exclude1,\
+    \ exclude2, exclude3, exclude4, exclude5, exclude6, exclude7, exclude8, exclude9]\
+    \ %} {% for state in states.sensor | selectattr('attributes.device_class', '==',\
+    \ 'battery') %}\n  {% if 0 < state.state | int < threshold | int and not state.entity_id\
+    \ in exclude %}\n    {% set result.sensors = result.sensors + [state.name] %}\n\
+    \  {% endif %}\n{% endfor %} {% for state in states.binary_sensor | selectattr('attributes.device_class',\
+    \ '==', 'battery') | selectattr('state', '==', 'on') %}\n  {% if not state.entity_id\
+    \ in exclude %}\n    {% set result.sensors = result.sensors + [state.name] %}\n\
+    \  {% endif %}\n{% endfor %} {{result.sensors|join(', ')}}"
+trigger:
+- platform: time
+  at: !input 'time'
+condition:
+- condition: template
+  value_template: '{{ sensors != '''' and (day | int == 0 or day | int == now().isoweekday())
+    }}'
+action:
+- choose: []
+  default: !input 'actions'
+mode: single

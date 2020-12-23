@@ -49,7 +49,9 @@
       message: Front Door CCTV Offline
     service: notify.google_cloud_notify
 - id: '1544967364329'
-  alias: Battery Low tradfri_remote_control
+  alias: Battery Low tradfri_remote_control [Replaced by blueprint "Low battery level
+    detection & notification for all battery sensors"]
+  description: ''
   trigger:
   - below: '20'
     entity_id: sensor.tradfri_remote_control
@@ -59,8 +61,10 @@
   - data:
       message: Living room Tradfri remote battery low. Currently {{ states('sensor.tradfri_remote_control')}}%
     service: notify.google_cloud_notify
+  mode: single
 - id: '1544967729500'
-  alias: Battery Low tradfri_wireless_dimmer
+  alias: Battery Low tradfri_wireless_dimmer [Replaced by blueprint "Low battery level
+    detection & notification for all battery sensors"]
   trigger:
   - below: '25'
     entity_id: sensor.tradfri_wireless_dimmer
@@ -71,6 +75,7 @@
       message: 'Master bedroom Tradfri remote battery low. Currently {{ states(''sensor.tradfri_wireless_dimmer'')
         }}% '
     service: notify.google_cloud_notify
+  mode: single
 - id: '1557360744014'
   alias: Increment TOR DB Disconnect Automation
   trigger:
@@ -269,19 +274,22 @@
   condition: []
   action:
   - data: {}
-    entity_id: group.outside_christmas_lights
-    service: homeassistant.turn_off
+    entity_id: light.outside_christmas_lights
+    service: light.turn_off
+  mode: single
 - id: '1576597714781'
   alias: 'Christmas : Outside lights on at sun set'
   description: Christmas Light Automation - Turn on outside lights at night
   trigger:
   - event: sunset
-    offset: 00:30:00
+    offset: 00:15:00
     platform: sun
   condition: []
   action:
-  - entity_id: group.outside_christmas_lights
-    service: homeassistant.turn_on
+  - service: light.turn_on
+    data: {}
+    entity_id: light.outside_christmas_lights
+  mode: single
 - id: '1576598300322'
   alias: 'Christmas: Inside lights on when home'
   description: Christmas Light Automation - Turn on inside lights when we get home
@@ -296,8 +304,8 @@
     to: home
   condition: []
   action:
-  - entity_id: group.inside_christmas_lights
-    service: homeassistant.turn_on
+  - entity_id: light.inside_christmas_lights
+    service: light.turn_on
   mode: single
 - id: '1576598493358'
   alias: 'Christmas: Inside lights off when away'
@@ -313,8 +321,9 @@
     to: not_home
   condition: []
   action:
-  - entity_id: group.inside_christmas_lights
-    service: homeassistant.turn_off
+  - service: light.turn_off
+    data: {}
+    entity_id: light.inside_christmas_lights
   mode: single
 - id: '1576599112935'
   alias: Welcome home Richard
@@ -337,7 +346,7 @@
         \ round(0)}}C \n{{states('sensor.entryway_thermostat_humidity')| round(0)}}%\
         \ {% if is_state('climate.entryway', 'heat') %} Heating on and set to {{state_attr('climate.entryway',\
         \ 'temperature')| round(0) }}°C\n{%- endif %}\n"
-    service: tts.google_say
+    service: tts.google_translate_say
 - id: '1576601014597'
   alias: Plug-in Air Freshener Start
   description: Turn on in the morning when someone is home as long as it between certain
@@ -401,6 +410,7 @@
   action:
   - entity_id: switch.plug_in_air_freshener_1
     service: switch.turn_off
+  - delay: 00:00:15
   - entity_id: switch.plug_in_air_freshener_2
     service: switch.turn_off
   - data:
@@ -426,7 +436,7 @@
         \ is currently {{states('person.richard')}}, at\n{{states('sensor.richard_street_location')}}.\
         \ {%- endif %} The heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
         \ 'temperature')| round(0) }}°C\n"
-    service: tts.google_say
+    service: tts.google_translate_say
 - id: '1576602219341'
   alias: Keep Nest thermostat aware of our presence
   description: contindion template {{ state_attr('climate.entryway', 'preset_mode')
@@ -617,21 +627,18 @@
       state: not_home
   action:
   - data_template:
-      entity_id: 'light.lamp_{{ (range(1, 4) | random) }}
-
-        '
+      entity_id: light.lamp_{{ (range(1, 4) | random) }}
     service: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
   - data_template:
-      entity_id: 'light.lamp_{{ (range(1, 4) | random) }}
-
-        '
+      entity_id: light.lamp_{{ (range(1, 4) | random) }}
     service: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
-  - entity_id:
-    - light.lamp_1
-    - light.lamp_2
-    - light.lamp_3
+  - entity_id: light.lamp_1
+    service: light.turn_off
+  - entity_id: light.lamp_2
+    service: light.turn_off
+  - entity_id: light.lamp_3
     service: light.turn_off
   - delay: 00:00:{{ (range(3, 10) | random) }}
   - event: event_simulate_presence
@@ -763,7 +770,7 @@
       cache: false
       entity_id: media_player.whole_house
       message: Parcel box has just been opened
-    service: tts.google_say
+    service: tts.google_translate_say
   mode: single
 - id: '1592498327466'
   alias: House Doorbell Button Local Notify
@@ -790,7 +797,7 @@
       cache: false
       entity_id: media_player.living_room_speaker
       message: Ding! Dong! Someone is at the door
-    service: tts.google_say
+    service: tts.google_translate_say
   - data:
       media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
       media_content_type: image/jpg
@@ -810,12 +817,12 @@
       cache: false
       entity_id: media_player.lucys_room_speaker
       message: Ding! Dong! Someone is at the door
-    service: tts.google_say
+    service: tts.google_translate_say
   - data:
       cache: false
       entity_id: media_player.garage
       message: Ding! Dong! Someone is at the door
-    service: tts.google_say
+    service: tts.google_translate_say
   mode: single
 - id: '1601035873447'
   alias: Secondary Zone Failure
@@ -841,7 +848,7 @@
       cache: false
       entity_id: media_player.whole_house
       message: Notice! Secondary Zone Failure!
-    service: tts.google_say
+    service: tts.google_translate_say
   mode: single
 - id: '1601037277352'
   alias: Primary Zone Failure
@@ -869,7 +876,7 @@
       message: ALERT:Warning! Primary Zone Failure! Warning! Primary Zone Failure!
         Warning! Primary Zone Failure! Close the fucking doors and windows for the
         love of bunnies hide!
-    service: tts.google_say
+    service: tts.google_translate_say
   mode: single
 - id: '1601317646616'
   alias: Front Lawn Anti Cat Defences
@@ -924,3 +931,136 @@
     entity_id: media_player.kitchen_display
     service: media_player.play_media
   mode: single
+- id: '1607604378569'
+  alias: AutoHotKey - Webhook Driven - Busy Light - Process Presence Incoming Webhook
+  description: 'If the automation is not restarted within 6 minutes due to a new incoming
+    webhook, the status is changed to offline.  Ref: https://github.com/ajobbins/AHK-Teams-Presence'
+  trigger:
+  - platform: webhook
+    webhook_id: 6pKQYcAJY3kWdj56MVUYb4tWLr9QmGP7kKYBd5rMBz9r6ZBrQXyKhJPbuYR3vVkV
+  condition: []
+  action:
+  - service: input_text.set_value
+    data:
+      value: '{{ trigger.json.status }}'
+    entity_id: input_text.autohotkey1
+  - delay: 00:06:00
+  - service: input_text.set_value
+    data:
+      value: Offline
+    entity_id: input_text.autohotkey1
+  mode: restart
+- id: '1607605238090'
+  alias: AutoHotKey - Webhook Driven - Busy Light - Change Busy Light Colours
+  description: 'Change an RGB light to signal presence. Ref: https://github.com/ajobbins/AHK-Teams-Presence'
+  trigger:
+  - platform: state
+    entity_id: input_text.autohotkey1
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: Available
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: green
+        entity_id: light.busy_light_1
+      - service: light.turn_on
+        data:
+          color_name: green
+        entity_id: light.busy_light_2
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: Busy
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: orange
+        entity_id: light.busy_light_1
+      - service: light.turn_on
+        data:
+          color_name: orange
+        entity_id: light.busy_light_2
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: Do Not Disturb
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: Red
+        entity_id: light.busy_light_1
+      - service: light.turn_on
+        data:
+          color_name: Red
+        entity_id: light.busy_light_2
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: Away
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: Yellow
+        entity_id: light.busy_light_1
+      - service: light.turn_on
+        data:
+          color_name: Yellow
+        entity_id: light.busy_light_2
+    default:
+    - service: light.turn_off
+      data: {}
+      entity_id: light.busy_light_1
+    - service: light.turn_off
+      data: {}
+      entity_id: light.busy_light_2
+  mode: single
+- id: '1608749551791'
+  alias: Motion-activated Light [Blueprint]
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.kichen_pir_sensor
+      light_target:
+        entity_id: light.kitchen_under_counter_lights
+      no_motion_wait: '600'
+- id: '1608750110548'
+  alias: Low battery level detection & notification for all battery sensors [Blueprint]
+  description: ''
+  use_blueprint:
+    path: Sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      day: '0'
+      time: '19:00:00'
+      actions:
+      - service: notify.google_cloud_notify
+        data:
+          message: 'Low battery warning for: {{sensors}}'
+- id: '1608752549598'
+  alias: Doorbell - Notify Alexa and or Google and send camera snapshot to app
+  description: ''
+  use_blueprint:
+    path: seamus65/doorbell-notify-alexa-and-or-google-and-send-camera-snapshot-to-app.yaml
+    input:
+      delay: '0'
+      notify_device: 047cbf194baf51681b958196a698101c
+      camera: camera.front_door_11
+      doorbell: binary_sensor.kichen_pir_sensor
+      google_device: media_player.kitchen_display
+      echo_device: media_player.office_display
+- id: '1608752882166'
+  alias: Doorbell - Notify Google and send camera snapshot to app
+  description: ''
+  use_blueprint:
+    path: seamus65/doorbell-notify-google-and-send-camera-snapshot-to-app.yaml
+    input:
+      delay: '0'
+      doorbell: binary_sensor.kichen_pir_sensor
+      google_device: media_player.kitchen_display
+      notify_device: 047cbf194baf51681b958196a698101c
+      camera: camera.front_door_11

@@ -1,602 +1,602 @@
-############################################################
-#
-# Home Assistant # views
-#
-############################################################
+# ############################################################
+# #
+# # Home Assistant # views
+# #
+# ############################################################
 
-# default_# view:
-#    # view: yes
-#    entities:
-#      - group.speed_test
+# # default_# view:
+# #    # view: yes
+# #    entities:
+# #      - group.speed_test
 
-main_# view:
-  name: Main
-  # view: yes
-  entities:
-    - group.cctv_group1
-    - group.cctv_group2
-    - group.nest_thermostat_group
-    - group.kitchen_climate_group
-    - group.mobiles_group
-    # - group.device_status_group
-    - group.device_status_summary_group
-    # - group.gateway_info_summary_group
-    # - group.outside_weather_group
+# main_# view:
+#   name: Main
+#   # view: yes
+#   entities:
+#     - group.cctv_group1
+#     - group.cctv_group2
+#     - group.nest_thermostat_group
+#     - group.kitchen_climate_group
+#     - group.mobiles_group
+#     # - group.device_status_group
+#     - group.device_status_summary_group
+#     # - group.gateway_info_summary_group
+#     # - group.outside_weather_group
 
-    - group.speed_test_group
-
-
-irrigation_# view:
-  name: Irrigation
-  # view: yes
-  entities:
-    - camera.front_door
-    - group.front_garden_lawn_irrigation_group
-    - group.front_garden_pots_irrigation_group
-    - group.irrigation_controller_info_group
-    - group.outside_weather_group
-
-bathroom_# view:
-  name: Bathroom
-  # view: yes
-  entities:
-    - group.bathroom_towel_rail_group
-
-kitchen_# view:
-  name: Kitchen
-  # view: yes
-  entities:
-    - group.kitchen_climate_group
-    - light.kitchen_under_counter_lights
-    - switch.bunny_fluff_air_filter
-    - automation.bunny_fluff_filter_schedule_on
-    - automation.bunny_fluff_filter_schedule_off
-    - switch.kitchen_extractor_fan
-    - script.kitchen_extractor_timer
-    - automation.kitchen_extractor_enable_auto_off
-
-chickens_# view:
-  name: Chickens
-  # view: yes
-  entities:
-    - group.chicken_group
+#     - group.speed_test_group
 
 
-lights_# view:
-  name: Lights
-  # view: yes
-  entities:
-    - group.lighting_group
-    - group.all_lights # Unhide group in customizations https://community.home-assistant.io/t/add-auto-generated-groups-e-g-group-all-lights-to-custom-default-# view/7291/2
-    - group.christmas_lights_group
-    - group.inside_christmas_lights_group
-    - group.outside_christmas_lights_group
+# irrigation_# view:
+#   name: Irrigation
+#   # view: yes
+#   entities:
+#     - camera.front_door
+#     - group.front_garden_lawn_irrigation_group
+#     - group.front_garden_pots_irrigation_group
+#     - group.irrigation_controller_info_group
+#     - group.outside_weather_group
+
+# bathroom_# view:
+#   name: Bathroom
+#   # view: yes
+#   entities:
+#     - group.bathroom_towel_rail_group
+
+# kitchen_# view:
+#   name: Kitchen
+#   # view: yes
+#   entities:
+#     - group.kitchen_climate_group
+#     - light.kitchen_under_counter_lights
+#     - switch.bunny_fluff_air_filter
+#     - automation.bunny_fluff_filter_schedule_on
+#     - automation.bunny_fluff_filter_schedule_off
+#     - switch.kitchen_extractor_fan
+#     - script.kitchen_extractor_timer
+#     - automation.kitchen_extractor_enable_auto_off
+
+# chickens_# view:
+#   name: Chickens
+#   # view: yes
+#   entities:
+#     - group.chicken_group
 
 
-bunny_shed_# view:
-  name: Shed
-  # view: yes
-  entities:
-    - group.bunny_shed_group
-    - group.bunny_shed_controller_info_group
-    - sensor.dark_sky_temperature
-    - sensor.dark_sky_humidity
+# lights_# view:
+#   name: Lights
+#   # view: yes
+#   entities:
+#     - group.lighting_group
+#     - group.all_lights # Unhide group in customizations https://community.home-assistant.io/t/add-auto-generated-groups-e-g-group-all-lights-to-custom-default-# view/7291/2
+#     - group.christmas_lights_group
+#     - group.inside_christmas_lights_group
+#     - group.outside_christmas_lights_group
 
 
+# bunny_shed_# view:
+#   name: Shed
+#   # view: yes
+#   entities:
+#     - group.bunny_shed_group
+#     - group.bunny_shed_controller_info_group
+#     - sensor.dark_sky_temperature
+#     - sensor.dark_sky_humidity
 
 
 
-bedrooms_# view:
-  name: Bedrooms
-  # view: yes
-  entities:
-    - group.bedroom_master
-    - group.bedroom_guest
-
-living_room_# view:
-  name: living Room
-  # view: yes
-  entities:
-    - switch.plugin_air_freshener
-    - light.sofa_left
-    - light.sofa_right
-    - light.living_room_light
-
-cctv_# view:
-  name: CCTV
-  # view: yes
-  entities:
-    - group.cctv_group1
-    - group.cctv_group2
-
-automation_system_# view:
-  name: Automation
-  # view: yes
-  entities:
-    - group.server_ilo_status_group
-    - group.ups_data_group
-    - group.device_status_group
-    - binary_sensor.rfg_status
-    - sensor.plex
-    - group.rf_gateway_info_group
-    - group.bunny_shed_controller_info_group
-    - binary_sensor.tor_db_status
-    - group.irrigation_controller_info_group
-    - group.rf_link_group
-    - group.pi_hole
-    - group.all_automations
-    - group.all_scripts
 
 
+# bedrooms_# view:
+#   name: Bedrooms
+#   # view: yes
+#   entities:
+#     - group.bedroom_master
+#     - group.bedroom_guest
 
-##########################
+# living_room_# view:
+#   name: living Room
+#   # view: yes
+#   entities:
+#     - switch.plugin_air_freshener
+#     - light.sofa_left
+#     - light.sofa_right
+#     - light.living_room_light
 
+# cctv_# view:
+#   name: CCTV
+#   # view: yes
+#   entities:
+#     - group.cctv_group1
+#     - group.cctv_group2
 
-############################################################
-#
-# Home Assistant Groups
-#
-############################################################
+# automation_system_# view:
+#   name: Automation
+#   # view: yes
+#   entities:
+#     - group.server_ilo_status_group
+#     - group.ups_data_group
+#     - group.device_status_group
+#     - binary_sensor.rfg_status
+#     - sensor.plex
+#     - group.rf_gateway_info_group
+#     - group.bunny_shed_controller_info_group
+#     - binary_sensor.tor_db_status
+#     - group.irrigation_controller_info_group
+#     - group.rf_link_group
+#     - group.pi_hole
+#     - group.all_automations
+#     - group.all_scripts
 
 
 
-cctv_group1:
-  name: CCTV1
-  # view: no
-  entities:
-    - camera.front_door
-    - camera.garage
+# ##########################
 
-cctv_group2:
-  name: CCTV2
-  # view: no
-  entities:
-    - camera.front_of_house
-    - camera.bunny_camera
-    - camera.garage_2
 
-nest_thermostat_group:
-  name: Nest Thermostat
-  # view: no
-  # control: hidden
-  entities:
-    - climate.entryway
-    - binary_sensor.entryway_thermostat_online
-    - sensor.entryway_thermostat_humidity
+# ############################################################
+# #
+# # Home Assistant Groups
+# #
+# ############################################################
 
-mobiles_group:
-  name: Mobiles
-  # view: no
-  # control: hidden
-  entities:
-    # - device_tracker.google_maps_118405357218131797203
-    # - device_tracker.google_maps_114635444798949098363
-    - sensor.richard_phone_battery
-    - sensor.lucy_phone_battery
 
-# just_mobiles_group:
+
+# cctv_group1:
+#   name: CCTV1
+#   # view: no
+#   entities:
+#     - camera.front_door
+#     - camera.garage
+
+# cctv_group2:
+#   name: CCTV2
+#   # view: no
+#   entities:
+#     - camera.front_of_house
+#     - camera.bunny_camera
+#     - camera.garage_2
+
+# nest_thermostat_group:
+#   name: Nest Thermostat
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - climate.entryway
+#     - binary_sensor.entryway_thermostat_online
+#     - sensor.entryway_thermostat_humidity
+
+# mobiles_group:
 #   name: Mobiles
 #   # view: no
 #   # control: hidden
 #   entities:
-#     - device_tracker.google_maps_118405357218131797203
-#     - device_tracker.google_maps_114635444798949098363
+#     # - device_tracker.google_maps_118405357218131797203
+#     # - device_tracker.google_maps_114635444798949098363
+#     - sensor.richard_phone_battery
+#     - sensor.lucy_phone_battery
+
+# # just_mobiles_group:
+# #   name: Mobiles
+# #   # view: no
+# #   # control: hidden
+# #   entities:
+# #     - device_tracker.google_maps_118405357218131797203
+# #     - device_tracker.google_maps_114635444798949098363
 
 
-device_status_summary_group:
-  name: Device Status Summary
-  # view: no
-  # control: hidden
-  entities:
-    - group.device_status_group
+# device_status_summary_group:
+#   name: Device Status Summary
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - group.device_status_group
 
-device_status_group:
-  name: Device Status
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.bs_status
-    - binary_sensor.rfg_status
-    - binary_sensor.ic_front_status
-    - binary_sensor.ic_back_status
-    - binary_sensor.entryway_thermostat_online
-    - binary_sensor.esp_link_status
-    - binary_sensor.tor_db_status
-    - binary_sensor.usp_network_online
-    - binary_sensor.ikea_tradfri_gateway_online
-    - binary_sensor.cc_status
+# device_status_group:
+#   name: Device Status
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.bs_status
+#     - binary_sensor.rfg_status
+#     - binary_sensor.ic_front_status
+#     - binary_sensor.ic_back_status
+#     - binary_sensor.entryway_thermostat_online
+#     - binary_sensor.esp_link_status
+#     - binary_sensor.tor_db_status
+#     - binary_sensor.usp_network_online
+#     - binary_sensor.ikea_tradfri_gateway_online
+#     - binary_sensor.cc_status
 
-cctv_status_group:
-  name: CCTV Online Status
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.bunny_cctv_online
-    - binary_sensor.drive_cctv_online
-    - binary_sensor.front_door_cctv_online
-    - binary_sensor.garage_cctv_online
+# cctv_status_group:
+#   name: CCTV Online Status
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.bunny_cctv_online
+#     - binary_sensor.drive_cctv_online
+#     - binary_sensor.front_door_cctv_online
+#     - binary_sensor.garage_cctv_online
 
-chicken_group:
-  name: Chicken Coop
-  # view: no
-  # control: hidden
-  entities:
-    - cover.chicken_coop_door
-    - binary_sensor.chicken_door_status
-    - binary_sensor.cc_status
+# chicken_group:
+#   name: Chicken Coop
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - cover.chicken_coop_door
+#     - binary_sensor.chicken_door_status
+#     - binary_sensor.cc_status
 
-gateway_info_summary_group:
-  name: Gateways Info
-  # view: no
-  # control: hidden
-  entities:
-    - group.rf_gateway_info_group
-    - group.bunny_shed_controller_info_group
-    - group.irrigation_controller_info_group
-    - group.tor_doorbell_info_group
+# gateway_info_summary_group:
+#   name: Gateways Info
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - group.rf_gateway_info_group
+#     - group.bunny_shed_controller_info_group
+#     - group.irrigation_controller_info_group
+#     - group.tor_doorbell_info_group
 
-kitchen_climate_group:
-  name: Kitchen Climate
-  # view: no
-  # control: hidden
-  entities:
-    - sensor.kitchen_temperature
-    - sensor.kitchen_humidity
+# kitchen_climate_group:
+#   name: Kitchen Climate
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - sensor.kitchen_temperature
+#     - sensor.kitchen_humidity
 
-lighting_group:
-  name: Lighting
-  # view: no
-  entities:
-    - light.upstairs_hall_light
-    - light.kitchen_under_counter_lights
-    - light.lamp_1
-    - light.lamp_2
-    - light.lamp_3
-    - light.lamp_4
-    - light.bedroom
-    - light.richard_bedside
-    - light.lucy_bed
-    - light.living_room
-    - light.sofa_left
-    - light.sofa_right
-
-
-
-bunny_shed_group:
-  name: Bunny Shed Climate Control
-  # view: no
-  # # control: hidden
-  entities:
-    - sensor.dark_sky_temperature
-    - sensor.dark_sky_humidity
-
-    - sensor.bunny_shed_temperature
-    - sensor.bs_humidity
-
-    - binary_sensor.bunny_shed_heater
-    - sensor.bunny_shed_target_heat_temperature
-
-
-    - binary_sensor.bunny_shed_cooler
-    - sensor.bunny_shed_target_cool_temperature
-
-
-    - sensor.bunny_shed_temperature_highest
-    - sensor.bunny_shed_temperature_lowest
-
-    - sensor.heater_on_last_24_hours
-    - sensor.cooler_on_last_24_hours
-    - sensor.bunny_shed_temperature_statistics_mean
-    - group.bunny_shed_settings
-
-bunny_shed_settings:
-  name: Setting
-  # view: no
-  # # control: hidden
-  icon: mdi:settings
-  entities:
-    - input_number.shed_target_heat_temp
-    - input_number.shed_target_cool_temp
-
-
-outside_weather_group:
-  name: Outside Weather
-  # view: no
-  # # control: hidden
-  entities:
-    - sensor.dark_sky_daytime_high_temperature_0d
-    - sensor.dark_sky_overnight_low_temperature_0d
-    - sensor.dark_sky_precip_intensity
-    - sensor.dark_sky_precip_intensity_0d
-    - sensor.dark_sky_wind_speed
-    - sensor.dark_sky_wind_speed_0d
-
-
-speed_test_group:
-  name: Speed Test
-  # view: no
-  # control: hidden
-  entities:
-   - sensor.speedtest_download
-   - sensor.speedtest_ping
-   - sensor.speedtest_upload
-
-pi_hole:
-  name: Pi Hole
-  # view: no
-  # control: hidden
-  entities:
-      - sensor.pi_hole_ads_blocked_today
-      - sensor.pi_hole_ads_percentage_blocked_today
-      - sensor.pi_hole_dns_queries_today
-
-irrigation_group:
-    name: Irrigation Control
-    # view: no
-    # control: hidden
-    entities:
-      - group.front_garden_lawn_irrigation_group
-      - group.front_garden_pots_irrigation_group
-
-front_garden_lawn_irrigation_group:
-  name: Lawn Irrigation
-  # view: no
-  # control: hidden
-  entities:
-    - sensor.front_garden_lawn_irrigation_valve_status
-    - binary_sensor.front_garden_lawn_irrigation_valve_position
-    - sensor.front_garden_lawn_irrigation_last_run
-    - sensor.front_garden_lawn_irrigation_next_run
-    - sensor.front_garden_lawn_irrigation_schedule
-    - sensor.front_garden_lawn_irrigation_duration
-    - sensor.front_garden_lawn_irrigation_interlock
-    - group.front_garden_lawn_irrigation_settings
-
-front_garden_lawn_irrigation_settings:
-  name: Settings
-  # view: no
-  # control: hidden
-  icon: mdi:settings
-  entities:
-    - automation.irrigate_lawn_at_sunrise
-    - input_number.front_garden_lawn_irrigation_duration
-    - input_select.front_garden_lawn_irrigation_schedule
-    - input_number.lawn_irrigation_wind_threshold
-    - input_number.lawn_irrigation_rain_threshold
-    - input_number.irrigation_temperature_threshold
-    - script.front_garden_lawn_irrigation_timer
-    - switch.front_garden_lawn_irrigation_valve
-
-back_garden_irrigation_settings:
-  name: Settings
-  # view: no
-  # control: hidden
-  icon: mdi:settings
-  entities:
-    - automation.irrigate_back_garden_at_sunrise
-    - input_number.back_garden_irrigation_duration
-    - input_select.back_garden_irrigation_schedule
-    - input_number.irrigation_temperature_threshold
-    - script.back_garden_irrigation_timer
-    - switch.back_garden_irrigation_valve
+# lighting_group:
+#   name: Lighting
+#   # view: no
+#   entities:
+#     - light.upstairs_hall_light
+#     - light.kitchen_under_counter_lights
+#     - light.lamp_1
+#     - light.lamp_2
+#     - light.lamp_3
+#     - light.lamp_4
+#     - light.bedroom
+#     - light.richard_bedside
+#     - light.lucy_bed
+#     - light.living_room
+#     - light.sofa_left
+#     - light.sofa_right
 
 
 
-front_garden_pots_irrigation_group:
-  name: Plant Pot Irrigation
-  # view: no
-  # control: hidden
-  entities:
-    - sensor.front_garden_pot_irrigation_valve_status
-    - binary_sensor.front_garden_pot_irrigation_valve_position
-    - sensor.front_garden_pot_irrigation_last_run
-    - sensor.front_garden_pot_irrigation_next_run
-    - sensor.front_garden_pot_irrigation_schedule
-    - sensor.front_garden_pot_irrigation_duration
-    - input_number.irrigation_temperature_threshold
-    - sensor.front_garden_pots_irrigation_interlock
-    - group.front_garden_pots_irrigation_settings
+# bunny_shed_group:
+#   name: Bunny Shed Climate Control
+#   # view: no
+#   # # control: hidden
+#   entities:
+#     - sensor.dark_sky_temperature
+#     - sensor.dark_sky_humidity
+
+#     - sensor.bunny_shed_temperature
+#     - sensor.bs_humidity
+
+#     - binary_sensor.bunny_shed_heater
+#     - sensor.bunny_shed_target_heat_temperature
 
 
-front_garden_pots_irrigation_settings:
-  name: Settings
-  # view: no
-  icon: mdi:settings
-  # control: hidden
-  entities:
-    - automation.irrigate_pots_at_sunrise
-    - input_number.front_garden_pot_irrigation_duration
-    - input_select.front_garden_pots_irrigation_schedule
-    - input_number.lawns_irrigation_wind_threshold
-    - script.front_garden_pot_irrigation_timer
-    - switch.front_garden_pot_irrigation_valve
+#     - binary_sensor.bunny_shed_cooler
+#     - sensor.bunny_shed_target_cool_temperature
+
+
+#     - sensor.bunny_shed_temperature_highest
+#     - sensor.bunny_shed_temperature_lowest
+
+#     - sensor.heater_on_last_24_hours
+#     - sensor.cooler_on_last_24_hours
+#     - sensor.bunny_shed_temperature_statistics_mean
+#     - group.bunny_shed_settings
+
+# bunny_shed_settings:
+#   name: Setting
+#   # view: no
+#   # # control: hidden
+#   icon: mdi:settings
+#   entities:
+#     - input_number.shed_target_heat_temp
+#     - input_number.shed_target_cool_temp
+
+
+# outside_weather_group:
+#   name: Outside Weather
+#   # view: no
+#   # # control: hidden
+#   entities:
+#     - sensor.dark_sky_daytime_high_temperature_0d
+#     - sensor.dark_sky_overnight_low_temperature_0d
+#     - sensor.dark_sky_precip_intensity
+#     - sensor.dark_sky_precip_intensity_0d
+#     - sensor.dark_sky_wind_speed
+#     - sensor.dark_sky_wind_speed_0d
+
+
+# speed_test_group:
+#   name: Speed Test
+#   # view: no
+#   # control: hidden
+#   entities:
+#    - sensor.speedtest_download
+#    - sensor.speedtest_ping
+#    - sensor.speedtest_upload
+
+# pi_hole:
+#   name: Pi Hole
+#   # view: no
+#   # control: hidden
+#   entities:
+#       - sensor.pi_hole_ads_blocked_today
+#       - sensor.pi_hole_ads_percentage_blocked_today
+#       - sensor.pi_hole_dns_queries_today
+
+# irrigation_group:
+#     name: Irrigation Control
+#     # view: no
+#     # control: hidden
+#     entities:
+#       - group.front_garden_lawn_irrigation_group
+#       - group.front_garden_pots_irrigation_group
+
+# front_garden_lawn_irrigation_group:
+#   name: Lawn Irrigation
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - sensor.front_garden_lawn_irrigation_valve_status
+#     - binary_sensor.front_garden_lawn_irrigation_valve_position
+#     - sensor.front_garden_lawn_irrigation_last_run
+#     - sensor.front_garden_lawn_irrigation_next_run
+#     - sensor.front_garden_lawn_irrigation_schedule
+#     - sensor.front_garden_lawn_irrigation_duration
+#     - sensor.front_garden_lawn_irrigation_interlock
+#     - group.front_garden_lawn_irrigation_settings
+
+# front_garden_lawn_irrigation_settings:
+#   name: Settings
+#   # view: no
+#   # control: hidden
+#   icon: mdi:settings
+#   entities:
+#     - automation.irrigate_lawn_at_sunrise
+#     - input_number.front_garden_lawn_irrigation_duration
+#     - input_select.front_garden_lawn_irrigation_schedule
+#     - input_number.lawn_irrigation_wind_threshold
+#     - input_number.lawn_irrigation_rain_threshold
+#     - input_number.irrigation_temperature_threshold
+#     - script.front_garden_lawn_irrigation_timer
+#     - switch.front_garden_lawn_irrigation_valve
 
 # back_garden_irrigation_settings:
+#   name: Settings
+#   # view: no
+#   # control: hidden
+#   icon: mdi:settings
+#   entities:
+#     - automation.irrigate_back_garden_at_sunrise
+#     - input_number.back_garden_irrigation_duration
+#     - input_select.back_garden_irrigation_schedule
+#     - input_number.irrigation_temperature_threshold
+#     - script.back_garden_irrigation_timer
+#     - switch.back_garden_irrigation_valve
+
+
+
+# front_garden_pots_irrigation_group:
+#   name: Plant Pot Irrigation
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - sensor.front_garden_pot_irrigation_valve_status
+#     - binary_sensor.front_garden_pot_irrigation_valve_position
+#     - sensor.front_garden_pot_irrigation_last_run
+#     - sensor.front_garden_pot_irrigation_next_run
+#     - sensor.front_garden_pot_irrigation_schedule
+#     - sensor.front_garden_pot_irrigation_duration
+#     - input_number.irrigation_temperature_threshold
+#     - sensor.front_garden_pots_irrigation_interlock
+#     - group.front_garden_pots_irrigation_settings
+
+
+# front_garden_pots_irrigation_settings:
 #   name: Settings
 #   # view: no
 #   icon: mdi:settings
 #   # control: hidden
 #   entities:
-#     - automation.irrigate_back_garden_at_sunrise
-#     - input_number.back_garden_irrigation_duration
-#     - input_select.back_garden_irrigation_schedule
-#     - input_number.global_lawn_irrigation_wind_threshold
-#     - script.back_garden_irrigation_timer
-#     - switch.back_garden_irrigation_valve
+#     - automation.irrigate_pots_at_sunrise
+#     - input_number.front_garden_pot_irrigation_duration
+#     - input_select.front_garden_pots_irrigation_schedule
+#     - input_number.lawns_irrigation_wind_threshold
+#     - script.front_garden_pot_irrigation_timer
+#     - switch.front_garden_pot_irrigation_valve
+
+# # back_garden_irrigation_settings:
+# #   name: Settings
+# #   # view: no
+# #   icon: mdi:settings
+# #   # control: hidden
+# #   entities:
+# #     - automation.irrigate_back_garden_at_sunrise
+# #     - input_number.back_garden_irrigation_duration
+# #     - input_select.back_garden_irrigation_schedule
+# #     - input_number.global_lawn_irrigation_wind_threshold
+# #     - script.back_garden_irrigation_timer
+# #     - switch.back_garden_irrigation_valve
 
 
-# controller_info_groups
-bunny_shed_controller_info_group:
-  name: Bunny Shed Controller Info
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.bs_status
-    - sensor.bs_client_name
-    - sensor.bs_host
-    - sensor.bs_ip
-    - sensor.bs_mac
-    - sensor.bs_rssi
-    - sensor.bs_ssid
+# # controller_info_groups
+# bunny_shed_controller_info_group:
+#   name: Bunny Shed Controller Info
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.bs_status
+#     - sensor.bs_client_name
+#     - sensor.bs_host
+#     - sensor.bs_ip
+#     - sensor.bs_mac
+#     - sensor.bs_rssi
+#     - sensor.bs_ssid
 
-rf_gateway_info_group:
-  name: RF Gatway Info
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.rfg_status
-    - sensor.rfg_client_name
-    - sensor.rfg_host
-    - sensor.rfg_ip
-    - sensor.rfg_mac
-    - sensor.rfg_rssi
-    - sensor.rfg_ssid
+# rf_gateway_info_group:
+#   name: RF Gatway Info
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.rfg_status
+#     - sensor.rfg_client_name
+#     - sensor.rfg_host
+#     - sensor.rfg_ip
+#     - sensor.rfg_mac
+#     - sensor.rfg_rssi
+#     - sensor.rfg_ssid
 
-irrigation_controller_info_group:
-  name: Irrigation Controller Info
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.ic_status
-    - sensor.ic_client_name
-    - sensor.ic_host
-    - sensor.ic_ip
-    - sensor.ic_mac
-    - sensor.ic_rssi
-    - sensor.ic_ssid
+# irrigation_controller_info_group:
+#   name: Irrigation Controller Info
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.ic_status
+#     - sensor.ic_client_name
+#     - sensor.ic_host
+#     - sensor.ic_ip
+#     - sensor.ic_mac
+#     - sensor.ic_rssi
+#     - sensor.ic_ssid
 
-rf_link_group:
-  name: RF Link
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.esp_link_status
-    - binary_sensor.rf_link_status
-    - sensor.esp_link_controller_signal_strength
+# rf_link_group:
+#   name: RF Link
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.esp_link_status
+#     - binary_sensor.rf_link_status
+#     - sensor.esp_link_controller_signal_strength
 
-tor_doorbell_info_group:
-  name: TOR DoorBell Info
-  # view: no
-  # control: hidden
-  entities:
-    - binary_sensor.tor_db_status
-    - sensor.tor_db_client_name
-    - sensor.tor_db_host
-    - sensor.tor_db_ip
-    - sensor.tor_db_mac
-    - sensor.tor_db_rssi
-    - sensor.tor_db_ssid
-    - counter.tor_db_disconnect_counter
+# tor_doorbell_info_group:
+#   name: TOR DoorBell Info
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - binary_sensor.tor_db_status
+#     - sensor.tor_db_client_name
+#     - sensor.tor_db_host
+#     - sensor.tor_db_ip
+#     - sensor.tor_db_mac
+#     - sensor.tor_db_rssi
+#     - sensor.tor_db_ssid
+#     - counter.tor_db_disconnect_counter
 
-ups_data_group:
-  name: UPS Data
-  # view: no
-  # control: hidden
-  entities:
-   - sensor.ups_status
-   - sensor.ups_battery
-   - sensor.ups_time_left
-   - sensor.ups_load
-   - sensor.ups_input_voltage
-   - sensor.ups_internal_temperature
-   - sensor.ups_output_voltage
-   - sensor.ups_time_on_battery
-   - sensor.ups_total_time_on_battery
-   - sensor.ups_transfer_count
-   - sensor.ups_battery_voltage
-   - sensor.ups_input_voltage
-   - sensor.ups_last_self_test
-   - sensor.ups_last_transfer
-   - sensor.ups_transfer_from_battery
-
-
-server_ilo_status_group:
-  name: Server Status
-  # view: no
-  # control: hidden
-  entities:
-    # iLo sensores
-    - sensor.server_ilo_temperature_ambient
-    - sensor.server_ilo_temperature_exhaust
-    - sensor.server_ilo_temperature_chipset
-    - sensor.server_ilo_temperature_memory
-    - sensor.server_ilo_temperature_processor
-    - sensor.server_ilo_temperature_raid_controller
-    - sensor.server_server_raid_controller_temperature
-    - sensor.server_server_inlet_temperature
-    - sensor.server_server_exhaust_temperature
-    - sensor.server_server_fanspeed
-    - sensor.server_server_power_state
-    - sensor.server_ilo_bios
-    - sensor.server_ilo_fans
-    - sensor.server_ilo_memory
-    - sensor.server_ilo_power
-    - sensor.server_ilo_processor
-    - sensor.server_ilo_storage
-    - sensor.server_ilo_temperature
-    - sensor.server_ilo_network
-  #  - sensor.server_server_health
-    - sensor.server_ilo_fan
-    - sensor.server_uptime
-    - sensor.server_cpu_load
-    - sensor.server_disk_free
-    - sensor.server_disk_used
-    - sensor.server_disk_used_2
-    - sensor.server_ram_free
-    - sensor.server_ram_used
-    - sensor.server_ram_used_2
-    - sensor.server_running
-    - sensor.server_sleeping
-    - sensor.server_swap_free
-    - sensor.server_swap_used
-    - sensor.server_swap_used_2
-    - sensor.server_thread
-    - sensor.server_total
+# ups_data_group:
+#   name: UPS Data
+#   # view: no
+#   # control: hidden
+#   entities:
+#    - sensor.ups_status
+#    - sensor.ups_battery
+#    - sensor.ups_time_left
+#    - sensor.ups_load
+#    - sensor.ups_input_voltage
+#    - sensor.ups_internal_temperature
+#    - sensor.ups_output_voltage
+#    - sensor.ups_time_on_battery
+#    - sensor.ups_total_time_on_battery
+#    - sensor.ups_transfer_count
+#    - sensor.ups_battery_voltage
+#    - sensor.ups_input_voltage
+#    - sensor.ups_last_self_test
+#    - sensor.ups_last_transfer
+#    - sensor.ups_transfer_from_battery
 
 
+# server_ilo_status_group:
+#   name: Server Status
+#   # view: no
+#   # control: hidden
+#   entities:
+#     # iLo sensores
+#     - sensor.server_ilo_temperature_ambient
+#     - sensor.server_ilo_temperature_exhaust
+#     - sensor.server_ilo_temperature_chipset
+#     - sensor.server_ilo_temperature_memory
+#     - sensor.server_ilo_temperature_processor
+#     - sensor.server_ilo_temperature_raid_controller
+#     - sensor.server_server_raid_controller_temperature
+#     - sensor.server_server_inlet_temperature
+#     - sensor.server_server_exhaust_temperature
+#     - sensor.server_server_fanspeed
+#     - sensor.server_server_power_state
+#     - sensor.server_ilo_bios
+#     - sensor.server_ilo_fans
+#     - sensor.server_ilo_memory
+#     - sensor.server_ilo_power
+#     - sensor.server_ilo_processor
+#     - sensor.server_ilo_storage
+#     - sensor.server_ilo_temperature
+#     - sensor.server_ilo_network
+#   #  - sensor.server_server_health
+#     - sensor.server_ilo_fan
+#     - sensor.server_uptime
+#     - sensor.server_cpu_load
+#     - sensor.server_disk_free
+#     - sensor.server_disk_used
+#     - sensor.server_disk_used_2
+#     - sensor.server_ram_free
+#     - sensor.server_ram_used
+#     - sensor.server_ram_used_2
+#     - sensor.server_running
+#     - sensor.server_sleeping
+#     - sensor.server_swap_free
+#     - sensor.server_swap_used
+#     - sensor.server_swap_used_2
+#     - sensor.server_thread
+#     - sensor.server_total
 
-bedroom_master:
-  name: Master Bedroom Lights
-  # view: no
-  entities:
-    - light.richard_bed_2
-    - light.lucy_bed
-
-bedroom_guest:
-  name: Guest Bedroom Lights
-  # view: no
-  entities:
-    - light.lamp_2
 
 
-bathroom_towel_rail_group:
-  name: Bathroom Towel Rail
-  # view: no
-  # control: hidden
-  entities:
-    - script.bathroom_towel_rail_timer
-    - input_number.bathroom_towel_on_time
-    - automation.dont_heat_towel_rail_mqtt
-    - automation.heat_towel_rail_mqtt
+# bedroom_master:
+#   name: Master Bedroom Lights
+#   # view: no
+#   entities:
+#     - light.richard_bed_2
+#     - light.lucy_bed
 
-christmas_lights_group:
-    name: Christmas Lights
-    # view: no
-    entities:
-      - group.outside_christmas_lights
-      - group.inside_christmas_lights
-outside_christmas_lights:
-  name: Outside Christmas Lights
-  # view: no
-  entities:
-    - light.christmas_master_bedroom_star
-    - light.christmas_living_room_star
-    - light.christmas_mess_room_star
-    - light.christmas_guest_bedroom_star
-    - light.christmas_garden_lights
+# bedroom_guest:
+#   name: Guest Bedroom Lights
+#   # view: no
+#   entities:
+#     - light.lamp_2
 
-inside_christmas_lights:
-  name: Inside Christmas Lights
-  # view: no
-  entities:
-    - light.christmas_tree_bling
+
+# bathroom_towel_rail_group:
+#   name: Bathroom Towel Rail
+#   # view: no
+#   # control: hidden
+#   entities:
+#     - script.bathroom_towel_rail_timer
+#     - input_number.bathroom_towel_on_time
+#     - automation.dont_heat_towel_rail_mqtt
+#     - automation.heat_towel_rail_mqtt
+
+# christmas_lights_group:
+#     name: Christmas Lights
+#     # view: no
+#     entities:
+#       - group.outside_christmas_lights
+#       - group.inside_christmas_lights
+# outside_christmas_lights:
+#   name: Outside Christmas Lights
+#   # view: no
+#   entities:
+#     - light.christmas_master_bedroom_star
+#     - light.christmas_living_room_star
+#     - light.christmas_mess_room_star
+#     - light.christmas_guest_bedroom_star
+#     - light.christmas_garden_lights
+
+# inside_christmas_lights:
+#   name: Inside Christmas Lights
+#   # view: no
+#   entities:
+#     - light.christmas_tree_bling

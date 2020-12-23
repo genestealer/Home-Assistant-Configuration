@@ -205,7 +205,7 @@ sun:
 # Text to speech.
 tts:
   - platform: google_translate
-    service_name: google_say
+    service_name: google_translate_say
 
 # Use external MQTT broker.
 mqtt:

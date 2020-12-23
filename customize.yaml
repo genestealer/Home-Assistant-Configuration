@@ -285,3 +285,26 @@ switch.plug_in_air_freshener_1:
   icon: mdi:spray
 switch.plug_in_air_freshener_2:
   icon: mdi:spray
+light.christmas_tree_lights:
+  icon: mdi:pine-tree
+light.christmas_library_star:
+  icon: mdi:star
+sensor.weather_station_battery:
+  device_class: battery
+sensor.dkw2012_001c_bat:
+  device_class: battery
+sensor.alectov3_30d1_bat:
+  device_class: battery
+sensor.ups_battery:
+  device_class: battery
+sensor.alectov3_30d1_update_time: {}
+sensor.alectov5_00a3_update_time: {}
+sensor.dkw2012_001c_update_time: {}
+sensor.local_light_intensity:
+  device_class: illuminance
+sensor.local_outside_humidity:
+  device_class: humidity
+sensor.local_outside_temperature:
+  device_class: temperature
+sensor.ups_internal_temperature:
+  device_class: temperature

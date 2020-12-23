@@ -54,7 +54,8 @@ ota: # Enable over the air updates
   password: $pass
 
 status_led:
-  pin: GPIO02
+  pin:
+    number: LED_RED
 
 ####################################################
 # Non-Shared Code (May contain shared code)

@@ -9,3 +9,23 @@
       friendly_name: Richard Bed
       supported_features: 33
       state: 'on'
+- id: '1608752142805'
+  name: TV Time
+  entities:
+    light.sofa_left:
+      friendly_name: Sofa Left
+      supported_features: 33
+      state: 'off'
+    light.sofa_right:
+      friendly_name: Sofa Right
+      supported_features: 33
+      state: 'off'
+    light.living_room_ceiling_light:
+      friendly_name: Living Room Ceiling Light
+      supported_features: 0
+      state: 'off'
+    light.living_room_cabinets:
+      brightness: 28
+      friendly_name: Living Room Cabinets
+      supported_features: 33
+      state: 'on'
