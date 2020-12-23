@@ -1041,26 +1041,4 @@
       - service: notify.google_cloud_notify
         data:
           message: 'Low battery warning for: {{sensors}}'
-- id: '1608752549598'
-  alias: Doorbell - Notify Alexa and or Google and send camera snapshot to app
-  description: ''
-  use_blueprint:
-    path: seamus65/doorbell-notify-alexa-and-or-google-and-send-camera-snapshot-to-app.yaml
-    input:
-      delay: '0'
-      notify_device: 047cbf194baf51681b958196a698101c
-      camera: camera.front_door_11
-      doorbell: binary_sensor.kichen_pir_sensor
-      google_device: media_player.kitchen_display
-      echo_device: media_player.office_display
-- id: '1608752882166'
-  alias: Doorbell - Notify Google and send camera snapshot to app
-  description: ''
-  use_blueprint:
-    path: seamus65/doorbell-notify-google-and-send-camera-snapshot-to-app.yaml
-    input:
-      delay: '0'
-      doorbell: binary_sensor.kichen_pir_sensor
-      google_device: media_player.kitchen_display
-      notify_device: 047cbf194baf51681b958196a698101c
-      camera: camera.front_door_11
+
