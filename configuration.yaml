@@ -138,6 +138,7 @@ history:
       - sensor.server_server_power_on_time
 
 
+
 # View all events in a logbook
 logbook:
    exclude:
@@ -152,6 +153,13 @@ logbook:
       - sensor.server_server_power_on_time
       - sensor.cc_cpu_temperature
       - sensor.cc_cpu_load
+      - sensor.adguard_average_processing_speed
+      - sensor.adguard_dns_queries
+      - sensor.adguard_dns_queries_blocked_ratio
+      - sensor.adguard_parental_control_blocked
+      - sensor.adguard_safe_browsing_blocked
+      - sensor.adguard_safe_searches_enforced
+
 
 # Tracked history is kept for 12 days. (Not cleared at startup)
 recorder:
@@ -168,6 +176,7 @@ recorder:
       - binary_sensor.cctv_garden_p3354_vmd3_0
       - binary_sensor.cctv_garden_p3354_vmd3_0
       - binary_sensor.cctv_garden_p3354_vmd3_0
+      - binary_sensor.drive_high_16_sound_1
       # - binary_sensor.binary_sensor.p3364_l_0_vmd3_0
       # - binary_sensor.p3364_l_0_vmd4_camera1profileany
       # - binary_sensor.p3364_l_0_vmd4_camera1profile1
@@ -186,6 +195,8 @@ logger:
     homeassistant.components.sensor.plex: fatal
     urllib3.connectionpool: error
     homeassistant.components.recorder: fatal
+    axis: debug
+    homeassistant.components.axis: debug
 
 
 system_health:
@@ -302,6 +313,7 @@ rflink:
   ignore_devices:
     - owl_cm113_ead1_current3
     - owl_cm113_ead1_current1
+    - ev1527_*
     # - sensor.owl_cm113_ea7f_current2
     # - sensor.owl_cm113_ea7f_current3
     # - sensor.owl_cm113_ea9f_current2
@@ -309,14 +321,14 @@ rflink:
     # - sensor.owl_cm130_007f_kwatt
 
     # - sensor.alectov5_*
-    # - sensor.v2phoenix_*
+    - sensor.v2phoenix_*
     # - sensor.dkw2012_*
-    # - light.drayton_*
-    # - light.elrodb_*
-    # - light.mertik_*
-    # - light.drayton_*
-    # - light.btf_*
-    # - light.v2phoenix*
+    - light.drayton_*
+    - light.elrodb_*
+    - light.mertik_*
+    - light.drayton_*
+    - light.btf_*
+    - light.v2phoenix*
 
 
 #Ikea Tradfri ethernet gatway integration.
@@ -465,8 +477,18 @@ google_assistant:
     group.media_player:
       expose: false
 
+    switch.adguard_filtering:
+      expose: false
+    switch.adguard_parental_control:
+      expose: false
+    switch.adguard_safe_browsing:
+      expose: false
+    switch.adguard_safe_search:
+      expose: false
 
 
+
+      
   # Not needed since release 0.80
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token

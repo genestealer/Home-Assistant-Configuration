@@ -4,9 +4,9 @@
 # Config Header for Device
 ####################################################
 substitutions:
-  devicename: chickenhouseesphuzzah
+  devicename: chicken_house
   upper_devicename: Chicken House
-  ip: 192.168.2.35
+  ip: 192.168.2.25
   pass: hxN#^fPPv5ZRy%7l
   
 ####################################################
@@ -63,4 +63,4 @@ sensor:
     humidity:
       name: ${upper_devicename} Humidity
     update_interval: 300s
-    model: DHT22
+    model: DHT11

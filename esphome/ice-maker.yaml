@@ -1,0 +1,82 @@
+#***************************************************
+# Ice Maker Controller
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: icemaker
+  upper_devicename: Ice Maker
+  ip: 192.168.2.40
+  pass: hxN#^fPPv5ZRy%7l
+  
+####################################################
+# Shared code from all my projects
+####################################################
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: nodemcuv2
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+  manual_ip:
+    static_ip: $ip
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+logger: # Enable logging
+
+api: # Enable Home Assistant API
+  password: $pass
+
+ota: # Enable over the air updates
+  password: $pass
+
+status_led:
+  pin:
+    number: D0 # GPIO16 - NodeMCU on-board LED
+    inverted: True # To save power with using a coil relay
+
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################  
+binary_sensor:
+  - platform: status
+    name:  ${upper_devicename} Status
+
+switch:
+  - platform: gpio
+    pin:
+      number: D5
+      mode: OUTPUT
+    id: ICE_MAKER_SWITCH
+    # restore_mode: RESTORE_DEFAULT_ON  
+    name: "Ice Maker Switch"
+
+# fan:
+#   - platform: binary
+#     output: ICE_MAKER_SWITCH
+#     name: "Ice Maker"
+
+dallas:
+  - pin: D3    
+
+
+   
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ${upper_devicename} IP
+    ssid:
+      name: ${upper_devicename} SSID
+    bssid:
+      name: ${upper_devicename} BSSID
+
+sensor:
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    
+  - platform: dallas
+    address: 0x93001414B455FF28
+    name: "Ice Maker Water Temperature"

@@ -1028,7 +1028,7 @@
       motion_entity: binary_sensor.kichen_pir_sensor
       light_target:
         entity_id: light.kitchen_under_counter_lights
-      no_motion_wait: '600'
+      no_motion_wait: '3600'
 - id: '1608750110548'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
   description: ''
@@ -1041,4 +1041,43 @@
       - service: notify.google_cloud_notify
         data:
           message: 'Low battery warning for: {{sensors}}'
-
+- id: '1612985120601'
+  alias: Ice Maker On-Off Schedule [Blueprint]
+  description: 'There is a separate automation which turns the ice maker on if the
+    water temperature gets too warm '
+  use_blueprint:
+    path: EPMatt/on_off_schedule_state_persistence.yaml
+    input:
+      off_time: '22:30:00'
+      automation_target:
+        entity_id: switch.ice_maker_switch
+      on_time: 08:30:00
+- id: '1612985880086'
+  alias: 'Ice Maker Water High Temperature Action '
+  description: Turn on the ice maker for a set time if the water temperature goes
+    above a set threshold. Only run if ice maker is not already on.
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.ice_maker_water_temperature
+    above: input_number.ice_maker_water_high_temperature_threshold
+  condition:
+  - condition: device
+    type: is_off
+    device_id: 78678bdb2e4faa8982a4681b31f899ba
+    entity_id: switch.ice_maker_switch
+    domain: switch
+  action:
+  - type: turn_on
+    device_id: 78678bdb2e4faa8982a4681b31f899ba
+    entity_id: switch.ice_maker_switch
+    domain: switch
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: 78678bdb2e4faa8982a4681b31f899ba
+    entity_id: switch.ice_maker_switch
+    domain: switch
+  mode: single
