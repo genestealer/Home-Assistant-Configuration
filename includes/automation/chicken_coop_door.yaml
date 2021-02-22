@@ -4,41 +4,42 @@
 #
 ############################################################
 
+# Moved to main automations Feb 2021
 
-- alias: Close Chicken Door Notification
-  # hide_entity: True
-  trigger:
-  - event: sunset
-    offset: +02:00:00
-    platform: sun
-  condition:
-  - condition: state
-    entity_id: binary_sensor.chicken_door_status
-    state: 'on'
-  action:
-    service: notify.google_cloud_notify
-    data_template:
-      title: 'Chicken Bed Time? [Home Assistant]'
-      message: "It's dark, shall I close the chicken coop door?"
-    data:
-      data:
-        actions:
-          - action: close_door
-            icon: "/static/icons/chicken.png"
-            title: "Close chicken coop door"
+# - alias: Close Chicken Door Notification
+#   # hide_entity: True
+#   trigger:
+#   - event: sunset
+#     offset: +02:00:00
+#     platform: sun
+#   condition:
+#   - condition: state
+#     entity_id: binary_sensor.chicken_door_status
+#     state: 'on'
+#   action:
+#     service: notify.google_cloud_notify
+#     data_template:
+#       title: 'Chicken Bed Time? [Home Assistant]'
+#       message: "It's dark, shall I close the chicken coop door?"
+#     data:
+#       data:
+#         actions:
+#           - action: close_door
+#             icon: "/static/icons/chicken.png"
+#             title: "Close chicken coop door"
 
 
 
-- alias: Close Chicken Door Notification HTML5 push notification action button clicked
-  trigger:
-    platform: event
-    event_type: html5_notification.clicked
-    event_data:
-      action: close_door
-  action:
-    - service: cover.close_cover
-      data:
-        entity_id: cover.chicken_coop_door
+# - alias: Close Chicken Door Notification HTML5 push notification action button clicked
+#   trigger:
+#     platform: event
+#     event_type: html5_notification.clicked
+#     event_data:
+#       action: close_door
+#   action:
+#     - service: cover.close_cover
+#       data:
+#         entity_id: cover.chicken_coop_door
 
     # - service: notify.google_cloud_notify
     #   data:

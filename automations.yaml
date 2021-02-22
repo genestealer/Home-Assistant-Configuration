@@ -1,14 +1,15 @@
 - id: '1529366648322'
-  alias: Open chicken pop hole door at dawn
+  alias: Open Chicken Door At Morning
+  description: Open at Dawn
   trigger:
   - event: sunrise
     offset: -00:30:00
     platform: sun
   condition: []
   action:
-  - data:
-      entity_id: cover.chicken_coop_door
+  - entity_id: cover.chicken_coop_door
     service: cover.open_cover
+  mode: single
 - id: '1541895123590'
   alias: Garage CCTV Offline
   trigger:
@@ -465,7 +466,8 @@
       message: Nest forced back to heat mode while you are at home.
     service: notify.google_cloud_notify
 - id: '1576603673930'
-  alias: Close Chicken Door HTML5 notification action button clicked
+  alias: Close Chicken Door In The Evening Via Notification (action button has been
+    clicked)
   description: Notification HTML5 push notification action button clicked
   trigger:
   - event_data:
@@ -476,8 +478,9 @@
   action:
   - entity_id: cover.chicken_coop_door
     service: cover.close_cover
+  mode: single
 - id: '1576603849046'
-  alias: Close Chicken Door HTML5 notification action
+  alias: Close Chicken Door In The Evening Via Notification
   description: ''
   trigger:
   - event: sunset
@@ -488,16 +491,15 @@
     entity_id: binary_sensor.chicken_coop_status
     state: 'on'
   action:
-  - data:
+  - service: notify.google_cloud_notify
+    data:
+      title: Chicken Bed-Time? [Home Assistant]
+      message: It's dark, close chicken coop door?
       data:
         actions:
         - action: close_door
-          icon: /static/icons/chicken.png
-          title: Close chicken coop door
-    data_template:
-      message: It's dark, shall I close the chicken coop door?
-      title: Chicken Bed Time? [Home Assistant]
-    service: notify.google_cloud_notify
+          title: Yes close chicken coop door
+  mode: single
 - id: '1581770041173'
   alias: 'Notify: Electricity supply voltage is HIGH'
   description: Send Notification when Electricity Voltage is High
@@ -884,7 +886,7 @@
   trigger:
   - type: motion
     platform: device
-    device_id: bafbbdad065c11ebb103a1a52230f009
+    device_id: 853ca02c816df4ce4860c07060837a6a
     entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
     domain: binary_sensor
   - type: motion
@@ -893,17 +895,20 @@
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
   condition:
-  - condition: time
-    after: '18:00'
-    before: 09:00
+  - condition: and
+    conditions:
+    - condition: time
+      after: '18:00'
+      before: 09:00
+    - condition: numeric_state
+      entity_id: sensor.local_outside_temperature
+      above: '3'
   action:
   - delay: 00:00:05
   - service: switch.turn_on
-    data: {}
     entity_id: switch.front_garden_lawn_irrigation_valve
   - delay: 00:00:06
   - service: switch.turn_off
-    data: {}
     entity_id: switch.front_garden_lawn_irrigation_valve
   mode: single
 - id: '1601593330216'
