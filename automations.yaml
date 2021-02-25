@@ -484,7 +484,7 @@
   description: ''
   trigger:
   - event: sunset
-    offset: +02:00:00
+    offset: +01:00:00
     platform: sun
   condition:
   - condition: state
@@ -498,7 +498,7 @@
       data:
         actions:
         - action: close_door
-          title: Yes close chicken coop door
+          title: 🚪CLOSE DOOR 🐔
   mode: single
 - id: '1581770041173'
   alias: 'Notify: Electricity supply voltage is HIGH'
