@@ -82,6 +82,13 @@ lovelace:
     #   type: module
     # - url: /local/community/stack-in-card/stack-in-card.js
     #   type: module
+
+    
+    #=== FONTS
+    - url: https://fonts.googleapis.com/css?family=Oswald
+      type: css
+    - url: https://fonts.googleapis.com/css?family=Dosis
+      type: css
   # Add yaml dashboards
   dashboards:
     lovelace-garden:
@@ -309,7 +316,8 @@ rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
   wait_for_ack: true
-  reconnect_interval: 7 #1 second
+  reconnect_interval: 10 # seconds
+  tcp_keepalive_idle_timer: 60 # seconds
   ignore_devices:
     - owl_cm113_ead1_current3
     - owl_cm113_ead1_current1

@@ -1086,3 +1086,40 @@
     entity_id: switch.ice_maker_switch
     domain: switch
   mode: single
+- id: '1614817579397'
+  alias: 'emw100_d018_00 '
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: light.emw100_d018_00
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: light.emw100_d018_00
+        state: 'on'
+      sequence:
+      - type: turn_on
+        device_id: f96140facdbde173c77c7f4b65915404
+        entity_id: light.office
+        domain: light
+        brightness_pct: 100
+      - service: light.turn_on
+        data:
+          rgb_color:
+          - 255
+          - 145
+          - 145
+        entity_id: light.office
+    - conditions:
+      - condition: state
+        entity_id: light.emw100_d018_00
+        state: 'off'
+      sequence:
+      - type: turn_off
+        device_id: f96140facdbde173c77c7f4b65915404
+        entity_id: light.office
+        domain: light
+    default: []
+  mode: single

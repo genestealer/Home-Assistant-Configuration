@@ -92,8 +92,8 @@ tap_action:
               border-radius: 0em 0em 1em 1em;
               background: var(--paper-dialog-background-color);
             }
-    deviceID:
-      - this
+    # deviceID:
+    #   - this
     style:
       font-family: >
         [[[

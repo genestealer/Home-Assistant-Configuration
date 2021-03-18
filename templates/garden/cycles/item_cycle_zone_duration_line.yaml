@@ -102,8 +102,8 @@ card:
                           {% set font = states('input_text.irrigation_ui_font_family') %}
                           {% endraw %}
                           font-family: {% raw %}{{ font }}{% endraw %};
-                    deviceID:
-                      - this
+                    # deviceID:
+                    #   - this
                     style:
                       font-family: "[[[ return states['input_text.irrigation_ui_font_family'].state ]]]"
                       box-shadow: 0em 0em 0.5em

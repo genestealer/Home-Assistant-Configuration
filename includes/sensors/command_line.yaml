@@ -11,12 +11,14 @@
   unit_of_measurement: "°C"
   value_template: '{{ value | multiply(0.001) | round(1) }}'
 
-  #I have not worked out yet how to get the responce back and process that into a true/false value.
-- platform: command_line
-  name: RFLink Keep Alive Command
-  command: 'echo "10;PING;" | nc 192.168.2.22 23'
-  scan_interval: 60 #seconds
-  # value_template: "{{ value.split(';')[2] }}"
+  # I have not worked out yet how to get the response back and process that into a true/false value.
+  # This sensor sends a command as per the scan interval to keep the connection alive.
+  # Commented out March 2021 as the RFLink component now includes this keep-alive functionality (I hope).
+# - platform: command_line
+#   name: RFLink Keep Alive Command
+#   command: 'echo "10;PING;" | nc 192.168.2.22 23'
+#   scan_interval: 60 #seconds
+#   # value_template: "{{ value.split(';')[2] }}"
   
 #   # device_class: connectivity
 #   # value_template: '{{ value }}'

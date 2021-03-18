@@ -16,7 +16,7 @@
 # 433MHz switchs
 - platform: rflink
   device_defaults:
-    signal_repetitions: 10
+    signal_repetitions: 20
     fire_event: true
   devices:
     EMW100_a140_0: # Ikea ANSLUTA E1202
@@ -36,16 +36,16 @@
       name: Plug-In Air Freshener 2
 
 
-
-# Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
-# Will genirate a 20;xx;CMD UNKNOWN; reponce 
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 1
-    fire_event: false
-  devices:
-    fake_fake_0:
-        name: RFLink Fake Keep Alive Switch
+# Not used
+# # Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
+# # Will genirate a 20;xx;CMD UNKNOWN; reponce 
+# - platform: rflink
+#   device_defaults:
+#     signal_repetitions: 1
+#     fire_event: false
+#   devices:
+#     fake_fake_0:
+#         name: RFLink Fake Keep Alive Switch
 
 
     
@@ -67,10 +67,10 @@
 #       name: Office Blinds Open
 
 
-# # Ikea two button round remote
-# - platform: rflink
-#   device_defaults:
-#     fire_event: true
-#   devices:
-#     emw100_d018_00:
-#       name: Button 1
+# Ikea two button round remote
+- platform: rflink
+  device_defaults:
+    fire_event: true
+  devices:
+    emw100_d018_00:
+      name: Button 1

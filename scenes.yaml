@@ -29,3 +29,29 @@
       friendly_name: Living Room Cabinets
       supported_features: 33
       state: 'on'
+- id: '1614816873268'
+  name: Bedroom Night Scean
+  entities:
+    light.richard_bed:
+      brightness: 26
+      hs_color:
+      - 9.13
+      - 81.833
+      rgb_color:
+      - 255
+      - 78
+      - 46
+      xy_color:
+      - 0.649
+      - 0.32
+      friendly_name: Richard Bed
+      supported_features: 49
+      state: 'on'
+    light.lucy_bed:
+      friendly_name: Lucy Bed
+      supported_features: 49
+      state: 'off'
+    light.bedroom_ceiling_light:
+      friendly_name: Bedroom Ceiling Light
+      supported_features: 0
+      state: 'off'

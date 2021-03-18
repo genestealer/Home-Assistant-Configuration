@@ -95,7 +95,7 @@ entities:
           !include
             - item_settings_controller_wifi_signal.yaml
             - entity: "${vars[0]}"
-              name: Irrigation Controller WiFi Signal Strength
+              name: Irrigation Controller
               tap_action: none
 
       #=== Testing mode warning

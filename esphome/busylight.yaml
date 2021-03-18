@@ -69,6 +69,9 @@ binary_sensor:
     pin: 13
     name: "Kichen PIR Sensor"
     device_class: motion
+    on_press:
+      then:
+        - light.toggle: busylight
 
 switch:
   - platform: gpio
@@ -107,3 +110,4 @@ light:
     pin: 2
     num_leds: 1
     name: ${upper_devicename}
+    id: busylight

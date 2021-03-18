@@ -29,8 +29,8 @@ cards:
             - entity: input_text.irrigation_cycle{{ cycle }}_name
               name: Name
               icon: mdi:alphabetical-variant
-        deviceID:
-          - this
+        # deviceID:
+        #   - this
         style:
           font-family: >
             [[[

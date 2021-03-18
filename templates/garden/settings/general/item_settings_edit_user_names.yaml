@@ -98,8 +98,8 @@ cards:
                   background: var(--paper-dialog-background-color);
                   font-size: 16px;
                 }
-        deviceID:
-          - this
+        # deviceID:
+        #   - this
         style:
           font-family: >
             [[[
