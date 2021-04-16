@@ -972,11 +972,11 @@
       - service: light.turn_on
         data:
           color_name: green
-        entity_id: light.busy_light_1
-      - service: light.turn_on
-        data:
-          color_name: green
-        entity_id: light.busy_light_2
+          transition: 3
+        target:
+          entity_id:
+          - light.busy_light_1
+          - light.busy_light_2
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
@@ -984,12 +984,12 @@
       sequence:
       - service: light.turn_on
         data:
-          color_name: orange
-        entity_id: light.busy_light_1
-      - service: light.turn_on
-        data:
-          color_name: orange
-        entity_id: light.busy_light_2
+          color_name: red
+          transition: 3
+        target:
+          entity_id:
+          - light.busy_light_1
+          - light.busy_light_2
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
@@ -997,33 +997,33 @@
       sequence:
       - service: light.turn_on
         data:
-          color_name: Red
-        entity_id: light.busy_light_1
-      - service: light.turn_on
-        data:
-          color_name: Red
-        entity_id: light.busy_light_2
+          color_name: blueviolet
+          transition: 3
+        target:
+          entity_id:
+          - light.busy_light_1
+          - light.busy_light_2
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Away
       sequence:
-      - service: light.turn_on
+      - service: light.turn_off
+        target:
+          entity_id:
+          - light.busy_light_1
+          - light.busy_light_2
         data:
-          color_name: Yellow
-        entity_id: light.busy_light_1
-      - service: light.turn_on
-        data:
-          color_name: Yellow
-        entity_id: light.busy_light_2
+          transition: 3
     default:
     - service: light.turn_off
-      data: {}
-      entity_id: light.busy_light_1
-    - service: light.turn_off
-      data: {}
-      entity_id: light.busy_light_2
-  mode: single
+      data:
+        transition: 3
+      target:
+        entity_id:
+        - light.busy_light_1
+        - light.busy_light_2
+  mode: restart
 - id: '1608749551791'
   alias: Motion-activated Light [Blueprint]
   description: ''

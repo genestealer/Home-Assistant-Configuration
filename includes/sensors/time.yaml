@@ -3,6 +3,7 @@
 # Time and Date
 # Used for driving template sensors which need a heatbeat to
 # update, in  place of Now()
+# Also needed for kloggy/HA-Irrigation-Version2
 #
 ############################################################
 
@@ -11,3 +12,4 @@
   display_options:
     - 'date_time'
     - 'time'
+    - 'date'

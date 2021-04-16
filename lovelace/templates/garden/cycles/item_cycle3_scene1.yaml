@@ -77,5 +77,5 @@ styles:
   #             - item_cycle_zone_duration_line.yaml
   #             - cycle: 3
   #               zone: 8
-    # deviceID:
-    #   - this
+    deviceID:
+      - this

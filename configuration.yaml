@@ -56,28 +56,52 @@ lovelace_gen:
 lovelace:
   mode: storage
   resources:
+    # - type: module
+    #   url: browser_mod.js
+    # - type: module
+    #   url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+    # - type: module
+    #   url: /hacsfiles/lovelace-card-mod/card-mod.js
+    # - type: module
+    #   url: /hacsfiles/button-card/button-card.js
+    # - type: module
+    #   url: /hacsfiles/config-template-card/config-template-card.js
+    # - type: module
+    #   url: /hacsfiles/lovelace-layout-card/layout-card.js
+    # - type: module 
+    #   url: /hacsfiles/lovelace-state-switch/state-switch.js
+    # - type: module
+    #   url: /hacsfiles/lovelace-hui-element/hui-element.js
+    # - type: module
+    #   url: /hacsfiles/lovelace-time-picker-card/time-picker-card.js
+
+
+
+
     # - url: browser_mod.js
     #   type: js
-    - url: /browser_mod.js
-      type: module
-    - url: browser_mod.js
-      type: module
-    - url: /local/community/lovelace-card-mod/card-mod.js
-      type: module
-    - url: /local/community/lovelace-hui-element/hui-element.js
-      type: module
-    - url: /local/community/button-card/button-card.js
-      type: module
-    - url: /local/community/config-template-card/config-template-card.js
-      type: module
-    - url: /local/community/mini-graph-card/mini-graph-card-bundle.js
-      type: module
-    - url: /local/community/lovelace-layout-card/layout-card.js
-      type: module
-    - url: /local/community/lovelace-state-switch/state-switch.js
-      type: module
-    - url: /local/community/lovelace-time-picker-card/time-picker-card.js
-      type: module
+    # - url: /browser_mod.js
+    #   type: module
+
+    # - url: browser_mod.js
+    #   type: module
+    # - url: /local/community/lovelace-card-mod/card-mod.js
+    #   type: module
+    # - url: /local/community/lovelace-hui-element/hui-element.js
+    #   type: module
+    # - url: /local/community/button-card/button-card.js
+    #   type: module
+    # - url: /local/community/config-template-card/config-template-card.js
+    #   type: module
+    # - url: /local/community/mini-graph-card/mini-graph-card-bundle.js
+    #   type: module
+    # - url: /local/community/lovelace-layout-card/layout-card.js
+    #   type: module
+    # - url: /local/community/lovelace-state-switch/state-switch.js
+    #   type: module
+    # - url: /local/community/lovelace-time-picker-card/time-picker-card.js
+    #   type: module
+
     # - url: /local/community/lovelace-multiple-entity-row/multiple-entity-row.js
     #   type: module
     # - url: /local/community/stack-in-card/stack-in-card.js
@@ -94,7 +118,7 @@ lovelace:
     lovelace-garden:
       mode: yaml
       title: Garden
-      icon: mdi:script
+      icon: mdi:flower 
       show_in_sidebar: true
       filename: myirrigation.yaml
 # Enables configuration UI

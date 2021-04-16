@@ -32,8 +32,8 @@ tap_action:
       entities:
         - !include item_cycle3_scene1.yaml
 
-    # deviceID:
-    #   - this
+    deviceID:
+      - this
     # style:
     #   font-family: >
     #     [[[
