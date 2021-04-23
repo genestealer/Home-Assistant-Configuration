@@ -389,9 +389,6 @@
   - data: {}
     entity_id: switch.plug_in_air_freshener_2
     service: switch.turn_on
-  - data:
-      message: Plug in air freshener turned on
-    service: notify.google_cloud_notify
   mode: single
 - id: '1576601191279'
   alias: Plug-in Air Freshener Stop
@@ -414,9 +411,6 @@
   - delay: 00:00:15
   - entity_id: switch.plug_in_air_freshener_2
     service: switch.turn_off
-  - data:
-      message: Plug in air freshener turned off
-    service: notify.google_cloud_notify
   mode: single
 - id: '1576601770197'
   alias: Welcome home Lucy
@@ -484,8 +478,8 @@
   description: ''
   trigger:
   - event: sunset
-    offset: +01:00:00
     platform: sun
+    offset: 01:30:00
   condition:
   - condition: state
     entity_id: binary_sensor.chicken_coop_status

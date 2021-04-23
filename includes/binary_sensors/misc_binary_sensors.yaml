@@ -4,7 +4,13 @@
 #
 ############################################################
 
-
+# If rain data has changed in the last 30 mins, then its raining.
+- platform: template
+  sensors:
+    raining_now:
+      friendly_name: "Raining Now"
+      value_template: >-
+        {{ state_attr('sensor.local_rain_30_min_statistics_raw', 'change')|float > 0 }}
 
 ############################################################
 #

@@ -9,10 +9,10 @@
   units: uk2
   forecast:
     - 0 # Today only
-    # - 1
-  # hourly_forecast:
-  #   - 0
-  #   - 1
+    - 1 # Tommorrow
+  hourly_forecast:
+    - 0
+    - 1
   monitored_conditions:
     - temperature_high
     - temperature_low
@@ -20,6 +20,14 @@
     - wind_speed
     - temperature
     - humidity
+
+    # https://github.com/kloggy/HA-Irrigation-Version2/blob/9cf6ce36d7c3f60e64a9302c6d9e16ab1a55174c/Weather%20Sensors.md
+    - summary # The fifth sensor needs to return any text string describing the weather outlook (or anything else you want!). 
+    - icon
+    # https://github.com/kloggy/HA-Irrigation-Version2/blob/9cf6ce36d7c3f60e64a9302c6d9e16ab1a55174c/prerequisites.yaml
+    - minutely_summary 
+
+
 
 
 

@@ -45,7 +45,7 @@ sensor:
 
 
   - platform: statistics
-    name: Local Rain 24 Hours Statistics
+    name: Local Rain 24 Hours Statistics Raw
     entity_id: sensor.local_total_rain
     sampling_size: 4320 # Enough for 3 readings a minute
     max_age:
@@ -56,9 +56,91 @@ sensor:
       template_rain_last_24_hours:
         friendly_name: "Local Rain 24 Hours"
         unit_of_measurement: 'mm'
-        value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics', 'change') }}"
+        value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
         
-        
+  - platform: statistics
+    name: Local Rain 24 Hours 24 Hours Ago Statistics raw
+    entity_id: sensor.local_total_rain
+    sampling_size: 8320 # Enough for 3 readings a minute
+    max_age:
+      hours: 48
+    # mins_age:
+    #   hours: 24
+    
+  
+  # Turned into a binary sensor via a template
+  - platform: statistics
+    name: Local Rain 30 Min Statistics Raw
+    entity_id: sensor.local_total_rain
+    sampling_size: 180 
+    max_age:
+      minutes: 30
+
+
+  - platform: template
+    sensors:
+      irrigation_weather_outlook:
+        friendly_name: "Irrigation weather outlook"
+        # value_template: "{{ states('sensor.dark_sky_summary_1d') }}"
+        value_template: "{{states('sensor.dark_sky_summary_1d') }} High of {{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C Low of {{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C"
+        icon_template: >-
+            {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","sleet") %} mdi:weather-partly-snowy-rainy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","wind") %} mdi:weather-windy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","cloudy") %} mdi:weather-cloudy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-day") %} mdi:weather-partly-cloudy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","hail") %} mdi:weather-hail
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","lightning") %} mdi:weather-lightning
+            {% elif is_state("sensor.sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
+            {% endif %}
+  # #=================================================================
+  # #=== Create the icons for Weather Outlook on the Cycle Start time
+  # #=================================================================
+  # - platform: template
+  #   sensors:
+  #     weather_just_icon:
+  #       friendly_name: "mdi Real Weather Icon"
+  #       icon_template: >-
+  #           {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","sleet") %} mdi:weather-partly-snowy-rainy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","wind") %} mdi:weather-windy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","cloudy") %} mdi:weather-cloudy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-day") %} mdi:weather-partly-cloudy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","hail") %} mdi:weather-hail
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","lightning") %} mdi:weather-lightning
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
+  #           {% endif %}
+  #       value_template: >-
+  #           {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} weather-sunny 
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} weather-night 
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","rain") %} weather-rainy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","snow") %} weather-snowy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","fog") %} weather-fog
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","sleet") %} weather-partly-snowy-rainy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","wind") %} weather-windy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","cloudy") %} weather-cloudy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-day") %} weather-partly-cloudy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-night") %} weather-night-partly-cloudy
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","hail") %} weather-hail
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","lightning") %} weather-lightning
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","thunderstorm") %} weather-lightning-rainy
+  #           {% endif %}
+
+
+
+
+
+
   # - platform: template
   #   sensors: 
   #     wind_compass_abbreviation:
