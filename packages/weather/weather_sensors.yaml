@@ -82,7 +82,10 @@ sensor:
       irrigation_weather_outlook:
         friendly_name: "Irrigation weather outlook"
         # value_template: "{{ states('sensor.dark_sky_summary_1d') }}"
-        value_template: "{{states('sensor.dark_sky_summary_1d') }} High of {{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C Low of {{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C"
+        value_template: >+ # "keep": keep the line feed, keep trailing blank lines.
+            {{states('sensor.dark_sky_summary_1d')}}
+             High of {{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C 
+             Low of {{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C
         icon_template: >-
             {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
             {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
