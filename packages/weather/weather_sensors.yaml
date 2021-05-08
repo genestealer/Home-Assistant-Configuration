@@ -81,25 +81,26 @@ sensor:
     sensors:
       irrigation_weather_outlook:
         friendly_name: "Irrigation weather outlook"
-        # value_template: "{{ states('sensor.dark_sky_summary_1d') }}"
-        value_template: >+ # "keep": keep the line feed, keep trailing blank lines.
-            {{states('sensor.dark_sky_summary_1d')}}
-             High of {{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C 
-             Low of {{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C
+        value_template: | # "keep": keep the line feed, keep trailing blank lines. https://stackoverflow.com/questions/3790454/how-do-i-break-a-string-in-yaml-over-multiple-lines
+            {{states('sensor.dark_sky_summary_1d')}} 
+            High:{{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C
+            Low:{{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C
+            Rain: 
+
         icon_template: >-
-            {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","sleet") %} mdi:weather-partly-snowy-rainy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","wind") %} mdi:weather-windy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","cloudy") %} mdi:weather-cloudy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-day") %} mdi:weather-partly-cloudy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","hail") %} mdi:weather-hail
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","lightning") %} mdi:weather-lightning
-            {% elif is_state("sensor.sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
+            {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
+            {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
+            {% elif is_state("sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
+            {% elif is_state("sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
+            {% elif is_state("sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
+            {% elif is_state("sensor.dark_sky_icon_1d","sleet") %} mdi:weather-partly-snowy-rainy
+            {% elif is_state("sensor.dark_sky_icon_1d","wind") %} mdi:weather-windy
+            {% elif is_state("sensor.dark_sky_icon_1d","cloudy") %} mdi:weather-cloudy
+            {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-day") %} mdi:weather-partly-cloudy
+            {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
+            {% elif is_state("sensor.dark_sky_icon_1d","hail") %} mdi:weather-hail
+            {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} mdi:weather-lightning
+            {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
             {% endif %}
   # #=================================================================
   # #=== Create the icons for Weather Outlook on the Cycle Start time

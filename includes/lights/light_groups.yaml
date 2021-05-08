@@ -27,3 +27,17 @@
   name: Inside Christmas Lights 
   entities:
     - light.christmas_tree_lights
+
+    
+- platform: group
+  name: Outside Lights
+  entities:
+    - light.tradfri_bulb_20
+    - light.tradfri_bulb_12
+    - light.tradfri_bulb_18
+    - light.tradfri_bulb_19
+    - light.tradfri_bulb_22
+    - light.tradfri_bulb_16
+    - light.tradfri_bulb_23
+    - light.tradfri_bulb_17
+    - light.tradfri_bulb_21

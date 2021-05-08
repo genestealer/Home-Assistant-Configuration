@@ -266,31 +266,6 @@
   - delay: 00:00:15
   - event: smoke_machine_automation
     event_data: {}
-- id: '1576597572390'
-  alias: 'Christmas: Outside lights off at night'
-  description: Christmas Light Automation - Turn off outside lights at night
-  trigger:
-  - at: '23:10:00'
-    platform: time
-  condition: []
-  action:
-  - data: {}
-    entity_id: light.outside_christmas_lights
-    service: light.turn_off
-  mode: single
-- id: '1576597714781'
-  alias: 'Christmas : Outside lights on at sun set'
-  description: Christmas Light Automation - Turn on outside lights at night
-  trigger:
-  - event: sunset
-    offset: 00:15:00
-    platform: sun
-  condition: []
-  action:
-  - service: light.turn_on
-    data: {}
-    entity_id: light.outside_christmas_lights
-  mode: single
 - id: '1576598300322'
   alias: 'Christmas: Inside lights on when home'
   description: Christmas Light Automation - Turn on inside lights when we get home
@@ -820,59 +795,65 @@
       message: Ding! Dong! Someone is at the door
     service: tts.google_translate_say
   mode: single
-- id: '1601035873447'
-  alias: Secondary Zone Failure
+- id: '1601037277352'
+  alias: Perimeter Warning System - Primary and Secondary Zone Failure
   description: ''
   trigger:
   - platform: zone
     entity_id: device_tracker.google_maps_113691586554404814686
     zone: zone.outer_perimeter
     event: enter
-  condition: []
-  action:
-  - service: notify.google_cloud_notify
-    data:
-      message: Secondary zone failure
-  - service: notify.pushover_notify
-    data:
-      message: Secondary zone failure
-      title: Secondary zone failure
-      data:
-        sound: tugboat
-        priority: 0
-  - data:
-      cache: false
-      entity_id: media_player.whole_house
-      message: Notice! Secondary Zone Failure!
-    service: tts.google_translate_say
-  mode: single
-- id: '1601037277352'
-  alias: Primary Zone Failure
-  description: ''
-  trigger:
   - platform: zone
     entity_id: device_tracker.google_maps_113691586554404814686
     zone: zone.inner_perimeter
     event: enter
   condition: []
   action:
-  - service: notify.google_cloud_notify
-    data:
-      message: Primary zone failure
-  - service: notify.pushover_notify
-    data:
-      message: Primary zone failure
-      title: Primary zone failure
-      data:
-        sound: alien
-        priority: 1
-  - data:
-      cache: false
-      entity_id: media_player.whole_house
-      message: ALERT:Warning! Primary Zone Failure! Warning! Primary Zone Failure!
-        Warning! Primary Zone Failure! Close the fucking doors and windows for the
-        love of bunnies hide!
-    service: tts.google_translate_say
+  - choose:
+    - conditions:
+      - condition: zone
+        entity_id: device_tracker.google_maps_113691586554404814686
+        zone: zone.outer_perimeter
+      sequence:
+      - service: notify.google_cloud_notify
+        data:
+          message: Secondary Zone Failure - Outer Perimeter
+      - service: notify.pushover_notify
+        data:
+          message: Secondary Zone Failure - Outer Perimeter
+          title: Secondary Zone Failure - Outer Perimeter
+          data:
+            sound: tugboat
+            priority: 0
+      - data:
+          cache: false
+          entity_id: media_player.whole_house
+          message: Notice! Secondary Zone Failure! Secondary Zone Failure - Outer
+            Perimeter - Outer Perimeter
+        service: tts.google_translate_say
+    - conditions:
+      - condition: zone
+        entity_id: device_tracker.google_maps_113691586554404814686
+        zone: zone.inner_perimeter
+      sequence:
+      - service: notify.google_cloud_notify
+        data:
+          message: '!!Secondary Zone Failure - Inner Perimeter!!'
+      - service: notify.pushover_notify
+        data:
+          message: '!!Secondary Zone Failure - Inner Perimeter!!'
+          title: '!!Secondary Zone Failure - Inner Perimeter!!'
+          data:
+            sound: alien
+            priority: 1
+      - data:
+          cache: false
+          entity_id: media_player.whole_house
+          message: ALERT:Warning! Primary Zone Failure! Warning! Primary Zone Failure!
+            Warning! Primary Zone Failure! Close the fucking doors and windows for
+            the love of bunnies hide!
+        service: tts.google_translate_say
+    default: []
   mode: single
 - id: '1601317646616'
   alias: Front Lawn Anti Cat Defences
@@ -1041,18 +1022,20 @@
         data:
           message: 'Low battery warning for: {{sensors}}'
 - id: '1612985120601'
-  alias: Ice Maker On-Off Schedule [Blueprint]
-  description: 'There is a separate automation which turns the ice maker on if the
-    water temperature gets too warm '
+  alias: Ice Maker - On-Off Schedule [Blueprint]
+  description: There is a separate automation which turns the ice maker on if the
+    water temperature gets too warm. Also triggered by Fire Custom Event "ice_maker_back_online".
   use_blueprint:
     path: EPMatt/on_off_schedule_state_persistence.yaml
     input:
-      off_time: '22:30:00'
+      off_time: '23:30:00'
       automation_target:
         entity_id: switch.ice_maker_switch
       on_time: 08:30:00
+      trigger_at_homeassistant_startup: true
+      custom_trigger_event: ice_maker_back_online
 - id: '1612985880086'
-  alias: 'Ice Maker Water High Temperature Action '
+  alias: 'Ice Maker - Water High Temperature Action '
   description: Turn on the ice maker for a set time if the water temperature goes
     above a set threshold. Only run if ice maker is not already on.
   trigger:
@@ -1117,3 +1100,293 @@
         domain: light
     default: []
   mode: single
+- id: '1619902648352'
+  alias: Outside lights Chase
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 271291f2388c4b78b8eb8bedf5ac1260
+    entity_id: light.tradfri_bulb_12
+    domain: light
+  condition: []
+  action:
+  - service: light.turn_on
+    target:
+      device_id: 271291f2388c4b78b8eb8bedf5ac1260
+    data:
+      brightness_pct: 1
+  - service: light.turn_on
+    target:
+      device_id: 271291f2388c4b78b8eb8bedf5ac1260
+    data:
+      transition: 4
+      brightness_pct: 50
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: 68c0780a08a2a488fafcf891c0c971bf
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: 68c0780a08a2a488fafcf891c0c971bf
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: cb145ae0d47bb8242a1065359c1526a8
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: cb145ae0d47bb8242a1065359c1526a8
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: ed8273e13c392387f265d1be36133415
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: ed8273e13c392387f265d1be36133415
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: 8b55b43e0d5bf19f8f5eaf57f48f8448
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: 8b55b43e0d5bf19f8f5eaf57f48f8448
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: a80228a582b8c1d77941665dba6266cd
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: a80228a582b8c1d77941665dba6266cd
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: 752958ce41cdae33a5940fde71737e08
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: 752958ce41cdae33a5940fde71737e08
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: 7f1a0dc66db6e1b172af0f4f1f84e190
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: 7f1a0dc66db6e1b172af0f4f1f84e190
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+    target:
+      device_id: c3c520f03d6b5a91b336e63fe62cd7b9
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 50
+    target:
+      device_id: c3c520f03d6b5a91b336e63fe62cd7b9
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      device_id:
+      - 68c0780a08a2a488fafcf891c0c971bf
+      - ed8273e13c392387f265d1be36133415
+      - a80228a582b8c1d77941665dba6266cd
+      - 752958ce41cdae33a5940fde71737e08
+      - 8b55b43e0d5bf19f8f5eaf57f48f8448
+      - 7f1a0dc66db6e1b172af0f4f1f84e190
+      - c3c520f03d6b5a91b336e63fe62cd7b9
+      - 271291f2388c4b78b8eb8bedf5ac1260
+  - service: light.turn_on
+    target:
+      device_id: cb145ae0d47bb8242a1065359c1526a8
+    data:
+      brightness_pct: 1
+  mode: single
+- id: '1619906359597'
+  alias: Outside Lights Motion
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: cb145ae0d47bb8242a1065359c1526a8
+    entity_id: light.tradfri_bulb_19
+    domain: light
+  condition: []
+  action:
+  - service: light.turn_on
+    target:
+      device_id:
+      - 68c0780a08a2a488fafcf891c0c971bf
+      - ed8273e13c392387f265d1be36133415
+      - a80228a582b8c1d77941665dba6266cd
+      - 752958ce41cdae33a5940fde71737e08
+      - 8b55b43e0d5bf19f8f5eaf57f48f8448
+      - 7f1a0dc66db6e1b172af0f4f1f84e190
+      - c3c520f03d6b5a91b336e63fe62cd7b9
+      - 271291f2388c4b78b8eb8bedf5ac1260
+      - cb145ae0d47bb8242a1065359c1526a8
+    data:
+      brightness_pct: 1
+      color_temp: 352
+  - service: light.turn_on
+    target:
+      device_id:
+      - 68c0780a08a2a488fafcf891c0c971bf
+      - ed8273e13c392387f265d1be36133415
+      - a80228a582b8c1d77941665dba6266cd
+      - 752958ce41cdae33a5940fde71737e08
+      - 8b55b43e0d5bf19f8f5eaf57f48f8448
+      - 7f1a0dc66db6e1b172af0f4f1f84e190
+      - c3c520f03d6b5a91b336e63fe62cd7b9
+      - 271291f2388c4b78b8eb8bedf5ac1260
+      - cb145ae0d47bb8242a1065359c1526a8
+    data:
+      transition: 2
+      brightness_pct: 100
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      device_id:
+      - 68c0780a08a2a488fafcf891c0c971bf
+      - ed8273e13c392387f265d1be36133415
+      - a80228a582b8c1d77941665dba6266cd
+      - 752958ce41cdae33a5940fde71737e08
+      - 8b55b43e0d5bf19f8f5eaf57f48f8448
+      - 7f1a0dc66db6e1b172af0f4f1f84e190
+      - c3c520f03d6b5a91b336e63fe62cd7b9
+      - cb145ae0d47bb8242a1065359c1526a8
+      - 271291f2388c4b78b8eb8bedf5ac1260
+  - condition: time
+    before: '23:00'
+  - service: light.turn_on
+    data:
+      brightness_pct: 1
+      white_value: 250
+    target:
+      device_id: 271291f2388c4b78b8eb8bedf5ac1260
+  mode: single
+- id: '1619906809678'
+  alias: Outside Lights - House Number Sign Light Schedule
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  - platform: time
+    at: input_datetime.house_sign_light_off_time
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: sun
+          after: sunset
+        - condition: time
+          before: input_datetime.house_sign_light_off_time
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          device_id: 271291f2388c4b78b8eb8bedf5ac1260
+    default:
+    - service: light.turn_off
+      target:
+        device_id: 271291f2388c4b78b8eb8bedf5ac1260
+  mode: single
+- id: '1620377256377'
+  alias: Ice Maker - Back Online - Fire Custom Event "ice_maker_back_online"
+  description: Fires a custom event onto the event bus, which the icemaker schedule
+    blueprint monitors and uses as an additional trigger to its automation.
+  trigger:
+  - type: connected
+    platform: device
+    device_id: 78678bdb2e4faa8982a4681b31f899ba
+    entity_id: binary_sensor.ice_maker_status
+    domain: binary_sensor
+  condition: []
+  action:
+  - event: ice_maker_back_online
+  mode: single
+- id: '1620508747724'
+  alias: Wake-up light alarm with sunrise effect [BluePrint]
+  description: ''
+  use_blueprint:
+    path: Sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
+    input:
+      light_entity: light.richard_bed
+      timestamp_sensor: sensor.pixel_3_next_alarm

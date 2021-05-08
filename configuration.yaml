@@ -304,11 +304,11 @@ device_tracker:
   # - platform: owntracks
   #   max_gps_accuracy: 250
 
-  # - platform: google_maps # Elements per day’ to a limit of 645.
-  #   username: !secret google_maps_username2
+
   - platform: google_maps # Elements per day’ to a limit of 645.
     username: !secret google_maps_username
-
+  - platform: google_maps # Elements per day’ to a limit of 645.
+    username: !secret google_maps_username2
 
 
 # Moved to integrations UI from Rev 0.112
@@ -560,11 +560,7 @@ weather:
   - platform: darksky
     api_key: !secret dark_sky_key
     mode: daily
-    # forecast:
-    #   - 0
-    # monitored_conditions:
-    #   - temperature_high           
-    #   - minutely_summary 
+
 
 utility_meter:
   energy_cumulative_month:

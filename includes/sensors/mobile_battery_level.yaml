@@ -23,7 +23,7 @@
     richard_phone_battery:
       friendly_name: "Richard Phone Battery"
       unit_of_measurement: "%"
-      value_template: "{{state_attr('device_tracker.google_maps_109145277914917536577', 'battery_level')}}"
+      value_template: "{{state_attr('device_tracker.google_maps_118405357218131797203', 'battery_level')}}"
       device_class: battery
 
     lucy_phone_battery:

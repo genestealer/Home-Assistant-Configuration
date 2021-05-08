@@ -1,0 +1,86 @@
+####################################################
+# Richard Huish 2020
+# https://github.com/genestealer/Home-Assistant-Configuration
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  devicename: air-filter
+  upper_devicename: Indoor Air Filter
+  ip: 192.168.2.42
+  pass: of4zH*IxKw49yt@H
+  
+####################################################
+# Shared code from all my projects
+####################################################
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: nodemcuv2
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+  manual_ip:
+    static_ip: $ip
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+logger: # Enable logging
+  baud_rate: 0
+
+api: # Enable Home Assistant API
+  password: $pass
+
+ota: # Enable over the air updates
+  password: $pass
+
+status_led:
+  pin: D0 # GPIO16 - NodeMCU on-board LED
+
+####################################################
+# Non-Shared Code (May contain shared code)
+####################################################
+binary_sensor: #Device online status reported back.
+  - platform: status
+    name: ${upper_devicename} Sensor Status
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: ${upper_devicename} IP
+    ssid:
+      name: ${upper_devicename} SSID
+    bssid:
+      name: ${upper_devicename} BSSID
+uart:
+  rx_pin: GPIO13
+  baud_rate: 9600
+  
+sensor:
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    
+  # - platform: dht
+  #   pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
+  #   temperature:
+  #     name: ${upper_devicename} Temperature
+  #   humidity:
+  #     name: ${upper_devicename} Humidity
+  #   update_interval: 300s
+  #   model: DHT22
+
+  - platform: pmsx003
+    type: PMS5003ST
+    pm_1_0:
+      name: "Air Filter Particulate Matter <1.0µm Concentration"
+    pm_2_5:
+      name: "Air Filter Particulate Matter <2.5µm Concentration"
+    pm_10_0:
+      name: "Air Filter Particulate Matter <10.0µm Concentration"
+    temperature:
+      name: "Air Filter Temperature"
+    humidity:
+      name: "Air Filter Humidity"
+    formaldehyde:
+      name: "Air Filter Formaldehyde Concentration"
