@@ -4,12 +4,14 @@
 # CPU Temperature only works on the Pi.
 #
 ############################################################
-- platform: command_line
-  name: CPU Temperature
-  command: "cat /sys/class/thermal/thermal_zone0/temp"
-  # If errors occur, make sure configuration file is encoded as UTF-8
-  unit_of_measurement: "°C"
-  value_template: '{{ value | multiply(0.001) | round(1) }}'
+# - platform: command_line
+#   name: CPU Temperature
+#   command: "cat /sys/class/thermal/thermal_zone0/temp"
+#   # If errors occur, make sure configuration file is encoded as UTF-8
+#   unit_of_measurement: "°C"
+#   value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+
 
   # I have not worked out yet how to get the response back and process that into a true/false value.
   # This sensor sends a command as per the scan interval to keep the connection alive.

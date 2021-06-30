@@ -17,17 +17,18 @@
 #   value_template: '{{ value_json.batt }}'
 
 # This is now captured from Google Maps Location Sharing. https://www.home-assistant.io/integrations/google_maps/
+# This is now captured from Home Assistant Companion App. https://companion.home-assistant.io/docs/core/location
 
-- platform: template
-  sensors:
-    richard_phone_battery:
-      friendly_name: "Richard Phone Battery"
-      unit_of_measurement: "%"
-      value_template: "{{state_attr('device_tracker.google_maps_118405357218131797203', 'battery_level')}}"
-      device_class: battery
+# - platform: template
+#   sensors:
+#     richard_phone_battery:
+#       friendly_name: "Richard Phone Battery"
+#       unit_of_measurement: "%"
+#       value_template: "{{state_attr('device_tracker.google_maps_118405357218131797203', 'battery_level')}}"
+#       device_class: battery
 
-    lucy_phone_battery:
-      friendly_name: "Lucy Phone Battery"
-      unit_of_measurement: "%"
-      value_template: "{{state_attr('device_tracker.google_maps_114635444798949098363', 'battery_level')}}"
-      device_class: battery
+#     lucy_phone_battery:
+#       friendly_name: "Lucy Phone Battery"
+#       unit_of_measurement: "%"
+#       value_template: "{{state_attr('device_tracker.google_maps_114635444798949098363', 'battery_level')}}"
+#       device_class: battery

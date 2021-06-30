@@ -2,9 +2,8 @@
   alias: Open Chicken Door At Morning
   description: Open at Dawn
   trigger:
-  - event: sunrise
-    offset: -00:30:00
-    platform: sun
+  - platform: time
+    at: 08:00:00
   condition: []
   action:
   - entity_id: cover.chicken_coop_door
@@ -324,68 +323,94 @@
         \ 'temperature')| round(0) }}°C\n{%- endif %}\n"
     service: tts.google_translate_say
 - id: '1576601014597'
-  alias: Plug-in Air Freshener Start
-  description: Turn on in the morning when someone is home as long as it between certain
-    times. Also turns back on after returning home.
+  alias: Plug-in Air Freshener - On-Off Automation
+  description: 'Turn on in the morning when someone is home as long as it between
+    certain times. Also turns back on after returning home. Turn off in the evening
+    or when no one is home. Repeat as it sometimes doesn''t work '
   trigger:
-  - entity_id: person.lucy
-    for: 00:10:00
-    from: not_home
-    platform: state
-    to: home
-  - at: '10:01:00'
-    platform: time
-  - entity_id: person.richard
-    for: 00:10:00
-    from: not_home
-    platform: state
-    to: home
-  condition:
-  - condition: and
-    conditions:
-    - after: '10:00:00'
-      before: '18:00:00'
-      condition: time
-    - condition: state
-      entity_id: input_boolean.plugin_air_freshener_enable
-      state: 'on'
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: person.richard
-        state: home
-      - condition: state
-        entity_id: person.lucy
-        state: home
+  - platform: time
+    at: input_datetime.air_freshener_on_time
+  - platform: time
+    at: input_datetime.air_freshener_off_time
+  - platform: homeassistant
+    event: start
+  - platform: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: leave
+  - platform: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: enter
+  - platform: zone
+    entity_id: person.lucy
+    zone: zone.home
+    event: enter
+  - platform: zone
+    entity_id: person.lucy
+    zone: zone.home
+    event: leave
+  condition: []
   action:
-  - data: {}
-    entity_id: switch.plug_in_air_freshener_1
-    service: switch.turn_on
-  - data: {}
-    entity_id: switch.plug_in_air_freshener_2
-    service: switch.turn_on
-  mode: single
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: time
+          after: input_datetime.air_freshener_on_time
+          before: input_datetime.air_freshener_off_time
+        - condition: or
+          conditions:
+          - condition: zone
+            entity_id: person.richard
+            zone: zone.home
+          - condition: zone
+            entity_id: person.lucy
+            zone: zone.home
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id:
+          - switch.plug_in_air_freshener_1
+          - switch.plug_in_air_freshener_2
+    default:
+    - service: switch.turn_off
+      target:
+        entity_id:
+        - switch.plug_in_air_freshener_1
+        - switch.plug_in_air_freshener_2
+  mode: restart
 - id: '1576601191279'
-  alias: Plug-in Air Freshener Stop
-  description: Turn off in the evening or when no one is home.
+  alias: obsolete - Plug-in Air Freshener Stop
+  description: 'Turn off in the evening or when no one is home. Repeat as it sometimes
+    doesn''t work '
   trigger:
   - at: '18:00:00'
     platform: time
-  - entity_id: person.richard
-    from: home
-    platform: state
-    to: not_home
-  - entity_id: person.lucy
-    from: home
-    platform: state
-    to: not_home
+  - platform: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: leave
+  - platform: zone
+    entity_id: person.lucy
+    zone: zone.home
+    event: leave
   condition: []
   action:
-  - entity_id: switch.plug_in_air_freshener_1
-    service: switch.turn_off
-  - delay: 00:00:15
-  - entity_id: switch.plug_in_air_freshener_2
-    service: switch.turn_off
+  - repeat:
+      count: '2'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.plug_in_air_freshener_1
+          - switch.plug_in_air_freshener_2
+      - delay:
+          hours: 0
+          minutes: 10
+          seconds: 0
+          milliseconds: 0
   mode: single
 - id: '1576601770197'
   alias: Welcome home Lucy
@@ -757,12 +782,12 @@
   condition:
   - condition: or
     conditions:
-    - condition: state
+    - condition: zone
       entity_id: person.richard
-      state: home
-    - condition: state
+      zone: zone.home
+    - condition: zone
       entity_id: person.lucy
-      state: home
+      zone: zone.home
   action:
   - data:
       cache: false
@@ -807,9 +832,41 @@
     entity_id: device_tracker.google_maps_113691586554404814686
     zone: zone.inner_perimeter
     event: enter
-  condition: []
+  condition:
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
   action:
   - choose:
+    - conditions:
+      - condition: zone
+        entity_id: device_tracker.google_maps_113691586554404814686
+        zone: zone.inner_perimeter
+      sequence:
+      - service: notify.google_cloud_notify
+        data:
+          message: '!!Primary Zone Failure - Inner Perimeter!!'
+      - service: notify.pushover_notify
+        data:
+          message: '!!Primary Zone Failure - Inner Perimeter!!'
+          title: '!!Primary Zone Failure - Inner Perimeter!!'
+          data:
+            sound: alien
+            priority: 1
+      - service: script.flash_dining_room_lights
+      - service: script.flash_dining_room_lights
+      - data:
+          cache: false
+          entity_id: media_player.whole_house
+          message: WOOP! WOOP! WOOP! WOOP! WOOP! ALERT:Warning! Primary Zone Failure!
+            Warning! Primary Zone Failure! Warning! Primary Zone Failure! Close the
+            fucking doors and windows for the love of bunnies hide! Arg!!!!
+        service: tts.google_translate_say
     - conditions:
       - condition: zone
         entity_id: device_tracker.google_maps_113691586554404814686
@@ -831,29 +888,6 @@
           message: Notice! Secondary Zone Failure! Secondary Zone Failure - Outer
             Perimeter - Outer Perimeter
         service: tts.google_translate_say
-    - conditions:
-      - condition: zone
-        entity_id: device_tracker.google_maps_113691586554404814686
-        zone: zone.inner_perimeter
-      sequence:
-      - service: notify.google_cloud_notify
-        data:
-          message: '!!Secondary Zone Failure - Inner Perimeter!!'
-      - service: notify.pushover_notify
-        data:
-          message: '!!Secondary Zone Failure - Inner Perimeter!!'
-          title: '!!Secondary Zone Failure - Inner Perimeter!!'
-          data:
-            sound: alien
-            priority: 1
-      - data:
-          cache: false
-          entity_id: media_player.whole_house
-          message: ALERT:Warning! Primary Zone Failure! Warning! Primary Zone Failure!
-            Warning! Primary Zone Failure! Close the fucking doors and windows for
-            the love of bunnies hide!
-        service: tts.google_translate_say
-    default: []
   mode: single
 - id: '1601317646616'
   alias: Front Lawn Anti Cat Defences
@@ -1022,7 +1056,7 @@
         data:
           message: 'Low battery warning for: {{sensors}}'
 - id: '1612985120601'
-  alias: Ice Maker - On-Off Schedule [Blueprint]
+  alias: obsolete - Ice Maker - On-Off Schedule [Blueprint]
   description: There is a separate automation which turns the ice maker on if the
     water temperature gets too warm. Also triggered by Fire Custom Event "ice_maker_back_online".
   use_blueprint:
@@ -1035,7 +1069,7 @@
       trigger_at_homeassistant_startup: true
       custom_trigger_event: ice_maker_back_online
 - id: '1612985880086'
-  alias: 'Ice Maker - Water High Temperature Action '
+  alias: 'obsolete - Ice Maker - Water High Temperature Action '
   description: Turn on the ice maker for a set time if the water temperature goes
     above a set threshold. Only run if ice maker is not already on.
   trigger:
@@ -1285,71 +1319,102 @@
   action:
   - service: light.turn_on
     target:
-      device_id:
-      - 68c0780a08a2a488fafcf891c0c971bf
-      - ed8273e13c392387f265d1be36133415
-      - a80228a582b8c1d77941665dba6266cd
-      - 752958ce41cdae33a5940fde71737e08
-      - 8b55b43e0d5bf19f8f5eaf57f48f8448
-      - 7f1a0dc66db6e1b172af0f4f1f84e190
-      - c3c520f03d6b5a91b336e63fe62cd7b9
-      - 271291f2388c4b78b8eb8bedf5ac1260
-      - cb145ae0d47bb8242a1065359c1526a8
+      entity_id:
+      - light.tradfri_bulb_19
+      - light.tradfri_bulb_20
+      - light.tradfri_bulb_12
+      - light.tradfri_bulb_18
+      - light.tradfri_bulb_16
+      - light.tradfri_bulb_22
+      - light.tradfri_bulb_17
+      - light.tradfri_bulb_23
+      - light.tradfri_bulb_21
     data:
       brightness_pct: 1
       color_temp: 352
   - service: light.turn_on
     target:
-      device_id:
-      - 68c0780a08a2a488fafcf891c0c971bf
-      - ed8273e13c392387f265d1be36133415
-      - a80228a582b8c1d77941665dba6266cd
-      - 752958ce41cdae33a5940fde71737e08
-      - 8b55b43e0d5bf19f8f5eaf57f48f8448
-      - 7f1a0dc66db6e1b172af0f4f1f84e190
-      - c3c520f03d6b5a91b336e63fe62cd7b9
-      - 271291f2388c4b78b8eb8bedf5ac1260
-      - cb145ae0d47bb8242a1065359c1526a8
+      entity_id:
+      - light.tradfri_bulb_19
+      - light.tradfri_bulb_20
+      - light.tradfri_bulb_12
+      - light.tradfri_bulb_18
+      - light.tradfri_bulb_16
+      - light.tradfri_bulb_22
+      - light.tradfri_bulb_17
+      - light.tradfri_bulb_23
+      - light.tradfri_bulb_21
     data:
       transition: 2
       brightness_pct: 100
   - delay:
       hours: 0
-      minutes: 2
+      minutes: 5
       seconds: 0
+      milliseconds: 0
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.tradfri_bulb_19
+      - light.tradfri_bulb_20
+      - light.tradfri_bulb_12
+      - light.tradfri_bulb_18
+      - light.tradfri_bulb_16
+      - light.tradfri_bulb_22
+      - light.tradfri_bulb_17
+      - light.tradfri_bulb_23
+      - light.tradfri_bulb_21
+    data:
+      brightness_pct: 1
+      transition: 5
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
       milliseconds: 0
   - service: light.turn_off
     target:
-      device_id:
-      - 68c0780a08a2a488fafcf891c0c971bf
-      - ed8273e13c392387f265d1be36133415
-      - a80228a582b8c1d77941665dba6266cd
-      - 752958ce41cdae33a5940fde71737e08
-      - 8b55b43e0d5bf19f8f5eaf57f48f8448
-      - 7f1a0dc66db6e1b172af0f4f1f84e190
-      - c3c520f03d6b5a91b336e63fe62cd7b9
-      - cb145ae0d47bb8242a1065359c1526a8
-      - 271291f2388c4b78b8eb8bedf5ac1260
+      entity_id:
+      - light.tradfri_bulb_19
+      - light.tradfri_bulb_20
+      - light.tradfri_bulb_12
+      - light.tradfri_bulb_18
+      - light.tradfri_bulb_16
+      - light.tradfri_bulb_22
+      - light.tradfri_bulb_17
+      - light.tradfri_bulb_23
+      - light.tradfri_bulb_21
   - condition: time
-    before: '23:00'
+    before: input_datetime.house_sign_light_off_time
   - service: light.turn_on
     data:
       brightness_pct: 1
       white_value: 250
     target:
-      device_id: 271291f2388c4b78b8eb8bedf5ac1260
+      entity_id:
+      - light.tradfri_bulb_12
   mode: single
 - id: '1619906809678'
   alias: Outside Lights - House Number Sign Light Schedule
-  description: ''
+  description: ' Use wait to ensure the Choose action for time is after the trigger
+    time, not on the time.'
   trigger:
   - platform: sun
     event: sunset
+    offset: +00:00:00
   - platform: time
     at: input_datetime.house_sign_light_off_time
   condition: []
   action:
   - choose:
+    - conditions:
+      - condition: time
+        after: input_datetime.house_sign_light_off_time
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id:
+          - light.tradfri_bulb_12
     - conditions:
       - condition: and
         conditions:
@@ -1362,14 +1427,16 @@
         data:
           brightness_pct: 1
         target:
-          device_id: 271291f2388c4b78b8eb8bedf5ac1260
+          entity_id:
+          - light.tradfri_bulb_12
     default:
     - service: light.turn_off
       target:
-        device_id: 271291f2388c4b78b8eb8bedf5ac1260
+        entity_id:
+        - light.tradfri_bulb_12
   mode: single
 - id: '1620377256377'
-  alias: Ice Maker - Back Online - Fire Custom Event "ice_maker_back_online"
+  alias: obsolete - Ice Maker - Back Online - Fire Custom Event "ice_maker_back_online"
   description: Fires a custom event onto the event bus, which the icemaker schedule
     blueprint monitors and uses as an additional trigger to its automation.
   trigger:
@@ -1390,3 +1457,103 @@
     input:
       light_entity: light.richard_bed
       timestamp_sensor: sensor.pixel_3_next_alarm
+      sunrise_duration: 15
+- id: '1621103260448'
+  alias: Ice Maker - On-Off Automation
+  description: 'On-Off Schedule with presence awareness, state restoration and high
+    temperature alarm (Turn on the ice maker for a set time if the water temperature
+    goes above a set threshold. Only run if ice maker is not already on). Removes
+    the previous blueprint and other automations. Note: Zone trigger does not support
+    delay, hence the use of the state trigger for presence awareness (to avoid frequent  switch
+    cycling whilst at home with poor location accuracy)'
+  trigger:
+  - platform: time
+    at: input_datetime.ice_maker_on_time
+  - platform: time
+    at: input_datetime.ice_maker_off_time
+  - platform: homeassistant
+    event: start
+  - type: connected
+    platform: device
+    device_id: 78678bdb2e4faa8982a4681b31f899ba
+    entity_id: binary_sensor.ice_maker_status
+    domain: binary_sensor
+  - platform: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: leave
+  - platform: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: enter
+  - platform: numeric_state
+    entity_id: sensor.ice_maker_water_temperature
+    above: input_number.ice_maker_water_high_temperature_threshold
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: input_datetime.ice_maker_off_time
+      sequence:
+      - type: turn_off
+        device_id: 78678bdb2e4faa8982a4681b31f899ba
+        entity_id: switch.ice_maker_switch
+        domain: switch
+    - conditions:
+      - condition: time
+        after: input_datetime.ice_maker_on_time
+        before: input_datetime.ice_maker_off_time
+      - condition: zone
+        entity_id: person.richard
+        zone: zone.home
+      sequence:
+      - type: turn_on
+        device_id: 78678bdb2e4faa8982a4681b31f899ba
+        entity_id: switch.ice_maker_switch
+        domain: switch
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ice_maker_water_temperature
+        above: input_number.ice_maker_water_high_temperature_threshold
+      - condition: device
+        type: is_off
+        device_id: 78678bdb2e4faa8982a4681b31f899ba
+        entity_id: switch.ice_maker_switch
+        domain: switch
+      sequence:
+      - type: turn_on
+        device_id: 78678bdb2e4faa8982a4681b31f899ba
+        entity_id: switch.ice_maker_switch
+        domain: switch
+      - delay:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0
+      - type: turn_off
+        device_id: 78678bdb2e4faa8982a4681b31f899ba
+        entity_id: switch.ice_maker_switch
+        domain: switch
+    default:
+    - type: turn_off
+      device_id: 78678bdb2e4faa8982a4681b31f899ba
+      entity_id: switch.ice_maker_switch
+      domain: switch
+  mode: restart
+- id: '1621109022540'
+  alias: Close Chicken Door  Notification (App)
+  description: ''
+  trigger:
+  - event: sunset
+    platform: sun
+    offset: 01:30:00
+  condition:
+  - type: is_connected
+    condition: device
+    device_id: 40e46b6c7835f9e576bf8c7d148b90ea
+    entity_id: binary_sensor.chicken_house_sensor_status
+    domain: binary_sensor
+  action:
+  - service: notify.mobile_app_pixel_3
+  mode: single

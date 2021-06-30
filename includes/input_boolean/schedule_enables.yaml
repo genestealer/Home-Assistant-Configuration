@@ -10,8 +10,8 @@ bunny_fluff_air_filter_enable:
 wax_melter_enable:
   name: "Wax Melter Enable"
 
-plugin_air_freshener_enable:
-  name: "Plug-In Air Freshener Enable"
+# plugin_air_freshener_enable:
+#   name: "Plug-In Air Freshener Enable"
 
 simulate_presence_enable:
   name: "Simulate Presence Enable"

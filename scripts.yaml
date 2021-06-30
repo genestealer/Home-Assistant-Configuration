@@ -110,19 +110,30 @@ saa_alarm_alert_start:
 bathroom_towel_rail_timer:
   alias: Bathroom Towel Rail Timer
   sequence:
-  - data:
-      temperature: '29'
-    entity_id: climate.entryway
-    service: climate.set_temperature
-  - delay: 00:{{ states.input_number.minute_delay.state | int }}
-  - data:
-      temperature: '15'
-    entity_id: climate.entryway
-    service: climate.set_temperature
-  - alias: ''
+  - service: climate.set_hvac_mode
     data:
+      hvac_mode: heat
+    target:
+      entity_id: climate.entryway
+  - data:
+      temperature: 29
+    service: climate.set_temperature
+    target:
+      entity_id: climate.entryway
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - data:
+      temperature: 15
+    service: climate.set_temperature
+    target:
+      entity_id: climate.entryway
+  - data:
       entity_id: bathroom_towel_rail_timer
     service: script.turn_off
+  mode: single
 '1572463035573':
   alias: Smoke Machine Script Loop
   sequence:
@@ -379,3 +390,145 @@ turn_on_then_dim_kitchen_under_counter_lights:
     data: {}
   mode: single
   icon: mdi:brightness-6
+flash_dining_room_lights:
+  alias: Flash Dining Room Lights
+  sequence:
+  - service: scene.create
+    data:
+      scene_id: dining_room_before
+      snapshot_entities:
+      - light.sofa_left
+      - light.sofa_right
+      - light.cabinets
+  - repeat:
+      count: '20'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.dining_room_left
+          - light.dining_room_right
+          - light.tradfri_bulb_13
+          - light.tradfri_bulb_15
+          - light.dining_room_ceiling_3
+          - light.tradfri_bulb_14
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          entity_id:
+          - light.dining_room_left
+          - light.dining_room_right
+          - light.tradfri_bulb_13
+          - light.tradfri_bulb_15
+          - light.dining_room_ceiling_3
+          - light.tradfri_bulb_14
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+  - service: scene.turn_on
+    target:
+      entity_id: scene.dining_room_before
+  mode: restart
+flash_lights_red2:
+  alias: Flash Living Room Lights
+  sequence:
+  - service: scene.create
+    data:
+      scene_id: living_room_before
+      snapshot_entities:
+      - light.sofa_left
+      - light.sofa_right
+      - light.cabinets
+  - repeat:
+      count: '5'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+          color_name: red
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.cabinets
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          color_name: blue
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          entity_id:
+          - light.cabinets
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+          color_name: blue
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.cabinets
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          color_name: red
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          entity_id:
+          - light.cabinets
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+  - service: scene.turn_on
+    target:
+      entity_id: scene.living_room_before
+  mode: restart

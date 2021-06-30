@@ -35,7 +35,10 @@ ota: # Enable over the air updates
   password: $pass
 
 status_led:
-  pin: D0 # GPIO16 - NodeMCU on-board LED
+  pin:
+    number: D0
+    inverted: True
+#  pin: D0 # GPIO16 - NodeMCU on-board LED
 
 ####################################################
 # Non-Shared Code (May contain shared code)

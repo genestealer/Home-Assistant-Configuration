@@ -308,3 +308,7 @@ sensor.local_outside_temperature:
   device_class: temperature
 sensor.ups_internal_temperature:
   device_class: temperature
+sensor.pixel_3_battery_level:
+  friendly_name: Richard Phone Battery
+sensor.pixel_2_xl_battery_level:
+  friendly_name: Lucy Phone Battery
