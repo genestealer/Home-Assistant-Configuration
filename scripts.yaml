@@ -1,17 +1,18 @@
 bedroom_lights_night_mode:
-  alias: Bedroom Lights Night mode
   sequence:
-  - type: turn_on
-    device_id: 71649abbb2624d9a9fcc4655fc782c4d
-    entity_id: light.richard_bed
-    domain: light
-    brightness_pct: 10
-  - type: turn_off
-    device_id: b247a3342472406dbf899a59bed8e7a4
-    entity_id: light.lucy_bed
-    domain: light
+  - service: light.turn_on
+    target:
+      entity_id: light.richard_bed
+    data:
+      color_name: red
+      brightness: 1
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.lucy_bed
   mode: single
   icon: mdi:sleep
+  alias: Bedtime
 kitchen_extractor_timer:
   alias: Kitchen Extractor Fan Timer
   sequence:

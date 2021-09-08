@@ -11,6 +11,9 @@
   username: !secret hp_ilo_username
   password: !secret hp_ilo_password
   monitored_variables:
+    # - name: Server Health
+    #   sensor_type: server_health
+
     - name: Server Power On Time
       sensor_type: server_power_on_time
 
@@ -26,6 +29,11 @@
       sensor_type: server_health
       unit_of_measurement: '°C'
       value_template: '{{ ilo_data.temperature["01-Inlet Ambient"].currentreading[0] }}'
+
+    - name: Server CPU Temperature
+      sensor_type: server_health
+      unit_of_measurement: '°C'
+      value_template: '{{ ilo_data.temperature["02-CPU"].currentreading[0] }}'
 
     - name: Server RAID Controller Temperature
       sensor_type: server_health
@@ -44,6 +52,8 @@
     - name: Server Temperature Status
       sensor_type: server_health
       value_template: '{{ ilo_data.health_at_a_glance["temperature"]["status"] }}'
+
+
 
 - platform: template
   sensors:

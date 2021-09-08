@@ -141,8 +141,9 @@ http:
     - https://www.home-assistant.io
   use_x_forwarded_for: true
   trusted_proxies:
-    - 10.0.0.200
-    - 172.30.33.0/24
+    - 10.0.0.200      # Add the IP address of the proxy server
+    - 172.30.33.0/24  # You may also provide the subnet mask
+    # - 192.168.10.21/24 # IP Reverse_Proxy Nginx Proxy Manager
   ip_ban_enabled: true
   login_attempts_threshold: 20
 

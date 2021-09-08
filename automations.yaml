@@ -326,7 +326,7 @@
   alias: Plug-in Air Freshener - On-Off Automation
   description: 'Turn on in the morning when someone is home as long as it between
     certain times. Also turns back on after returning home. Turn off in the evening
-    or when no one is home. Repeat as it sometimes doesn''t work '
+    or when no one is home. Repeat as it sometimes does not work '
   trigger:
   - platform: time
     at: input_datetime.air_freshener_on_time
@@ -526,6 +526,12 @@
         '
       title: Electricity Supply Voltage Low
     service: notify.google_cloud_notify
+  - service: notify.pushover_notify
+    data:
+      message: 'Electricity Voltage Low: {{ states(''sensor.ups_input_voltage'') }}
+        Volts.     {{now().strftime(''%Y-%m-%d %I:%M %p'')}}'
+      title: 'Electricity Voltage Low:'
+  mode: single
 - id: '1581770321118'
   alias: 'Notify: UPS is close to being depleted'
   description: Send Notification when UPS is about to shutdown (10 mins left)
@@ -819,9 +825,20 @@
       entity_id: media_player.garage
       message: Ding! Dong! Someone is at the door
     service: tts.google_translate_say
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: media_player.media_stop
+    target:
+      entity_id:
+      - media_player.office_display
+      - media_player.kitchen_display
+      - media_player.bedroom_display
   mode: single
 - id: '1601037277352'
-  alias: Perimeter Warning System - Primary and Secondary Zone Failure
+  alias: Proximity/Perimeter Warning System - Primary and Secondary Zone Failure
   description: ''
   trigger:
   - platform: zone
@@ -904,21 +921,29 @@
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
   condition:
-  - condition: and
-    conditions:
-    - condition: time
-      after: '18:00'
-      before: 09:00
-    - condition: numeric_state
-      entity_id: sensor.local_outside_temperature
-      above: '3'
+  - condition: time
+    after: '17:00:00'
+    before: 09:00:00
   action:
-  - delay: 00:00:05
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
   - service: switch.turn_on
     entity_id: switch.front_garden_lawn_irrigation_valve
-  - delay: 00:00:06
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
   - service: switch.turn_off
     entity_id: switch.front_garden_lawn_irrigation_valve
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
   mode: single
 - id: '1601593330216'
   alias: House Doorbell Button Local Notify (Duplicate)
@@ -1556,4 +1581,31 @@
     domain: binary_sensor
   action:
   - service: notify.mobile_app_pixel_3
+  mode: single
+- id: '1626459943924'
+  alias: Water on off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.button_1
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.button_1
+        state: 'on'
+      sequence:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.back_garden_irrigation_valve
+    - conditions:
+      - condition: state
+        entity_id: switch.button_1
+        state: 'off'
+      sequence:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.back_garden_irrigation_valve
+    default: []
   mode: single

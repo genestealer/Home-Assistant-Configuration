@@ -55,3 +55,18 @@
       friendly_name: Bedroom Ceiling Light
       supported_features: 0
       state: 'off'
+- id: '1625145522717'
+  name: Test office
+  entities:
+    media_player.office_display:
+      volume_level: 0.5600000023841858
+      is_volume_muted: false
+      media_content_id: gSdjztTxYgk
+      media_position: 0
+      media_position_updated_at: '2021-07-01T13:18:56.092324+00:00'
+      app_id: CC1AD845
+      app_name: Default Media Receiver
+      entity_picture_local:
+      friendly_name: Office display
+      supported_features: 152463
+      state: idle

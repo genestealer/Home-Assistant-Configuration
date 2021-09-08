@@ -1,0 +1,236 @@
+2021-09-05 02:42:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration lovelace_gen which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-05 02:42:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-05 02:42:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration google_geocode which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-05 02:42:49 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-05 02:43:28 ERROR (SyncWorker_1) [homeassistant.components.google_maps.device_tracker] The cookie file provided does not provide a valid session. Please create another one and try again
+2021-09-05 02:43:34 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1330, in get_server_power_on_time
+    return self._info_tag('SERVER_INFO', 'GET_SERVER_POWER_ON_TIME', 'SERVER_POWER_ON_MINUTES', process=lambda data: int(data['value']))
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:37 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1365, in get_uid_status
+    return self._info_tag('SERVER_INFO', 'GET_UID_STATUS', process=lambda data: data['uid'])
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:40 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:43 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:46 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:50 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:53 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:56 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:59 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 633, in async_device_update
+    await task
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/hp_ilo/sensor.py", line 156, in update
+    ilo_data = getattr(self.hp_ilo_data.data, self._ilo_function)()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 1035, in get_embedded_health
+    return self._info_tag('SERVER_INFO', 'GET_EMBEDDED_HEALTH', 'GET_EMBEDDED_HEALTH_DATA',
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 730, in _info_tag
+    header, message = self._request(root)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 238, in _request
+    self._detect_protocol()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 278, in _detect_protocol
+    header, data = self._communicate(b'<RIBCL VERSION="2.0"></RIBCL>', ILO_HTTP, save=False)
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 406, in _communicate
+    sock = self._get_socket()
+  File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
+    raise err
+hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
+2021-09-05 02:43:59 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{states.sensor.server_server_power_on_time.state | float // 43800 }}")
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 394, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1477, in _render_with_context
+    return template.render(**kwargs)
+  File "/usr/local/lib/python3.9/site-packages/jinja2/environment.py", line 1304, in render
+    self.environment.handle_exception()
+  File "/usr/local/lib/python3.9/site-packages/jinja2/environment.py", line 925, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/local/lib/python3.9/site-packages/jinja2/filters.py", line 995, in do_float
+    return float(value)
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'state'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 510, in async_render_to_info
+    render_info._result = self.async_render(variables, strict=strict, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 396, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: UndefinedError: 'None' has no attribute 'state'
+2021-09-05 02:43:59 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'None' has no attribute 'state'') while processing template 'Template("{{states.sensor.server_server_power_on_time.state | float // 43800 }}")' for attribute '_attr_native_value' in entity 'sensor.server_power_on_time_months'

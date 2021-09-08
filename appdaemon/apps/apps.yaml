@@ -2,3 +2,7 @@
 hello_world:
   module: hello
   class: HelloWorld
+
+vnc_test:
+  module: VNCtest
+  class: vnctest
