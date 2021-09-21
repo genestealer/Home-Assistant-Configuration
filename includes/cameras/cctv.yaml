@@ -47,6 +47,7 @@
   name: Bunny Camera
   username: !secret Bunny_CCTV_username
   password: !secret Bunny_CCTV_password
+  authentication: digest
 
 
 # Non of these work!

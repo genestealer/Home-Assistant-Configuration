@@ -115,7 +115,7 @@ lovelace:
       type: css
   # Add yaml dashboards
   dashboards:
-    lovelace-garden:
+    lovelace-garden: #https://github.com/kloggy/HA-Irrigation-Version2/
       mode: yaml
       title: Garden
       icon: mdi:flower 
@@ -213,7 +213,8 @@ recorder:
       # - binary_sensor.p3364_l_0_vmd4_camera1profileany
       # - binary_sensor.p3364_l_0_vmd4_camera1profile1
       # - sensor.cpu_temperature
-
+    entity_globs:
+      input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
 
 # Enables a map showing the location of tracked devices
 map:

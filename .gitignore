@@ -53,3 +53,4 @@ emulated_hue_ids.json
 configuration - Copy.yaml
 /private/*
 /custom_components/hacs/*
+/.storage/lovelace

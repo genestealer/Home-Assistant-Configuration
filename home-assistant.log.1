@@ -1,9 +1,12 @@
-2021-09-05 02:42:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration lovelace_gen which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-05 02:42:49 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-05 02:42:49 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration google_geocode which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-05 02:42:49 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2021-09-05 02:43:28 ERROR (SyncWorker_1) [homeassistant.components.google_maps.device_tracker] The cookie file provided does not provide a valid session. Please create another one and try again
-2021-09-05 02:43:34 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:34:44 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration lovelace_gen which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-21 21:34:44 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-21 21:34:44 WARNING (SyncWorker_3) [homeassistant.loader] We found a custom integration sun2 which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-21 21:34:44 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-21 21:34:44 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration google_geocode which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2021-09-21 21:34:49 ERROR (SyncWorker_0) [custom_components.lovelace_gen] Unable to include file /config/lovelace/view_garden_version2.yaml: [Errno 2] No such file or directory: '/config/lovelace/view_garden_version2.yaml'
+2021-09-21 21:34:52 ERROR (SyncWorker_5) [custom_components.lovelace_gen] Unable to include file /config/lovelace/view_garden_version2.yaml: [Errno 2] No such file or directory: '/config/lovelace/view_garden_version2.yaml'
+2021-09-21 21:34:55 ERROR (SyncWorker_11) [homeassistant.components.google_maps.device_tracker] The cookie file provided does not provide a valid session. Please create another one and try again
+2021-09-21 21:34:57 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -26,7 +29,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:37 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:00 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -49,7 +52,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:40 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:03 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -72,7 +75,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:43 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:06 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -95,7 +98,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:46 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:09 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -118,7 +121,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:50 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:12 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -141,7 +144,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:53 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:15 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -164,7 +167,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:56 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:19 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -187,7 +190,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:59 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
+2021-09-21 21:35:22 ERROR (MainThread) [homeassistant.components.sensor] hp_ilo: Error on device update!
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 431, in _async_add_entity
     await entity.async_device_update(warning=False)
@@ -210,7 +213,7 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/hpilo.py", line 392, in _get_socket
     raise err
 hpilo.IloCommunicationError: Error connecting to 192.168.10.22 port 443: [Errno 113] Host is unreachable
-2021-09-05 02:43:59 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{states.sensor.server_server_power_on_time.state | float // 43800 }}")
+2021-09-21 21:35:22 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{states.sensor.server_server_power_on_time.state | float // 43800 }}")
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 394, in async_render
     render_result = _render_with_context(self.template, compiled, **kwargs)
@@ -233,4 +236,5 @@ Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 396, in async_render
     raise TemplateError(err) from err
 homeassistant.exceptions.TemplateError: UndefinedError: 'None' has no attribute 'state'
-2021-09-05 02:43:59 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'None' has no attribute 'state'') while processing template 'Template("{{states.sensor.server_server_power_on_time.state | float // 43800 }}")' for attribute '_attr_native_value' in entity 'sensor.server_power_on_time_months'
+2021-09-21 21:35:22 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('UndefinedError: 'None' has no attribute 'state'') while processing template 'Template("{{states.sensor.server_server_power_on_time.state | float // 43800 }}")' for attribute '_attr_native_value' in entity 'sensor.server_power_on_time_months'
+2021-09-21 21:37:55 ERROR (MainThread) [homeassistant.components.hassio.handler] Client error on /homeassistant/restart request Server disconnected

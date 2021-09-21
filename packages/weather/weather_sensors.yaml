@@ -15,19 +15,19 @@ sensor:
         sensor_type: uv_intensity
         name: 'Local UV Intensity'
 
-      dkw2012_001c_windir:
+      dkw2012_009e_windir:
         sensor_type: winddirection
         name: 'Local Wind Direction'
         
-      dkw2012_001c_winsp:
+      dkw2012_009e_winsp:
         sensor_type: windspeed
         name: 'Local Wind Speed'
         
-      dkw2012_001c_wings:
+      dkw2012_009e_wings:
         sensor_type: windgusts
         name: 'Local Wind Speed Gusts'        
    
-      dkw2012_001c_rain:
+      dkw2012_009e_rain:
         sensor_type: total_rain
         name: 'Local Total Rain'
 
@@ -35,15 +35,15 @@ sensor:
         sensor_type: battery
         name: 'Weather Station Battery'
 
-      dkw2012_001c_temp:
+      dkw2012_009e_temp:
         sensor_type: temperature
         name: 'Local Outside Temperature'
 
-      dkw2012_001c_hum:
+      dkw2012_009e_hum:
         sensor_type: humidity
         name: 'Local Outside Humidity'
 
-
+# https://github.com/kloggy/HA-Irrigation-Version2
   - platform: statistics
     name: Local Rain 24 Hours Statistics Raw
     entity_id: sensor.local_total_rain
@@ -51,24 +51,27 @@ sensor:
     max_age:
       hours: 24
 
+# https://github.com/kloggy/HA-Irrigation-Version2
   - platform: template
     sensors:
       template_rain_last_24_hours:
         friendly_name: "Local Rain 24 Hours"
         unit_of_measurement: 'mm'
         value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
-        
-  - platform: statistics
-    name: Local Rain 24 Hours 24 Hours Ago Statistics raw
-    entity_id: sensor.local_total_rain
-    sampling_size: 8320 # Enough for 3 readings a minute
-    max_age:
-      hours: 48
-    # mins_age:
-    #   hours: 24
+
+# # https://github.com/kloggy/HA-Irrigation-Version2
+#   # did not seem to work, need a way to get yesterdays rain   
+#   - platform: statistics
+#     name: Local Rain 24 Hours 24 Hours Ago Statistics raw
+#     entity_id: sensor.local_total_rain
+#     sampling_size: 8320 # Enough for 3 readings a minute
+#     max_age:
+#       hours: 48
+#     # mins_age:
+#     #   hours: 24
     
-  
-  # Turned into a binary sensor via a template
+  # https://github.com/kloggy/HA-Irrigation-Version2
+  # This item is turned into a binary sensor via a template to create a true/false.
   - platform: statistics
     name: Local Rain 30 Min Statistics Raw
     entity_id: sensor.local_total_rain
@@ -77,6 +80,8 @@ sensor:
       minutes: 30
 
 
+# https://github.com/kloggy/HA-Irrigation-Version2
+# https://github.com/kloggy/HA-Irrigation-Version2/issues/44
   - platform: template
     sensors:
       irrigation_weather_outlook:

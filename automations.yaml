@@ -1074,11 +1074,12 @@
   use_blueprint:
     path: Sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
     input:
-      day: '0'
+      day: 0
       time: '19:00:00'
       actions:
       - service: notify.google_cloud_notify
         data:
+          title: Low Battery Warning
           message: 'Low battery warning for: {{sensors}}'
 - id: '1612985120601'
   alias: obsolete - Ice Maker - On-Off Schedule [Blueprint]
@@ -1474,15 +1475,6 @@
   action:
   - event: ice_maker_back_online
   mode: single
-- id: '1620508747724'
-  alias: Wake-up light alarm with sunrise effect [BluePrint]
-  description: ''
-  use_blueprint:
-    path: Sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
-    input:
-      light_entity: light.richard_bed
-      timestamp_sensor: sensor.pixel_3_next_alarm
-      sunrise_duration: 15
 - id: '1621103260448'
   alias: Ice Maker - On-Off Automation
   description: 'On-Off Schedule with presence awareness, state restoration and high
@@ -1609,3 +1601,14 @@
           entity_id: switch.back_garden_irrigation_valve
     default: []
   mode: single
+- id: '1631609930867'
+  alias: Wake-up light alarm with sunrise effect - [BluePrint]
+  description: ''
+  use_blueprint:
+    path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
+    input:
+      light_entity: light.richard_bed
+      timestamp_sensor: sensor.pixel_3_next_alarm
+      manual_time: 09:00:00
+      check_entity: person.richard
+      sunrise_duration: 20

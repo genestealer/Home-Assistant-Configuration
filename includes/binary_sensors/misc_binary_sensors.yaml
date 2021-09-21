@@ -3,7 +3,7 @@
 # Home Assistant Binary Sensors
 #
 ############################################################
-
+# https://github.com/kloggy/HA-Irrigation-Version2
 # If rain data has changed in the last 30 mins, then its raining.
 - platform: template
   sensors:
@@ -57,3 +57,10 @@
 #   payload_on: "1"
 #   payload_off: "1 off"
 #   sensor_class: motion
+
+
+# Sun2 Sensor https://github.com/pnbruckner/ha-sun2
+# For https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+- platform: sun2
+  monitored_conditions:
+    - elevation

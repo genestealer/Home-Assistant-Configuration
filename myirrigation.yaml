@@ -1,3 +1,3 @@
 title: My irrigation
 views:
-  - !include lovelace/view_garden_version2.yaml
+  - !include lovelace/view_garden_irrigation.yaml
