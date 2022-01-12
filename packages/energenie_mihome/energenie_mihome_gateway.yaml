@@ -18,10 +18,6 @@
 #    logger:
 #      logs:
 #        homeassistant.components.rest: debug
-
-
-sensor:
-
 ###################################################################################################################
 # MiHome Gateway Status Sensor
 # Assumes you have only one gateway, so used first [0] position in returned array.
@@ -30,6 +26,11 @@ sensor:
 #  https://community.home-assistant.io/t/homeassistant-helpers-template-template-variable-warning-dict-object-has-no-element-0-when-rendering-value-json-0/303411/17?u=richard.huish
 #  https://www.home-assistant.io/blog/2021/04/07/release-20214/#warnings-for-undefined-variables-in-templates
 ###################################################################################################################
+
+
+# This is not really used, as the gateway can be online but the individual sensors off-line.
+# Instead I set the availability of my devices based upon their individual returned data.
+sensor:
   - platform: rest # https://www.home-assistant.io/integrations/sensor.rest/
     name: "MiHome Gateway Status 1" # Could use a binary rest sensor, but then you could not have attributes.
     resource: 'https://mihome4u.co.uk/api/v1/devices/list'

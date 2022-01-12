@@ -27,14 +27,11 @@
 # Sets the sensor as unavailable, if voltage_reported_at is more than 240 seconds ago.
 ###################################################################################################################
 switch:
-  - platform: template
+  - platform: template 
     switches:
       mihome_311088_switch:
         friendly_name: "MiHome Living Room TV Switch"
-        # availability_template: "{{(now() - float(state_attr('sensor.mihome_311088_switch_status', 'voltage_reported_at'))| as_datetime).seconds < 240}}"
-        # availability_template: "{{(now() - float(state_attr('sensor.mihome_311088_switch_status', 'voltage_reported_at'))| as_datetime).seconds < 240}}"
         availability_template: "{{ as_timestamp(now()) - as_timestamp(state_attr('sensor.mihome_tv_switch_status', 'voltage_reported_at')) < 240 }}"
-        # "{{ states('sensor.myups_output_current')|float * states('sensor.myups_input_voltage')|float }}"
         value_template: "{{ is_state('sensor.mihome_tv_switch_status', '1') }}"
         turn_on:
           - service: rest_command.mihome_311088_switch_on # Call RESTful Command to turn on switch.
@@ -107,6 +104,7 @@ sensor:
     round: 2
     unit: kWh
 
+# Not used in place of the newer template platform below.
   # - platform: template
   #   sensors:
   #     mihome_311088_watts:

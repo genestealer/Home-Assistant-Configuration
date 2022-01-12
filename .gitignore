@@ -58,3 +58,4 @@ configuration - Copy.yaml
 __pycache__/
 /image/
 ip_bans.yaml
+ip_bans.yaml
