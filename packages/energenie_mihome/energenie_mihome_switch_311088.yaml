@@ -119,7 +119,7 @@ sensor:
 template: # https://www.home-assistant.io/integrations/template/#state-based-template-sensors
   - sensor: #Use a template to create the wattage sensor, rather than an additional rest sensor, to reduce web queries to the mihome server
       - name: "MiHome Living Room TV Watts"
-        state: "{{ state_attr('sensor.mihome_311088_switch_status', 'real_power') }}"
+        state: "{{ state_attr('sensor.mihome_tv_switch_status', 'real_power') }}"
         unit_of_measurement: W
         device_class: power #Power, watts. Not "Energy" i.e. Wh.
         state_class: measurement
