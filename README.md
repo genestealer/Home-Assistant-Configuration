@@ -64,7 +64,7 @@ My [Home Assistant](https://home-assistant.io/) Configuration Files
 - Hacked Ikea E1201C Remote 'relay' for kitchen extractor fan (302.329.80 433MHz two button remote & in-line switch.)
 - Ikea Ansluta Lights: Works together with Ikea 2.4GHz Remote control (903.007.73) with CC2500 Transceiver.
 - Bunny fluff extractor fan, plug-in air freshener, room wax melters and extra lights (Christmas) plugged into [Status RCS-K09 Remote Control Sockets](https://www.amazon.co.uk/Status-Remote-Control-Socket-Pack/dp/B003XOXAVG)
-
+- [Rest API control of the Energenie MiHome Gateway MIHO001 with MiHome Smart Plug+ Control and Monitor MIHO005 and MIHO004 plugs](https://github.com/genestealer/Home-Assistant-Configuration/tree/master/packages/energenie_mihome)
 
 ## Homemade hardware
 - [Homemade 433Mhz MQTT transmitter gatway](https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway)
