@@ -11,6 +11,7 @@
 *.old
 *.db-shm
 *.db-wal
+*.log.*
 .HA_VERSION
 known_devices.yaml
 secrets.yaml
@@ -55,3 +56,4 @@ configuration - Copy.yaml
 /custom_components/hacs/*
 /.storage/lovelace
 __pycache__/
+/image/

@@ -1,10 +1,11 @@
 ############################################################
 #
 # Statistics Sensor
-# DISABLED: Was never seemed to work!
+# 
 #
 ############################################################
-
+# DISABLED: Was never seemed to work!
 # - platform: statistics
 #   name: "BS Temperature Statistics"
 #   entity_id: sensor.bunny_shed_temperature
+

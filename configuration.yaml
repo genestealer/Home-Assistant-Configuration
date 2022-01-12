@@ -230,6 +230,8 @@ logger:
     homeassistant.components.recorder: fatal
     # axis: debug
     # homeassistant.components.axis: debug 
+    homeassistant.components.rest: debug
+
 
 
 system_health:
@@ -426,90 +428,65 @@ google_assistant:
     - cover
     - camera
     - script
+    - scene
+    - sensor 
+    # - media_player
+    # - climate
+    # - group
 
   entity_config:
-    script.bedroom_lights_night_mode:
-      expose: true
-    script.front_garden_lawn_irrigation_timer:
-      expose: true
-    script.front_garden_pot_irrigation_timer:
-      expose: true
-    script.back_garden_irrigation_timer:
-      expose: true
-    script.back_garden_lawn_irrigation_timer:
-      expose: true
+    # script.bedroom_lights_night_mode:
+    #   expose: true
+    # script.front_garden_lawn_irrigation_timer:
+    #   expose: true
+    # script.front_garden_pot_irrigation_timer:
+    #   expose: true
+    # script.back_garden_irrigation_timer:
+    #   expose: true
+    # script.back_garden_lawn_irrigation_timer:
+    #   expose: true   
+    # climate.entryway:
+    #   expose: false
 
-    light.bedroom:
-      expose: false
 
-    climate.entryway:
-      expose: false
-
-    media_player.kitchen_and_bedroom:
-      expose: false
-    media_player.googlehomehub2078:
-      expose: false
-    media_player.bedroom_display:
-      expose: false
-    media_player.kitchen_stereo:
-      expose: false
-    media_player.kitchen_tv:
-      expose: false
-    media_player.googlehome2495:
-      expose: false
-    media_player.office_display:
-      expose: false
-    media_player.chromecast7797:
-      expose: false
-    media_player.living_room_tv:
-      expose: false
-    media_player.googlehome2900:
-      expose: false
-    media_player.googlehomehub5970:
-      expose: false
-    media_player.garage:
-      expose: false
-    media_player.guest_bedroom:
-      expose: false
-
-    group.all_automations:
-      expose: false # Hide this to avoid telling Google Assistant to shut down everything, it disabling all automations.
-    group.all_covers:
-      expose: false
-    group.all_lights:
-      expose: false
-    group.all_switchs:
-      expose: false
-    group.all_scripts:
-      expose: false
-    group.automation_system_view:
-      expose: false
-    group.bathroom_towel_rail_group:
-      expose: false
-    group.bathroom_view:
-      expose: false
-    group.bedroom_guest:
-      expose: false
-    group.bedroom_master:
-      expose: false
-    group.bunny_shed_controller_info_group:
-      expose: false
-    group.bunny_shed_group:
-      expose: false
-    group.bunny_shed_settings:
-      expose: false
-    group.bunny_shed_view:
-      expose: false
-    group.rf_link_group:
-      expose: false
-    group.server_ilo_status_group:
-      expose: false
-    group.groups:
-      expose: false
-    group.media_players:
-      expose: false
-    group.media_player:
-      expose: false
+    # group.all_automations:
+    #   expose: false # Hide this to avoid telling Google Assistant to shut down everything, it disabling all automations.
+    # group.all_covers:
+    #   expose: false
+    # group.all_lights:
+    #   expose: false
+    # group.all_switchs:
+    #   expose: false
+    # group.all_scripts:
+    #   expose: false
+    # group.automation_system_view:
+    #   expose: false
+    # group.bathroom_towel_rail_group:
+    #   expose: false
+    # group.bathroom_view:
+    #   expose: false
+    # group.bedroom_guest:
+    #   expose: false
+    # group.bedroom_master:
+    #   expose: false
+    # group.bunny_shed_controller_info_group:
+    #   expose: false
+    # group.bunny_shed_group:
+    #   expose: false
+    # group.bunny_shed_settings:
+    #   expose: false
+    # group.bunny_shed_view:
+    #   expose: false
+    # group.rf_link_group:
+    #   expose: false
+    # # group.server_ilo_status_group:
+    # #   expose: false
+    # group.groups:
+    #   expose: false
+    # group.media_players:
+    #   expose: false
+    # group.media_player:
+    #   expose: false
 
     switch.adguard_filtering:
       expose: false
@@ -564,15 +541,21 @@ weather:
     mode: daily
 
 
-utility_meter:
-  energy_cumulative_month:
-    source: sensor.house_power_meter
-    cycle: monthly
-    # tariffs:
-    #   - 
-  energy_cumulative_daily:
-    source: sensor.house_power_meter
-    cycle: daily
+# utility_meter:
+#   energy_cumulative_month:
+#     source: sensor.esp_doorbell_elec_mon_house_power_meter
+#     cycle: monthly
+#     # tariffs:
+#     #   - 
+#   energy_cumulative_daily:
+#     source: sensor.esp_doorbell_elec_mon_house_power_meter
+#     cycle: daily
+
+# # https://github.com/bramstroker/homeassistant-powercalc
+# powercalc:
+#   scan_interval: 00:01:00 #Each minute
+#   power_sensor_naming: "{} Powersensor"
+#   create_energy_sensors: false
 
 ############################################################
 #
@@ -595,6 +578,8 @@ binary_sensor: !include_dir_merge_list includes/binary_sensors
 switch: !include_dir_merge_list includes/switch
 cover: !include_dir_merge_list includes/cover
 camera: !include_dir_merge_list includes/cameras
+template: !include_dir_merge_list includes/template
+
 
 # Merge named dir
 # script: !include_dir_merge_named includes/scripts

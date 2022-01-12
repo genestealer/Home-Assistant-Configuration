@@ -5,7 +5,7 @@
 # Config Header for Device
 ####################################################
 substitutions:
-  devicename: indoor_plant_sensors
+  devicename: indoor-plant-sensors
   upper_devicename: Indoor Plant Sensors
   ip: 192.168.2.29
   pass: hxN#^fPPv5ZRy%7l
@@ -17,6 +17,7 @@ esphome:
   name: $devicename
   platform: ESP32
   board: lolin_d32
+  comment: Not currently in use
   
 wifi:
   ssid: !secret IoT_VLAN_SSID

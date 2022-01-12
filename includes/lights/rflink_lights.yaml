@@ -12,7 +12,6 @@
 #
 ############################################################
 
-
 # 433MHz Maclean Plug in sockets conected to lights
 - platform: rflink
   device_defaults:
@@ -20,9 +19,9 @@
     signal_repetitions: 5
   devices:
     Maclean_0d52_04:
-      name: Lamp_1 # renamed in customise.yaml to 'Lucy Room Lamp'
+      name: Lamp_1 # renamed in customise.yaml to 'Libary Room Light'
     Maclean_0d82_03:
-      name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Lamp'
+      name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Light'
     # Maclean_0d85_02:
     #   name: Christmas Guest Bedroom Star
     # Maclean_0d82_02:
@@ -40,19 +39,18 @@
   devices:
     Eurodomest_0fca6c_00: # Energenie MIHO026
       name: Lamp_3 # renamed in customise.yaml to 'Upstairs Hall Light'
-    Eurodomest_0fca2c_00: # Energenie MIHO026 one gang light switch
-      name: 'Dining Room Light'
+    # Eurodomest_0fca2c_00: # Energenie MIHO026 one gang light switch
+    #   name: 'Dining Room Light'
     Eurodomest_02940f_00: # Energenie MIHO093 two gang light switch
-      name: 'Downstairs Hall Light'
+      name: "Downstairs Hall Light"
     Eurodomest_02940f_02: # Energenie MIHO093 two gang light switch
-      name: 'Upstairs Hall Light'
+      name: "Upstairs Hall Light"
     Eurodomest_02940f_03: # Energenie MIHO026 one gang light switch
-      name: 'Living Room Ceiling Light'
+      name: "Living Room Ceiling Light"
     Eurodomest_061e5d_00: # Energenie MIHO026 one gang light switch
-      name: 'Guest Bedroom Ceiling Light'
+      name: "Guest Bedroom Ceiling Light"
     Eurodomest_061e5d_01: # Energenie MIHO026 one gang light switch
-      name: 'Bedroom Ceiling Light'
-
+      name: "Bedroom Ceiling Light"
 
 # 433MHz UK branded as Silvercrest 303937 switch range is 0 to 4 with 00 being all off.
 - platform: rflink
@@ -64,7 +62,7 @@
       name: Christmas Garden Lights
     Unitec_9573_02:
       name: Christmas Bedroom Star
-    Unitec_9573_03: 
+    Unitec_9573_03:
       name: Christmas Tree Lights
     Unitec_9573_04:
       name: Christmas Library Star
@@ -72,9 +70,6 @@
       name: Christmas Guest Bedroom Star
     Unitec_42d7_02:
       name: Christmas Living Room Star
-
-
-
 
     # Maclean_0d85_01:
     #   name: Christmas Mess Room Star
@@ -88,11 +83,6 @@
     # RFCustom_524643_0: # Status RCS-K09
     #   name: Christmas Master Bedroom Star
 
-
-
-
-
-
 # 2.4GHz Lights
 - platform: rflink
   device_defaults:
@@ -103,9 +93,6 @@
       name: Kitchen Under Counter Lights
       aliases: Ansluta_ce30_0
       # type: hybrid # Ikea Ansluta have two brightness modes. Note hybrid is not compatible with signal repetition.
-
-
-
 # # Workaround for dimming the Ikea Ansluta lgiths
 # Moved to a script to turn them on first
 # - platform: template
@@ -122,7 +109,7 @@
 #         service: shell_command.rflink_dim_kitchen_lights
 
 ###############################################
-# Energenie MIHO003 Hand Controller, scan capture 
+# Energenie MIHO003 Hand Controller, scan capture
 # Button   On Command                                   Off Command
 # 1        Eurodomest;ID=02940f;SWITCH=00;CMD=ON;       Eurodomest;ID=02940f;SWITCH=00;CMD=OFF;
 # 2        Eurodomest;ID=02940f;SWITCH=03;CMD=ON;       Eurodomest;ID=02940f;SWITCH=03;CMD=OFF;

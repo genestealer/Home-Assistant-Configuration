@@ -21,22 +21,33 @@
 #     BusyLight Presence Indicator Controller via Home Assistant
 #   Outputs:
 #     NeoPixel, via Logic Level Converter as NeoPixel needs 5V and ESP8266 is 3.3V.
-####################################################
+##############################################################
 # Config Header for Device
-####################################################
+##############################################################
 substitutions:
-  devicename: busylight01
-  upper_devicename: Busy Light 1
+  # Used by ESP Home
+  device_name: busy-light-01
+  # Used by ESP Home
+  device_description: "Busy Light 1"
+  # Prefix used by Wifi IP, RSSI etc
+  upper_devicename: "Busy Light 1"
+  # Prefix used by main Inputs & Outputs
+  short_devicename: "Busy Light 1"
   ip: 192.168.2.33
   pass: hxN#^fPPv5ZRy%7l
-  
-####################################################
-# Shared code from all my projects
-####################################################
-esphome:
-  name: $devicename
+  status_led: LED_RED
   platform: ESP8266
   board: huzzah
+  
+##############################################################
+# Shared code from all my projects
+##############################################################
+esphome:
+  name: ${device_name}
+  comment: ${device_description}
+  platform: ${platform}
+  board: ${board}
+  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
@@ -52,56 +63,52 @@ api: # Enable Home Assistant API
 
 ota: # Enable over the air updates
   password: $pass
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
 
+# Status LED for connection
 status_led:
   pin:
-    number: LED_RED
-    # inverted: True
+    number: ${status_led}
 
-####################################################
+##############################################################
 # Non-Shared Code (May contain shared code)
-####################################################  
-binary_sensor:
-  - platform: status
-    name:  ${upper_devicename} Status
+##############################################################
 
-  - platform: gpio
-    pin: 13
-    name: "Kichen PIR Sensor"
-    device_class: motion
-    on_press:
-      then:
-        - light.toggle: busylight
-
-switch:
-  - platform: gpio
-    pin:
-      number: 12
-      mode: OUTPUT
-    id: PIR_PWR
-    restore_mode: ALWAYS_ON 
-    
-output:
-  - platform: gpio
-    pin:
-      number: 15
-      mode: OUTPUT_OPEN_DRAIN
-    id: PIR_GND
-    
-    
 text_sensor:
-  - platform: wifi_info
+# Shared code beginning... 
+  # Wifi Data
+  - platform: wifi_info  
     ip_address:
       name: ${upper_devicename} IP
+      icon: "mdi:ip-network-outline"
     ssid:
       name: ${upper_devicename} SSID
+      icon: "mdi:help-network-outline"
     bssid:
       name: ${upper_devicename} BSSID
+      icon: "mdi:access-point-network"
+# ...shared code end
+
+binary_sensor:
+# Shared code beginning... 
+  # Device avaliablity
+  - platform: status  
+    name: ${upper_devicename} Status
+    device_class: connectivity
+# ...shared code end
 
 sensor:
+# Shared code beginning... 
+  # Wifi signal strength
   - platform: wifi_signal
     name: ${upper_devicename} RSSI
     update_interval: 300s
+    # icon: "mdi:access-point-network"
+    device_class: signal_strength
+    state_class: measurement
+# ...shared code end
     
 light:
   - platform: neopixelbus
@@ -111,3 +118,4 @@ light:
     num_leds: 1
     name: ${upper_devicename}
     id: busylight
+    variant: 800KBPS

@@ -1,0 +1,123 @@
+# # ############################################################
+# # #
+# # # Command Line Sensors
+# # # energenie-mihome
+# # # https://community.home-assistant.io/t/energenie-mihome-component/8102/62
+# # ############################################################
+
+# # need to swap over to Rest Sensor, to make use of the son_attributes_path
+# # https://community.home-assistant.io/t/json-attributes-not-functioning-properly-with-command-line-sensor-integration/213146/7?u=richard.huish
+# ##DONT FORGET TO REMOVE PASSWORD!
+
+# - platform: command_line
+#   name: "MiHome Ice Maker"
+#   json_attributes:
+#     - data
+
+#     # # - data.label
+#     # # - device_id
+#     # # - power_state
+#     # # - startup_mode
+#     # # - device_type
+#     # # - remote_id
+#     # # - voltage
+#     # # - voltage_reported_at
+#     # # - frequency
+#     # # - real_power
+#     # # - reactive_power
+#     # # - updated_at
+#     # # - today_wh
+#   command: 'curl -u "richard.huish@gmail.com:u9Ha3qx&qHB&NhCv" -X POST -H "Content-Type: application/json" -d "{\"id\":311088}" https://mihome4u.co.uk/api/v1/subdevices/show'
+#   unit_of_measurement: w
+#   value_template: '{{ value_json.data.last_data_instant }}'
+
+
+
+
+
+
+
+
+
+# #   data:
+# #   id: 311088
+# #   label: Living Room TV
+# #   device_id: 37815
+# #   power_state: 0
+# #   startup_mode: 0
+# #   aggregated_hourly_at: '2021-11-23T01:06:11.000Z'
+# #   aggregated_daily_at: '2021-11-22T16:06:11.000Z'
+# #   device_type: control
+# #   remote_id: 3
+# #   timer1_enabled: null
+# #   timer1_on_time: null
+# #   timer1_off_time: null
+# #   timer1_monday: null
+# #   timer1_tuesday: null
+# #   timer1_wednesday: null
+# #   timer1_thursday: null
+# #   timer1_friday: null
+# #   timer1_saturday: null
+# #   timer1_sunday: null
+# #   timer2_enabled: null
+# #   timer2_on_time: null
+# #   timer2_off_time: null
+# #   timer2_monday: null
+# #   timer2_tuesday: null
+# #   timer2_wednesday: null
+# #   timer2_thursday: null
+# #   timer2_friday: null
+# #   timer2_saturday: null
+# #   timer2_sunday: null
+# #   timer3_enabled: null
+# #   timer3_on_time: null
+# #   timer3_off_time: null
+# #   timer3_monday: null
+# #   timer3_tuesday: null
+# #   timer3_wednesday: null
+# #   timer3_thursday: null
+# #   timer3_friday: null
+# #   timer3_saturday: null
+# #   timer3_sunday: null
+# #   extra_data: null
+# #   target_temperature: null
+# #   voltage: 239
+# #   voltage_reported_at: '2021-11-23T01:14:17.000Z'
+# #   frequency: 50
+# #   real_power: 0
+# #   reactive_power: null
+# #   created_at: '2021-11-22T16:06:11.000Z'
+# #   updated_at: '2021-11-23T01:06:18.000Z'
+# #   nest_thermostat_id: null
+# #   rate_limit_tokens_used: 21
+# #   rate_limit_tokens_updated_at: '2021-11-22T21:02:02.000Z'
+# #   socket1_label: null
+# #   socket2_label: null
+# #   socket3_label: null
+# #   socket4_label: null
+# #   power_state_1: null
+# #   power_state_2: null
+# #   power_state_3: null
+# #   power_state_4: null
+# #   hardware_version: null
+# #   firmware_version: null
+# #   energenie_thermostat_id: null
+# #   container_number: null
+# #   side: null
+# #   controlling_thermostat_id: null
+# #   optimise_warm_up_schedule: false
+# #   notifications_enabled: true
+# #   disconnected_at: null
+# #   online: null
+# #   device_groups:
+# #     - id: 238453
+# #       name: My Devices
+# #       user_id: 214913
+# #   today_wh: 92
+# #   today_wh_range: low
+# #   last_data_instant: 0
+# #   unknown_state?: false
+# #   unknown_state: false
+# #   parent_device_last_seen_at: '2021-11-23T01:14:53.000Z'
+# # unit_of_measurement: w
+# # friendly_name: MiHome Ice Maker

@@ -1,0 +1,90 @@
+############################################################
+# Template Sensor
+# power consumption data 
+#
+############################################################
+
+# https://www.home-assistant.io/integrations/template/#state-based-template-sensors
+template:
+  - sensor:
+      - name: "TV Power Watts"
+        unique_id: "tv_power"
+        unit_of_measurement: "W"
+        state: >
+          {% if is_state('media_player.tv_samsung_7_series_65', 'unavailable') %}
+            3
+          {% else %}
+            118
+          {% endif %}
+        state_class: measurement
+        device_class: power
+
+
+  - sensor:
+      - name: "UPS Watts"
+        unique_id: "ups_watts"
+        unit_of_measurement: "W"
+        # Take UPS Amps and Volts to calculate  Wattage
+        # Amps: sensor.myups_output_current
+        # Volts: sensor.myups_input_voltage
+        state: "{{ states('sensor.myups_output_current')|float * states('sensor.myups_input_voltage')|float }}"
+        state_class: measurement
+        device_class: power
+
+  - sensor:
+      - name: "PC and Network Hardware Watts"
+        unique_id: "pc_network_watts"
+        unit_of_measurement: "W"
+        # UPS feeds network equipment, PC and Server.
+        # Sever has it's own current meter, so can calculate the UPS - Sever load.
+        state: "{{ states('sensor.ups_watts')|float - states('sensor.mihome_server_monitor_plug_watts')|float }}"
+        state_class: measurement
+        device_class: power
+
+
+
+# https://www.home-assistant.io/integrations/integration/
+# https://community.home-assistant.io/t/powercalc-virtual-power-sensors/318515/3
+# https://www.home-assistant.io/integrations/integration/#energy
+sensor:
+  - platform: integration
+    name: TV Energy
+    source: sensor.tv_power
+    unit_prefix: k
+    unit_time: h
+    round: 2
+    unit: kWh
+
+  - platform: integration
+    name: UPS Energy
+    source: sensor.ups_watts
+    unit_prefix: k
+    unit_time: h
+    round: 2
+    unit: kWh
+
+  - platform: integration
+    name: PC and Network Energy
+    source: sensor.pc_and_network_hardware_watts
+    unit_prefix: k
+    unit_time: h
+    round: 2
+    unit: kWh
+
+  # - platform: template
+  #   sensors:
+  #     true_house_current_consumption:
+  #       value_template: "{{states('sensor.unscaled_house_consumption_current') | int / 10}}"
+  #       friendly_name: 'House Current Consumption'
+  #       unit_of_measurement: 'A'
+  #       availability_template: "{% if is_state('binary_sensor.esp_link_status', 'on') %} true {% endif %}"
+
+  # # Using live measured voltage from UPS calculate total wattage
+  # - platform: template
+  #   sensors:
+  #     house_wattage:
+  #       value_template: "{{states('sensor.house_current_consumption') | int * (states('sensor.ups_input_voltage') | int / 1000)}}"
+  #       friendly_name: 'House Wattage'
+  #       unit_of_measurement: 'kW'
+  #       availability_template: "{% if is_state('binary_sensor.esp_link_status',  'on' and states('binary_sensor.usp_network_online')) %} true {% endif %}"
+

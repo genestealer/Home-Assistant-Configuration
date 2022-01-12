@@ -1,7 +1,8 @@
 esphome:
-  name: 433mhz_gateway
+  name: 433mhz-gateway
   platform: ESP8266
   board: nodemcuv2
+  comment: Not currently in use
 
 wifi:
   ssid: !secret IoT_VLAN_SSID

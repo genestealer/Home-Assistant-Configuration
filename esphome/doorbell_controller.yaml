@@ -1,21 +1,41 @@
 #############################################################
 # Richard Huish 2020
 # https://github.com/genestealer/Home-Assistant-Configuration
+# Doorbell controller & electricity meter monitor
 #############################################################
 # Config Header for Device
 ####################################################
 substitutions:
-  devicename: doorbell_controller
-  upper_devicename: Doorbell Controller
+  device_name: doorbell-and-elect-monitor
+  upper_devicename: Doorbell Controller and Electricity Monitor
+  short_devicename: ESP Doorbell Elec Mon
   ip: 192.168.2.36
   pass: hxN#^fPPv5ZRy%7l
+  device_description: "Doorbell Controller and Electricity Monitor"
+  status_led: D0 # GPIO16 - NodeMCU on-board LED
+  
+  # imp/kWh rate ⬇ #
+  pulse_rate: '1000'
+
+globals:
+ - id: nighttime_start
+   type: int
+   restore_value: no
+   initial_value: '21'
+   
+ - id: nighttime_stop
+   type: int
+   restore_value: no
+   initial_value: '6'
 ####################################################
 # Shared code from all my projects
 ####################################################
 esphome:
-  name: $devicename
+  name: '${device_name}'
+  comment: '${device_description}'
   platform: ESP8266
   board: nodemcuv2
+  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
@@ -28,12 +48,23 @@ logger: # Enable logging
 
 api: # Enable Home Assistant API
   password: $pass
-
+  services:
+  - service: reset_total ## home_assistant_glow
+    then:
+      - pulse_meter.set_total_pulses:
+          id: energy_pulse_meter
+          value: 0
+          
 ota: # Enable over the air updates
   password: $pass
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
 
+# Status LED for connection
 status_led:
-  pin: D0 # GPIO16 - NodeMCU on-board LED
+  pin:
+    number: ${status_led}
 
 ####################################################
 # Non-Shared Code (May contain shared code)
@@ -43,16 +74,23 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: ${upper_devicename} IP
+      icon: "mdi:ip-network-outline"
     ssid:
       name: ${upper_devicename} SSID
+      icon: "mdi:help-network-outline"
     bssid:
       name: ${upper_devicename} BSSID
+      icon: "mdi:access-point-network"
+      
 
 sensor:
   - platform: wifi_signal
     name: ${upper_devicename} RSSI
     update_interval: 300s
-    
+    # icon: "mdi:access-point-network"
+    device_class: signal_strength
+    state_class: measurement
+
     ####################################################
     # Non-Invasive Power Meter for House Electricity
     # Uses SFH 314-2/3 Osram Opto, 80 ° Visible
@@ -66,17 +104,52 @@ sensor:
     ####################################################
     # 1000 pulses from the LED should equal 1kWh
     ####################################################
-  - platform: pulse_counter
+    
+    ####################################################
+    ## Updated Nov 2021 to match: https://github.com/klaasnicolaas/home-assistant-glow/blob/main/home_assistant_glow.yaml
+    ## As linked in https://www.home-assistant.io/docs/energy/electricity-grid/
+    ####################################################
+  # - platform: pulse_counter
+  #   pin:
+  #   number: D7 # GPIO13
+  #   # inverted: True
+  #   mode: INPUT
+  #   unit_of_measurement: 'kW'
+  #   name: 'House Power Meter'
+  #   update_interval: 60s
+  #   filters:
+  #     - multiply: 0.06
+
+  - platform: pulse_meter
+    id: energy_pulse_meter
+    name: ${short_devicename} 'House Power Consumption'
+    unit_of_measurement: 'W'
+    state_class: measurement
+    device_class: power
+    icon: mdi:flash-outline
+    accuracy_decimals: 0
+    internal_filter: 100ms
     pin:
      number: D7 # GPIO13
-    # inverted: True
      mode: INPUT
-    unit_of_measurement: 'kW'
-    name: 'House Power Meter'
-    update_interval: 60s
+     # inverted: True
     filters:
-      - multiply: 0.06
-      
+      # multiply value = (60 / imp value) * 1000
+      # - multiply: 60
+      - lambda: return x * ((60.0 / ${pulse_rate}) * 1000.0);
+     
+    total:
+      name: ${short_devicename} "House Total Energy"
+      unit_of_measurement: "kWh"
+      icon: mdi:circle-slice-3
+      state_class: total_increasing
+      device_class: energy
+      accuracy_decimals: 4
+      filters:
+        # multiply value = 1 / imp value
+        # - multiply: 0.001
+        - lambda: return x * (1.0 / ${pulse_rate});
+        
 ####################################################
 # Doorbell button with LEDs and relay output to bell
 ####################################################
@@ -90,6 +163,7 @@ light:
     num_leds: 2
     name: "Doorbell Button Lights"
     restore_mode: ALWAYS_ON
+    variant: 800KBPS
     effects:
       - addressable_rainbow:
           name: Slow Rainbow Effect With Custom Values
@@ -114,23 +188,45 @@ light:
           add_led_interval: 100ms
           reverse: False
 
+# Get current time
+time:
+  - platform: homeassistant
+    id: ha_time
+    
 switch:
   # Doorbell relay output, pull low (to GND) to switch relay on.
+  # Not exposed to home assistant.
   - platform: gpio
     pin: 
       number: D1 # GPIO05
       mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
       inverted: true
     id: bellRelay
+    on_turn_on:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(ha_time).now().hour > id(nighttime_start) || id(ha_time).now().hour < id(nighttime_stop);'
+            then:
+              - logger.log: "Doorbell pushed at nighttime"
+              - delay: 200ms
+              - switch.turn_off: bellRelay
+            else:
+              - logger.log: "Doorbell pushed at daytime"
+              - delay: 1250ms
+              - switch.turn_off: bellRelay
+                
+    # on_turn_on:
+    # - delay: 500ms
+    # - switch.turn_off: bellRelay
   
+   
   #Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
   - platform: template
     name: "Doorbell Ringer"
     icon: "mdi:alarm-bell"
     turn_on_action:
     - switch.turn_on: bellRelay
-    - delay: 1500ms
-    - switch.turn_off: bellRelay
     
   - platform: gpio
     pin:
@@ -141,8 +237,10 @@ switch:
 
     
 binary_sensor:
-  - platform: status # Devive avaliablity
+  # Devive avaliablity
+  - platform: status 
     name: ${upper_devicename} Status
+    device_class: connectivity
     
     # Trying output to CCTV GPIO 
   - platform: gpio
@@ -159,6 +257,7 @@ binary_sensor:
       mode: INPUT_PULLUP
       inverted: true
     name: "Doorbell Button"
+    icon: "mdi:door"
     filters:
       - delayed_off: 100ms
     on_press:
@@ -174,8 +273,6 @@ binary_sensor:
             # blue: 100%
             effect: "Color Wipe Effect With Custom Values"
         - switch.turn_on: bellRelay
-        - delay: 750ms # set how long to ring the door bell
-        - switch.turn_off: bellRelay
         # - delay: 250ms
         # - light.turn_on:
         #     id: doorbell_light
@@ -187,8 +284,7 @@ binary_sensor:
         - light.turn_on:
             id: doorbell_light
             effect: "Slow Rainbow Effect With Custom Values"
-        
-        
+
     # on_release:
     #   then:
     #     - light.turn_on:

@@ -1,0 +1,15 @@
+# # ############################################################
+# # #
+# # # Command Line Switch
+# # # energenie-mihome
+# # # https://community.home-assistant.io/t/energenie-mihome-component/8102/62
+# # ############################################################
+
+#   - platform: command_line
+#     switches:
+#       mihome_ice_maker_switch:
+#         command_on: 'curl -u "xxxxxx@gmail.com:xxxxxx" -X POST -H "Content-Type: application/json" -d "{\"id\":311088}" https://mihome4u.co.uk/api/v1/subdevices/power_on'
+#         command_off: 'curl -u "xxxxxx@gmail.com:xxxxxx" -X POST -H "Content-Type: application/json" -d "{\"id\":311088}" https://mihome4u.co.uk/api/v1/subdevices/power_off'
+#         #command_state: 'curl -u "xxxxxx@gmail.com:xxxxxx" -X GET -H "Content-Type: application/json" -d "{\"id\":311088}" https://mihome4u.co.uk/api/v1/subdevices/show'
+#         #value_template: '{{ value_json.data.power_state == "1" }}'
+#         friendly_name: MiHome Ice Maker Switch

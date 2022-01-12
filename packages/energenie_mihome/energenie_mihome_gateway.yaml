@@ -1,0 +1,59 @@
+#########################################################################################
+# Energenie MiHome https://energenie4u.co.uk/ 
+# Rest API interface https://mihome4u.co.uk/docs/api-documentation
+#########################################################################################
+# Richard Huish 2022
+#
+# This replaces the examples many people provided using command_sensor / command_switch 
+# with curl_commands.
+#
+# Notes: If you get  error message responses along the lines of:
+#  ""message": "`id` should be a `Integer` but is a `String`"
+#   double check you haven't accidentally put double quotes around the ID number.
+#
+# A very helpful website for debugging: https://reqbin.com/rest-api-testing / https://reqbin.com/req/v0crmky0/rest-api-post-example
+# 
+# Also, set the debugger to record all the detail about the rest components
+# in order to then see any error messages in the error log.
+#    logger:
+#      logs:
+#        homeassistant.components.rest: debug
+
+
+sensor:
+
+###################################################################################################################
+# MiHome Gateway Status Sensor
+# Assumes you have only one gateway, so used first [0] position in returned array.
+#
+# Note breaking change in Home Assistant Core 2021.4:
+#  https://community.home-assistant.io/t/homeassistant-helpers-template-template-variable-warning-dict-object-has-no-element-0-when-rendering-value-json-0/303411/17?u=richard.huish
+#  https://www.home-assistant.io/blog/2021/04/07/release-20214/#warnings-for-undefined-variables-in-templates
+###################################################################################################################
+  - platform: rest # https://www.home-assistant.io/integrations/sensor.rest/
+    name: "MiHome Gateway Status 1" # Could use a binary rest sensor, but then you could not have attributes.
+    resource: 'https://mihome4u.co.uk/api/v1/devices/list'
+    method: POST
+    authentication: basic
+    username: !secret MiHome_ID
+    password: !secret MiHome_Password
+    payload: '{}' # Leave blank
+    # This sets the state as FALSE, if last_seen_at is more than 240 seconds ago.
+    # value_template: '{{(now() - value_json.data.0.last_seen_at | as_datetime).seconds < 240}}' 
+    value_template: "{{ as_timestamp(now()) - as_timestamp(value_json.data.0.last_seen_at) < 240 }}"
+    json_attributes_path: "$.data.0"
+    json_attributes:
+      - mac_address
+      - ip_address
+      - port
+      - label
+      - user_id
+      - created_at
+      - updated_at
+      - auth_code
+      - firmware_version_id
+      - last_seen_at
+    headers:
+      Content-Type: application/json
+    force_update: true
+    scan_interval: 30

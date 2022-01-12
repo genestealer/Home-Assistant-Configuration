@@ -22,10 +22,10 @@
     EMW100_a140_0: # Ikea ANSLUTA E1202
       name: Kitchen Extractor Fan
       aliases: emw100_a140_00
-    RFCustom_524643_0: # Status RCS-K09
-      name: Bunny Fluff Air Filter
-    RFCustom_524643_2: # Status RCS-K09
-      name: Wax Melter
+    # RFCustom_524643_0: # Status RCS-K09
+    #   name: Bunny Fluff Air Filter
+    # RFCustom_524643_2: # Status RCS-K09
+    #   name: Wax Melter
     # RFCustom_524643_4: # Status RCS-K09
     #   name: Plug-In Air Freshener
     tristate_0aaaa0_0:

@@ -35,7 +35,7 @@ ota: # Enable over the air updates
 status_led:
   pin:
     number: D0 # GPIO16 - NodeMCU on-board LED
-    inverted: True # To save power with using a coil relay
+    # inverted: True # To save power with using a coil relay
 
 ####################################################
 # Non-Shared Code (May contain shared code)

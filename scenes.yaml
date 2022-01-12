@@ -13,30 +13,78 @@
   name: TV Time
   entities:
     light.sofa_left:
-      friendly_name: Sofa Left
-      supported_features: 33
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Living Room Sofa Left
+      supported_features: 51
       state: 'off'
     light.sofa_right:
-      friendly_name: Sofa Right
-      supported_features: 33
-      state: 'off'
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
+      brightness: 51
+      hs_color:
+      - 30.427
+      - 64.705
+      rgb_color:
+      - 255
+      - 173
+      - 90
+      xy_color:
+      - 0.516
+      - 0.393
+      friendly_name: Living Room Sofa Right
+      supported_features: 51
+      state: 'on'
     light.living_room_ceiling_light:
+      supported_color_modes:
+      - onoff
       friendly_name: Living Room Ceiling Light
       supported_features: 0
       state: 'off'
-    light.living_room_cabinets:
-      brightness: 28
-      friendly_name: Living Room Cabinets
+    light.living_room_cabinet_front:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 56
+      friendly_name: Living Room Cabinet Front
       supported_features: 33
       state: 'on'
+    light.living_room_cabinet_inside:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 56
+      friendly_name: Living Room Cabinet Inside
+      supported_features: 33
+      state: 'on'
+  icon: mdi:television-classic
 - id: '1614816873268'
-  name: Bedroom Night Scean
+  name: Bedroom Bedtime
   entities:
-    light.richard_bed:
+    light.bedroom_ceiling_light:
+      supported_color_modes:
+      - onoff
+      friendly_name: Bedroom Ceiling Light
+      supported_features: 0
+      state: 'off'
+    light.richard_bedside_bed:
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      - hs
+      color_mode: hs
       brightness: 26
       hs_color:
       - 9.13
-      - 81.833
+      - 81.832
       rgb_color:
       - 255
       - 78
@@ -44,17 +92,19 @@
       xy_color:
       - 0.649
       - 0.32
-      friendly_name: Richard Bed
-      supported_features: 49
+      friendly_name: Bedroom Richard Bedside Light
+      supported_features: 51
       state: 'on'
-    light.lucy_bed:
-      friendly_name: Lucy Bed
-      supported_features: 49
+    light.lucy_bedside_light:
+      min_mireds: 250
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      - hs
+      friendly_name: Bedroom Lucy Bedside Light
+      supported_features: 51
       state: 'off'
-    light.bedroom_ceiling_light:
-      friendly_name: Bedroom Ceiling Light
-      supported_features: 0
-      state: 'off'
+  icon: mdi:power-sleep
 - id: '1625145522717'
   name: Test office
   entities:

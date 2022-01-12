@@ -409,12 +409,12 @@ flash_dining_room_lights:
           brightness_pct: 100
         target:
           entity_id:
-          - light.dining_room_left
-          - light.dining_room_right
-          - light.tradfri_bulb_13
-          - light.tradfri_bulb_15
+          - light.dining_room_lamp_left
+          - light.dining_room_lamp_right
+          - light.dining_room_ceiling_1
+          - light.dining_room_ceiling_2
           - light.dining_room_ceiling_3
-          - light.tradfri_bulb_14
+          - light.dining_room_ceiling_4
       - delay:
           hours: 0
           minutes: 0
@@ -425,12 +425,12 @@ flash_dining_room_lights:
           brightness_pct: 1
         target:
           entity_id:
-          - light.dining_room_left
-          - light.dining_room_right
-          - light.tradfri_bulb_13
-          - light.tradfri_bulb_15
+          - light.dining_room_lamp_left
+          - light.dining_room_lamp_right
+          - light.dining_room_ceiling_1
+          - light.dining_room_ceiling_2
           - light.dining_room_ceiling_3
-          - light.tradfri_bulb_14
+          - light.dining_room_ceiling_4
       - delay:
           hours: 0
           minutes: 0
@@ -461,12 +461,6 @@ flash_lights_red2:
           entity_id:
           - light.sofa_left
           - light.sofa_right
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-        target:
-          entity_id:
-          - light.cabinets
       - delay:
           hours: 0
           minutes: 0
@@ -480,12 +474,6 @@ flash_lights_red2:
           entity_id:
           - light.sofa_left
           - light.sofa_right
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-        target:
-          entity_id:
-          - light.cabinets
       - delay:
           hours: 0
           minutes: 0
@@ -499,12 +487,6 @@ flash_lights_red2:
           entity_id:
           - light.sofa_left
           - light.sofa_right
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-        target:
-          entity_id:
-          - light.cabinets
       - delay:
           hours: 0
           minutes: 0
@@ -518,17 +500,6 @@ flash_lights_red2:
           entity_id:
           - light.sofa_left
           - light.sofa_right
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-        target:
-          entity_id:
-          - light.cabinets
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
   - service: scene.turn_on
     target:
       entity_id: scene.living_room_before

@@ -43,35 +43,41 @@ sensor:
         sensor_type: humidity
         name: 'Local Outside Humidity'
 
-# https://github.com/kloggy/HA-Irrigation-Version2
-  - platform: statistics
+# Feed sensor data to irrigation https://github.com/kloggy/HA-Irrigation-Version2
+# Collect the raw cumulative rain data for 24 and 48 hours.
+# So we can minus one from the other the get the previous dates values,
+# as the statistics sensor does not support a "min_age", which would otherwise perform this action.
+
+  - platform: statistics 
     name: Local Rain 24 Hours Statistics Raw
     entity_id: sensor.local_total_rain
     sampling_size: 4320 # Enough for 3 readings a minute
     max_age:
       hours: 24
-
-# https://github.com/kloggy/HA-Irrigation-Version2
-  - platform: template
+  - platform: statistics # Raw values for 24 hours
+    name: Local Rain 48 Hours Statistics Raw
+    entity_id: sensor.local_total_rain
+    sampling_size: 8320 # Enough for 3 readings a minute
+    max_age:
+      hours: 48
+  
+# Rain values are cumulative, need to extract the "rate of change" to see the actual value.
+  - platform: template 
     sensors:
       template_rain_last_24_hours:
         friendly_name: "Local Rain 24 Hours"
         unit_of_measurement: 'mm'
         value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
+        
+# Difference between the 48 hours and 24 hours, to give the previous 24 hours. 
+  - platform: template  
+    sensors:
+      template_rain_last_24_to_48_hours:
+        friendly_name: "Local Rain Previous 24 Hours"
+        unit_of_measurement: 'mm'
+        value_template: "{{ state_attr('sensor.local_rain_48_hours_statistics_raw', 'change') - state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
 
-# # https://github.com/kloggy/HA-Irrigation-Version2
-#   # did not seem to work, need a way to get yesterdays rain   
-#   - platform: statistics
-#     name: Local Rain 24 Hours 24 Hours Ago Statistics raw
-#     entity_id: sensor.local_total_rain
-#     sampling_size: 8320 # Enough for 3 readings a minute
-#     max_age:
-#       hours: 48
-#     # mins_age:
-#     #   hours: 24
-    
-  # https://github.com/kloggy/HA-Irrigation-Version2
-  # This item is turned into a binary sensor via a template to create a true/false.
+# This sensor is converted into a binary sensor via a template, to create a true/false state from the last xx mins of rain (rate of change sensor).
   - platform: statistics
     name: Local Rain 30 Min Statistics Raw
     entity_id: sensor.local_total_rain
@@ -88,9 +94,12 @@ sensor:
         friendly_name: "Irrigation weather outlook"
         value_template: | # "keep": keep the line feed, keep trailing blank lines. https://stackoverflow.com/questions/3790454/how-do-i-break-a-string-in-yaml-over-multiple-lines
             {{states('sensor.dark_sky_summary_1d')}} 
+            <br>
             High:{{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C
             Low:{{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C
-            Rain: 
+            <br>
+            Rain today:{{ states('sensor.openweathermap_rain') }}mm.
+            Rain tomorrow:{{ states('sensor.openweathermap_forecast_precipitation') }}mm
 
         icon_template: >-
             {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 

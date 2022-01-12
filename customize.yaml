@@ -1,7 +1,7 @@
 sensor.unscaled_house_consumption_current:
   hidden: true
-sensor.hp_ilo_server_power_state:
-  icon: mdi:power
+# sensor.hp_ilo_server_power_state:
+#   icon: mdi:power
 sensor.speedtest_download:
   icon: mdi:download
 sensor.speedtest_upload:
@@ -25,9 +25,9 @@ light.christmas_garden_lights:
 sensor.ssl_cert_expiry:
   icon: mdi:certificate
 light.lamp_1:
-  friendly_name: Lucy Room Lamp
+  friendly_name: Library Light
 light.lamp_2:
-  friendly_name: Guest Bedroom Lamp
+  friendly_name: Guest Bedroom Light
   google_assistant_type: light
 light.lamp_3:
   friendly_name: Upstairs Hall Light
@@ -291,7 +291,7 @@ light.christmas_library_star:
   icon: mdi:star
 sensor.weather_station_battery:
   device_class: battery
-sensor.dkw2012_001c_bat:
+sensor.dkw2012_009e_bat:
   device_class: battery
 sensor.alectov3_30d1_bat:
   device_class: battery
@@ -299,7 +299,7 @@ sensor.ups_battery:
   device_class: battery
 sensor.alectov3_30d1_update_time: {}
 sensor.alectov5_00a3_update_time: {}
-sensor.dkw2012_001c_update_time: {}
+sensor.dkw2012_009e_update_time: {}
 sensor.local_light_intensity:
   device_class: illuminance
 sensor.local_outside_humidity:
@@ -308,7 +308,7 @@ sensor.local_outside_temperature:
   device_class: temperature
 sensor.ups_internal_temperature:
   device_class: temperature
-sensor.pixel_3_battery_level:
+sensor.pixel_4_app_battery_level:
   friendly_name: Richard Phone Battery
-sensor.pixel_2_xl_battery_level:
+sensor.pixel_3_app_battery_level:
   friendly_name: Lucy Phone Battery

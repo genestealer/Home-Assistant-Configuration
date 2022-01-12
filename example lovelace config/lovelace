@@ -1805,14 +1805,6 @@
                         {
                             "entity": "media_player.plex_aftt",
                             "type": "media-control"
-                        },
-                        {
-                            "entity": "media_player.plex_plex_for_android_mobile_pixel_3",
-                            "type": "media-control"
-                        },
-                        {
-                            "entity": "media_player.plex_pixel_2_xl",
-                            "type": "media-control"
                         }
                     ],
                     "path": "media-devices",

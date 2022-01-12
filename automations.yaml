@@ -9,44 +9,48 @@
   - entity_id: cover.chicken_coop_door
     service: cover.open_cover
   mode: single
-- id: '1541895123590'
-  alias: Garage CCTV Offline
-  trigger:
-  - entity_id: binary_sensor.garage_cctv_online
-    for: 00:10:00
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      message: Garage CCTV Offline
-    service: notify.google_cloud_notify
-- id: '1541895123591'
-  alias: Drive CCTV Offline
-  trigger:
-  - entity_id: binary_sensor.drive_cctv_online
-    for: 00:10:00
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      message: Drive CCTV Offline
-    service: notify.google_cloud_notify
 - id: '1541895123592'
-  alias: Door CCTV Offline
+  alias: 'Notify: if CCTV Goes Offline'
+  description: Notify if CCTV goes off for more than a specific length of time, originally
+    used ping detector binary sensors, but in 2022 migrated over to the camera availability,
+    provided by the axis camera component. 2022, moved back to Ping detects binary
+    sensors so that I can use the sensors for other things.
   trigger:
   - entity_id: binary_sensor.front_door_cctv_online
     for: 00:10:00
     from: 'on'
     platform: state
     to: 'off'
+  - entity_id: binary_sensor.bunny_cctv_online
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.drive_cctv_online
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.garden_cctv_online
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.garage_cctv_online
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  - entity_id: binary_sensor.garage_2_cctv_online
+    for: 00:10:00
+    from: 'on'
+    platform: state
+    to: 'off'
   condition: []
   action:
   - data:
-      message: Front Door CCTV Offline
+      title: CCTV Offline
+      message: '{{trigger.entity_id}} offline'
     service: notify.google_cloud_notify
 - id: '1544967364329'
   alias: Battery Low tradfri_remote_control [Replaced by blueprint "Low battery level
@@ -96,13 +100,29 @@
   condition: []
   action:
   - service: rest_command.cctv_front_door_restart
-  - delay: '10:00'
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
   - service: rest_command.cctv_drive_restart
-  - delay: '10:00'
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
   - service: rest_command.cctv_garage_restart
-  - delay: '10:00'
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
   - service: rest_command.cctv_garage2_restart
-  - delay: '10:00'
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
   - service: rest_command.cctv_garden_restart
 - id: '1564192629041'
   alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
@@ -549,34 +569,40 @@
       title: 'WARNING: UPS close to being depleted'
     service: notify.google_cloud_notify
 - id: '1581773259354'
-  alias: Bunny shed status monitor
+  alias: Bunny shed status monitor notify
   description: Monitor the health of my gateways
   trigger:
   - entity_id: binary_sensor.bs_status
-    for: 00:00:30
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
   condition: []
   action:
   - data:
-      message: Irrigation Controller has gone offline. {{now().strftime('%Y-%m-%d
+      message: Bunny Shed Controller has been offline for 10 mins. {{now().strftime('%Y-%m-%d
         %I:%M %p')}}
       title: Irrigation offline
     service: notify.google_cloud_notify
 - id: '1581773383827'
-  alias: Irrigation controller status monitor
+  alias: Irrigation controller status monitor notify
   description: Monitor the health of my gateways
   trigger:
   - entity_id: binary_sensor.ic_front_status
-    for: '5 minutes '
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
     from: 'on'
     platform: state
     to: 'off'
   condition: []
   action:
   - data:
-      message: Irrigation Controller has gone offline. {{now().strftime('%Y-%m-%d
+      message: Irrigation Controller has been offline for 10 mins. {{now().strftime('%Y-%m-%d
         %I:%M %p')}}
       title: Irrigation offline
     service: notify.google_cloud_notify
@@ -745,7 +771,7 @@
       message: Server is getting HOT!
     service: notify.google_cloud_notify
 - id: '1592486159377'
-  alias: Parcel Box Opened Nofity
+  alias: Parcel Box Opened Notify
   description: ''
   trigger:
   - entity_id: binary_sensor.parcel_box_sensor
@@ -796,28 +822,19 @@
       zone: zone.home
   action:
   - data:
-      cache: false
-      entity_id: media_player.living_room_speaker
-      message: Ding! Dong! Someone is at the door
-    service: tts.google_translate_say
-  - data:
       media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
       media_content_type: image/jpg
-    entity_id: media_player.office_display
     service: media_player.play_media
-  - data:
-      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
-      media_content_type: image/jpg
-    entity_id: media_player.bedroom_display
-    service: media_player.play_media
-  - data:
-      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
-      media_content_type: image/jpg
-    entity_id: media_player.kitchen_display
-    service: media_player.play_media
+    target:
+      entity_id:
+      - media_player.kitchen_display
+      - media_player.office_display
+      - media_player.bedroom_display_gen2
+      - media_player.living_room_display
+      - media_player.dining_room_display
   - data:
       cache: false
-      entity_id: media_player.lucys_room_speaker
+      entity_id: media_player.bathroom_speaker
       message: Ding! Dong! Someone is at the door
     service: tts.google_translate_say
   - data:
@@ -827,15 +844,17 @@
     service: tts.google_translate_say
   - delay:
       hours: 0
-      minutes: 5
+      minutes: 3
       seconds: 0
       milliseconds: 0
   - service: media_player.media_stop
     target:
       entity_id:
-      - media_player.office_display
       - media_player.kitchen_display
-      - media_player.bedroom_display
+      - media_player.office_display
+      - media_player.bedroom_display_gen2
+      - media_player.living_room_display
+      - media_player.dining_room_display
   mode: single
 - id: '1601037277352'
   alias: Proximity/Perimeter Warning System - Primary and Secondary Zone Failure
@@ -912,18 +931,18 @@
   trigger:
   - type: motion
     platform: device
-    device_id: 853ca02c816df4ce4860c07060837a6a
-    entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
-    domain: binary_sensor
-  - type: motion
-    platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
   condition:
   - condition: time
-    after: '17:00:00'
-    before: 09:00:00
+    after: '16:00'
+    before: 09:00
+  - type: is_no_motion
+    condition: device
+    device_id: ed137229065c11eb8030a1dacd09fb94
+    entity_id: binary_sensor.p3224_lv_0_vmd4_camera1profile2
+    domain: binary_sensor
   action:
   - delay:
       hours: 0
@@ -935,13 +954,13 @@
   - delay:
       hours: 0
       minutes: 0
-      seconds: 5
+      seconds: 10
       milliseconds: 0
   - service: switch.turn_off
     entity_id: switch.front_garden_lawn_irrigation_valve
   - delay:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
       milliseconds: 0
   mode: single
@@ -1007,6 +1026,7 @@
         data:
           color_name: green
           transition: 3
+          brightness_pct: 100
         target:
           entity_id:
           - light.busy_light_1
@@ -1020,6 +1040,7 @@
         data:
           color_name: red
           transition: 3
+          brightness_pct: 100
         target:
           entity_id:
           - light.busy_light_1
@@ -1033,6 +1054,7 @@
         data:
           color_name: blueviolet
           transition: 3
+          brightness_pct: 100
         target:
           entity_id:
           - light.busy_light_1
@@ -1167,7 +1189,7 @@
   - platform: device
     type: turned_on
     device_id: 271291f2388c4b78b8eb8bedf5ac1260
-    entity_id: light.tradfri_bulb_12
+    entity_id: light.outside_2_down
     domain: light
   condition: []
   action:
@@ -1333,92 +1355,218 @@
       brightness_pct: 1
   mode: single
 - id: '1619906359597'
-  alias: Outside Lights Motion
+  alias: Outside Lights Motion OLD
   description: ''
   trigger:
-  - platform: device
-    type: turned_on
-    device_id: cb145ae0d47bb8242a1065359c1526a8
-    entity_id: light.tradfri_bulb_19
-    domain: light
-  condition: []
+  - type: motion
+    platform: device
+    device_id: 99689212065c11ebbd2ecbef1587dfe1
+    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile3
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 853ca02c816df4ce4860c07060837a6a
+    entity_id: binary_sensor.p3364_l_1_vmd4_camera1profile3
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: ed137229065c11eb8030a1dacd09fb94
+    entity_id: binary_sensor.p3224_lv_0_vmd4_camera1profile2
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
   action:
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.tradfri_bulb_19
-      - light.tradfri_bulb_20
-      - light.tradfri_bulb_12
-      - light.tradfri_bulb_18
-      - light.tradfri_bulb_16
-      - light.tradfri_bulb_22
-      - light.tradfri_bulb_17
-      - light.tradfri_bulb_23
-      - light.tradfri_bulb_21
-    data:
-      brightness_pct: 1
-      color_temp: 352
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.tradfri_bulb_19
-      - light.tradfri_bulb_20
-      - light.tradfri_bulb_12
-      - light.tradfri_bulb_18
-      - light.tradfri_bulb_16
-      - light.tradfri_bulb_22
-      - light.tradfri_bulb_17
-      - light.tradfri_bulb_23
-      - light.tradfri_bulb_21
-    data:
-      transition: 2
-      brightness_pct: 100
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.tradfri_bulb_19
-      - light.tradfri_bulb_20
-      - light.tradfri_bulb_12
-      - light.tradfri_bulb_18
-      - light.tradfri_bulb_16
-      - light.tradfri_bulb_22
-      - light.tradfri_bulb_17
-      - light.tradfri_bulb_23
-      - light.tradfri_bulb_21
-    data:
-      brightness_pct: 1
-      transition: 5
+  - choose:
+    - conditions:
+      - condition: time
+        after: 00:01
+        before: 06:00
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_3_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 1
+          color_temp: 352
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_3_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 30
+          transition: 5
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 8
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_3_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 30
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_3_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 1
+          transition: 10
+    default:
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+        - light.outside_1_up
+        - light.outside_2_down
+        - light.outside_2_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_5_down
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+        - light.outside_2_down
+        - light.outside_3_down
+        - light.outside_3_down
+        - light.outside_5_down
+      data:
+        brightness_pct: 100
+        transition: 10
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_up
+        - light.outside_2_up
+        - light.outside_3_up
+        - light.outside_3_up
+      data:
+        brightness_pct: 100
+        transition: 8
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+        - light.outside_1_up
+        - light.outside_2_down
+        - light.outside_2_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_5_down
+      data:
+        brightness_pct: 100
+    - delay:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+        - light.outside_1_up
+        - light.outside_2_down
+        - light.outside_2_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_5_down
+      data:
+        brightness_pct: 1
+        transition: 10
   - delay:
       hours: 0
       minutes: 0
-      seconds: 3
+      seconds: 15
       milliseconds: 0
   - service: light.turn_off
     target:
       entity_id:
-      - light.tradfri_bulb_19
-      - light.tradfri_bulb_20
-      - light.tradfri_bulb_12
-      - light.tradfri_bulb_18
-      - light.tradfri_bulb_16
-      - light.tradfri_bulb_22
-      - light.tradfri_bulb_17
-      - light.tradfri_bulb_23
-      - light.tradfri_bulb_21
-  - condition: time
-    before: input_datetime.house_sign_light_off_time
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-      white_value: 250
-    target:
-      entity_id:
-      - light.tradfri_bulb_12
+      - light.outside_1_down
+      - light.outside_1_up
+      - light.outside_2_down
+      - light.outside_2_up
+      - light.outside_3_down
+      - light.outside_3_up
+      - light.outside_3_down
+      - light.outside_3_up
+      - light.outside_5_down
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: time
+        before: input_datetime.house_sign_light_off_time
+        after: '16:00'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          white_value: 250
+        target:
+          entity_id:
+          - light.outside_2_down
+    default: []
   mode: single
 - id: '1619906809678'
   alias: Outside Lights - House Number Sign Light Schedule
@@ -1427,7 +1575,7 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: +00:00:00
+    offset: +01:00:00
   - platform: time
     at: input_datetime.house_sign_light_off_time
   condition: []
@@ -1440,7 +1588,7 @@
       - service: light.turn_off
         target:
           entity_id:
-          - light.tradfri_bulb_12
+          - light.outside_2_down
     - conditions:
       - condition: and
         conditions:
@@ -1454,12 +1602,12 @@
           brightness_pct: 1
         target:
           entity_id:
-          - light.tradfri_bulb_12
+          - light.outside_2_down
     default:
     - service: light.turn_off
       target:
         entity_id:
-        - light.tradfri_bulb_12
+        - light.outside_2_down
   mode: single
 - id: '1620377256377'
   alias: obsolete - Ice Maker - Back Online - Fire Custom Event "ice_maker_back_online"
@@ -1572,7 +1720,7 @@
     entity_id: binary_sensor.chicken_house_sensor_status
     domain: binary_sensor
   action:
-  - service: notify.mobile_app_pixel_3
+  - service: notify.mobile_app_pixel_4_app
   mode: single
 - id: '1626459943924'
   alias: Water on off
@@ -1607,8 +1755,635 @@
   use_blueprint:
     path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
     input:
-      light_entity: light.richard_bed
-      timestamp_sensor: sensor.pixel_3_next_alarm
+      light_entity: light.richard_bedside_bed
+      timestamp_sensor: sensor.pixel_4_app_next_alarm
       manual_time: 09:00:00
       check_entity: person.richard
       sunrise_duration: 20
+- id: '1634179399421'
+  alias: Notify when Lucy leaves her pump at home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: person.lucy
+    from: home
+    to: not_home
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  condition:
+  - condition: zone
+    entity_id: device_tracker.insulin_pump
+    zone: zone.home
+  action:
+  - service: notify.mobile_app_pixel_3_app
+    data:
+      message: sweetie you left your pump at home
+      title: Insulin Pump
+  mode: single
+- id: '1635187432504'
+  alias: Outside Lights Motion Slow Fade
+  description: 's '
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 99689212065c11ebbd2ecbef1587dfe1
+    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile3
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: input_datetime.outside_lights_late_night_start_time
+        before: input_datetime.outside_lights_late_night_end_time
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_4_down
+          - light.outside_5_down
+        data:
+          brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
+            | int(0) }}'
+          color_temp: 352
+      - delay:
+          minutes: '{{ states(''input_number.outside_lights_late_night_time_on_minutes'')
+            | int(0) }}'
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_4_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 1
+          transition: 10
+    default:
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_2_down
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_down
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_4_down
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_5_down
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_4_up
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_up
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_2_up
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_up
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+        transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
+          | int(0) }}'
+    - delay:
+        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
+          | int(0) }}'
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_up
+        - light.outside_1_down
+        - light.outside_2_up
+        - light.outside_2_down
+        - light.outside_3_up
+        - light.outside_3_down
+        - light.outside_4_up
+        - light.outside_4_down
+        - light.outside_5_down
+      data:
+        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+          | int(0) }}'
+    - delay:
+        minutes: '{{ states(''input_number.outside_lights_early_night_time_on_minutes'')
+          | int(0) }}'
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_up
+        - light.outside_1_down
+        - light.outside_2_up
+        - light.outside_2_down
+        - light.outside_3_up
+        - light.outside_3_down
+        - light.outside_4_up
+        - light.outside_4_down
+        - light.outside_5_down
+      data:
+        brightness_pct: 1
+        transition: 10
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.outside_1_up
+      - light.outside_1_down
+      - light.outside_2_up
+      - light.outside_2_down
+      - light.outside_3_up
+      - light.outside_3_down
+      - light.outside_4_up
+      - light.outside_4_down
+      - light.outside_5_down
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 4
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: time
+        before: input_datetime.house_sign_light_off_time
+        after: '16:00'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          white_value: 250
+        target:
+          entity_id:
+          - light.outside_2_down
+    default: []
+  mode: single
+- id: '1641665255926'
+  alias: '[Backup]: Outside Lights Motion Slow Fade (Duplicate)'
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 99689212065c11ebbd2ecbef1587dfe1
+    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile3
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: '22:00'
+        before: 06:00
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_4_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 1
+          color_temp: 352
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_4_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 30
+          transition: 5
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 8
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_4_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 30
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.outside_1_down
+          - light.outside_2_down
+          - light.outside_3_down
+          - light.outside_4_down
+          - light.outside_5_down
+        data:
+          brightness_pct: 1
+          transition: 10
+    default:
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_up
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_up
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_2_down
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_2_down
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_2_up
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_2_up
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_down
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_down
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_up
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_up
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_down
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_down
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_up
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_3_up
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_5_down
+      data:
+        brightness_pct: 1
+        color_temp: 352
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 150
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_5_down
+      data:
+        brightness_pct: 100
+        transition: 3
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+        - light.outside_1_up
+        - light.outside_2_down
+        - light.outside_2_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_4_down
+        - light.outside_5_down
+      data:
+        brightness_pct: 100
+    - delay:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id:
+        - light.outside_1_down
+        - light.outside_1_up
+        - light.outside_2_down
+        - light.outside_2_up
+        - light.outside_3_down
+        - light.outside_3_up
+        - light.outside_4_down
+        - light.outside_5_down
+      data:
+        brightness_pct: 1
+        transition: 10
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.outside_1_down
+      - light.outside_1_up
+      - light.outside_2_down
+      - light.outside_2_up
+      - light.outside_3_down
+      - light.outside_3_up
+      - light.outside_4_down
+      - light.outside_5_down
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: time
+        before: input_datetime.house_sign_light_off_time
+        after: '16:00'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          white_value: 250
+        target:
+          entity_id:
+          - light.outside_2_down
+    default: []
+  mode: single

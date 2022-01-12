@@ -1,22 +1,35 @@
-####################################################
-# Richard Huish 2020
+##############################################################
+# Richard Huish 2021
 # https://github.com/genestealer/Home-Assistant-Configuration
-####################################################
+# Indoor Air Filter
+##############################################################
 # Config Header for Device
-####################################################
+##############################################################
 substitutions:
-  devicename: air-filter
-  upper_devicename: Indoor Air Filter
+  # Used by ESP Home
+  device_name: air-filter
+  # Used by ESP Home
+  device_description: "Indoor Air Quality Sensor"
+  # Prefix used by Wifi IP, RSSI etc
+  upper_devicename: "Indoor Air Filter"
+  # Prefix used by main Inputs & Outputs
+  short_devicename: "Air Filter"
   ip: 192.168.2.42
   pass: of4zH*IxKw49yt@H
-  
-####################################################
-# Shared code from all my projects
-####################################################
-esphome:
-  name: $devicename
+
+  status_led: D0 # GPIO16 - NodeMCU on-board LED
   platform: ESP8266
   board: nodemcuv2
+  
+##############################################################
+# Shared code from all my projects
+##############################################################
+esphome:
+  name: ${device_name}
+  comment: ${device_description}
+  platform: ${platform}
+  board: ${board}
+  
 wifi:
   ssid: !secret IoT_VLAN_SSID
   password: !secret IoT_VLAN_SSID_Key
@@ -26,64 +39,104 @@ wifi:
     subnet: 255.255.255.0
 
 logger: # Enable logging
-  baud_rate: 0
 
 api: # Enable Home Assistant API
   password: $pass
 
 ota: # Enable over the air updates
   password: $pass
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
 
+# Status LED for connection
 status_led:
   pin:
-    number: D0
-    inverted: True
-#  pin: D0 # GPIO16 - NodeMCU on-board LED
+    number: ${status_led}
 
-####################################################
+##############################################################
 # Non-Shared Code (May contain shared code)
-####################################################
-binary_sensor: #Device online status reported back.
-  - platform: status
-    name: ${upper_devicename} Sensor Status
+##############################################################
 
 text_sensor:
-  - platform: wifi_info
+# Shared code beginning... 
+  # Wifi Data
+  - platform: wifi_info  
     ip_address:
       name: ${upper_devicename} IP
+      icon: "mdi:ip-network-outline"
     ssid:
       name: ${upper_devicename} SSID
+      icon: "mdi:help-network-outline"
     bssid:
       name: ${upper_devicename} BSSID
+      icon: "mdi:access-point-network"
+# ...shared code end
+
+binary_sensor:
+# Shared code beginning... 
+  # Device avaliablity
+  - platform: status  
+    name: ${upper_devicename} Status
+    device_class: connectivity
+# ...shared code end
+
+sensor:
+# Shared code beginning... 
+  # Wifi signal strength
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    # icon: "mdi:access-point-network"
+    device_class: signal_strength
+    state_class: measurement
+# ...shared code end
+    
+  # pmsx003 Air sensor
+  - platform: pmsx003
+    type: PMS5003ST
+    pm_0_3um:
+      name: "${short_devicename} PM <0.3um in 0.1L of air"
+    pm_0_5um:
+      name: "${short_devicename} PM <0.5um in 0.1L of air"
+    pm_1_0um:
+      name: "${short_devicename} PM <1.0um in 0.1L of air"
+    pm_2_5um:
+      name: "${short_devicename} PM <2.5um in 0.1L of air"
+    pm_5_0um:
+      name: "${short_devicename} PM <5.0um in 0.1L of air"
+    pm_10_0um:
+      name: "${short_devicename} PM <10.0um in 0.1L of air"
+
+    
+    pm_1_0:
+      name: "${short_devicename} PM <1.0µm Concentration"
+      device_class: "pm1"
+      state_class: "measurement"
+    pm_2_5:
+      name: "${short_devicename} PM <2.5µm Concentration"
+      device_class: "pm25"
+      state_class: "measurement"
+    pm_10_0:
+      name: "${short_devicename} PM <10.0µm Concentration"
+      device_class: pm10
+      state_class: measurement
+    temperature:
+      name: "${short_devicename} Temperature"
+      device_class: temperature
+      state_class: measurement
+    humidity:
+      name: "${short_devicename} Humidity"
+      device_class: humidity
+      state_class: measurement
+    formaldehyde:
+      name: "${short_devicename} Formaldehyde Concentration"
+      device_class: volatile_organic_compounds
+      state_class: measurement
+      
+
+# Serial for pmsx003
 uart:
   rx_pin: GPIO13
   baud_rate: 9600
   
-sensor:
-  - platform: wifi_signal
-    name: ${upper_devicename} RSSI
-    update_interval: 300s
-    
-  # - platform: dht
-  #   pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
-  #   temperature:
-  #     name: ${upper_devicename} Temperature
-  #   humidity:
-  #     name: ${upper_devicename} Humidity
-  #   update_interval: 300s
-  #   model: DHT22
-
-  - platform: pmsx003
-    type: PMS5003ST
-    pm_1_0:
-      name: "Air Filter Particulate Matter <1.0µm Concentration"
-    pm_2_5:
-      name: "Air Filter Particulate Matter <2.5µm Concentration"
-    pm_10_0:
-      name: "Air Filter Particulate Matter <10.0µm Concentration"
-    temperature:
-      name: "Air Filter Temperature"
-    humidity:
-      name: "Air Filter Humidity"
-    formaldehyde:
-      name: "Air Filter Formaldehyde Concentration"

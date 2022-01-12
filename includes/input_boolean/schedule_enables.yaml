@@ -4,11 +4,11 @@
 #
 ############################################################
 
-bunny_fluff_air_filter_enable:
-  name: "Bunny Fluff Air Filter Enable"
+# bunny_fluff_air_filter_enable:
+#   name: "Bunny Fluff Air Filter Enable"
 
-wax_melter_enable:
-  name: "Wax Melter Enable"
+# wax_melter_enable:
+#   name: "Wax Melter Enable"
 
 # plugin_air_freshener_enable:
 #   name: "Plug-In Air Freshener Enable"

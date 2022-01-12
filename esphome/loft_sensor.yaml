@@ -1,22 +1,33 @@
-####################################################
-# Richard Huish 2020
+##############################################################
+# Richard Huish 2021
 # https://github.com/genestealer/Home-Assistant-Configuration
-####################################################
+# Loft Sensors
+##############################################################
 # Config Header for Device
-####################################################
+##############################################################
 substitutions:
-  devicename: loft_sensor
-  upper_devicename: Loft Sensor
+  # Used by ESP Home
+  device_name: loft-sensor
+  # Used by ESP Home
+  device_description: "Loft Sensor"
+  # Prefix used by Wifi IP, RSSI etc
+  upper_devicename: "Loft Sensor"
+  # Prefix used by main Inputs & Outputs
+  short_devicename: "Loft"
   ip: 192.168.2.20
   pass: hxN#^fPPv5ZRy%7l
-  
-####################################################
-# Shared code from all my projects
-####################################################
-esphome:
-  name: $devicename
+  status_led: D0 # GPIO16 - NodeMCU on-board LED
   platform: ESP8266
   board: nodemcuv2
+  
+##############################################################
+# Shared code from all my projects
+##############################################################
+esphome:
+  name: ${device_name}
+  comment: ${device_description}
+  platform: ${platform}
+  board: ${board}
   
 wifi:
   ssid: !secret IoT_VLAN_SSID
@@ -33,36 +44,63 @@ api: # Enable Home Assistant API
 
 ota: # Enable over the air updates
   password: $pass
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
 
+# Status LED for connection
 status_led:
-  pin: D0 # GPIO16 - NodeMCU on-board LED
+  pin:
+    number: ${status_led}
 
-####################################################
+##############################################################
 # Non-Shared Code (May contain shared code)
-####################################################
-binary_sensor: #Device online status reported back.
-  - platform: status
-    name: ${upper_devicename} Sensor Status
+##############################################################
 
 text_sensor:
-  - platform: wifi_info
+# Shared code beginning... 
+  # Wifi Data
+  - platform: wifi_info  
     ip_address:
       name: ${upper_devicename} IP
+      icon: "mdi:ip-network-outline"
     ssid:
       name: ${upper_devicename} SSID
+      icon: "mdi:help-network-outline"
     bssid:
       name: ${upper_devicename} BSSID
+      icon: "mdi:access-point-network"
+# ...shared code end
+
+binary_sensor:
+# Shared code beginning... 
+  # Device avaliablity
+  - platform: status  
+    name: ${upper_devicename} Status
+    device_class: connectivity
+# ...shared code end
 
 sensor:
+# Shared code beginning... 
+  # Wifi signal strength
   - platform: wifi_signal
     name: ${upper_devicename} RSSI
     update_interval: 300s
+    # icon: "mdi:access-point-network"
+    device_class: signal_strength
+    state_class: measurement
+# ...shared code end
     
+  # Air Temperature and Humidity Sensor
   - platform: dht
     pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
     temperature:
-      name: ${upper_devicename} Temperature
+      name: ${short_devicename} Temperature
+      state_class: measurement
+      device_class: temperature
     humidity:
-      name: ${upper_devicename} Humidity
+      name: ${short_devicename} Humidity
+      state_class: measurement
+      device_class: humidity
     update_interval: 300s
     model: DHT22

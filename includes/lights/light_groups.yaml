@@ -10,12 +10,19 @@
   entities:
     - light.sofa_left
     - light.sofa_right
-    - light.living_room_bookcase_light
+    - light.living_room_cabinet_inside
+    - light.living_room_cabinet_front
     - light.living_room_ceiling_light
-
+# - platform: group
+#   name: Living Room Side Lights
+#   entities:
+#     - light.sofa_left
+#     - light.sofa_right
+#     - light.living_room_bookcase_light
+#     - light.living_room_ceiling_light
 
 - platform: group
-  name: Outside Christmas Lights 
+  name: Outside Christmas Lights
   entities:
     - light.christmas_garden_lights
     - light.christmas_living_room_star
@@ -24,20 +31,59 @@
     - light.christmas_guest_bedroom_star
 
 - platform: group
-  name: Inside Christmas Lights 
+  name: Inside Christmas Lights
   entities:
     - light.christmas_tree_lights
 
-    
 - platform: group
   name: Outside Lights
   entities:
-    - light.tradfri_bulb_20
-    - light.tradfri_bulb_12
-    - light.tradfri_bulb_18
-    - light.tradfri_bulb_19
-    - light.tradfri_bulb_22
-    - light.tradfri_bulb_16
-    - light.tradfri_bulb_23
-    - light.tradfri_bulb_17
-    - light.tradfri_bulb_21
+    - light.outside_1_up
+    - light.outside_1_down
+    - light.outside_2_up
+    - light.outside_2_down
+    - light.outside_3_up
+    - light.outside_3_down
+    - light.outside_4_up
+    - light.outside_4_down
+    - light.outside_5_down
+
+- platform: group
+  name: Dining Room Lights
+  entities:
+    - light.dining_room_left
+    - light.dining_room_right
+    - light.dining_room_ceiling_1
+    - light.dining_room_ceiling_2
+    - light.dining_room_ceiling_3
+    - light.dining_room_ceiling_4
+
+- platform: group
+  name: Dining Room Ceiling Lights
+  entities:
+    - light.dining_room_ceiling_1
+    - light.dining_room_ceiling_2
+    - light.dining_room_ceiling_3
+    - light.dining_room_ceiling_4
+
+- platform: group
+  name: Dining Room Side Lights
+  entities:
+    - light.dining_room_left
+    - light.dining_room_right
+    
+- platform: group
+  name: Office Lights
+  entities:
+    - light.office_lamp
+    - light.office_cabinet_front
+    - light.office_cabinet_inside
+
+
+- platform: group
+  name: Kitchen Lights
+  entities:
+    - light.kitchen_lights_front
+    - light.kitchen_cabinets
+    - light.kitchen_under_counter
+    
