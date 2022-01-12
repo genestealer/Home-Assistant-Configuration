@@ -54,3 +54,4 @@ configuration - Copy.yaml
 /private/*
 /custom_components/hacs/*
 /.storage/lovelace
+__pycache__/
