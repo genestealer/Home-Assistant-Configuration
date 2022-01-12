@@ -57,3 +57,4 @@ configuration - Copy.yaml
 /.storage/lovelace
 __pycache__/
 /image/
+ip_bans.yaml
