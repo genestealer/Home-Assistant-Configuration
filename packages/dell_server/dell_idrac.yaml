@@ -1,7 +1,11 @@
 ############################################################
 #
 # Monitoring Dell R720 iDRAC 7
+# 
 # I am using iDRAC enterprise version "DRAC7/8 with Lifecycle Controller Version 2.65.65.65"
+# iDRAC with Lifecycle Controller v. 2.65.65.65
+# https://www.dell.com/support/home/en-us/drivers/driversdetails?driverid=0ghf4&oscode=naa&productcode=poweredge-r720
+#
 # 
 # Baseoid's discovered through the use of trial and error
 # and free scanning tool Paessler SNMP Tester. 
