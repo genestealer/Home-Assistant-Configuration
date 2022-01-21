@@ -36,4 +36,5 @@
 # Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
 rflink_ping: 'echo "10;PING;" | nc 192.168.2.22 23'  #This works!
 
-rflink_dim_kitchen_lights: 'echo "10;Ansluta;ce30;0;SET_LEVEL=8;" | nc 192.168.2.22 23'
+# 2022 No longer used as I've moved over to Ikea Tradfi
+# rflink_dim_kitchen_lights: 'echo "10;Ansluta;ce30;0;SET_LEVEL=8;" | nc 192.168.2.22 23'
