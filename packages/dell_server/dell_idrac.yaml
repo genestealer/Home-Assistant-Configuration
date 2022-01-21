@@ -1,6 +1,8 @@
 ############################################################
 #
 # Monitoring Dell R720 iDRAC 7
+# I am using iDRAC enterprise version "DRAC7/8 with Lifecycle Controller Version 2.65.65.65"
+# 
 # Baseoid's discovered through the use of trial and error
 # and free scanning tool Paessler SNMP Tester. 
 # https://www.paessler.com/tools/snmptester
