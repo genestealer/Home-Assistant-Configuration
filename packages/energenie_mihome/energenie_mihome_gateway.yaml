@@ -57,4 +57,4 @@ sensor:
     headers:
       Content-Type: application/json
     force_update: true
-    scan_interval: 30
+    scan_interval: 60

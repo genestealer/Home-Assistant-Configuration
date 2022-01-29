@@ -91,7 +91,7 @@ sensor:
     headers:
       Content-Type: application/json
     force_update: true
-    scan_interval: 15
+    scan_interval: 60
 
 # https://www.home-assistant.io/integrations/integration/
 # https://community.home-assistant.io/t/powercalc-virtual-power-sensors/318515/3
