@@ -60,3 +60,5 @@ __pycache__/
 ip_bans.yaml
 ip_bans.yaml
 custom_components/
+/custom_components/
+/custom_components/*
