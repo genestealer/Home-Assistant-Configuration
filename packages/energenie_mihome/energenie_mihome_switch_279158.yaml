@@ -48,6 +48,9 @@ switch:
               entity_id: sensor.mihome_server_plug_switch_status
 
 
+
+
+
 rest_command:
   mihome_279158_switch_on:
     url: "https://mihome4u.co.uk/api/v1/subdevices/power_on"
@@ -105,7 +108,6 @@ sensor:
     unit_prefix: k
     unit_time: h
     round: 2
-    unit: kWh
 
 # Not used in place of the newer template platform below.
   # - platform: template

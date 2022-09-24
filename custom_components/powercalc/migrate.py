@@ -3,11 +3,7 @@ from __future__ import annotations
 import logging
 
 from homeassistant.core import callback
-from homeassistant.helpers.entity_registry import (
-    EntityRegistry,
-    async_entries_for_device,
-    async_get,
-)
+from homeassistant.helpers.entity_registry import EntityRegistry, async_get
 
 from .const import DOMAIN
 
@@ -41,28 +37,34 @@ def async_migrate_unique_id(
 
 @callback
 def async_migrate_entity_id(
-    hass, platform: str, unique_id: str, new_entity_id: str
+    hass,
+    platform: str,
+    old_entity_id: str,
+    new_entity_id: str,
 ) -> None:
     """Check if entity with old unique ID exists, and if so migrate it to new ID."""
 
     entity_registry = async_get(hass)
+    entry = entity_registry.async_get(old_entity_id)
+    if entry is None:
+        return
 
-    existing_entity_id = entity_registry.async_get_entity_id(
-        platform, DOMAIN, unique_id
-    )
-    if existing_entity_id is None or existing_entity_id == new_entity_id:
+    if old_entity_id == new_entity_id:
         return
 
     _LOGGER.debug(
         "Migrating entity from old entity ID '%s' to new entity ID '%s'",
-        existing_entity_id,
+        old_entity_id,
         new_entity_id,
     )
     try:
-        entity_registry.async_update_entity(
-            existing_entity_id, new_entity_id=new_entity_id
-        )
+        entity_registry.async_update_entity(old_entity_id, new_entity_id=new_entity_id)
     except ValueError as e:
+        _LOGGER.error(
+            "Migrating entity from old entity ID '%s' to new entity ID '%s'",
+            old_entity_id,
+            new_entity_id,
+        )
         _LOGGER.error(e)
         entity_registry.async_remove(new_entity_id)
 

@@ -1,0 +1,232 @@
+{
+    "1": {
+        "brightness": 1,
+        "state": "OFF"
+    },
+    "2": {
+        "brightness": 151,
+        "state": "ON",
+        "color_mode": "xy",
+        "color": {
+            "x": 0.3415,
+            "y": 0.1707
+        }
+    },
+    "3": {
+        "state": "OFF",
+        "brightness": 254
+    },
+    "0x588e81fffe787201": {
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 80,
+        "state": "OFF",
+        "brightness": 129,
+        "power_on_behavior": "off"
+    },
+    "0x60a423fffef26f3c": {
+        "occupancy": false,
+        "illuminance_above_threshold": false,
+        "battery": 87,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 14,
+        "voltage": 3000
+    },
+    "0xb4e3f9fffef34402": {
+        "battery": 100,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 142
+    },
+    "0x000d6ffffea20000": {
+        "battery": 87,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 131
+    },
+    "0x5c0272fffec8ba7e": {
+        "update": {
+            "state": "idle"
+        },
+        "power_on_behavior": "previous",
+        "state": "ON",
+        "linkquality": 174
+    },
+    "0x588e81fffe6c99fd": {
+        "state": "ON",
+        "update": {
+            "state": "idle"
+        },
+        "power_on_behavior": "off",
+        "linkquality": 149,
+        "brightness": 151
+    },
+    "0xd0cf5efffec7e1fb": {
+        "update": {
+            "state": "idle"
+        },
+        "state": "ON",
+        "power_on_behavior": "off",
+        "linkquality": 80,
+        "brightness": 151
+    },
+    "0x60a423fffef24b3b": {
+        "battery": 100,
+        "occupancy": false,
+        "illuminance_above_threshold": false,
+        "linkquality": 14,
+        "update": {
+            "state": "idle"
+        }
+    },
+    "0x60a423fffece99ad": {
+        "occupancy": false,
+        "illuminance_above_threshold": false,
+        "linkquality": 14,
+        "battery": 87,
+        "update": {
+            "state": "idle"
+        }
+    },
+    "0x588e81fffe76d0ad": {
+        "update": {
+            "state": "idle"
+        },
+        "state": "OFF",
+        "power_on_behavior": "off",
+        "brightness": 1,
+        "linkquality": 43
+    },
+    "0x842e14fffe7f1823": {
+        "update": {
+            "state": "idle"
+        },
+        "state": "OFF",
+        "brightness": 1,
+        "linkquality": 83
+    },
+    "0x000d6ffffe9c3ea8": {
+        "battery": 87,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 83
+    },
+    "0x804b50fffeef7a46": {
+        "battery": 87,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 83
+    },
+    "0xbc33acfffe3025ec": {
+        "state": "OFF",
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 83,
+        "brightness": 1
+    },
+    "0x000b57fffe9bad09": {
+        "battery": 87,
+        "occupancy": false,
+        "illuminance_above_threshold": false,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 112
+    },
+    "0x000b57fffe13967e": {
+        "battery": 74,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 138
+    },
+    "0x000b57fffe38a445": {
+        "battery": 60,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 112
+    },
+    "0x000b57fffe8edae5": {
+        "battery": 60,
+        "occupancy": false,
+        "illuminance_above_threshold": false,
+        "update": {
+            "state": "idle"
+        },
+        "linkquality": 80
+    },
+    "0xbc33acfffebd4750": {
+        "color_mode": "xy",
+        "state": "ON",
+        "color": {
+            "x": 0.3415,
+            "y": 0.1707
+        },
+        "brightness": 254,
+        "linkquality": 61,
+        "update": {
+            "state": "available"
+        },
+        "power_on_behavior": "off"
+    },
+    "0x000b57fffe978d3f": {
+        "linkquality": 65,
+        "update": {
+            "state": "available"
+        },
+        "state": "OFF",
+        "brightness": 254
+    },
+    "0x000b57fffe51eb27": {
+        "update": {
+            "state": "available"
+        },
+        "state": "OFF",
+        "brightness": 254,
+        "linkquality": 91,
+        "power_on_behavior": "off"
+    },
+    "0x000b57fffeb829ec": {
+        "update": {
+            "state": "available"
+        },
+        "state": "OFF",
+        "brightness": 254,
+        "linkquality": 65
+    },
+    "0xec1bbdfffe9eed51": {
+        "battery": 87,
+        "linkquality": 91,
+        "update": {
+            "state": "idle"
+        }
+    },
+    "0x000b57fffebfd68d": {
+        "update": {
+            "state": "available"
+        },
+        "state": "OFF",
+        "brightness": 254,
+        "level_config": {
+            "on_level": "previous"
+        },
+        "linkquality": 40
+    },
+    "0x000b57fffebdce17": {
+        "update": {
+            "state": "available"
+        },
+        "state": "OFF",
+        "brightness": 254,
+        "linkquality": 61
+    }
+}

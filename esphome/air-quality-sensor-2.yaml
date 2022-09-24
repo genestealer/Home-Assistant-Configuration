@@ -1,25 +1,29 @@
 ##############################################################
-# Richard Huish 2021
+# Richard Huish 2022
 # https://github.com/genestealer/Home-Assistant-Configuration
-# Indoor Air Filter
+# Indoor Air Quality Sensor #2
 ##############################################################
 # Config Header for Device
 ##############################################################
 substitutions:
   # Used by ESP Home
-  device_name: air-filter
+  device_name: air-quality-sensor-2
   # Used by ESP Home
-  device_description: "Indoor Air Quality Sensor"
+  device_description: "Indoor Air Quality Sensor 2"
   # Prefix used by Wifi IP, RSSI etc
-  upper_devicename: "Indoor Air Filter"
+  upper_devicename: "Indoor Air Filter 2"
   # Prefix used by main Inputs & Outputs
-  short_devicename: "Air Filter"
-  ip: 192.168.2.42
-  pass: of4zH*IxKw49yt@H
+  short_devicename: "Air Filter 2"
+  ip: 192.168.2.45
+  pass: hxN#^fPPv5ZRy%7l
 
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
+  status_led: LED_RED
   platform: ESP8266
-  board: nodemcuv2
+  board: huzzah
+  throttle_setting: "60s"
+  median_window_size: "6"
+  median_send_every: "4"
+  median_send_first_at: "3"
   
 ##############################################################
 # Shared code from all my projects
@@ -53,6 +57,7 @@ ota: # Enable over the air updates
 status_led:
   pin:
     number: ${status_led}
+    inverted: true
 
 ##############################################################
 # Non-Shared Code (May contain shared code)
@@ -94,48 +99,90 @@ sensor:
     
   # pmsx003 Air sensor
   - platform: pmsx003
-    type: PMS5003ST
+    type: PMSX003
     pm_0_3um:
       name: "${short_devicename} PM <0.3um in 0.1L of air"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_0_5um:
       name: "${short_devicename} PM <0.5um in 0.1L of air"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_1_0um:
       name: "${short_devicename} PM <1.0um in 0.1L of air"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_2_5um:
       name: "${short_devicename} PM <2.5um in 0.1L of air"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_5_0um:
       name: "${short_devicename} PM <5.0um in 0.1L of air"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_10_0um:
       name: "${short_devicename} PM <10.0um in 0.1L of air"
-
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     
     pm_1_0:
       name: "${short_devicename} PM <1.0µm Concentration"
       device_class: "pm1"
       state_class: "measurement"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_2_5:
       name: "${short_devicename} PM <2.5µm Concentration"
       device_class: "pm25"
       state_class: "measurement"
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
     pm_10_0:
       name: "${short_devicename} PM <10.0µm Concentration"
       device_class: pm10
       state_class: measurement
-    temperature:
-      name: "${short_devicename} Temperature"
-      device_class: temperature
-      state_class: measurement
-    humidity:
-      name: "${short_devicename} Humidity"
-      device_class: humidity
-      state_class: measurement
-    formaldehyde:
-      name: "${short_devicename} Formaldehyde Concentration"
-      device_class: volatile_organic_compounds
-      state_class: measurement
-      
+      filters:
+        - throttle: ${throttle_setting}
+        - median:
+           window_size: ${median_window_size}
+           send_every: ${median_send_every}
+           send_first_at: ${median_send_first_at}
+
 
 # Serial for pmsx003
+# huzzah The RX pin is the input into the module and is 5V compliant (there is a level shifter on this pin)
 uart:
   rx_pin: GPIO13
   baud_rate: 9600

@@ -1,18 +1,3 @@
-bedroom_lights_night_mode:
-  sequence:
-  - service: light.turn_on
-    target:
-      entity_id: light.richard_bed
-    data:
-      color_name: red
-      brightness: 1
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.lucy_bed
-  mode: single
-  icon: mdi:sleep
-  alias: Bedtime
 kitchen_extractor_timer:
   alias: Kitchen Extractor Fan Timer
   sequence:
@@ -504,3 +489,81 @@ flash_lights_red2:
     target:
       entity_id: scene.living_room_before
   mode: restart
+bedtime:
+  alias: Bedtime
+  sequence:
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 10355d9ecb235e8aa6db0db6ceba4a85
+        entity_id: light.lucy_bedside_light
+        domain: light
+      sequence:
+      - service: light.turn_on
+        data:
+          transition: 20
+          brightness_pct: 1
+          color_name: brown
+        target:
+          entity_id:
+          - light.lucy_bedside_light
+          - light.richard_bedside_bed
+    default:
+    - type: turn_off
+      device_id: d9b3a520d7afec5926573c6d91022d84
+      entity_id: light.richard_bedside_bed
+      domain: light
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 24
+      milliseconds: 0
+  - type: turn_off
+    device_id: 10355d9ecb235e8aa6db0db6ceba4a85
+    entity_id: light.lucy_bedside_light
+    domain: light
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 24
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 1
+      color_name: red
+    target:
+      entity_id:
+      - light.lucy_bedside_light
+      - light.richard_bedside_bed
+  mode: single
+  icon: mdi:power-sleep
+new_script_test:
+  alias: New Script test
+  sequence:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.office_display
+    data:
+      media_content_id: media-source://camera/camera.testonvif_profile_1_h264
+      media_content_type: application/vnd.apple.mpegurl
+    metadata:
+      title: testonvif - profile_1 h264
+      thumbnail: /api/camera_proxy/camera.testonvif_profile_1_h264
+      media_class: video
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://camera
+  mode: single
+find_my_remote:
+  alias: Find shield remote control
+  sequence:
+  - data:
+      command: am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
+      entity_id: media_player.android_tv_192_168_10_34
+    service: androidtv.adb_command
+  mode: single
+  icon: mdi:target

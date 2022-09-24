@@ -104,7 +104,6 @@ sensor:
     unit_prefix: k
     unit_time: h
     round: 2
-    unit: kWh
 
 # Not used in place of the newer template platform below.
   # - platform: template

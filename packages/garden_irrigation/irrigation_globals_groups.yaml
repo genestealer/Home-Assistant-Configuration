@@ -4,7 +4,7 @@
 #===
 #=== This is needed to force the group integration to load at startup
 #=== even if no groups are defined in the config without it there is
-#=== group.set service which is used in this automation.
+#=== no group.set service which is used in this automation.
 #=====================================================================
 group:
 
@@ -16,7 +16,8 @@ automation:
   #========================================================
   #=== Create groups at start up or if Groups are reloaded
   #========================================================
-  - alias: irrigation_create_groups
+  - alias: Irrigation Create Groups
+    id: irrigation_create_groups
     trigger:
       - platform: homeassistant
         event: start

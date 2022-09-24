@@ -85,7 +85,7 @@ sensor:
   # Wifi signal strength
   - platform: wifi_signal
     name: ${upper_devicename} RSSI
-    update_interval: 300s
+    update_interval: 60s
     # icon: "mdi:access-point-network"
     device_class: signal_strength
     state_class: measurement
@@ -102,5 +102,5 @@ sensor:
       name: ${short_devicename} Humidity
       state_class: measurement
       device_class: humidity
-    update_interval: 300s
+    update_interval: 60s
     model: DHT22

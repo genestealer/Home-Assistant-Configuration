@@ -17,7 +17,7 @@ esphome:
   name: $devicename
   platform: ESP32
   board: lolin_d32
-  comment: Not currently in use
+  comment: NOT IN USE
   
 wifi:
   ssid: !secret IoT_VLAN_SSID

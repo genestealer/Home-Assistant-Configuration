@@ -1,0 +1,20 @@
+#########################################################################################
+# Energenie MiHome https://energenie4u.co.uk/ 
+# A node.js module to control the Energenie line of products via the ENER314-RT add-on board for the Raspberry Pi.
+# energenie-ener314rt https://github.com/Achronite/energenie-ener314rt
+#########################################################################################
+# Richard Huish 2022
+#
+###################################################################################################################
+
+# mqtt:
+#   sensor:
+#     - name: "Energenie 1215"
+#       state_topic: "HUISHS/energenie_1215"
+#       device_class: power
+#       value_template: "{{ value_json.REAL_POWER }}"
+#       json_attributes_topic: "HUISHS/energenie_1215"
+#       availability:
+#         - topic: "HUISHS/energenie_gateway/status"
+#       payload_available: "online"
+#       payload_not_available: "offline"

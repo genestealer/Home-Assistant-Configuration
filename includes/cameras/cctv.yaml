@@ -42,12 +42,12 @@
 #   username: !secret axis_garden_username
 #   password: !secret axis_garden_password
 
-- platform: mjpeg
-  mjpeg_url: !secret Bunny_CCTV_mjpg
-  name: Bunny Camera
-  username: !secret Bunny_CCTV_username
-  password: !secret Bunny_CCTV_password
-  authentication: digest
+# - platform: mjpeg
+#   mjpeg_url: !secret Bunny_CCTV_mjpg
+#   name: Bunny Camera
+#   username: !secret Bunny_CCTV_username
+#   password: !secret Bunny_CCTV_password
+#   authentication: digest
 
 
 # Non of these work!
@@ -82,7 +82,7 @@
 
 
 
-# Needs FFMPEG, not currently installed.
-# - platform: onvif
-#   host: !secret Bunny_shed_onvif
-#   name: Bunny Shed Camera
+
+# - platform: proxy
+#   entity_id: camera.4_16_mjpg
+#   name: 4_16_mjpg_proxy

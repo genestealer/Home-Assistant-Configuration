@@ -167,8 +167,6 @@ sensor:
     unit_prefix: k
     unit_time: h
     round: 2
-    unit: kWh
-
 
 
 

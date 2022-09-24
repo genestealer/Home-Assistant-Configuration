@@ -65,46 +65,6 @@
       supported_features: 33
       state: 'on'
   icon: mdi:television-classic
-- id: '1614816873268'
-  name: Bedroom Bedtime
-  entities:
-    light.bedroom_ceiling_light:
-      supported_color_modes:
-      - onoff
-      friendly_name: Bedroom Ceiling Light
-      supported_features: 0
-      state: 'off'
-    light.richard_bedside_bed:
-      min_mireds: 250
-      max_mireds: 454
-      supported_color_modes:
-      - color_temp
-      - hs
-      color_mode: hs
-      brightness: 26
-      hs_color:
-      - 9.13
-      - 81.832
-      rgb_color:
-      - 255
-      - 78
-      - 46
-      xy_color:
-      - 0.649
-      - 0.32
-      friendly_name: Bedroom Richard Bedside Light
-      supported_features: 51
-      state: 'on'
-    light.lucy_bedside_light:
-      min_mireds: 250
-      max_mireds: 454
-      supported_color_modes:
-      - color_temp
-      - hs
-      friendly_name: Bedroom Lucy Bedside Light
-      supported_features: 51
-      state: 'off'
-  icon: mdi:power-sleep
 - id: '1625145522717'
   name: Test office
   entities:

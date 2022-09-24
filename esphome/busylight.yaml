@@ -109,7 +109,8 @@ sensor:
     device_class: signal_strength
     state_class: measurement
 # ...shared code end
-    
+
+
 light:
   - platform: neopixelbus
     method: ESP8266_UART1
@@ -119,3 +120,61 @@ light:
     name: ${upper_devicename}
     id: busylight
     variant: 800KBPS
+    
+# light:
+#   - platform: neopixelbus
+#     method: ESP8266_UART1
+#     type: GRB
+#     pin: 2
+#     num_leds: 8
+#     name: ${upper_devicename}
+#     id: busylight
+#     variant: 800KBPS
+#     effects:
+#       - addressable_rainbow:
+#       - addressable_rainbow:
+#           name: Rainbow Effect With Custom Values
+#           speed: 10
+#           width: 50
+#       - addressable_color_wipe:
+#       - addressable_color_wipe:
+#           name: Color Wipe Effect With Custom Values
+#           colors:
+#             - red: 100%
+#               green: 100%
+#               blue: 100%
+#               num_leds: 1
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               num_leds: 1
+#           add_led_interval: 100ms
+#           reverse: false
+#       - addressable_scan:
+#       - addressable_scan:
+#           name: Scan Effect With Custom Values
+#           move_interval: 100ms
+#           scan_width: 1
+#       - addressable_twinkle:
+#       - addressable_twinkle:
+#           name: Twinkle Effect With Custom Values
+#           twinkle_probability: 5%
+#           progress_interval: 4ms
+#       - addressable_random_twinkle:
+#       - addressable_random_twinkle:
+#           name: Random Twinkle Effect With Custom Values
+#           twinkle_probability: 5%
+#           progress_interval: 32ms
+#       - addressable_fireworks:
+#       - addressable_fireworks:
+#           name: Fireworks Effect With Custom Values
+#           update_interval: 32ms
+#           spark_probability: 10%
+#           use_random_color: false
+#           fade_out_rate: 120
+#       - addressable_flicker:
+#       - addressable_flicker:
+#           name: Flicker Effect With Custom Values
+#           update_interval: 16ms
+#           intensity: 5%
+

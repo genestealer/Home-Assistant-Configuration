@@ -1,0 +1,176 @@
+##############################################################
+#   Chicken Coop Sensors
+#   Richard Huish 2022
+#   Primarily for getting a notification when their food or water has run out.
+#   Can also track food and water consumption.
+#   -------
+#   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
+#   ----------
+#   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
+#   API: Locally hosted native API component https://esphome.io/components/api.html
+#   OTA updates: https://esphome.io/components/ota.html
+#   ----------
+#   The circuit:
+#     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
+#   Inputs:
+#     1 x DHT11 Temperature and Humidity Sensor https://www.adafruit.com/product/386
+#     2 x 10KG Adafruit 4 Wire Strain Gauge Load Cell https://www.adafruit.com/product/4542
+#     2 x HX711 Dual 24 bit ADC Serial Weighing Module https://www.ebay.co.uk/itm/251742358458
+#     1 x Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
+#   Outputs:
+#     Home Assistant
+#
+##############################################################
+# Config Header for Device
+##############################################################
+substitutions:
+  # Used by ESP Home
+  device_name: chicken-house
+  # Used by ESP Home
+  device_description: "Chicken House Sensors"
+  # Prefix used by Wifi IP, RSSI etc
+  upper_devicename: "Chicken House"
+  # Prefix used by main Inputs & Outputs
+  short_devicename: "Chicken House"
+  ip: 192.168.2.25
+  pass: hxN#^fPPv5ZRy%7l
+  status_led: LED_RED #GPIO0 https://github.com/esphome/esphome/blob/2b39988707a655c7745899f75d3946775f0de6a8/esphome/components/esp8266/boards.py
+  platform: ESP8266
+  board: huzzah
+  
+##############################################################
+# Shared code from all my projects
+##############################################################
+esphome:
+  name: ${device_name}
+  comment: ${device_description}
+  platform: ${platform}
+  board: ${board}
+  
+wifi:
+  ssid: !secret IoT_VLAN_SSID
+  password: !secret IoT_VLAN_SSID_Key
+  manual_ip:
+    static_ip: $ip
+    gateway: 192.168.2.1
+    subnet: 255.255.255.0
+
+logger: # Enable logging
+
+api: # Enable Home Assistant API
+  password: $pass
+
+ota: # Enable over the air updates
+  password: $pass
+  safe_mode: true
+  reboot_timeout: 10min
+  num_attempts: 5
+
+# Status LED for connection
+status_led:
+  pin:
+    number: ${status_led}
+
+##############################################################
+# Non-Shared Code (May contain shared code)
+##############################################################
+
+text_sensor:
+# Shared code beginning... 
+  # Wifi Data
+  - platform: wifi_info  
+    ip_address:
+      name: ${upper_devicename} IP
+      icon: "mdi:ip-network-outline"
+    ssid:
+      name: ${upper_devicename} SSID
+      icon: "mdi:help-network-outline"
+    bssid:
+      name: ${upper_devicename} BSSID
+      icon: "mdi:access-point-network"
+# ...shared code end
+
+binary_sensor:
+# Shared code beginning... 
+  # Device avaliablity
+  - platform: status  
+    name: ${upper_devicename} Status
+    device_class: connectivity
+# ...shared code end
+
+sensor:
+# Shared code beginning... 
+  # Wifi signal strength
+  - platform: wifi_signal
+    name: ${upper_devicename} RSSI
+    update_interval: 300s
+    # icon: "mdi:access-point-network"
+    device_class: signal_strength
+    state_class: measurement
+# ...shared code end
+    
+  # Air Temperature and Humidity Sensor
+  - platform: dht
+    model: DHT11
+    pin: LED_BLUE # LED Blue
+    temperature:
+      name: ${short_devicename} Temperature
+      state_class: measurement
+      device_class: temperature
+    humidity:
+      name: ${short_devicename} Humidity
+      state_class: measurement
+      device_class: humidity
+    update_interval: 30s
+
+
+# Channel selection is made by passing the appropriate gain.
+#   With a gain factor of 64 or 128, channel A is selected
+#   With a gain factor of 32, channel B is selected
+#   I tried to use one hx711 with two channels, as the value for
+#    channel B was sometimes returned at channel A, or vice versa, so changed to two seprate hx711's
+  - platform: hx711
+    name: "Chicken Food" #Channel A
+    dout_pin: D4
+    clk_pin: D5
+    gain: 128
+    update_interval: 30s
+    filters:
+      - calibrate_linear:
+        # - 118168 -> 0 # tare without feeder attached
+        # - 538159 -> 1.98
+        - 220840 -> 0 # tare with empty feeder (0.32KG feeder)
+        - 762762 -> 2.96 # full feeder
+      - filter_out: 0
+      - median: # moving median will filter out spikes, sliding_window_moving_average would not as it takes all data points into account  https://i.stack.imgur.com/c0o9S.png
+          window_size: 6
+          send_every: 4
+          send_first_at: 3
+    unit_of_measurement: kg
+    state_class: measurement
+    accuracy_decimals: 5
+
+    
+  - platform: hx711
+    name: "Chicken Water" #Channel B
+    dout_pin: D12
+    clk_pin: D14
+    gain: 128
+    update_interval: 30s
+    filters:
+      - calibrate_linear:
+        # - 67268 -> 0 # tare without water attached
+        # - 625719 -> 2.76
+        - 146499 -> 0 # tare with empty water (0.20KG water)
+        - 702880 -> 2.8 # full water
+      - filter_out: 0
+      - median: # moving median will filter out spikes, sliding_window_moving_average would not as it takes all data points into account  https://i.stack.imgur.com/c0o9S.png
+          window_size: 6
+          send_every: 4
+          send_first_at: 3
+    unit_of_measurement: kg
+    state_class: measurement
+    accuracy_decimals: 5
+
+#Done
+

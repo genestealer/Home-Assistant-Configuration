@@ -35,7 +35,7 @@
     # For this Energenie wall light switch,
     # Send TX command over and over agin, as it only seems to listen for them occasionally/
     # More tried helps ensure one makes it.
-    signal_repetitions: 10
+    signal_repetitions: 15
   devices:
     Eurodomest_0fca6c_00: # Energenie MIHO026
       name: Lamp_3 # renamed in customise.yaml to 'Upstairs Hall Light'
@@ -43,8 +43,8 @@
     #   name: 'Dining Room Light'
     Eurodomest_02940f_00: # Energenie MIHO093 two gang light switch
       name: "Downstairs Hall Light"
-    Eurodomest_02940f_02: # Energenie MIHO093 two gang light switch
-      name: "Upstairs Hall Light"
+    # Eurodomest_02940f_02: # Energenie MIHO093 two gang light switch
+    #   name: "Upstairs Hall Light" # Not used, Lamp_3 used in it's place
     Eurodomest_02940f_03: # Energenie MIHO026 one gang light switch
       name: "Living Room Ceiling Light"
     Eurodomest_061e5d_00: # Energenie MIHO026 one gang light switch
@@ -82,7 +82,6 @@
     #   name: Christmas Garden Lights
     # RFCustom_524643_0: # Status RCS-K09
     #   name: Christmas Master Bedroom Star
-
 # # 2022 No longer used as I've moved over to Ikea Tradfi
 # # 2.4GHz Lights Ikea Ansluta
 # - platform: rflink
@@ -94,7 +93,6 @@
 #       name: Kitchen Under Counter Lights
 #       aliases: Ansluta_ce30_0
 #       # type: hybrid # Ikea Ansluta have two brightness modes. Note hybrid is not compatible with signal repetition.
-
 
 # # Workaround for dimming the Ikea Ansluta lgiths
 # Moved to a script to turn them on first

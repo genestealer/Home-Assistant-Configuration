@@ -1,0 +1,15 @@
+############################################################
+#
+# Misc Templates
+#
+############################################################
+# Used for shaded night indicators on mini-graph-card
+# https://style.oversubstance.net/2021/11/adding-night-shading-to-a-home-assistant-mini-graph-card-chart/
+# https://gist.github.com/GuySie/d60984c58aa1e5b1ac2dfe75c070e3f9#file-ha-night-state-template-txt
+# This template creates a sensor.nightstate entity that will be set to 1 when sun.sun is below_horizon and 0 when sun.sun is not. That’s exactly what mini-graph-card needs to apply the night indicator shading.
+# See also: https://style.oversubstance.net/2021/08/diy-use-an-ikea-vindriktning-air-quality-sensor-in-home-assistant-with-esphome/
+- platform: template
+  sensors:
+    nightstate:
+      friendly_name: Night State
+      value_template: "{% if is_state('sun.sun', 'below_horizon') %}1{% else %}0{% endif %}"

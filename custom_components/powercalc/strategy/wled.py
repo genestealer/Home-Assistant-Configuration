@@ -1,19 +1,18 @@
 from __future__ import annotations
 
 import logging
+from decimal import Decimal
 from typing import Optional
 
 import voluptuous as vol
-from homeassistant.core import State
+from homeassistant.core import HomeAssistant, State
 from homeassistant.helpers import entity_registry
-from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.helpers.event import TrackTemplate
 
-from custom_components.powercalc.common import SourceEntity
-from custom_components.powercalc.const import CONF_POWER_FACTOR, CONF_VOLTAGE
-from custom_components.powercalc.errors import StrategyConfigurationError
-from custom_components.powercalc.helpers import evaluate_power
-from custom_components.powercalc.sensors.power import OFF_STATES
-
+from ..common import SourceEntity
+from ..const import CONF_POWER_FACTOR, CONF_VOLTAGE, OFF_STATES
+from ..errors import StrategyConfigurationError
+from ..helpers import evaluate_power
 from .strategy_interface import PowerCalculationStrategyInterface
 
 CONFIG_SCHEMA = vol.Schema(
@@ -31,7 +30,7 @@ class WledStrategy(PowerCalculationStrategyInterface):
         self,
         config: dict,
         light_entity: SourceEntity,
-        hass: HomeAssistantType,
+        hass: HomeAssistant,
         standby_power: Optional[float],
     ) -> None:
         self._hass = hass
@@ -39,10 +38,11 @@ class WledStrategy(PowerCalculationStrategyInterface):
         self._power_factor = config.get(CONF_POWER_FACTOR) or 0.9
         self._light_entity = light_entity
         self._standby_power = standby_power
+        self._estimated_current_entity: str | None = None
 
-    async def calculate(self, entity_state: State) -> Optional[float]:
+    async def calculate(self, entity_state: State) -> Optional[Decimal]:
         if entity_state.entity_id == self._light_entity.entity_id:
-            light_state = entity_state.state
+            light_state = entity_state
         else:
             light_state = self._hass.states.get(self._light_entity.entity_id)
 
@@ -50,7 +50,7 @@ class WledStrategy(PowerCalculationStrategyInterface):
             return self._standby_power
 
         if entity_state.entity_id != self._estimated_current_entity:
-            return None
+            entity_state = self._hass.states.get(self._estimated_current_entity)
 
         _LOGGER.debug(
             f"{self._light_entity.entity_id}: Estimated current {entity_state.state} (voltage={self._voltage}, power_factor={self._power_factor})"
@@ -78,11 +78,11 @@ class WledStrategy(PowerCalculationStrategyInterface):
 
         raise StrategyConfigurationError("{No estimated current entity found")
 
-    def get_entities_to_track(self) -> tuple:
-        return {self._estimated_current_entity}
+    def get_entities_to_track(self) -> list[str, TrackTemplate]:
+        return [self._estimated_current_entity]
 
     def can_calculate_standby(self) -> bool:
         return True
 
-    async def validate_config(self, source_entity: SourceEntity):
+    async def validate_config(self):
         self._estimated_current_entity = await self.find_estimated_current_entity()

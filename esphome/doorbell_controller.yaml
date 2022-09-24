@@ -127,7 +127,7 @@ sensor:
     state_class: measurement
     device_class: power
     icon: mdi:flash-outline
-    accuracy_decimals: 0
+    accuracy_decimals: 2
     internal_filter: 100ms
     pin:
      number: D7 # GPIO13
@@ -185,7 +185,7 @@ light:
               green: 0%
               blue: 0%
               num_leds: 1
-          add_led_interval: 100ms
+          add_led_interval: 300ms
           reverse: False
 
 # Get current time

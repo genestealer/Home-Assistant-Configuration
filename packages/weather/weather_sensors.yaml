@@ -9,46 +9,68 @@ sensor:
     devices:
       alectov5_00a3_rain:
         sensor_type: light_intensity
-        name: 'Local Light Intensity'    
+        name: "Local Light Intensity"
 
       alectov5_00a3_temp:
         sensor_type: uv_intensity
-        name: 'Local UV Intensity'
+        name: "Local UV Intensity"
 
       dkw2012_009e_windir:
         sensor_type: winddirection
-        name: 'Local Wind Direction'
-        
+        name: "Local Wind Direction"
+
       dkw2012_009e_winsp:
         sensor_type: windspeed
-        name: 'Local Wind Speed'
-        
+        name: "Local Wind Speed"
+
       dkw2012_009e_wings:
         sensor_type: windgusts
-        name: 'Local Wind Speed Gusts'        
-   
+        name: "Local Wind Speed Gusts"
+
       dkw2012_009e_rain:
         sensor_type: total_rain
-        name: 'Local Total Rain'
+        name: "Local Total Rain"
 
       alectov5_00a3_bat:
         sensor_type: battery
-        name: 'Weather Station Battery'
+        name: "Weather Station Battery"
 
       dkw2012_009e_temp:
         sensor_type: temperature
-        name: 'Local Outside Temperature'
+        name: "Local Outside Temperature"
 
       dkw2012_009e_hum:
         sensor_type: humidity
-        name: 'Local Outside Humidity'
+        name: "Local Outside Humidity"
 
-# Feed sensor data to irrigation https://github.com/kloggy/HA-Irrigation-Version2
-# Collect the raw cumulative rain data for 24 and 48 hours.
-# So we can minus one from the other the get the previous dates values,
-# as the statistics sensor does not support a "min_age", which would otherwise perform this action.
+  # https://github.com/petergridge/openweathermaphistory added via HACS
+  - platform: openweathermaphistory
+    name: "rainfactor"
+    # If latitude and longitude left out, it uses the home assistant configured Latitude and Longitude,
+    # latitude: -33.8302547
+    # longitude: 151.1516128
+    api_key: !secret openweathermap_api_key
+    num_days: 5
+    day0min: 1
+    day0max: 5
+    day1min: 6
+    day1max: 10
+    day2min: 11
+    day2max: 15
+    day3min: 16
+    day3max: 20
+    day4min: 21
+    day4max: 25
+    fine_icon: "mdi:weather-sunny"
+    lightrain_icon: "mdi:weather-rainy"
+    rain_icon: "mdi:weather-pouring"
 
-  - platform: statistics 
+  # Feed sensor data to irrigation https://github.com/kloggy/HA-Irrigation-Version2
+  # Collect the raw cumulative rain data for 24 and 48 hours.
+  # So we can minus one from the other the get the previous dates values,
+  # as the statistics sensor does not support a "min_age", which would otherwise perform this action.
+
+  - platform: statistics
     name: Local Rain 24 Hours Statistics Raw
     entity_id: sensor.local_total_rain
     sampling_size: 4320 # Enough for 3 readings a minute
@@ -60,62 +82,77 @@ sensor:
     sampling_size: 8320 # Enough for 3 readings a minute
     max_age:
       hours: 48
-  
-# Rain values are cumulative, need to extract the "rate of change" to see the actual value.
-  - platform: template 
+
+  # Rain values are cumulative, need to extract the "rate of change" to see the actual value.
+  - platform: template
     sensors:
       template_rain_last_24_hours:
         friendly_name: "Local Rain 24 Hours"
-        unit_of_measurement: 'mm'
+        unit_of_measurement: "mm"
         value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
-        
-# Difference between the 48 hours and 24 hours, to give the previous 24 hours. 
-  - platform: template  
+
+  # NEW
+  - platform: template
+    sensors:
+      rain_day_0:
+        friendly_name: "Rain Last 24 Hours"
+        unit_of_measurement: "mm"
+        value_template: "{{ state_attr('sensor.rainfactor', 'day_0_rain') }}"
+  # NEW
+  - platform: template
+    sensors:
+      rain_day_1:
+        friendly_name: "Rain Last 24-48 hours"
+        unit_of_measurement: "mm"
+        value_template: "{{ state_attr('sensor.rainfactor', 'day_1_rain') }}"
+
+  # Difference between the 48 hours and 24 hours, to give the previous 24 hours.
+  - platform: template
     sensors:
       template_rain_last_24_to_48_hours:
         friendly_name: "Local Rain Previous 24 Hours"
-        unit_of_measurement: 'mm'
+        unit_of_measurement: "mm"
         value_template: "{{ state_attr('sensor.local_rain_48_hours_statistics_raw', 'change') - state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
 
-# This sensor is converted into a binary sensor via a template, to create a true/false state from the last xx mins of rain (rate of change sensor).
+  # This sensor is converted into a binary sensor via a template, to create a true/false state from the last xx mins of rain (rate of change sensor).
   - platform: statistics
     name: Local Rain 30 Min Statistics Raw
     entity_id: sensor.local_total_rain
-    sampling_size: 180 
+    sampling_size: 180
     max_age:
       minutes: 30
 
-
-# https://github.com/kloggy/HA-Irrigation-Version2
-# https://github.com/kloggy/HA-Irrigation-Version2/issues/44
+  # https://github.com/kloggy/HA-Irrigation-Version2
+  # https://github.com/kloggy/HA-Irrigation-Version2/issues/44
   - platform: template
     sensors:
       irrigation_weather_outlook:
         friendly_name: "Irrigation weather outlook"
-        value_template: | # "keep": keep the line feed, keep trailing blank lines. https://stackoverflow.com/questions/3790454/how-do-i-break-a-string-in-yaml-over-multiple-lines
-            {{states('sensor.dark_sky_summary_1d')}} 
-            <br>
-            High:{{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C
-            Low:{{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C
-            <br>
-            Rain today:{{ states('sensor.openweathermap_rain') }}mm.
-            Rain tomorrow:{{ states('sensor.openweathermap_forecast_precipitation') }}mm
+        value_template:
+          | # "keep": keep the line feed, keep trailing blank lines. https://stackoverflow.com/questions/3790454/how-do-i-break-a-string-in-yaml-over-multiple-lines
+          {{states('sensor.dark_sky_summary_1d')}} 
+          <br>
+          High:{{ states('sensor.dark_sky_daytime_high_temperature_1d') }}°C
+          Low:{{ states('sensor.dark_sky_overnight_low_temperature_1d') }}°C
+          <br>
+          Rain today:{{ states('sensor.openweathermap_rain') }}mm.
+          Rain tomorrow:{{ states('sensor.openweathermap_forecast_precipitation') }}mm
 
         icon_template: >-
-            {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
-            {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
-            {% elif is_state("sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
-            {% elif is_state("sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
-            {% elif is_state("sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
-            {% elif is_state("sensor.dark_sky_icon_1d","sleet") %} mdi:weather-partly-snowy-rainy
-            {% elif is_state("sensor.dark_sky_icon_1d","wind") %} mdi:weather-windy
-            {% elif is_state("sensor.dark_sky_icon_1d","cloudy") %} mdi:weather-cloudy
-            {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-day") %} mdi:weather-partly-cloudy
-            {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
-            {% elif is_state("sensor.dark_sky_icon_1d","hail") %} mdi:weather-hail
-            {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} mdi:weather-lightning
-            {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
-            {% endif %}
+          {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
+          {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
+          {% elif is_state("sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
+          {% elif is_state("sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
+          {% elif is_state("sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
+          {% elif is_state("sensor.dark_sky_icon_1d","sleet") %} mdi:weather-partly-snowy-rainy
+          {% elif is_state("sensor.dark_sky_icon_1d","wind") %} mdi:weather-windy
+          {% elif is_state("sensor.dark_sky_icon_1d","cloudy") %} mdi:weather-cloudy
+          {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-day") %} mdi:weather-partly-cloudy
+          {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
+          {% elif is_state("sensor.dark_sky_icon_1d","hail") %} mdi:weather-hail
+          {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} mdi:weather-lightning
+          {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
+          {% endif %}
   # #=================================================================
   # #=== Create the icons for Weather Outlook on the Cycle Start time
   # #=================================================================
@@ -124,8 +161,8 @@ sensor:
   #     weather_just_icon:
   #       friendly_name: "mdi Real Weather Icon"
   #       icon_template: >-
-  #           {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny 
-  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night 
+  #           {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} mdi:weather-sunny
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} mdi:weather-night
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","rain") %} mdi:weather-rainy
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","snow") %} mdi:weather-snowy
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","fog") %} mdi:weather-fog
@@ -139,8 +176,8 @@ sensor:
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","thunderstorm") %} mdi:weather-lightning-rainy
   #           {% endif %}
   #       value_template: >-
-  #           {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} weather-sunny 
-  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} weather-night 
+  #           {% if is_state("sensor.sensor.dark_sky_icon_1d","clear-day") %} weather-sunny
+  #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","clear-night") %} weather-night
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","rain") %} weather-rainy
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","snow") %} weather-snowy
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","fog") %} weather-fog
@@ -154,13 +191,8 @@ sensor:
   #           {% elif is_state("sensor.sensor.dark_sky_icon_1d","thunderstorm") %} weather-lightning-rainy
   #           {% endif %}
 
-
-
-
-
-
   # - platform: template
-  #   sensors: 
+  #   sensors:
   #     wind_compass_abbreviation:
   #       value_template: >-
   #         {% if 354.38 <= states('sensor.weather_wind_direction')|float <= 5.62 %}
@@ -230,13 +262,13 @@ sensor:
   #         {% endif %}
 
   # - platform: template
-  #   sensors: 
+  #   sensors:
   #     wind_compass_point:
   #       value_template: >-
   #         {% if 354.38 <= states('sensor.weather_wind_direction')|float <= 5.62 %}
-  #            North 
+  #            North
   #         {% elif 5.63 <= states('sensor.weather_wind_direction')|float <= 16.87 %}
-  #            North by east 
+  #            North by east
   #         {% elif 16.88 <= states('sensor.weather_wind_direction')|float <= 28.12 %}
   #            North-northeast
   #         {% elif 28.13 <= states('sensor.weather_wind_direction')|float <= 39.37 %}
@@ -244,17 +276,17 @@ sensor:
   #         {% elif 39.38 <= states('sensor.weather_wind_direction')|float <= 50.62 %}
   #            Northeast
   #         {% elif 50.63 <= states('sensor.weather_wind_direction')|float <= 61.87 %}
-  #            Northeast by east 
+  #            Northeast by east
   #         {% elif 61.88 <= states('sensor.weather_wind_direction')|float <= 73.12 %}
-  #            East-northeast 
+  #            East-northeast
   #         {% elif 73.13 <= states('sensor.weather_wind_direction')|float <= 84.37 %}
-  #            East by north 
+  #            East by north
   #         {% elif 84.38 <= states('sensor.weather_wind_direction')|float <= 95.62 %}
-  #            East 
+  #            East
   #         {% elif 95.63 <= states('sensor.weather_wind_direction')|float <= 106.87 %}
   #            East by south
   #         {% elif 106.88 <= states('sensor.weather_wind_direction')|float <= 118.12 %}
-  #            East-southeast 
+  #            East-southeast
   #         {% elif 118.13 <= states('sensor.weather_wind_direction')|float <= 129.37 %}
   #            Southeast by east
   #         {% elif 129.38 <= states('sensor.weather_wind_direction')|float <= 140.62 %}
@@ -262,13 +294,13 @@ sensor:
   #         {% elif 140.63 <= states('sensor.weather_wind_direction')|float <= 151.87 %}
   #            Southeast by south
   #         {% elif 151.88 <= states('sensor.weather_wind_direction')|float <= 163.12 %}
-  #            South-southeast 
+  #            South-southeast
   #         {% elif 163.13 <= states('sensor.weather_wind_direction')|float <= 174.37 %}
   #            South by east
   #         {% elif 174.38 <= states('sensor.weather_wind_direction')|float <= 185.62 %}
   #            South
   #         {% elif 185.63 <= states('sensor.weather_wind_direction')|float <= 196.87 %}
-  #            South by west 
+  #            South by west
   #         {% elif 196.88 <= states('sensor.weather_wind_direction')|float <= 208.12 %}
   #            South-southwest
   #         {% elif 208.13 <= states('sensor.weather_wind_direction')|float <= 219.37 %}
@@ -278,9 +310,9 @@ sensor:
   #         {% elif 230.63 <= states('sensor.weather_wind_direction')|float <= 241.87 %}
   #            Southwest by west
   #         {% elif 241.88 <= states('sensor.weather_wind_direction')|float <= 253.12 %}
-  #            West-southwest 
+  #            West-southwest
   #         {% elif 253.13 <= states('sensor.weather_wind_direction')|float <= 264.37 %}
-  #            West by south 
+  #            West by south
   #         {% elif 264.38 <= states('sensor.weather_wind_direction')|float <= 275.62 %}
   #            West
   #         {% elif 275.63 <= states('sensor.weather_wind_direction')|float <= 286.87 %}
@@ -290,7 +322,7 @@ sensor:
   #         {% elif 298.13 <= states('sensor.weather_wind_direction')|float <= 309.37 %}
   #            Northwest by west
   #         {% elif 309.38 <= states('sensor.weather_wind_direction')|float <= 320.62 %}
-  #            Northwest 
+  #            Northwest
   #         {% elif 320.63 <= states('sensor.weather_wind_direction')|float <= 331.87 %}
   #            Northwest by north
   #         {% elif 331.88 <= states('sensor.weather_wind_direction')|float <= 343.12 %}
@@ -299,7 +331,7 @@ sensor:
   #            North by west
   #         {% endif %}
 
-  #     wind_compass: 
+  #     wind_compass:
   #       friendly_name: "Wind direction"
   #       value_template: '{{ states.sensor.weather_wind_direction.state }}'
   #       friendly_name_template: "Wind direction - {{ states.sensor.wind_compass_point.state }}"

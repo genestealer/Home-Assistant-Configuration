@@ -148,45 +148,64 @@ sensor:
     device_class: "temperature"
     state_class: "measurement"
 
+  - platform: dallas
+    address: 0x333C01F09571DC28
+    name: "Freezer Temperature Zone 3"
+    id: temperature3
+    accuracy_decimals: 3
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
+
+  - platform: dallas
+    address: 0xE43C01F095DFBB28
+    name: "Freezer Temperature Zone 4"
+    id: temperature4
+    accuracy_decimals: 3
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
 
 
-# For the font I used five by five licensed under CC BY 4.0 from dafont: https://www.dafont.com/de/fivebyfive.font
-font:
-  - file: "fonts/arial.ttf"
-    id: my_font1
-    size: 20
-  - file: "fonts/arial.ttf"
-    id: my_font2
-    size: 19
-  - file: "fonts/arial.ttf"
-    id: my_font3
-    size: 18
-i2c:
-  sda: GPIO4
-  scl: GPIO5
+# # For the font I used five by five licensed under CC BY 4.0 from dafont: https://www.dafont.com/de/fivebyfive.font
+# font:
+#   - file: "fonts/arial.ttf"
+#     id: my_font1
+#     size: 20
+#   - file: "fonts/arial.ttf"
+#     id: my_font2
+#     size: 19
+#   - file: "fonts/arial.ttf"
+#     id: my_font3
+#     size: 18
+# i2c:
+#   sda: GPIO4
+#   scl: GPIO5
   
-# https://esphome.io/components/display/index.html?highlight=printf
-# https://www.tutorialspoint.com/c_standard_library/c_function_printf.htm
-display:
-  - platform: ssd1306_i2c
-    model: "SSD1306 128x64"
-    # reset_pin: RST
-    address: 0x3C
-    id: my_display
-    pages:
-      - id: page1
-        lambda: |-
-          it.printf(0, 3, id(my_font1), "T1: %.3f °C", id(temperature1).state);
-          it.printf(0, 33, id(my_font1), "T2: %.3f °C", id(temperature2).state);
+# # https://esphome.io/components/display/index.html?highlight=printf
+# # https://www.tutorialspoint.com/c_standard_library/c_function_printf.htm
+# display:
+#   - platform: ssd1306_i2c
+#     model: "SSD1306 128x64"
+#     # reset_pin: RST
+#     address: 0x3C
+#     id: my_display
+#     pages:
+#       - id: page1
+#         lambda: |-
+#           it.printf(0, 3, id(my_font1), "T1: %.3f °C", id(temperature1).state);
+#           it.printf(0, 33, id(my_font1), "T2: %.3f °C", id(temperature2).state);
          
-      - id: page2
-        lambda: |-
-           it.printf(0, 3, id(my_font2), "Wifi: %.2f", id(wifi_signal_value).state);
-           it.printf(0, 33, id(my_font2), "%s", id(tcp_ip_address).state.c_str());
+#       - id: page2
+#         lambda: |-
+#           it.printf(0, 3, id(my_font2), "Wifi: %.2f", id(wifi_signal_value).state);
+#           it.printf(0, 33, id(my_font2), "%s", id(tcp_ip_address).state.c_str());
 
-# Cycle through pages on a timer
-interval:
-  - interval: 3s
-    then:
-      - display.page.show_next: my_display
-      - component.update: my_display   
+# # Cycle through pages on a timer
+# interval:
+#   - interval: 3s
+#     then:
+#       - display.page.show_next: my_display
+#       - component.update: my_display   

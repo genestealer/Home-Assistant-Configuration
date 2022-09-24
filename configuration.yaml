@@ -22,21 +22,18 @@ homeassistant:
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: Europe/London
+  currency: GBP
   # Customization file
   customize: !include customize.yaml
   #Unhide the push notifcation slider https://github.com/home-assistant/home-assistant/issues/16043
   auth_providers:
-   - type: homeassistant
-   # uncomment this to enable backwards compatible API password support
-   # - type: legacy_api_password
+    - type: homeassistant
+    # uncomment this to enable backwards compatible API password support
+    # - type: legacy_api_password
   # whitelist_external_dirs:
   #   - /www
   #   - /tmp
-  # packages: 
-  #   garden: !include_dir_merge_named packages/garden
   packages: !include_dir_named packages/
-  # packages: !include_dir_merge_named packages/
-
 
 ############################################################
 #
@@ -46,6 +43,7 @@ homeassistant:
 
 # Enables the frontend
 frontend:
+  themes: !include_dir_merge_named themes
 
 # https://github.com/thomasloven/hass-browser_mod
 browser_mod:
@@ -68,15 +66,12 @@ lovelace:
     #   url: /hacsfiles/config-template-card/config-template-card.js
     # - type: module
     #   url: /hacsfiles/lovelace-layout-card/layout-card.js
-    # - type: module 
+    # - type: module
     #   url: /hacsfiles/lovelace-state-switch/state-switch.js
     # - type: module
     #   url: /hacsfiles/lovelace-hui-element/hui-element.js
     # - type: module
     #   url: /hacsfiles/lovelace-time-picker-card/time-picker-card.js
-
-
-
 
     # - url: browser_mod.js
     #   type: js
@@ -107,7 +102,6 @@ lovelace:
     # - url: /local/community/stack-in-card/stack-in-card.js
     #   type: module
 
-    
     #=== FONTS
     - url: https://fonts.googleapis.com/css?family=Oswald
       type: css
@@ -118,7 +112,7 @@ lovelace:
     lovelace-garden: #https://github.com/kloggy/HA-Irrigation-Version2/
       mode: yaml
       title: Garden
-      icon: mdi:flower 
+      icon: mdi:flower
       show_in_sidebar: true
       filename: myirrigation.yaml
 # Enables configuration UI
@@ -131,7 +125,7 @@ cloud:
 
 # Enable web interface
 http:
-#  api_password: !secret http_password
+  #  api_password: !secret http_password
   server_port: 8123
   # SSL is now performed by reverse proxy
   #  ssl_certificate: !secret SSL_cert
@@ -141,14 +135,11 @@ http:
     - https://www.home-assistant.io
   use_x_forwarded_for: true
   trusted_proxies:
-    - 10.0.0.200      # Add the IP address of the proxy server
-    - 172.30.33.0/24  # You may also provide the subnet mask
+    - 10.0.0.200 # Add the IP address of the proxy server
+    - 172.30.33.0/24 # You may also provide the subnet mask
     # - 192.168.10.21/24 # IP Reverse_Proxy Nginx Proxy Manager
   ip_ban_enabled: true
   login_attempts_threshold: 20
-
-# Checks for available updates
-updater:
 
 # Discover some devices automatically
 discovery:
@@ -158,7 +149,7 @@ conversation:
 
 # Enables support for tracking state changes over time. (Cleared at startup)
 history:
-   exclude:
+  exclude:
     entities:
       - sensor.server_server_health
       # - sensor.pi_hole_ads_blocked_today
@@ -169,11 +160,9 @@ history:
       - sensor.unscaled_house_consumption_current
       - sensor.server_server_power_on_time
 
-
-
 # View all events in a logbook
 logbook:
-   exclude:
+  exclude:
     entities:
       - sensor.server_server_health
       # - sensor.pi_hole_ads_blocked_today
@@ -191,7 +180,6 @@ logbook:
       - sensor.adguard_parental_control_blocked
       - sensor.adguard_safe_browsing_blocked
       - sensor.adguard_safe_searches_enforced
-
 
 # Tracked history is kept for 12 days. (Not cleared at startup)
 recorder:
@@ -213,8 +201,7 @@ recorder:
       # - binary_sensor.p3364_l_0_vmd4_camera1profileany
       # - binary_sensor.p3364_l_0_vmd4_camera1profile1
       # - sensor.cpu_temperature
-    entity_globs:
-      input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+    entity_globs: input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
 
 # Enables a map showing the location of tracked devices
 map:
@@ -229,10 +216,8 @@ logger:
     urllib3.connectionpool: error
     homeassistant.components.recorder: fatal
     # axis: debug
-    # homeassistant.components.axis: debug 
+    # homeassistant.components.axis: debug
     homeassistant.components.rest: debug
-
-
 
 system_health:
 
@@ -273,20 +258,21 @@ notify:
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
 
-  - platform: pushover
-    name: Pushover Notify
-    api_key:  !secret pushover_api_key
-    user_key:  !secret pushover_user_key
+  # Sep 2022, swapped integration (which has yet to support more than one user key)
+  # - platform: pushover
+  #   name: Pushover Notify
+  #   api_key: !secret pushover_api_key
+  #   user_key: !secret pushover_user_key
+  # - platform: pushover
+  #   name: Pushover Notify Doorbell
+  #   api_key: !secret pushover_api_key_doorbell
+  #   user_key: !secret pushover_user_key
 
-  - platform: pushover
-    name: Pushover Notify Doorbell
-    api_key:  !secret pushover_api_key_doorbell
-    user_key:  !secret pushover_user_key
   # - name: Facebook Notify
   #   platform: facebook
   #   page_access_token: !secret FB_Key
 
-
+# Sep 2022, swapped to "Network UPS Tools" addon and integration.
 # APC UPS Network Infomation Server, which talks to the networked UPS via apcupsd daemon (outside of HASS, but on same system).
 apcupsd:
   host: a722577e-apcupsd-net
@@ -299,38 +285,35 @@ nest:
   client_secret: !secret nest_secret
 # climate:
 #   - platform: nest
-  # - platform: generic_thermostat
-  #   name: Bunny Shed Thermostat
-
+# - platform: generic_thermostat
+#   name: Bunny Shed Thermostat
 
 # Device trackers.
 device_tracker:
   # - platform: owntracks
   #   max_gps_accuracy: 250
 
-
   - platform: google_maps # Elements per day’ to a limit of 645.
     username: !secret google_maps_username
-  - platform: google_maps # Elements per day’ to a limit of 645.
-    username: !secret google_maps_username2
-
+  # - platform: google_maps # Elements per day’ to a limit of 645.
+  #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
 
 # Moved to integrations UI from Rev 0.112
-  # - platform: tile
-  #   username: !secret tile_username
-  #   password: !secret tile_password
+# - platform: tile
+#   username: !secret tile_username
+#   password: !secret tile_password
 
-    # password: !secret google_maps_password
-  # - platform: googlehome
-  #   host: !secret google_home_hub_ip
+# password: !secret google_maps_password
+# - platform: googlehome
+#   host: !secret google_home_hub_ip
 
-  # - platform: ping
-  #   hosts:
-  #     hostone: 192.168.1.16
-  # - platform: snmp
-  #   host: 192.168.1.1
-  #   community: public
-  #   baseoid: 1.3.6.1.2.1.2.2
+# - platform: ping
+#   hosts:
+#     hostone: 192.168.1.16
+# - platform: snmp
+#   host: 192.168.1.1
+#   community: public
+#   baseoid: 1.3.6.1.2.1.2.2
 
 # IFTT integration.
 # ifttt:
@@ -366,53 +349,46 @@ rflink:
     - light.btf_*
     - light.v2phoenix*
 
-
-#Ikea Tradfri ethernet gatway integration.
-tradfri:
-  host: !secret Ikea_Tradfri_IP
-  allow_tradfri_groups: true
-  # api_key: !secret Ikea_Tradfri_KEY
-
 # # Pi Hole integration sensor
 # pi_hole:
 #   host: !secret piHoleIPandPort
 
-# Amazon Alexa integration via emulated Philips hue.
-emulated_hue:
-  host_ip: !secret Local_Host
-  # listen_port: 8300
-  entities:
-    light.kitchen_under_counter_lights:
-      name: "Kitchen Lights"
+# # Amazon Alexa integration via emulated Philips hue.
+# emulated_hue:
+#   host_ip: !secret Local_Host
+#   # listen_port: 8300
+#   entities:
+#     light.kitchen_under_counter_lights:
+#       name: "Kitchen Lights"
 
 # Side panel frames, but only externally accessible URLs work.
-panel_iframe:
-  webmin1:
-    title: StormBreaker Webmin
-    icon: mdi:gauge
-    url: !secret panel_iframe_StormBreaker_Webmin_URL
-  downloads:
-    title: Downloads
-    icon: mdi:briefcase-download
-    url: !secret panel_iframe_Downloads_URL
-  sonarr:
-    title: Sonarr
-    icon: mdi:youtube-tv
-    url: !secret panel_iframe_Sonarr_URL
-  radarr:
-    title: Radaar
-    icon: mdi:filmstrip
-    url: !secret panel_iframe_Radarr_URL
-  subsonic:
-    title: Subsonic
-    icon: mdi:library-music
-    url: !secret panel_iframe_Subsonic_URL
-    # mdi:mdi-audiobook
-    # webmin2:
-    #   title: Thor Webmin
-    #   icon: mdi:gauge
-    #   url: !secret panel_iframe_Thor_Webmin_URL
-
+# No longer wish to use.
+# panel_iframe:
+#   webmin1:
+#     title: StormBreaker Webmin
+#     icon: mdi:gauge
+#     url: !secret panel_iframe_StormBreaker_Webmin_URL
+#   downloads:
+#     title: Downloads
+#     icon: mdi:briefcase-download
+#     url: !secret panel_iframe_Downloads_URL
+#   sonarr:
+#     title: Sonarr
+#     icon: mdi:youtube-tv
+#     url: !secret panel_iframe_Sonarr_URL
+#   radarr:
+#     title: Radaar
+#     icon: mdi:filmstrip
+#     url: !secret panel_iframe_Radarr_URL
+#   subsonic:
+#     title: Subsonic
+#     icon: mdi:library-music
+#     url: !secret panel_iframe_Subsonic_URL
+#     # mdi:mdi-audiobook
+#     # webmin2:
+#     #   title: Thor Webmin
+#     #   icon: mdi:gauge
+#     #   url: !secret panel_iframe_Thor_Webmin_URL
 
 # Google Assistant intergration.
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
@@ -429,7 +405,7 @@ google_assistant:
     - camera
     - script
     - scene
-    - sensor 
+    - sensor
     # - media_player
     # - climate
     # - group
@@ -444,10 +420,9 @@ google_assistant:
     # script.back_garden_irrigation_timer:
     #   expose: true
     # script.back_garden_lawn_irrigation_timer:
-    #   expose: true   
+    #   expose: true
     # climate.entryway:
     #   expose: false
-
 
     # group.all_automations:
     #   expose: false # Hide this to avoid telling Google Assistant to shut down everything, it disabling all automations.
@@ -497,9 +472,6 @@ google_assistant:
     switch.adguard_safe_search:
       expose: false
 
-
-
-      
   # Not needed since release 0.80
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token
@@ -517,13 +489,6 @@ google_assistant:
 #       # - sound
 #      trigger_time: 0
 
-# Internet Speed Test
-speedtestdotnet:
-  monitored_conditions:
-   - ping
-   - download
-   - upload
-
 # Number counter
 counter:
   tor_db_disconnect_counter:
@@ -533,20 +498,21 @@ counter:
 
 # Proxy video live streams through Home Assistant
 stream:
-
+  # ll_hls: true
+  # part_duration: 1.5
+  # segment_duration: 10
 
 weather:
   - platform: darksky
     api_key: !secret dark_sky_key
     mode: daily
 
-
 # utility_meter:
 #   energy_cumulative_month:
 #     source: sensor.esp_doorbell_elec_mon_house_power_meter
 #     cycle: monthly
 #     # tariffs:
-#     #   - 
+#     #   -
 #   energy_cumulative_daily:
 #     source: sensor.esp_doorbell_elec_mon_house_power_meter
 #     cycle: daily
@@ -580,7 +546,6 @@ cover: !include_dir_merge_list includes/cover
 camera: !include_dir_merge_list includes/cameras
 template: !include_dir_merge_list includes/template
 
-
 # Merge named dir
 # script: !include_dir_merge_named includes/scripts
 input_boolean: !include_dir_merge_named includes/input_boolean
@@ -588,17 +553,16 @@ input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
 rest_command: !include_dir_merge_named includes/rest_commands
 
-
 # Merge Named
 group: !include includes/groups.yaml
 
+# https://www.home-assistant.io/integrations/alert/
+alert: !include includes/alert.yaml
 
 # Plex Sensor
 # plex:
 #   host: !secret plex_server_host
 #   token: !secret plex_server_key
-
-
 
 # weblink:
 #   entities:
@@ -621,8 +585,6 @@ group: !include includes/groups.yaml
 #     - name: Server Glances
 #       url: !secret server_glancesIP
 #       icon: mdi:format-list-bulleted
-
-
 
 # #NOT WORKING!
 # alexa:
@@ -652,28 +614,27 @@ group: !include includes/groups.yaml
 #         title: Sample title
 #         content: Some more content
 
-  #       alexa:
-  # intents:
-  #   LocateIntent:
-  #     action:
-  #       service: notify.notify
-  #       data_template:
-  #         message: The location of {{ User }} has been queried via Alexa.
-  #     speech:
-  #       type: plaintext
-  #       text: >
-  #         {%- for state in states.device_tracker -%}
-  #           {%- if state.name.lower() == User.lower() -%}
-  #             {{ state.name }} is at {{ state.state }}
-  #           {%- endif -%}
-  #         {%- else -%}
-  #           I am sorry, I do not know where {{ User }} is.
-  #         {%- endfor -%}
-  #     card:
-  #       type: simple
-  #       title: Sample title
-  #       content: Some more content
-
+#       alexa:
+# intents:
+#   LocateIntent:
+#     action:
+#       service: notify.notify
+#       data_template:
+#         message: The location of {{ User }} has been queried via Alexa.
+#     speech:
+#       type: plaintext
+#       text: >
+#         {%- for state in states.device_tracker -%}
+#           {%- if state.name.lower() == User.lower() -%}
+#             {{ state.name }} is at {{ state.state }}
+#           {%- endif -%}
+#         {%- else -%}
+#           I am sorry, I do not know where {{ User }} is.
+#         {%- endfor -%}
+#     card:
+#       type: simple
+#       title: Sample title
+#       content: Some more content
 
 #
 # #NOT WORKING!
@@ -687,7 +648,6 @@ group: !include includes/groups.yaml
 #       #   data_template:
 #       #     message: Api.ai has send a request
 
-
 # https://github.com/kloggy/HA-Irrigation-Version2/blob/master/prerequisites.yaml
 input_text:
   notifications_user1_name:
@@ -696,3 +656,8 @@ input_text:
   notifications_user2_name:
     min: 0
     max: 20
+
+nextcloud:
+  url: !secret nextcloud_url
+  username: nextcloud_username
+  password: nextcloud_password

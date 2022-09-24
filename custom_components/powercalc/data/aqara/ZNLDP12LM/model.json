@@ -1,5 +1,5 @@
 {
-    "measure_description": "Measured with utils/measure script",
+    "measure_description": "Measured with utils/measure script ",
     "measure_device": "Shelly Plug E",
     "measure_method": "script",
     "measure_settings": {
@@ -8,7 +8,7 @@
         "VERSION": "v0.10.4"
     },
     "name": "Aqara LED light bulb (tunable white)",
-    "standby_power": 0.05,
+    "standby_power": 0.41,
     "supported_modes": [
         "lut"
     ]

@@ -1,0 +1,559 @@
+# #***************************************************
+# #   BusyLight Presence Indicator
+# #     Light Component
+# #   Richard Huish 2020
+# #   I built so my family can know when I'm busy and working in my Home Office.
+# #   ESP8266 based with local home-assistant.io GUI with controller with physical buttons and mini display
+# #   See busylight_controller.yaml for Controller Component
+# #   ----------
+# #   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
+# #   ----------
+# #   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
+# #   API: Locally hosted native API component https://esphome.io/components/api.html
+# #   OTA updates: https://esphome.io/components/ota.html
+# #   ----------
+# #   The circuit:
+# #     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
+# #     Breadboard-friendly RGB Smart NeoPixel https://www.adafruit.com/product/1312
+# #     4-channel I2C-safe Bi-directional Logic Level Converter - BSS138 https://www.adafruit.com/product/757
+# #     Ping pong ball to diffuse 
+# #   Inputs:
+# #     BusyLight Presence Indicator Controller via Home Assistant
+# #   Outputs:
+# #     NeoPixel, via Logic Level Converter as NeoPixel needs 5V and ESP8266 is 3.3V.
+# ##############################################################
+# # Config Header for Device
+# ##############################################################
+# substitutions:
+#   # Used by ESP Home
+#   device_name: light-stack-demo-3
+#   # Used by ESP Home
+#   device_description: "Stack Light 3"
+#   # Prefix used by Wifi IP, RSSI etc
+#   upper_devicename: "Stack Light 3"
+#   # Prefix used by main Inputs & Outputs
+#   short_devicename: "Stack Light 3"
+#   ip: 192.168.2.46
+#   pass: hxN#^fPPv5ZRy%7l
+#   # status_led: LED_RED
+#   board: esp32-poe-iso
+  
+# ##############################################################
+# # Shared code from all my projects
+# ##############################################################
+# esphome:
+#   name: ${device_name}
+#   comment: ${device_description}
+#   on_boot:
+#     then:
+#     # Ensure the LED's start turned off
+#       - delay: 250ms
+#       - light.turn_off: outer_ring
+#       - light.turn_off: centre_ring
+      
+      
+# esp32:
+#   board: $board
+#   framework:
+#     type: arduino
+
+
+# logger: # Enable logging
+
+# api: # Enable Home Assistant API
+#   password: $pass
+
+# ota: # Enable over the air updates
+#   password: $pass
+#   safe_mode: true
+#   reboot_timeout: 10min
+#   num_attempts: 5
+
+# # Status LED for connection
+# # status_led:
+# #   pin:
+# #     number: ${status_led}
+
+# web_server:
+#   port: 80
+#   auth:
+#     username: admin
+#     password: engineer
+
+
+
+# globals:
+#   - id: first_run_global_bool
+#     type: bool 
+#     restore_value: no
+#     initial_value: 'true'
+
+# binary_sensor:
+#   # Device avaliablity
+#   - platform: status  
+#     name: ${upper_devicename} Status
+#     device_class: connectivity
+#     id: api_available
+#     # on_state:
+#     #   then:
+#     #     - if:
+#     #         condition:
+#     #           - api.connected:
+#     #         then:
+#     #           - logger.log: "API connection available"
+#     #           - light.turn_on:
+#     #               id: centre_ring
+#     #               brightness: 50%
+#     #               effect: "addressable_rainbow"
+#     #         else:
+#     #           - logger.log: "API connection NOT available"
+#     #           - light.turn_on:
+#     #               id: centre_ring
+#     #               brightness: 50%
+#     #               red: 100%
+#     #               green: 0%
+#     #               blue: 0%
+    
+#     # on_state:
+#     #   then:
+#     #     - if:
+#     #         condition:
+#     #           lambda: 'return id(api_available).state;'
+#     #         then:
+#     #           - logger.log: "API connection available"
+#     #           - light.turn_on:
+#     #               id: centre_ring
+#     #               brightness: 50%
+#     #               effect: "addressable_rainbow"
+#     #         else:
+#     #           - logger.log: "API connection NOT available"
+#     #           - light.turn_on:
+#     #               id: centre_ring
+#     #               brightness: 50%
+#     #               red: 100%
+#     #               green: 0%
+#     #               blue: 0%
+
+
+#     # GPIO34 is the on board button, already fitted with a with a 10K pull-up to 3.3V
+#   - platform: gpio
+#     pin: GPIO34
+#     name: on_board_button 
+#     filters:
+#       - delayed_on: 10ms
+    
+
+# sensor:
+#   - platform: adc
+#     pin: GPIO39
+#     name: "PSU Voltage"
+#     update_interval: 60s
+    
+
+# ethernet:
+#   type: LAN8720
+#   mdc_pin: GPIO23
+#   mdio_pin: GPIO18
+#   clk_mode: GPIO17_OUT
+#   phy_addr: 0
+#   power_pin: GPIO12
+#   manual_ip:
+#     static_ip: $ip
+#     gateway: 192.168.2.1
+#     subnet: 255.255.255.0
+
+    
+# # wifi:
+# #   ssid: !secret IoT_VLAN_SSID
+# #   password: !secret IoT_VLAN_SSID_Key
+# #   manual_ip:
+# #     static_ip: $ip
+# #     gateway: 192.168.2.1
+# #     subnet: 255.255.255.0
+
+# button:
+#   - platform: template
+#     name: Board Button
+#     id: on_board_button
+
+#     # Optional variables:
+#     # icon: "mdi:emoticon-outline"
+#     # on_press:
+#     #   - logger.log: "Button pressed"
+      
+# light:
+
+
+    
+#   - platform: partition
+#     name: ${short_devicename} "Status Light Outer Ring"
+#     id: outer_ring
+#     segments:
+#       - id: lighstack1
+#         from: 1
+#         to: 6
+#     effects:
+#       - addressable_scan:
+#       - addressable_color_wipe:
+#       - addressable_color_wipe:
+#           name: Red Wipe 1 1
+#           colors:
+#             - red: 100%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 1
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 1
+#           add_led_interval: 100ms
+#           reverse: false
+#       - addressable_color_wipe:
+#           name: Red Wipe 1 1 slow
+#           colors:
+#             - red: 100%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 1
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 1
+#           add_led_interval: 300ms
+#           reverse: false
+#       - addressable_color_wipe:
+#           name: Red Wipe 2 1
+#           colors:
+#             - red: 100%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 2
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 1
+#           add_led_interval: 100ms
+#           reverse: false
+#       - addressable_color_wipe:
+#           name: Red Wipe 3 1
+#           colors:
+#             - red: 100%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 3
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 1
+#           add_led_interval: 100ms
+#           reverse: false
+#       - addressable_color_wipe:
+#           name: Red Wipe 3 3
+#           colors:
+#             - red: 100%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 3
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               white: 0%
+#               num_leds: 3
+#           add_led_interval: 100ms
+#           reverse: false
+#       - addressable_rainbow:
+#       - addressable_rainbow:
+#           name: Fast Rainbow 1
+#           speed: 20
+#           width: 1
+#       - addressable_rainbow:
+#           name: Fast Rainbow 2
+#           speed: 20
+#           width: 10
+          
+#           # nicest at 100%
+#       - addressable_rainbow:
+#           name: Fast Rainbow 3
+#           speed: 20
+#           width: 20   
+          
+#           # nicest at 50%
+#       - addressable_rainbow:
+#           name: Fast Rainbow 4
+#           speed: 20
+#           width: 30          
+#       - addressable_rainbow:
+#           name: Fast Rainbow 5
+#           speed: 20
+#           width: 40  
+#       - addressable_rainbow:
+#           name: Fast Rainbow 6
+#           speed: 20
+#           width: 50  
+#       - addressable_rainbow:
+#           name: Fast Rainbow 7
+#           speed: 40
+#           width: 1
+#       - addressable_rainbow:
+#           name: Fast Rainbow 8
+#           speed: 40
+#           width: 10
+#       - addressable_rainbow:
+#           name: Fast Rainbow 9
+#           speed: 40
+#           width: 20  
+#       - addressable_rainbow:
+#           name: Fast Rainbow 10
+#           speed: 40
+#           width: 30
+#       - addressable_rainbow:
+#           name: Fast Rainbow 11
+#           speed: 40
+#           width: 40
+#       - addressable_rainbow:
+#           name: Fast Rainbow 12
+#           speed: 40
+#           width: 50
+#       - addressable_rainbow:
+#           name: Fast Rainbow 13
+#           speed: 40
+#           width: 60          
+          
+
+
+#   - platform: partition
+#     name: ${short_devicename} "Status Light Centre"
+#     id: centre_ring
+#     segments:
+  
+#       - id: lighstack1
+#         from: 0
+#         to: 0
+#     effects:
+#       - addressable_rainbow
+#       - addressable_lambda:
+#           name: "Flash"
+#           update_interval: 200ms
+#           lambda: |-
+#             it[0] = Color::random_color();
+  
+  
+  
+  
+  
+            
+#   - platform: neopixelbus
+#     # method: esp32_i2s
+#     type: GRBW
+#     pin: GPIO1
+#     num_leds: 7
+#     name: ${short_devicename} "Stack Light 1"
+#     id: lighstack1
+#     variant: 800KBPS
+#     effects:
+#       - addressable_rainbow:
+#       - addressable_rainbow:
+#           name: Rainbow Effect With Custom Values
+#           speed: 10
+#           width: 50
+#       - addressable_color_wipe:
+#       - addressable_color_wipe:
+#           name: Color Wipe Effect With Custom Values
+#           colors:
+#             - red: 100%
+#               green: 100%
+#               blue: 100%
+#               num_leds: 1
+#             - red: 0%
+#               green: 0%
+#               blue: 0%
+#               num_leds: 1
+#           add_led_interval: 100ms
+#           reverse: false
+#       - addressable_scan:
+#       - addressable_scan:
+#           name: Scan Effect With Custom Values
+#           move_interval: 40ms
+#           scan_width: 1
+#       - addressable_twinkle:
+#       - addressable_twinkle:
+#           name: Twinkle Effect With Custom Values
+#           twinkle_probability: 5%
+#           progress_interval: 4ms
+#       - addressable_random_twinkle:
+#       - addressable_random_twinkle:
+#           name: Random Twinkle Effect With Custom Values
+#           twinkle_probability: 5%
+#           progress_interval: 32ms
+#       - addressable_fireworks:
+#       - addressable_fireworks:
+#           name: Fireworks Effect With Custom Values
+#           update_interval: 32ms
+#           spark_probability: 10%
+#           use_random_color: false
+#           fade_out_rate: 120
+#       - addressable_flicker:
+#       - addressable_flicker:
+#           name: Flicker Effect With Custom Values
+#           update_interval: 16ms
+#           intensity: 5%
+
+#       - lambda:
+#           name: My Custom Effect
+#           update_interval: 1s
+#           lambda: |-
+#             static int state = 0;
+#             auto call = id(lighstack1).turn_on();
+#             // Transition of 1000ms = 1s
+#             call.set_transition_length(1000);
+#             if (state == 0) {
+#               call.set_rgb(1.0, 1.0, 1.0);
+#             } else if (state == 1) {
+#               call.set_rgb(1.0, 0.0, 1.0);
+#             } else if (state == 2) {
+#               call.set_rgb(0.0, 0.0, 1.0);
+#             } else {
+#               call.set_rgb(1.0, 0.0, 0.0);
+#             }
+#             call.perform();
+#             state += 1;
+#             if (state == 4)
+#               state = 0;
+              
+              
+#       # - addressable_lambda:
+#       #     name: "My Custom Effect2"
+#       #     update_interval: 16ms
+#       #     lambda: |-
+#       #       // it.size() - Number of LEDs
+#       #       // it[num] - Access the LED at index num.
+#       #       // Set the LED at num to the given r, g, b values
+#       #       // it[num] = Color(r, g, b);
+#       #       // Get the color at index num (Color instance)
+#       #       // it[num].get();
+  
+#       #       // Example: Simple color wipe
+#       #       for (int i = it.size() - 1; i > 0; i--) {
+#       #         it[i] = it[i - 1].get();
+#       #       }
+#       #       it[0] = Color::random_color();
+  
+#       #       // Bonus: use .range() and .all() to set many LEDs without having to write a loop.
+#       #       it.range(0, 50) = Color::BLACK;
+#       #       it.all().fade_to_black(10);    
+      
+
+
+
+#       - addressable_lambda:
+#           name: "My Custom Effect3"
+#           update_interval: 16ms
+#           lambda: |-
+#             // Static variables keep their value even when
+#             // stopping and starting the effect again
+#             static uint16_t progress = 0;
+  
+#             // normal variables lost their value after each
+#             // execution - basically after each update_interval
+#             uint16_t changes = 0;
+  
+#             // To reset static when stopping and starting the effect
+#             // again you can use the initial_run variables
+#             if (initial_run) {
+#               progress = 0;
+#               it.all() = Color::BLACK;
+#               // optionally do a return so nothing happens until the next update_interval
+#               return;
+#             }              
+            
+# # interval:
+# #   - interval: 5 seconds
+# #     then:
+# #       - logger.log: "script run"
+# #       - if:
+# #           condition:
+# #             - lambda: 'return id(api_available).state;'
+# #           then:
+# #             - logger.log: "API connection available"
+# #             - light.turn_on:
+# #                 id: centre_ring
+# #                 brightness: 50%
+# #                 # effect: "addressable_rainbow"
+  
+# #           else:
+# #             - logger.log: "API connection NOT available"
+# #             - light.turn_off:
+# #                 id: centre_ring     
+
+# interval:
+#   - interval: 5 seconds
+#     then:
+#       - if:
+#           condition:
+#             first_run_global_bool == true
+#           then:
+#             - light.turn_on:
+#                   id: outer_ring
+#                   brightness: 100%
+#                   white: 0%
+#                   effect: "addressable_rainbow"
+#             - delay: 10s
+#             - first_run_global_bool = false
+          
+#       - logger.log: "script run"
+#       - delay: 5s
+      
+#       # Show script is running
+#       - light.turn_off:
+#           id: centre_ring  
+#       - delay: 1s
+      
+#       # Test Conenction
+#       - if:
+#           condition:
+#               api.connected:
+#             # - lambda: 'return id(api_available).state;'
+#           then:
+#           - logger.log: "API connection available"
+           
+#           # Turn on centre light
+#           - light.turn_on:
+#                 id: centre_ring
+#                 brightness: 100%
+#                 red: 54%
+#                 green: 54%
+#                 blue: 100%
+#                 white: 0
+#                 # effect: "addressable_rainbow"
+        
+#           else:
+#             - logger.log: "API connection NOT available"
+            
+#             # Pulse lights
+#             - light.turn_on:
+#                 id: outer_ring
+#                 brightness: 100%
+#                 red: 100%
+#                 green: 100%
+#                 blue: 100%
+#                 white: 100%
+#             - light.turn_on:
+#                 id: centre_ring
+#                 brightness: 100%
+#                 red: 100%
+#                 green: 20%
+#                 blue: 20%
+#                 white: 20%                
+#             - delay: 1s
+#             - light.turn_off: outer_ring
+
+

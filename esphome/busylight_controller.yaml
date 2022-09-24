@@ -46,7 +46,7 @@ substitutions:
   status_led: LED_RED
   platform: ESP8266
   board: huzzah
-  
+
 ##############################################################
 # Shared code from all my projects
 ##############################################################  
@@ -56,7 +56,7 @@ esphome:
   comment: ${device_description}
   platform: ${platform}
   board: ${board}
-
+  
   # on_boot:
   #   priority: -100
   #   then:

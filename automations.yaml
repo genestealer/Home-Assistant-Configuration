@@ -334,13 +334,13 @@
   - data_template:
       cache: false
       entity_id: media_player.ground_floor
-      message: "Welcome home Richard. {% if is_state('person.lucy', 'home')  %} Lucy\
-        \ is also at home and needs cuddles! {%- else -%}\n    Lucy is away at {{state_attr('device_tracker.google_maps_114635444798949098363',\
-        \ 'address')}}.\n {%- endif %}\n    Outside {{states('sensor.dark_sky_temperature')|\
-        \ round(0)}}C {{states('sensor.dark_sky_humidity')| round(0) }}% Inside {{states('sensor.entryway_thermostat_temperature')|\
-        \ round(0)}}C \n{{states('sensor.entryway_thermostat_humidity')| round(0)}}%\
-        \ {% if is_state('climate.entryway', 'heat') %} Heating on and set to {{state_attr('climate.entryway',\
-        \ 'temperature')| round(0) }}°C\n{%- endif %}\n"
+      message: "Welcome home Richard. {% if is_state('person.lucy', 'home')  %} Lucy
+        is also at home and needs cuddles! {%- else -%}\n    Lucy is away at {{state_attr('device_tracker.google_maps_114635444798949098363',
+        'address')}}.\n {%- endif %}\n    Outside {{states('sensor.dark_sky_temperature')|
+        round(0)}}C {{states('sensor.dark_sky_humidity')| round(0) }}% Inside {{states('sensor.entryway_thermostat_temperature')|
+        round(0)}}C \n{{states('sensor.entryway_thermostat_humidity')| round(0)}}%
+        {% if is_state('climate.entryway', 'heat') %} Heating on and set to {{state_attr('climate.entryway',
+        'temperature')| round(0) }}°C\n{%- endif %}\n"
     service: tts.google_translate_say
 - id: '1576601014597'
   alias: Plug-in Air Freshener - On-Off Automation
@@ -446,11 +446,11 @@
   - data_template:
       cache: false
       entity_id: media_player.ground_floor
-      message: "Welcome home Lucy. {% if is_state(\"person.richard\", \"home\")  %}\
-        \ Richard is also at home, please see him for cuddles! {%- else -%}\n    Richard\
-        \ is currently {{states('person.richard')}}, at\n{{states('sensor.richard_street_location')}}.\
-        \ {%- endif %} The heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',\
-        \ 'temperature')| round(0) }}°C\n"
+      message: "Welcome home Lucy. {% if is_state(\"person.richard\", \"home\")  %}
+        Richard is also at home, please see him for cuddles! {%- else -%}\n    Richard
+        is currently {{states('person.richard')}}, at\n{{states('sensor.richard_street_location')}}.
+        {%- endif %} The heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',
+        'temperature')| round(0) }}°C\n"
     service: tts.google_translate_say
 - id: '1576602219341'
   alias: Keep Nest thermostat aware of our presence
@@ -512,7 +512,7 @@
       data:
         actions:
         - action: close_door
-          title: 🚪CLOSE DOOR 🐔
+          title: "\U0001F6AACLOSE DOOR \U0001F414"
   mode: single
 - id: '1581770041173'
   alias: 'Notify: Electricity supply voltage is HIGH'
@@ -620,7 +620,7 @@
       title: Possible DDOS Attack from inside network
     service: notify.google_cloud_notify
 - id: '1581123123827'
-  alias: Simulate presence
+  alias: Simulate Presence Lights
   description: Automation Simulate Presence / Occupancy Simulation
   trigger:
   - entity_id: person.richard
@@ -725,9 +725,9 @@
   condition: []
   action:
   - data:
-      message: Ding Dong! Someone is at the door. Get the biohazard suit out!
-      title: Doorbell Alert☣️
-    service: notify.pushover_notify_doorbell
+      message: Ding Dong! Someone is at the door.
+      title: Doorbell Alert
+    service: notify.pushover_notify
   - data:
       filename: /config/www/tmp/front_door.jpg
     service: camera.snapshot
@@ -735,9 +735,9 @@
   - data:
       data:
         attachment: /config/www/tmp/front_door.jpg
-      message: Photo of the infectious!
+      message: Photo
       title: Doorbell CCTV Photo
-    service: notify.pushover_notify_doorbell
+    service: notify.pushover_notify
   mode: single
 - id: '1587600361094'
   alias: Busylight Controller Away Button Pressed
@@ -801,7 +801,7 @@
     service: tts.google_translate_say
   mode: single
 - id: '1592498327466'
-  alias: House Doorbell Button Local Notify
+  alias: House Doorbell Button Local Notify (OLD)
   description: CCTV needs to have anonymous viewer enabled or I need to pass the username
     in the media_content_id. Note, during testing you need to turn off the media_player
     device after each test, else is will not show the video again.
@@ -855,6 +855,14 @@
       - media_player.bedroom_display_gen2
       - media_player.living_room_display
       - media_player.dining_room_display
+    data: {}
+  - data:
+      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+      media_content_type: image/jpg
+    service: media_player.play_media
+    target:
+      entity_id:
+      - media_player.office_display
   mode: single
 - id: '1601037277352'
   alias: Proximity/Perimeter Warning System - Primary and Secondary Zone Failure
@@ -927,34 +935,39 @@
   mode: single
 - id: '1601317646616'
   alias: Front Lawn Anti Cat Defences
-  description: ''
+  description: FLAD
   trigger:
   - type: motion
     platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
+    entity_id: binary_sensor.drive_high_16_vmd4_profile_2
     domain: binary_sensor
   condition:
   - condition: time
-    after: '16:00'
-    before: 09:00
+    after: input_datetime.fld_active_start
+    before: input_datetime.fld_active_till
   - type: is_no_motion
     condition: device
     device_id: ed137229065c11eb8030a1dacd09fb94
     entity_id: binary_sensor.p3224_lv_0_vmd4_camera1profile2
     domain: binary_sensor
+  - condition: device
+    type: is_off
+    device_id: 68c0780a08a2a488fafcf891c0c971bf
+    entity_id: light.outside_1_up
+    domain: light
   action:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 3
-      milliseconds: 0
+      seconds: 0
+      milliseconds: 10
   - service: switch.turn_on
     entity_id: switch.front_garden_lawn_irrigation_valve
   - delay:
       hours: 0
       minutes: 0
-      seconds: 10
+      seconds: 6
       milliseconds: 0
   - service: switch.turn_off
     entity_id: switch.front_garden_lawn_irrigation_valve
@@ -963,32 +976,7 @@
       minutes: 10
       seconds: 0
       milliseconds: 0
-  mode: single
-- id: '1601593330216'
-  alias: House Doorbell Button Local Notify (Duplicate)
-  description: 'CCTV needs to have anonymous viewer enabled or I need to pass the
-    username in the media_content_id:'
-  trigger: []
-  condition: []
-  action:
-  - service: camera.play_stream
-    data:
-      media_player: media_player.office_display
-    entity_id: camera.front_door_p3364_l
-  mode: single
-- id: '1601593900895'
-  alias: House Doorbell Button Local Notify (Duplicate) (Duplicate)
-  description: 'CCTV needs to have anonymous viewer enabled or I need to pass the
-    username in the media_content_id:'
-  trigger: []
-  condition: []
-  action:
-  - data:
-      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
-      media_content_type: image/jpg
-    entity_id: media_player.kitchen_display
-    service: media_player.play_media
-  mode: single
+  mode: restart
 - id: '1607604378569'
   alias: AutoHotKey - Webhook Driven - Busy Light - Process Presence Incoming Webhook
   description: 'If the automation is not restarted within 6 minutes due to a new incoming
@@ -1029,8 +1017,8 @@
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_1
           - light.busy_light_2
+          - light.busy_light_1
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
@@ -1043,8 +1031,36 @@
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_1
           - light.busy_light_2
+          - light.busy_light_1
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: On The Phone
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: orange
+          transition: 3
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.busy_light_2
+          - light.busy_light_1
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: In A Meeting
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: orange
+          transition: 3
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.busy_light_2
+          - light.busy_light_1
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
@@ -1057,8 +1073,36 @@
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_1
           - light.busy_light_2
+          - light.busy_light_1
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: Focusing
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: blueviolet
+          transition: 3
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.busy_light_2
+          - light.busy_light_1
+    - conditions:
+      - condition: state
+        entity_id: input_text.autohotkey1
+        state: Presenting
+      sequence:
+      - service: light.turn_on
+        data:
+          color_name: red
+          transition: 3
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.busy_light_2
+          - light.busy_light_1
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
@@ -1067,8 +1111,8 @@
       - service: light.turn_off
         target:
           entity_id:
-          - light.busy_light_1
           - light.busy_light_2
+          - light.busy_light_1
         data:
           transition: 3
     default:
@@ -1077,8 +1121,8 @@
         transition: 3
       target:
         entity_id:
-        - light.busy_light_1
         - light.busy_light_2
+        - light.busy_light_1
   mode: restart
 - id: '1608749551791'
   alias: Motion-activated Light [Blueprint]
@@ -1756,10 +1800,11 @@
     path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
     input:
       light_entity: light.richard_bedside_bed
-      timestamp_sensor: sensor.pixel_4_app_next_alarm
+      timestamp_sensor: sensor.rich_mob_app_next_alarm
       manual_time: 09:00:00
       check_entity: person.richard
-      sunrise_duration: 20
+      sunrise_duration: 15
+      start_brightness: 3
 - id: '1634179399421'
   alias: Notify when Lucy leaves her pump at home
   description: ''
@@ -1772,33 +1817,36 @@
       hours: 0
       minutes: 5
       seconds: 0
-      milliseconds: 0
   condition:
   - condition: zone
     entity_id: device_tracker.insulin_pump
     zone: zone.home
   action:
-  - service: notify.mobile_app_pixel_3_app
+  - service: notify.mobile_app_rich_mob_app
     data:
-      message: sweetie you left your pump at home
-      title: Insulin Pump
+      message: Lucy Pump at Home!
+  - service: notify.mobile_app_lucy_app
+    data:
+      message: Lucy Pump at Home!
   mode: single
 - id: '1635187432504'
   alias: Outside Lights Motion Slow Fade
-  description: 's '
+  description: Main Lights Profile
   trigger:
   - type: motion
     platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile3
+    entity_id: binary_sensor.drive_high_16_vmd4_profile_3
     domain: binary_sensor
   condition:
   - condition: or
     conditions:
     - condition: sun
       after: sunset
+      after_offset: +00:30:00
     - condition: sun
       before: sunrise
+      before_offset: -00:30:00
   action:
   - choose:
     - conditions:
@@ -1944,7 +1992,7 @@
     - delay:
         hours: 0
         minutes: 0
-        seconds: 10
+        seconds: 60
         milliseconds: 0
     - service: light.turn_on
       target:
@@ -1996,6 +2044,7 @@
       - light.outside_4_up
       - light.outside_4_down
       - light.outside_5_down
+    data: {}
   - delay:
       hours: 0
       minutes: 0
@@ -2387,3 +2436,524 @@
           - light.outside_2_down
     default: []
   mode: single
+- id: '1648768380853'
+  alias: Outside Lights Motion Driveway Long
+  description: Activate Door Light from distance, will not run if other automation
+    is running (hopefully), Will not run if the lights are already on (if the lights
+    have already been triggered from another automation)
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 99689212065c11ebbd2ecbef1587dfe1
+    entity_id: binary_sensor.drive_high_16_vmd4_profile_1
+    domain: binary_sensor
+  condition:
+  - condition: and
+    conditions:
+    - condition: or
+      conditions:
+      - condition: sun
+        after: sunset
+        after_offset: +00:30:00
+      - condition: sun
+        before: sunrise
+        before_offset: -00:30:00
+    - condition: device
+      type: is_off
+      device_id: 68c0780a08a2a488fafcf891c0c971bf
+      entity_id: light.outside_1_up
+      domain: light
+  action:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.outside_1_down
+    data:
+      brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+        | int(0) }}'
+  - delay:
+      minutes: '{{ states(''input_number.outside_lights_early_night_time_on_minutes'')
+        | int(0) }}'
+  - service: light.turn_off
+    data:
+      transition: 10
+    target:
+      entity_id: light.outside_1_down
+  mode: restart
+- id: '1652208601188'
+  alias: House Doorbell Button Local Notify (Duplicate)
+  description: Update CCTV no longer needs to have anonymous viewer enabled, as its
+    using the local media-source. ...CCTV needs to have anonymous viewer enabled or
+    I need to pass the username in the media_content_id. Note, during testing you
+    need to turn off the media_player device after each test, else is will not show
+    the video again.
+  trigger:
+  - device_id: b03ab12c707340e8849888171a79caed
+    domain: binary_sensor
+    entity_id: binary_sensor.doorbell_button
+    platform: device
+    type: turned_on
+  condition:
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
+  action:
+  - parallel:
+    - service: media_player.play_media
+      target:
+        entity_id:
+        - media_player.kitchen_display
+        - media_player.office_display
+        - media_player.bedroom_display_gen2
+        - media_player.living_room_display
+        - media_player.dining_room_display
+      data:
+        media_content_id: media-source://camera/camera.front_door_11
+        media_content_type: application/vnd.apple.mpegurl
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.dining_room_display
+      data:
+        media_content_id: media-source://camera/camera.drive_high_16
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: P3364-L 0
+        thumbnail: /api/camera_proxy/camera.drive_high_16
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
+    - service: tts.google_translate_say
+      data:
+        message: Ding! Dong! Someone is at the door
+        entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
+        cache: true
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  - service: media_player.media_stop
+    target:
+      entity_id:
+      - media_player.kitchen_display
+      - media_player.office_display
+      - media_player.bedroom_display_gen2
+      - media_player.living_room_display
+      - media_player.dining_room_display
+    data: {}
+  mode: single
+- id: '1652210144322'
+  alias: House Doorbell Button Local Notify (Improved)
+  description: CCTV needs to have anonymous viewer enabled or I need to pass the username
+    in the media_content_id. Note, during testing you need to turn off the media_player
+    device after each test, else is will not show the video again. (local media-source
+    is 30 seconds behind!)
+  trigger:
+  - device_id: b03ab12c707340e8849888171a79caed
+    domain: binary_sensor
+    entity_id: binary_sensor.doorbell_button
+    platform: device
+    type: turned_on
+  condition:
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
+  action:
+  - parallel:
+    - service: media_player.play_media
+      data:
+        media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+        media_content_type: image/jpg
+      target:
+        entity_id:
+        - media_player.office_display
+        - media_player.living_room_display
+        - media_player.kitchen_display
+    - service: media_player.play_media
+      data:
+        media_content_id: media-source://camera/camera.front_door_11
+        media_content_type: application/vnd.apple.mpegurl
+      target:
+        entity_id:
+        - media_player.office_display
+        - media_player.living_room_display
+        - media_player.kitchen_display
+      enabled: false
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.dining_room_display
+      data:
+        media_content_id: media-source://camera/camera.drive_high_16
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: P3364-L 0
+        thumbnail: /api/camera_proxy/camera.drive_high_16
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
+    - service: tts.google_translate_say
+      data:
+        message: Ding! Dong! Someone is at the door
+        entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
+        cache: true
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id:
+      - media_player.office_display
+      - media_player.living_room_display
+      - media_player.kitchen_display
+      - media_player.dining_room_display
+  mode: single
+- id: '1655412239062'
+  alias: Chickens Warning Alert
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.chicken_water
+    below: input_number.chicken_water_low_level_warning
+  - platform: numeric_state
+    entity_id: sensor.chicken_food
+    below: input_number.chicken_food_low_level_warning
+  condition: []
+  action:
+  - service: persistent_notification.dismiss
+    data: {}
+  mode: single
+- id: '1658535783719'
+  alias: 'Downstairs Lights Motion '
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
+    entity_id: binary_sensor.ikea_motion_sensor_1_occupancy
+    domain: binary_sensor
+  - type: no_motion
+    platform: device
+    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
+    entity_id: binary_sensor.ikea_motion_sensor_1_occupancy
+    domain: binary_sensor
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - type: is_off
+        condition: device
+        device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
+        entity_id: binary_sensor.ikea_motion_sensor_1_illuminance_above_threshold
+        domain: binary_sensor
+      - type: is_motion
+        condition: device
+        device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
+        entity_id: binary_sensor.ikea_motion_sensor_1_occupancy
+        domain: binary_sensor
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.downstairs_hall_light
+    default:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.downstairs_hall_light
+  mode: single
+- id: '1658705666302'
+  alias: Living Room Lights Motion 6f3c
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
+    entity_id: binary_sensor.ikea_motion_sensor_6f3c_occupancy
+    domain: binary_sensor
+  - type: no_motion
+    platform: device
+    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
+    entity_id: binary_sensor.ikea_motion_sensor_6f3c_occupancy
+    domain: binary_sensor
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - type: is_off
+        condition: device
+        device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
+        entity_id: binary_sensor.ikea_motion_sensor_6f3c_illuminance_above_threshold
+        domain: binary_sensor
+        enabled: false
+      - type: is_motion
+        condition: device
+        device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
+        entity_id: binary_sensor.ikea_motion_sensor_6f3c_occupancy
+        domain: binary_sensor
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id:
+          - light.living_room_cabinet_inside
+          - light.living_room_cabinet_front
+    default:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id:
+        - light.living_room_cabinet_inside
+        - light.living_room_cabinet_front
+  mode: single
+- id: '1659697088299'
+  alias: Garden Watering Remote Control Ikea Blind Open
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 81786cb2bdf60505bef7710dd57270ae
+    type: action
+    subtype: open
+    discovery_id: 0x000d6ffffea20000 action_open
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.back_garden_irrigation_valve
+  mode: single
+- id: '1659697287602'
+  alias: Garden Watering Remote Control Ikea Blind Close
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 81786cb2bdf60505bef7710dd57270ae
+    type: action
+    subtype: close
+    discovery_id: 0x000d6ffffea20000 action_close
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.back_garden_irrigation_valve
+  mode: single
+- id: '1660674900866'
+  alias: Living Room TV Speakers Auto On-Off
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: aa1e8f5d6dcb943b167eae97d9b8f05b
+    entity_id: media_player.tv_samsung_7_series_65
+    domain: media_player
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        device_id: aa1e8f5d6dcb943b167eae97d9b8f05b
+        domain: media_player
+        entity_id: media_player.tv_samsung_7_series_65
+        type: is_idle
+      sequence:
+      - type: turn_on
+        device_id: 8c3077e0600e4f78a7427ec178ee4e36
+        entity_id: switch.tv_speakers_plug
+        domain: switch
+    - conditions:
+      - condition: state
+        entity_id: media_player.tv_samsung_7_series_65
+        state: unavailable
+      sequence:
+      - type: turn_off
+        device_id: 8c3077e0600e4f78a7427ec178ee4e36
+        entity_id: switch.tv_speakers_plug
+        domain: switch
+    default: []
+  mode: single
+- id: '1661547535107'
+  alias: Occupancy Kitchen (Rev 1)
+  description: Triggered in motion, restarted on fresh motion detection (sensors set
+    to 90 second timeout). On timer delay turn-off section, checks if motion is still
+    being detected, to avoid issue with motion being continuity detected for entire
+    delay period (otherwise lights would turn off, as no new motion events had been
+    generated, even though motion is still true). Could set the automation to only
+    turn off lights when no motion is detected, but this may risk the lights staying
+    on all the time if off-motion event is not triggered.
+  trigger:
+  - type: motion
+    platform: device
+    device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
+    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 8f93f025843a9a3da3c079739843e408
+    entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+    domain: binary_sensor
+  - platform: event
+    event_type: kitchen_occupied
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: 01:00:00
+        before: 07:00:00
+      sequence:
+      - service: light.turn_on
+        data:
+          transition: 1
+          brightness_pct: 50
+        target:
+          entity_id:
+          - light.kitchen
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
+      - choose:
+        - conditions:
+          - condition: or
+            conditions:
+            - type: is_motion
+              condition: device
+              device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
+              entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+              domain: binary_sensor
+            - type: is_motion
+              condition: device
+              device_id: 8f93f025843a9a3da3c079739843e408
+              entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+              domain: binary_sensor
+          sequence:
+          - event: kitchen_occupied
+            event_data: {}
+        default:
+        - service: light.turn_off
+          data:
+            transition: 20
+          target:
+            entity_id:
+            - light.kitchen
+    default:
+    - service: light.turn_on
+      data:
+        transition: 1
+        brightness_pct: 100
+      target:
+        entity_id:
+        - light.kitchen
+    - delay:
+        hours: 0
+        minutes: 10
+        seconds: 0
+        milliseconds: 0
+    - choose:
+      - conditions:
+        - condition: or
+          conditions:
+          - type: is_motion
+            condition: device
+            device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
+            entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+            domain: binary_sensor
+          - type: is_motion
+            condition: device
+            device_id: 8f93f025843a9a3da3c079739843e408
+            entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+            domain: binary_sensor
+        sequence:
+        - event: kitchen_occupied
+          event_data: {}
+      default:
+      - service: light.turn_off
+        data:
+          transition: 20
+        target:
+          entity_id:
+          - light.kitchen
+  mode: restart
+- id: '1662324895501'
+  alias: Occupancy Kitchen (Rev 2)  (delay till no motion)
+  description: Triggered in motion, restarted on fresh motion detection (sensors set
+    to 90 second timeout). Waits will no motion is detected, then turns off lights.
+  trigger:
+  - type: motion
+    platform: device
+    device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
+    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 8f93f025843a9a3da3c079739843e408
+    entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+    domain: binary_sensor
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        after: 01:00:00
+        before: 07:00:00
+      sequence:
+      - service: light.turn_on
+        data:
+          transition: 1
+          brightness_pct: 50
+        target:
+          entity_id:
+          - light.kitchen
+      - wait_template: '{{ (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
+          == ''off'') and (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
+          == ''off'') }}'
+        continue_on_timeout: true
+        timeout: 01:00:00
+      - service: light.turn_off
+        data:
+          transition: 20
+        target:
+          entity_id:
+          - light.kitchen
+    default:
+    - service: light.turn_on
+      data:
+        transition: 1
+        brightness_pct: 100
+      target:
+        entity_id:
+        - light.kitchen
+    - wait_template: '{{ (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
+        == ''off'') and (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
+        == ''off'') }}'
+      continue_on_timeout: true
+      timeout: 01:00:00
+    - service: light.turn_off
+      data:
+        transition: 20
+      target:
+        entity_id:
+        - light.kitchen
+  mode: restart
