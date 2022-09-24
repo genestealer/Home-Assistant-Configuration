@@ -59,3 +59,4 @@ __pycache__/
 /image/
 ip_bans.yaml
 ip_bans.yaml
+custom_components/
