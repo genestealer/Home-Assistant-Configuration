@@ -507,6 +507,7 @@ stream:
   # part_duration: 1.5
   # segment_duration: 10
 
+# Sep 2022, need to complete move to openweathermap
 weather:
   - platform: darksky
     api_key: !secret dark_sky_key

@@ -43,9 +43,10 @@ sensor:
         sensor_type: humidity
         name: "Local Outside Humidity"
 
-  # https://github.com/petergridge/openweathermaphistory added via HACS
+  # https://github.com/petergridge/openweathermaphistory added via HACS (set to onecall_daily).
+  # A home assistant sensor that uses the OpenWeatherMap API to return the last 5 days rainfall, min and max temperatures as attributes.
   - platform: openweathermaphistory
-    name: "rainfactor"
+    name: "openweathermap_history"
     # If latitude and longitude left out, it uses the home assistant configured Latitude and Longitude,
     # latitude: -33.8302547
     # longitude: 151.1516128
@@ -91,20 +92,20 @@ sensor:
         unit_of_measurement: "mm"
         value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
 
-  # NEW
+  # NEW - Working
   - platform: template
     sensors:
       rain_day_0:
         friendly_name: "Rain Last 24 Hours"
         unit_of_measurement: "mm"
-        value_template: "{{ state_attr('sensor.rainfactor', 'day_0_rain') }}"
-  # NEW
+        value_template: "{{ state_attr('sensor.openweathermap_history', 'day_0_rain') }}"
+  # NEW - Working 
   - platform: template
     sensors:
       rain_day_1:
         friendly_name: "Rain Last 24-48 hours"
         unit_of_measurement: "mm"
-        value_template: "{{ state_attr('sensor.rainfactor', 'day_1_rain') }}"
+        value_template: "{{ state_attr('sensor.openweathermap_history', 'day_1_rain') }}"
 
   # Difference between the 48 hours and 24 hours, to give the previous 24 hours.
   - platform: template
