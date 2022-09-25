@@ -1,0 +1,52 @@
+# ############################################################
+# #
+# # APC UPS Daemon Sensor
+# # # # Sep 2022, swapped to "Network UPS Tools" addon and integration.
+# #
+# ############################################################
+
+# #   - platform: apcupsd
+# #     resources:
+# #       - itemp
+# # #      - LASTXFER
+# #       - bcharge
+# #       - linev
+# #       - loadpct
+# #       - numxfers
+# #       - outputv
+# #       - status
+# #       - timeleft
+# #       - tonbatt
+
+# - platform: apcupsd
+#   resources:
+#     # - model
+#     - status
+#     - linev
+#     - loadpct
+#     - bcharge
+#     - timeleft
+#     # - lotrans
+#     # - hitrans
+#     - battv
+#     - lastxfer
+#     - numxfers
+#     - tonbatt
+#     - cumonbatt
+#     - xoffbatt
+#     - selftest
+#     - outputv
+#     - itemp
+#     # - serialno
+#     # - battdate
+#     # - firmware
+#     # - nominv
+#     # - nombattv
+#     # - nompower
+#     # - alarmdel
+#     # - starttime
+#     # - hostname
+#     # - mintimel
+#     # - maxtime
+#     # - mbattchg
+#     # - sense

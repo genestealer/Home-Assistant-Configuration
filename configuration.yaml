@@ -249,9 +249,9 @@ mqtt:
   discovery: true
   cover: !include_dir_merge_list includes/mqtt/covers/
   sensor: !include_dir_merge_list includes/mqtt/sensors/
-  # switch: !include_dir_merge_list includes/mqtt/switches/
-  # light: !include_dir_merge_list includes/mqtt/lights/
-  # binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
+  switch: !include_dir_merge_list includes/mqtt/switches/
+  light: !include_dir_merge_list includes/mqtt/lights/
+  binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
 
   # Push notification providers.
 notify:
@@ -468,8 +468,8 @@ google_assistant:
     # group.media_player:
     #   expose: false
 
-    switch.adguard_filtering:
-      expose: false
+    # switch.adguard_filtering:
+    #   expose: false
     switch.adguard_parental_control:
       expose: false
     switch.adguard_safe_browsing:

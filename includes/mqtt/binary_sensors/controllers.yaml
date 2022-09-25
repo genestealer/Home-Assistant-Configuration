@@ -10,8 +10,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/Status"
+- state_topic: "HUISHS/LightingGateway/Status"
   name: "RFG Status"
   qos: 0
   payload_on: "online"
@@ -26,8 +25,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/Status"
+- state_topic: "HUISHS/BunnyShed/Status"
   name: "BS Status"
   qos: 0
   payload_on: "online"
@@ -40,8 +38,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/Status"
+- state_topic: "HUISHS/Irrigation1/Status"
   name: "IC Front Status"
   qos: 0
   payload_on: "online"
@@ -54,8 +51,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/Status"
+- tate_topic: "HUISHS/Irrigation2/Status"
   name: "IC Back Status"
   qos: 0
   payload_on: "online"
@@ -77,18 +73,7 @@
 #       value_template: "{% if is_state('rflink.connection_status', 'connected') %}true{% else %}false{% endif %}"
 
 
-############################################################
-#
-# ESP-Link to RFLink Gateway
-#
-############################################################
 
-- platform: template
-  sensors:
-    esp_link_status:
-      friendly_name: 'ESP-Link Gateway Status'
-      device_class: 'connectivity'
-      value_template: "{% if is_state('sensor.esp_link_controller_signal_strength', 'unknown') %}false{% else %}true{% endif %}"
 
 ############################################################
 #
