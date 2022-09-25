@@ -4,22 +4,20 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/StatusJSON"
+- state_topic: "HUISHS/LightingGateway/StatusJSON"
   name: "Kitchen Temperature"
-  unit_of_measurement: '°C'
-  value_template: '{{ value_json.Temperature }}'
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.Temperature }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
-  device_class: temperature 
-  
+  device_class: temperature
+
 # Icon done in # Done in homeassistant:customize
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/StatusJSON"
+- state_topic: "HUISHS/LightingGateway/StatusJSON"
   name: "Kitchen Humidity"
-  unit_of_measurement: '%'
-  value_template: '{{ value_json.Humidity }}'
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.Humidity }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"

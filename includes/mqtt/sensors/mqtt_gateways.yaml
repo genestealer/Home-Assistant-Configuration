@@ -11,11 +11,9 @@
 #       friendly_name: "BS Client Name"
 #       value_template: "{{ states.sensor.bs_client_name.attributes.ClientName }}"
 
-
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
+- state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Client Name"
-  value_template: '{{ value_json.ClientName }}'
+  value_template: "{{ value_json.ClientName }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
@@ -27,47 +25,42 @@
   #   - HostName
   #   - ConnectedSSID
 
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
+- state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS IP"
-  value_template: '{{ value_json.IP }}'
+  value_template: "{{ value_json.IP }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
+- state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS MAC"
-  value_template: '{{ value_json.MAC }}'
+  value_template: "{{ value_json.MAC }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
+- state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS RSSI"
   unit_of_measurement: "dB"
-  value_template: '{{ value_json.RSSI }}'
+  value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:signal-variant
 
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
+- state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS Host"
-  value_template: '{{ value_json.HostName }}'
+  value_template: "{{ value_json.HostName }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
+- state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS SSID"
-  value_template: '{{ value_json.ConnectedSSID }}'
+  value_template: "{{ value_json.ConnectedSSID }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
   payload_not_available: "offline"
@@ -79,56 +72,50 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG Client Name"
-  value_template: '{{ value_json.ClientName }}'
+  value_template: "{{ value_json.ClientName }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG IP"
-  value_template: '{{ value_json.IP }}'
+  value_template: "{{ value_json.IP }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG MAC"
-  value_template: '{{ value_json.MAC }}'
+  value_template: "{{ value_json.MAC }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG RSSI"
   unit_of_measurement: "dB"
-  value_template: '{{ value_json.RSSI }}'
+  value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:signal-variant
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG Host"
-  value_template: '{{ value_json.HostName }}'
+  value_template: "{{ value_json.HostName }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
   name: "RFG SSID"
-  value_template: '{{ value_json.ConnectedSSID }}'
+  value_template: "{{ value_json.ConnectedSSID }}"
   availability_topic: "HUISHS/LightingGateway/Status"
   payload_available: "online"
   payload_not_available: "offline"
@@ -140,61 +127,54 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front Client Name"
-  value_template: '{{ value_json.ClientName }}'
+  value_template: "{{ value_json.ClientName }}"
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front IP"
-  value_template: '{{ value_json.IP }}'
+  value_template: "{{ value_json.IP }}"
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front MAC"
-  value_template: '{{ value_json.MAC }}'
+  value_template: "{{ value_json.MAC }}"
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front RSSI"
   unit_of_measurement: "dB"
-  value_template: '{{ value_json.RSSI }}'
+  value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:signal-variant
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front Host"
-  value_template: '{{ value_json.HostName }}'
+  value_template: "{{ value_json.HostName }}"
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front SSID"
-  value_template: '{{ value_json.ConnectedSSID }}'
+  value_template: "{{ value_json.ConnectedSSID }}"
   availability_topic: "HUISHS/Irrigation1/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:radio-tower
-
 
 ############################################################
 #
@@ -202,56 +182,50 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back Client Name"
-  value_template: '{{ value_json.ClientName }}'
+  value_template: "{{ value_json.ClientName }}"
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back IP"
-  value_template: '{{ value_json.IP }}'
+  value_template: "{{ value_json.IP }}"
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back MAC"
-  value_template: '{{ value_json.MAC }}'
+  value_template: "{{ value_json.MAC }}"
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back RSSI"
   unit_of_measurement: "dB"
-  value_template: '{{ value_json.RSSI }}'
+  value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:signal-variant
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back Host"
-  value_template: '{{ value_json.HostName }}'
+  value_template: "{{ value_json.HostName }}"
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back SSID"
-  value_template: '{{ value_json.ConnectedSSID }}'
+  value_template: "{{ value_json.ConnectedSSID }}"
   availability_topic: "HUISHS/Irrigation2/Status"
   payload_available: "online"
   payload_not_available: "offline"
@@ -262,14 +236,12 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/esp-link"
+- state_topic: "HUISHS/esp-link"
   name: "ESP-Link Controller RSSI"
   unit_of_measurement: "dB"
   expire_after: 125 # MQTT messages are only every 60 seconds, so 125 will permit it to miss two messages.
-  value_template: '{{ value_json.rssi }}'
+  value_template: "{{ value_json.rssi }}"
   icon: mdi:signal-variant
-
 
 ############################################################
 #
@@ -277,62 +249,54 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/StatusJSON"
+- state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB Client Name"
-  value_template: '{{ value_json.ClientName }}'
+  value_template: "{{ value_json.ClientName }}"
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/StatusJSON"
+- state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB IP"
-  value_template: '{{ value_json.IP }}'
+  value_template: "{{ value_json.IP }}"
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/StatusJSON"
+- state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB MAC"
-  value_template: '{{ value_json.MAC }}'
+  value_template: "{{ value_json.MAC }}"
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/StatusJSON"
+- state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB RSSI"
   unit_of_measurement: "dB"
-  value_template: '{{ value_json.RSSI }}'
+  value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:signal-variant
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/StatusJSON"
+- state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB Host"
-  value_template: '{{ value_json.HostName }}'
+  value_template: "{{ value_json.HostName }}"
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/StatusJSON"
+- state_topic: "HUISHS/DoorBell/StatusJSON"
   name: "TOR DB SSID"
-  value_template: '{{ value_json.ConnectedSSID }}'
+  value_template: "{{ value_json.ConnectedSSID }}"
   availability_topic: "HUISHS/DoorBell/Status"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:radio-tower
-
-
 
 ############################################################
 #
@@ -340,30 +304,27 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Pi/Health"
+- state_topic: "HUISHS/Chickens/Pi/Health"
   name: "CC CPU Load"
-  value_template: '{{ value_json.cpu_load }}'
+  value_template: "{{ value_json.cpu_load }}"
   availability_topic: "HUISHS/Chickens/Door/Status"
-  unit_of_measurement: '%'
+  unit_of_measurement: "%"
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Pi/Health"
+- state_topic: "HUISHS/Chickens/Pi/Health"
   name: "CC CPU Temperature"
-  value_template: '{{ value_json.pi_cpu_temp }}'
+  value_template: "{{ value_json.pi_cpu_temp }}"
   availability_topic: "HUISHS/Chickens/Door/Status"
   device_class: temperature
   payload_available: "online"
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Pi/Health"
+- state_topic: "HUISHS/Chickens/Pi/Health"
   name: "CC IP"
-  value_template: '{{ value_json.IP }}'
+  value_template: "{{ value_json.IP }}"
   availability_topic: "HUISHS/Chickens/Door/Status"
   payload_available: "online"
   payload_not_available: "offline"
@@ -378,11 +339,10 @@
 #   payload_not_available: "offline"
 #   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Pi/Health"
+- state_topic: "HUISHS/Chickens/Pi/Health"
   name: "TOR DB RSSI"
   unit_of_measurement: "dB"
-  value_template: '{{ value_json.RSSI }}'
+  value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/Chickens/Door/Status"
   payload_available: "online"
   payload_not_available: "offline"
@@ -397,10 +357,9 @@
 #   payload_not_available: "offline"
 #   icon: mdi:desktop-classic
 
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Pi/Health"
+- state_topic: "HUISHS/Chickens/Pi/Health"
   name: "CC SSID"
-  value_template: '{{ value_json.SSID }}'
+  value_template: "{{ value_json.SSID }}"
   availability_topic: "HUISHS/Chickens/Door/Status"
   payload_available: "online"
   payload_not_available: "offline"

@@ -5,8 +5,7 @@
 ############################################################
 
 # Icon set in homeassistant:customize
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Door/State"
+- state_topic: "HUISHS/Chickens/Door/State"
   name: "Chicken Door Status"
   payload_on: "OPENED"
   payload_off: "CLOSED"

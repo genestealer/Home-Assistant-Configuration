@@ -96,8 +96,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/DoorBell/Status"
+- state_topic: "HUISHS/DoorBell/Status"
   name: "TOR DB Status"
   qos: 0
   payload_on: "online"
@@ -111,8 +110,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  state_topic: "HUISHS/Chickens/Door/Status"
+- state_topic: "HUISHS/Chickens/Door/Status"
   name: "Chicken Coop Status"
   qos: 0
   payload_on: "online"

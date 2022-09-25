@@ -515,55 +515,61 @@
           title: "\U0001F6AACLOSE DOOR \U0001F414"
   mode: single
 - id: '1581770041173'
-  alias: 'Notify: Electricity supply voltage is HIGH'
-  description: Send Notification when Electricity Voltage is High
+  alias: 'Notify: Electricity supply voltage is LOW/HIGH'
+  description: Send Notification when Electricity Voltage is Low or High
   trigger:
   - above: '254'
-    entity_id: sensor.ups_input_voltage
+    entity_id: sensor.myups_input_voltage
     platform: numeric_state
-  condition: []
-  action:
-  - data:
-      message: 'Electricity Voltage High: {{ states(''sensor.ups_input_voltage'')
-        }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
-
-        '
-      title: Electricity Supply Voltage High
-    service: notify.google_cloud_notify
-- id: '1581770209868'
-  alias: 'Notify: Electricity supply voltage is LOW'
-  description: ''
-  trigger:
   - below: '220'
-    entity_id: sensor.ups_input_voltage
+    entity_id: sensor.myups_input_voltage
     platform: numeric_state
   condition: []
   action:
-  - data:
-      message: 'Electricity Voltage Low: {{ states(''sensor.ups_input_voltage'') }}
-        Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.myups_input_voltage
+        below: '220'
+      sequence:
+      - data:
+          title: Electricity Supply Voltage Low
+          message: 'Electricity Voltage Low: {{ states(''sensor.myups_input_voltage'')
+            }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
-        '
-      title: Electricity Supply Voltage Low
-    service: notify.google_cloud_notify
-  - service: notify.pushover_notify
-    data:
-      message: 'Electricity Voltage Low: {{ states(''sensor.ups_input_voltage'') }}
-        Volts.     {{now().strftime(''%Y-%m-%d %I:%M %p'')}}'
-      title: 'Electricity Voltage Low:'
-  mode: single
+            '
+        service: notify.google_cloud_notify
+      - service: notify.pushover_notify
+        data:
+          title: Electricity Supply Voltage Low
+          message: 'Electricity Voltage Low: {{ states(''sensor.myups_input_voltage'')
+            }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+            '
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.myups_input_voltage
+        above: '254'
+      sequence:
+      - data:
+          title: Electricity Supply Voltage High
+          message: 'Electricity Voltage High: {{ states(''sensor.myups_input_voltage'')
+            }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+            '
+        service: notify.google_cloud_notify
 - id: '1581770321118'
   alias: 'Notify: UPS is close to being depleted'
   description: Send Notification when UPS is about to shutdown (10 mins left)
   trigger:
-  - below: '10'
-    entity_id: sensor.ups_time_left
+  - below: 600
+    entity_id: sensor.myups_battery_runtime
     platform: numeric_state
   condition: []
   action:
   - data:
-      message: 'UPS is running low: {{ states(''sensor.ups_time_left'')}}minutes left.
-        {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+      message: 'UPS is running low: {{ (((states(''sensor.myups_battery_runtime'')
+        | int) / 60) | int  )}} minutes left. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
         '
       title: 'WARNING: UPS close to being depleted'

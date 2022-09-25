@@ -4,8 +4,7 @@
 #
 ############################################################
 
-- platform: mqtt
-  name: "Chicken Coop Door"
+- name: "Chicken Coop Door"
   command_topic: "HUISHS/Chickens/Door/Set"
   payload_open: "OPEN"
   payload_close: "CLOSE"

@@ -1,0 +1,74 @@
+# ############################################################
+# #
+# # mqtt Sensors Bunny Shed
+# # Sep 2022 no longer used
+# #
+# ############################################################
+
+# - state_topic: "HUISHS/BunnyShed/StatusJSON"
+#   name: "Bunny Shed Temperature"
+#   unit_of_measurement: '°C'
+#   value_template: '{{ value_json.Temperature }}'
+#   availability_topic: "HUISHS/BunnyShed/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   device_class: temperature
+
+# # Icon done in # Done in homeassistant:customize
+# - state_topic: "HUISHS/BunnyShed/StatusJSON"
+#   name: "Bunny Shed Humidity"
+#   unit_of_measurement: '%'
+#   value_template: '{{ value_json.Humidity }}'
+#   availability_topic: "HUISHS/BunnyShed/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   device_class: humidity
+
+# - state_topic: "HUISHS/BunnyShed/StatusJSON"
+#   name: "Bunny Shed Target Heat Temperature"
+#   unit_of_measurement: '°C'
+#   value_template: '{{ value_json.TargetHeaterTemperature }}'
+#   availability_topic: "HUISHS/BunnyShed/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   device_class: temperature
+
+# - state_topic: "HUISHS/BunnyShed/StatusJSON"
+#   name: "Bunny Shed Target Cool Temperature"
+#   unit_of_measurement: '°C'
+#   value_template: '{{ value_json.TargetCoolerTemperature }}'
+#   availability_topic: "HUISHS/BunnyShed/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   device_class: temperature
+
+# ############################################################
+# #
+# # History Statistics Sensor Bunny Shed
+# #
+# ############################################################
+
+# - platform: history_stats
+#   name: Heater on last 24 hours
+#   entity_id: binary_sensor.bunny_shed_heater
+#   state: 'on'
+#   type: time
+#   end: '{{ now() }}'
+#   duration:
+#       days: 1
+
+# - platform: history_stats
+#   name: Cooler on last 24 hours
+#   entity_id: binary_sensor.bunny_shed_cooler
+#   state: 'on'
+#   type: time
+#   end: '{{ now() }}'
+#   duration:
+#       days: 1
+
+# - platform: template
+#   sensors:
+#     heater_running_cost:
+#       friendly_name: "Shed Heater Running Cost"
+#       unit_of_measurement: '£'
+#       value_template: "{{states.sensor.heater_on_last_24_hours.state | multiply(0.065) | round(4)}}" # Assume 0.5KW at 13 pence a KWH, so runtime x 6.5p per hour

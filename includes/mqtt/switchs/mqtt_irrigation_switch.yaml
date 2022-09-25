@@ -4,10 +4,9 @@
 #
 ############################################################
 
-- platform: mqtt
-  name: "Front Garden Lawn Irrigation Valve"
+- name: "Front Garden Lawn Irrigation Valve"
   state_topic: "HUISHS/Irrigation1/StatusJSON"
-  value_template: '{{ value_json.Valve1 }}'
+  value_template: "{{ value_json.Valve1 }}"
   payload_on: "1"
   payload_off: "0"
   command_topic: "HUISHS/Irrigation1/OutputOne/Command"
@@ -22,10 +21,9 @@
 # Front Garden MQTT Irrigation Switch 2
 #
 ############################################################
-- platform: mqtt
-  name: "Front Garden Pot Irrigation Valve"
+- name: "Front Garden Pot Irrigation Valve"
   state_topic: "HUISHS/Irrigation1/StatusJSON"
-  value_template: '{{ value_json.Valve2 }}'
+  value_template: "{{ value_json.Valve2 }}"
   command_topic: "HUISHS/Irrigation1/OutputTwo/Command"
   payload_on: "1"
   payload_off: "0"
@@ -41,10 +39,9 @@
 #
 ############################################################
 
-- platform: mqtt
-  name: "Back Garden Irrigation Valve"
+- name: "Back Garden Irrigation Valve"
   state_topic: "HUISHS/Irrigation2/StatusJSON"
-  value_template: '{{ value_json.Valve1 }}'
+  value_template: "{{ value_json.Valve1 }}"
   payload_on: "1"
   payload_off: "0"
   command_topic: "HUISHS/Irrigation2/OutputOne/Command"
@@ -60,10 +57,9 @@
 #
 ############################################################
 
-- platform: mqtt
-  name: "Back Garden Lawn 1 Irrigation Valve"
+- name: "Back Garden Lawn 1 Irrigation Valve"
   state_topic: "HUISHS/Irrigation2/StatusJSON"
-  value_template: '{{ value_json.Valve2 }}'
+  value_template: "{{ value_json.Valve2 }}"
   payload_on: "1"
   payload_off: "0"
   command_topic: "HUISHS/Irrigation2/OutputTwo/Command"
@@ -79,10 +75,9 @@
 #
 ############################################################
 
-- platform: mqtt
-  name: "Back Garden Lawn 2 Irrigation Valve"
+- name: "Back Garden Lawn 2 Irrigation Valve"
   state_topic: "HUISHS/Irrigation2/StatusJSON"
-  value_template: '{{ value_json.Valve3 }}'
+  value_template: "{{ value_json.Valve3 }}"
   payload_on: "1"
   payload_off: "0"
   command_topic: "HUISHS/Irrigation2/OutputThree/Command"

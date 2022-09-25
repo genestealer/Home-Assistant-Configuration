@@ -8,7 +8,7 @@
 *.crt
 *.key
 *.pem
-*.old
+
 *.db-shm
 *.db-wal
 *.log.*

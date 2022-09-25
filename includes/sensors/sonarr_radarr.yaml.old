@@ -1,0 +1,29 @@
+# ############################################################
+# #
+# # Sonarr and Radarr Sensor
+# #
+# ############################################################
+# #The 'monitored_conditions' option is deprecated, please remove it from your configuration. This option will become invalid in version 0.112
+# #
+# # - platform: sonarr
+# #   host: !secret sonarr_ip
+# #   api_key: !secret sonarr_api
+# #   # urlbase: /tv
+# #   monitored_conditions:
+# #     - series
+# #     - upcoming
+# #     - wanted
+# #     - queue
+# #     - commands
+# #     - status
+
+# - platform: radarr
+#   host: !secret radarr_ip
+#   api_key: !secret radarr_api
+#   days: 30
+#   # urlbase:
+#   monitored_conditions:
+#     # - movies
+#     - upcoming
+#     - commands
+#     - status

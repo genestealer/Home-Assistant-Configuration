@@ -247,8 +247,13 @@ mqtt:
   username: !secret mqtt_username
   password: !secret mqtt_password
   discovery: true
+  cover: !include_dir_merge_list includes/mqtt/covers/
+  sensor: !include_dir_merge_list includes/mqtt/sensors/
+  # switch: !include_dir_merge_list includes/mqtt/switches/
+  # light: !include_dir_merge_list includes/mqtt/lights/
+  # binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
 
-# Push notification providers.
+  # Push notification providers.
 notify:
   - name: Google Cloud Notify
     platform: html5
@@ -272,12 +277,12 @@ notify:
   #   platform: facebook
   #   page_access_token: !secret FB_Key
 
-# Sep 2022, swapped to "Network UPS Tools" addon and integration.
-# APC UPS Network Infomation Server, which talks to the networked UPS via apcupsd daemon (outside of HASS, but on same system).
-apcupsd:
-  host: a722577e-apcupsd-net
-#  host: !secret apcupsdNisIP
-#  port: !secret apcupsdNisPort
+# # Sep 2022, swapped to "Network UPS Tools" addon and integration.
+# # APC UPS Network Infomation Server, which talks to the networked UPS via apcupsd daemon (outside of HASS, but on same system).
+# apcupsd:
+#   host: a722577e-apcupsd-net
+# #  host: !secret apcupsdNisIP
+# #  port: !secret apcupsdNisPort
 
 #Google Nest integration.
 nest:

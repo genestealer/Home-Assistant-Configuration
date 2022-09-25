@@ -4,19 +4,19 @@
 #
 ############################################################
 
- # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
- # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
+# This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
+# It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
 - alias: Set shed temp heater slider
   trigger:
     platform: mqtt
     topic: "HUISHS/BunnyShed/setHeaterTemperature"
-   # entity_id: input_number.shed_target_temp
+# entity_id: input_number.shed_target_temp
   condition:
     - condition: template
       value_template: '{{ trigger.payload | int != states.input_number.shed_target_heat_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
-     service: input_number.set_value
-     data_template:
+    service: input_number.set_value
+    data_template:
       entity_id: input_number.shed_target_heat_temp
       value: '{{ trigger.payload | int }}'
 
@@ -27,8 +27,8 @@
 #
 ############################################################
 
- # This automation script runs when the target temperature slider is moved.
- # It publishes its value to the same MQTT topic it is also subscribed to.
+# This automation script runs when the target temperature slider is moved.
+# It publishes its value to the same MQTT topic it is also subscribed to.
 - alias: Shed temp slider heater moved
   trigger:
     platform: state
@@ -47,19 +47,19 @@
 #
 ############################################################
 
- # This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
- # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
+# This automation script runs when a value is received via MQTT on retained topic: HUISHS/BunnyShed/setTemperature
+# It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
 - alias: Set shed temp cooler slider
   trigger:
     platform: mqtt
     topic: "HUISHS/BunnyShed/setCoolerTemperature"
-   # entity_id: input_number.shed_target_temp
+# entity_id: input_number.shed_target_temp
   condition:
     - condition: template
       value_template: '{{ trigger.payload | int != states.input_number.shed_target_cool_temp.state | int}}' #http://jinja.pocoo.org/docs/dev/templates/#comparisons
   action:
-     service: input_number.set_value
-     data_template:
+    service: input_number.set_value
+    data_template:
       entity_id: input_number.shed_target_cool_temp
       value: '{{ trigger.payload | int }}'
 
@@ -70,8 +70,8 @@
 #
 ############################################################
 
- # This automation script runs when the target temperature slider is moved.
- # It publishes its value to the same MQTT topic it is also subscribed to.
+# This automation script runs when the target temperature slider is moved.
+# It publishes its value to the same MQTT topic it is also subscribed to.
 - alias: Shed temp slider cooler moved
   trigger:
     platform: state
