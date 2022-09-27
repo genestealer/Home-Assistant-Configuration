@@ -7,7 +7,7 @@
 #
 ############################################################
 
-# Also needed for https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+# Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
 - platform: time_date
   display_options:
     - 'time'

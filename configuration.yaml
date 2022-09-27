@@ -10,19 +10,21 @@
 #
 ############################################################
 homeassistant:
-  # Name of the location where Home Assistant is running
-  name: Home
-  # Location required to calculate the time the sun rises and sets
-  latitude: !secret latitude
-  longitude: !secret longitude
-  # Impacts weather/sunrise data
-  elevation: !secret elevation
-  external_url: !secret Base_url
-  internal_url: !secret internal_ip
-  unit_system: metric
-  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  time_zone: Europe/London
-  currency: GBP
+  # # Moved to edit in GUI
+  #   # Name of the location where Home Assistant is running
+  #   name: Home
+  #   # Location required to calculate the time the sun rises and sets
+  #   latitude: !secret latitude
+  #   longitude: !secret longitude
+  #   # Impacts weather/sunrise data
+  #   elevation: !secret elevation
+  #   external_url: !secret Base_url
+  #   internal_url: !secret internal_ip
+  #   unit_system: metric
+  #   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  #   time_zone: Europe/London
+  #   currency: GBP
+
   # Customization file
   customize: !include customize.yaml
   #Unhide the push notifcation slider https://github.com/home-assistant/home-assistant/issues/16043
@@ -247,11 +249,12 @@ mqtt:
   username: !secret mqtt_username
   password: !secret mqtt_password
   discovery: true
+  binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
   cover: !include_dir_merge_list includes/mqtt/covers/
   sensor: !include_dir_merge_list includes/mqtt/sensors/
   switch: !include_dir_merge_list includes/mqtt/switches/
   light: !include_dir_merge_list includes/mqtt/lights/
-  binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
+
 
   # Push notification providers.
 notify:
@@ -654,7 +657,7 @@ alert: !include includes/alert.yaml
 #       #   data_template:
 #       #     message: Api.ai has send a request
 
-# https://github.com/kloggy/HA-Irrigation-Version2/blob/master/prerequisites.yaml
+# Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
 input_text:
   notifications_user1_name:
     min: 0
@@ -665,5 +668,5 @@ input_text:
 
 nextcloud:
   url: !secret nextcloud_url
-  username: nextcloud_username
-  password: nextcloud_password
+  username: !secret nextcloud_username # App password
+  password: !secret nextcloud_password
