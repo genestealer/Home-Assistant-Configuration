@@ -52,34 +52,6 @@
       title: CCTV Offline
       message: '{{trigger.entity_id}} offline'
     service: notify.google_cloud_notify
-- id: '1544967364329'
-  alias: Battery Low tradfri_remote_control [Replaced by blueprint "Low battery level
-    detection & notification for all battery sensors"]
-  description: ''
-  trigger:
-  - below: '20'
-    entity_id: sensor.tradfri_remote_control
-    platform: numeric_state
-  condition: []
-  action:
-  - data:
-      message: Living room Tradfri remote battery low. Currently {{ states('sensor.tradfri_remote_control')}}%
-    service: notify.google_cloud_notify
-  mode: single
-- id: '1544967729500'
-  alias: Battery Low tradfri_wireless_dimmer [Replaced by blueprint "Low battery level
-    detection & notification for all battery sensors"]
-  trigger:
-  - below: '25'
-    entity_id: sensor.tradfri_wireless_dimmer
-    platform: numeric_state
-  condition: []
-  action:
-  - data:
-      message: 'Master bedroom Tradfri remote battery low. Currently {{ states(''sensor.tradfri_wireless_dimmer'')
-        }}% '
-    service: notify.google_cloud_notify
-  mode: single
 - id: '1557360744014'
   alias: Increment TOR DB Disconnect Automation
   trigger:
@@ -266,60 +238,67 @@
     service: switch.turn_off
   mode: single
 - id: '1572464632861'
-  alias: Smoke Machine Automation
-  description: ''
+  alias: Smoke Machine Automation - Smoke
+  description: 'Don''t need to turn on and off, as RF Link signal_repetitions: xx
+    is used to set on the "on" time. Makes use of twrecked/hass-momentary Momentary
+    Switch Component for Home Assistant'
   trigger:
-  - device_id: f748f07b6b70459db34b99aca1a33d4b
-    domain: light
-    entity_id: light.sofa_left
-    platform: device
-    type: turned_on
   - event_data: {}
     event_type: smoke_machine_automation
     platform: event
+    enabled: false
+  - type: motion
+    platform: device
+    device_id: 853ca02c816df4ce4860c07060837a6a
+    entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
+    domain: binary_sensor
+    enabled: false
+  - type: motion
+    platform: device
+    device_id: 83dd8340e23fb86fef21b09a22a57929
+    entity_id: binary_sensor.drive_higher_21_vmd4_camera1profile2
+    domain: binary_sensor
+    enabled: false
+  - platform: state
+    entity_id:
+    - switch.smoke_machine
+    to: 'off'
   condition: []
   action:
-  - data:
+  - service: switch.turn_on
+    data: {}
+    target:
       entity_id: switch.smoke_machine
-    service: switch.toggle
-  - delay: 00:00:15
+    enabled: false
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+    enabled: false
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.smoke_machine
+    enabled: false
   - event: smoke_machine_automation
     event_data: {}
-- id: '1576598300322'
-  alias: 'Christmas: Inside lights on when home'
-  description: Christmas Light Automation - Turn on inside lights when we get home
-  trigger:
-  - from: not_home
-    platform: state
-    to: home
-    entity_id: person.richard
-  - platform: state
-    entity_id: person.lucy
-    from: not_home
-    to: home
-  condition: []
-  action:
-  - entity_id: light.inside_christmas_lights
-    service: light.turn_on
-  mode: single
-- id: '1576598493358'
-  alias: 'Christmas: Inside lights off when away'
-  description: Christmas Light Automation - Turn off inside lights when we leave home
-  trigger:
-  - entity_id: person.richard
-    from: home
-    platform: state
-    to: not_home
-  - entity_id: person.lucy
-    from: home
-    platform: state
-    to: not_home
-  condition: []
-  action:
-  - service: light.turn_off
+    enabled: false
+  - service: switch.toggle
     data: {}
-    entity_id: light.inside_christmas_lights
-  mode: single
+    target:
+      entity_id: switch.smoke_machine
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.smoke_machine
+    enabled: false
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+    enabled: true
 - id: '1576599112935'
   alias: Welcome home Richard
   description: 'Note: These actions can only be edited with YAML'
@@ -1140,19 +1119,6 @@
       light_target:
         entity_id: light.kitchen_under_counter_lights
       no_motion_wait: '3600'
-- id: '1608750110548'
-  alias: Low battery level detection & notification for all battery sensors [Blueprint]
-  description: ''
-  use_blueprint:
-    path: Sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
-    input:
-      day: 0
-      time: '19:00:00'
-      actions:
-      - service: notify.google_cloud_notify
-        data:
-          title: Low Battery Warning
-          message: 'Low battery warning for: {{sensors}}'
 - id: '1612985120601'
   alias: obsolete - Ice Maker - On-Off Schedule [Blueprint]
   description: There is a separate automation which turns the ice maker on if the
@@ -2453,6 +2419,7 @@
     device_id: 99689212065c11ebbd2ecbef1587dfe1
     entity_id: binary_sensor.drive_high_16_vmd4_profile_1
     domain: binary_sensor
+    enabled: true
   condition:
   - condition: and
     conditions:
@@ -2475,10 +2442,10 @@
       entity_id:
       - light.outside_1_down
     data:
-      brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
+      brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
         | int(0) }}'
   - delay:
-      minutes: '{{ states(''input_number.outside_lights_early_night_time_on_minutes'')
+      minutes: '{{ states(''input_number.outside_lights_late_night_time_on_minutes'')
         | int(0) }}'
   - service: light.turn_off
     data:
@@ -2825,7 +2792,7 @@
   - choose:
     - conditions:
       - condition: time
-        after: 01:00:00
+        after: 02:00:00
         before: 07:00:00
       sequence:
       - service: light.turn_on
@@ -2872,6 +2839,10 @@
       target:
         entity_id:
         - light.kitchen
+    - service: light.turn_on
+      data: {}
+      target:
+        entity_id: light.christmas_tree_lights
     - delay:
         hours: 0
         minutes: 10
@@ -2901,6 +2872,10 @@
         target:
           entity_id:
           - light.kitchen
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.christmas_tree_lights
   mode: restart
 - id: '1662324895501'
   alias: Occupancy Kitchen (Rev 2)  (delay till no motion)
@@ -2963,3 +2938,219 @@
         entity_id:
         - light.kitchen
   mode: restart
+- id: '1665357306828'
+  alias: Motion Automation
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
+    entity_id: binary_sensor.motion_4b3b_occupancy
+    domain: binary_sensor
+    enabled: false
+  - type: motion
+    platform: device
+    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
+    entity_id: binary_sensor.0x60a423fffef26f3c_occupancy
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: fa69bc49d4bfe964b899661c045598c2
+    entity_id: binary_sensor.motion_99ad_occupancy
+    domain: binary_sensor
+    enabled: false
+  - type: motion
+    platform: device
+    device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
+    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 8f93f025843a9a3da3c079739843e408
+    entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      message: Motion
+      title: Motion
+  - repeat:
+      count: '4'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+          transition: 0.3
+        target:
+          entity_id:
+          - light.office
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 400
+      - service: light.turn_off
+        data:
+          transition: 0
+        target:
+          entity_id: light.office
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 250
+  mode: single
+- id: '1665959554800'
+  alias: Lucy Leave
+  description: ''
+  trigger:
+  - entity_id: person.Lucy
+    for: 00:03:00
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action: []
+  mode: single
+- id: '1666971475237'
+  alias: Low battery level detection & notification for all battery sensors [Blueprint]
+  description: 'Updated 2022 10 28
+
+    '
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      day: 1
+      time: '11:00:00'
+      actions:
+      - service: notify.mobile_app_rich_mob_app
+        data:
+          title: Low Battery Warning
+          message: 'Low battery warning for: {{sensors}}'
+          data:
+            channel: Home Maintenance
+            icon_url: https://hass.richardhuish.com/local/icon/battery-alert-variant-outline-48.png
+      threshold: 20
+- id: '1667073362846'
+  alias: Spider Drop Remote
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: ca61296154562d84a7271001aba10aa5
+    type: action
+    subtype: open
+    discovery_id: 0x000d6ffffe9c3ea8 action_open
+    id: open
+  - platform: device
+    domain: mqtt
+    device_id: ca61296154562d84a7271001aba10aa5
+    type: action
+    subtype: close
+    discovery_id: 0x000d6ffffe9c3ea8 action_close
+    id: close
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: open
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.spider_drop_switch
+    - conditions:
+      - condition: trigger
+        id: close
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.spider_drop_switch
+  mode: single
+- id: '1667140350137'
+  alias: Smoke Machine - Lights
+  description: ' [Restarts]
+
+    '
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 853ca02c816df4ce4860c07060837a6a
+    entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
+    domain: binary_sensor
+    enabled: false
+  - type: motion
+    platform: device
+    device_id: 83dd8340e23fb86fef21b09a22a57929
+    entity_id: binary_sensor.drive_higher_21_vmd4_camera1profile2
+    domain: binary_sensor
+  - platform: state
+    entity_id:
+    - switch.smoke_machine
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.0x5c0272fffec8ba7e
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 15
+      milliseconds: 0
+    enabled: true
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.0x5c0272fffec8ba7e
+  mode: restart
+- id: '1667142302076'
+  alias: Smoke Machine Automation - Reset Switch
+  description: Remote is "Off" only, so this resets the switch back to "On"
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.smoke_machine
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.smoke_machine
+    enabled: false
+  mode: single
+- id: '1671628022949'
+  alias: Christmas Lights Timer
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: +01:00:00
+    id: 'ON'
+  - platform: time
+    at: '23:00:00'
+    id: 'OFF'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: 'ON'
+      sequence:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.outside_christmas_lights
+    - conditions:
+      - condition: trigger
+        id: 'OFF'
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.outside_christmas_lights
+  mode: single

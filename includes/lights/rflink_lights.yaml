@@ -53,6 +53,8 @@
       name: "Bedroom Ceiling Light"
 
 # 433MHz UK branded as Silvercrest 303937 switch range is 0 to 4 with 00 being all off.
+#    To clear the memory, use 00 all off or the off of the one to remove after unplugging for 2 seconds
+#    You need to use the remotes to "program" the sockets before RFLink will work with them.
 - platform: rflink
   device_defaults:
     signal_repetitions: 10
@@ -71,17 +73,8 @@
     Unitec_42d7_02:
       name: Christmas Living Room Star
 
-    # Maclean_0d85_01:
-    #   name: Christmas Mess Room Star
 
-    # RFCustom_524643_6: # Status RCS-K09
-    #   name: Christmas Garden Lights
-    # RFCustom_524643_8: # Status RCS-K09
-    #   name: Christmas Master Bedroom Star
-    # RFCustom_524643_1: # Status RCS-K09
-    #   name: Christmas Garden Lights
-    # RFCustom_524643_0: # Status RCS-K09
-    #   name: Christmas Master Bedroom Star
+      
 # # 2022 No longer used as I've moved over to Ikea Tradfi
 # # 2.4GHz Lights Ikea Ansluta
 # - platform: rflink

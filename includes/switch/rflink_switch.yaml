@@ -28,13 +28,18 @@
     #   name: Wax Melter
     # RFCustom_524643_4: # Status RCS-K09
     #   name: Plug-In Air Freshener
-    tristate_0aaaa0_0:
-      name: Smoke Machine
     Eurodomest_0d25be_01: # Energenie MIHO002 plug in socket
       name: Plug-In Air Freshener 1
     Eurodomest_0d25be_00: # Energenie MIHO002 plug in socket
       name: Plug-In Air Freshener 2
-
+      
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 10
+    fire_event: true
+  devices:
+    tristate_0aaaa0_0:
+      name: Smoke Machine
 
 # Not used
 # # Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!

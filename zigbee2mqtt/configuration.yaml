@@ -37,15 +37,15 @@ devices:
   '0x588e81fffe787201':
     friendly_name: Spare
   '0x60a423fffef24b3b':
-    friendly_name: '0x60a423fffef24b3b'
+    friendly_name: Motion 4b3b
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0x60a423fffece99ad':
-    friendly_name: '0x60a423fffece99ad'
+    friendly_name: Motion 99ad
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0x60a423fffef26f3c':
-    friendly_name: '0x60a423fffef26f3c'
+    friendly_name: Motion 6f3c
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0xb4e3f9fffef34402':
@@ -79,6 +79,7 @@ devices:
     illuminance_below_threshold_check: true
   '0xbc33acfffebd4750':
     friendly_name: Office Lamp
+    transition: 0
   '0x000b57fffe978d3f':
     friendly_name: Dining Room Lamp Left
   '0x000b57fffe51eb27':

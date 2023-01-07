@@ -74,12 +74,14 @@ sensor:
   - platform: statistics
     name: Local Rain 24 Hours Statistics Raw
     entity_id: sensor.local_total_rain
+    state_characteristic: change
     sampling_size: 4320 # Enough for 3 readings a minute
     max_age:
       hours: 24
   - platform: statistics # Raw values for 24 hours
     name: Local Rain 48 Hours Statistics Raw
     entity_id: sensor.local_total_rain
+    state_characteristic: change
     sampling_size: 8320 # Enough for 3 readings a minute
     max_age:
       hours: 48
@@ -99,7 +101,7 @@ sensor:
         friendly_name: "Rain Last 24 Hours"
         unit_of_measurement: "mm"
         value_template: "{{ state_attr('sensor.openweathermap_history', 'day_0_rain') }}"
-  # NEW - Working 
+  # NEW - Working
   - platform: template
     sensors:
       rain_day_1:
@@ -119,6 +121,7 @@ sensor:
   - platform: statistics
     name: Local Rain 30 Min Statistics Raw
     entity_id: sensor.local_total_rain
+    state_characteristic: change
     sampling_size: 180
     max_age:
       minutes: 30

@@ -5,49 +5,49 @@
 ############################################################
 
 # UPS Network controller state
-  - platform: ping
-    name: "USP Network Online"
-    host: !secret apc_UPS_Network_IP
-    scan_interval: 30
+- platform: ping
+  name: "USP Network Online"
+  host: !secret apc_UPS_Network_IP
+  scan_interval: 30
 
 # Ikea Tradfri gateway state
-  - platform: ping
-    name: "Ikea Tradfri Gateway Online"
-    host: !secret Ikea_Tradfri_IP
-    scan_interval: 30
+- platform: ping
+  name: "Ikea Tradfri Gateway Online"
+  host: !secret Ikea_Tradfri_IP
+  scan_interval: 30
 
 # Bunny CCTV
-  - platform: ping
-    name: "Bunny CCTV Online"
-    host: !secret Bunny_CCTV_ip
-    scan_interval: 30
+- platform: ping
+  name: "Bunny CCTV Online"
+  host: !secret Bunny_CCTV_ip
+  scan_interval: 30
 
 # Front Door CCTV
-  - platform: ping
-    name: "Front Door CCTV Online"
-    host: !secret axis_front_door_IP
-    scan_interval: 30
+- platform: ping
+  name: "Front Door CCTV Online"
+  host: !secret axis_front_door_IP
+  scan_interval: 30
 
 # Drive CCTV
-  - platform: ping
-    name: "Drive CCTV Online"
-    host: !secret axis_front_drive_IP
-    scan_interval: 30
+- platform: ping
+  name: "Drive CCTV Online"
+  host: !secret axis_front_drive_IP
+  scan_interval: 30
 
 # Garage CCTV
-  - platform: ping
-    name: "Garage CCTV Online"
-    host: !secret axis_garage_IP
-    scan_interval: 30
+- platform: ping
+  name: "Garage CCTV Online"
+  host: !secret axis_garage_IP
+  scan_interval: 30
 
 # Garage CCTV 2
-  - platform: ping
-    name: "Garage 2 CCTV Online"
-    host: !secret axis_garage2_IP
-    scan_interval: 30
+- platform: ping
+  name: "Garage 2 CCTV Online"
+  host: !secret axis_garage2_IP
+  scan_interval: 30
 
 # Garden CCTV
-  - platform: ping
-    name: "Garden CCTV Online"
-    host: !secret axis_garden_IP
-    scan_interval: 30
+- platform: ping
+  name: "Garden CCTV Online"
+  host: !secret axis_garden_IP
+  scan_interval: 30

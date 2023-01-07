@@ -255,7 +255,6 @@ mqtt:
   switch: !include_dir_merge_list includes/mqtt/switches/
   light: !include_dir_merge_list includes/mqtt/lights/
 
-
   # Push notification providers.
 notify:
   - name: Google Cloud Notify
@@ -670,3 +669,4 @@ nextcloud:
   url: !secret nextcloud_url
   username: !secret nextcloud_username # App password
   password: !secret nextcloud_password
+

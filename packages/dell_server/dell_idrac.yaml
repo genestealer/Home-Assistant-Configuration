@@ -206,7 +206,7 @@ template: # https://www.home-assistant.io/integrations/template/#state-based-tem
 
       - name: "Server Fans Speed Avg"
         state: >
-           {{ (( states('sensor.rawdellserverfan1') | float +
+            {{ (( states('sensor.rawdellserverfan1') | float +
                   states('sensor.rawdellserverfan2') | float +
                   states('sensor.rawdellserverfan3') | float +
                   states('sensor.rawdellserverfan4') | float +

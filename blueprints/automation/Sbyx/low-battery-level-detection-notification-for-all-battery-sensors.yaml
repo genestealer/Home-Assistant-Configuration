@@ -33,103 +33,42 @@ blueprint:
           max: 7.0
           mode: slider
           step: 1.0
+    exclude:
+      name: Excluded Sensors
+      description: Battery sensors (e.g. smartphone) to exclude from detection. Only
+        entities are supported, devices must be expanded!
+      default:
+        entity_id: []
+      selector:
+        target:
+          entity:
+            device_class: battery
     actions:
       name: Actions
       description: Notifications or similar to be run. {{sensors}} is replaced with
         the names of sensors being low on battery.
       selector:
         action: {}
-    exclude0:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude1:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude2:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude3:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude4:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude5:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude6:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude7:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude8:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-    exclude9:
-      name: Exclude Sensor
-      default: none
-      selector:
-        entity:
-          device_class: battery
-  source_url: https://community.home-assistant.io/t/low-battery-level-detection-notification-for-all-battery-sensors/258664
+  source_url: https://gist.github.com/sbyx/1f6f434f0903b872b84c4302637d0890
 variables:
-  day: !input 'day'
-  threshold: !input 'threshold'
-  exclude0: !input 'exclude0'
-  exclude1: !input 'exclude1'
-  exclude2: !input 'exclude2'
-  exclude3: !input 'exclude3'
-  exclude4: !input 'exclude4'
-  exclude5: !input 'exclude5'
-  exclude6: !input 'exclude6'
-  exclude7: !input 'exclude7'
-  exclude8: !input 'exclude8'
-  exclude9: !input 'exclude9'
-  sensors: "{% set result = namespace(sensors=[]) %} {% set exclude = [exclude0, exclude1,\
-    \ exclude2, exclude3, exclude4, exclude5, exclude6, exclude7, exclude8, exclude9]\
-    \ %} {% for state in states.sensor | selectattr('attributes.device_class', '==',\
-    \ 'battery') %}\n  {% if 0 < state.state | int < threshold | int and not state.entity_id\
-    \ in exclude %}\n    {% set result.sensors = result.sensors + [state.name] %}\n\
-    \  {% endif %}\n{% endfor %} {% for state in states.binary_sensor | selectattr('attributes.device_class',\
-    \ '==', 'battery') | selectattr('state', '==', 'on') %}\n  {% if not state.entity_id\
-    \ in exclude %}\n    {% set result.sensors = result.sensors + [state.name] %}\n\
-    \  {% endif %}\n{% endfor %} {{result.sensors|join(', ')}}"
+  day: !input day
+  threshold: !input threshold
+  exclude: !input exclude
+  sensors: "{% set result = namespace(sensors=[]) %} {% for state in states.sensor
+    | selectattr('attributes.device_class', '==', 'battery') %}\n  {% if 0 <= state.state
+    | int(-1) < threshold | int and not state.entity_id in exclude.entity_id %}\n
+    \   {% set result.sensors = result.sensors + [state.name ~ ' (' ~ state.state
+    ~ ' %)'] %}\n  {% endif %}\n{% endfor %} {% for state in states.binary_sensor
+    | selectattr('attributes.device_class', '==', 'battery') | selectattr('state',
+    '==', 'on') %}\n  {% if not state.entity_id in exclude.entity_id %}\n    {% set
+    result.sensors = result.sensors + [state.name] %}\n  {% endif %}\n{% endfor %}
+    {{result.sensors|join(', ')}}"
 trigger:
 - platform: time
-  at: !input 'time'
+  at: !input time
 condition:
-- condition: template
-  value_template: '{{ sensors != '''' and (day | int == 0 or day | int == now().isoweekday())
-    }}'
+- '{{ sensors != '''' and (day | int == 0 or day | int == now().isoweekday()) }}'
 action:
 - choose: []
-  default: !input 'actions'
+  default: !input actions
 mode: single

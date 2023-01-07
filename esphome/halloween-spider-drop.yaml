@@ -5,14 +5,14 @@
 ####################################################
 substitutions:
   # Used by ESP Home
-  device_name: icemaker
+  device_name: halloween-spider-drop
   # Used by ESP Home
-  device_description: "Ice Maker Controller"
+  device_description: "Halloween Spider Drop"
   # Prefix used by Wifi IP, RSSI etc
-  upper_devicename: "Ice Maker"
+  upper_devicename: "Halloween Spider Drop"
   # Prefix used by main Inputs & Outputs
-  short_devicename: "Ice Maker"
-  ip: 192.168.2.40
+  short_devicename: "Spider Drop"
+  ip: 192.168.2.47
   pass: "hxN#^fPPv5ZRy%7l"
   status_led: LED_RED
   platform: ESP8266
@@ -26,7 +26,6 @@ esphome:
   comment: ${device_description}
   platform: ${platform}
   board: ${board}
-  # comment: NOT IN USE
 
 wifi:
   ssid: !secret IoT_VLAN_SSID
@@ -63,30 +62,15 @@ binary_sensor:
     device_class: connectivity
 # ...shared code end
 
-switch:
-  - platform: gpio
-    pin:
-      number: GPIO12
-      mode: OUTPUT
-    id: ICE_MAKER_SWITCH
-    restore_mode: RESTORE_DEFAULT_ON  
-    name: "Ice Maker Switch"
+# switch:
+#   - platform: gpio
+#     pin:
+#       number: GPIO12
+#       mode: OUTPUT
+#     id: ICE_MAKER_SWITCH
+#     restore_mode: RESTORE_DEFAULT_ON  
+#     name: "Ice Maker Switch"
 
-# GND for dallas
-  - platform: gpio
-    pin:
-      number: GPIO13
-      mode: OUTPUT_OPEN_DRAIN
-    restore_mode: ALWAYS_OFF  
-    name: "Active Drain"
-
-# fan:
-#   - platform: binary
-#     output: ICE_MAKER_SWITCH
-#     name: "Ice Maker"
-
-dallas:
-  - pin: GPIO14
 
 
    
@@ -117,6 +101,63 @@ sensor:
     id: wifi_signal_value
 # ...shared code end
     
-  - platform: dallas
-    address: 0x93001414B455FF28
-    name: "Ice Maker Water Temperature"
+servo:
+  - id: my_servo
+    output: pwm_output
+    # transition_length: 1s
+
+output:
+  - platform: esp8266_pwm
+    id: pwm_output
+    pin: GPIO4
+    frequency: 50 Hz
+    
+switch:
+  - platform: template
+    name: "Spider Drop Switch"
+    optimistic: true
+    # lambda: |-
+    #   if (id(some_binary_sensor).state) {
+    #     return true;
+    #   } else {
+    #     return false;
+    #   }
+    turn_on_action:
+      - servo.write:
+          id: my_servo
+          level: 30.0%
+      - delay: 2s
+      - servo.detach: my_servo
+    turn_off_action:
+      - servo.write:
+          id: my_servo
+          level: -100.0%
+      - delay: 2s
+      - servo.detach: my_servo
+
+button:
+  - platform: template
+    name: Drop Spider
+    id: spider_button_drop
+
+    # # Optional variables:
+    # icon: "mdi:emoticon-outline"
+    on_press:
+    - servo.write:
+        id: my_servo
+        level: 30.0%
+    - delay: 2s
+    - servo.detach: my_servo
+
+  - platform: template
+    name: Reset Spider
+    id: spider_button_set
+
+    # # Optional variables:
+    # icon: "mdi:emoticon-outline"
+    on_press:
+    - servo.write:
+        id: my_servo
+        level: -100.0%
+    - delay: 2s
+    - servo.detach: my_servo
