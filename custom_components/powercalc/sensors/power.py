@@ -40,6 +40,7 @@ from ..const import (
     ATTR_SOURCE_ENTITY,
     CONF_CALCULATION_ENABLED_CONDITION,
     CONF_DELAY,
+    CONF_DISABLE_EXTENDED_ATTRIBUTES,
     CONF_DISABLE_STANDBY_POWER,
     CONF_FIXED,
     CONF_FORCE_UPDATE_FREQUENCY,
@@ -64,8 +65,9 @@ from ..const import (
     OFF_STATES,
     CalculationStrategy,
 )
-from ..errors import ModelNotSupported, StrategyConfigurationError, UnsupportedMode
-from ..power_profile.model_discovery import get_power_profile
+from ..discovery import autodiscover_model
+from ..errors import ModelNotSupported, StrategyConfigurationError, UnsupportedStrategy
+from ..power_profile.factory import get_power_profile
 from ..power_profile.power_profile import PowerProfile, SubProfileSelector
 from ..strategy.factory import PowerCalculatorStrategyFactory
 from ..strategy.strategy_interface import PowerCalculationStrategyInterface
@@ -115,8 +117,9 @@ async def create_virtual_power_sensor(
             power_profile = discovery_info.get(DISCOVERY_POWER_PROFILE)
         else:
             try:
+                model_info = await autodiscover_model(hass, source_entity.entity_entry)
                 power_profile = await get_power_profile(
-                    hass, sensor_config, source_entity.entity_entry
+                    hass, sensor_config, model_info=model_info
                 )
             except ModelNotSupported as err:
                 if not is_fully_configured(sensor_config):
@@ -146,7 +149,7 @@ async def create_virtual_power_sensor(
             sensor_config, strategy, power_profile, source_entity
         )
         await calculation_strategy.validate_config()
-    except (StrategyConfigurationError, UnsupportedMode) as err:
+    except (StrategyConfigurationError, UnsupportedStrategy) as err:
         _LOGGER.error(
             "%s: Skipping sensor setup: %s",
             source_entity.entity_id,
@@ -243,9 +246,9 @@ def select_calculation_strategy(
         return CalculationStrategy.WLED
 
     if power_profile:
-        return power_profile.supported_modes[0]
+        return power_profile.calculation_strategy
 
-    raise UnsupportedMode(
+    raise UnsupportedStrategy(
         "Cannot select a strategy (LINEAR, FIXED or LUT, WLED), supply it in the config. See the readme"
     )
 
@@ -260,13 +263,13 @@ def is_fully_configured(config) -> bool:
     return False
 
 
-class PowerSensor:
+class PowerSensor(BaseEntity):
     """Class which all power sensors should extend from"""
 
     pass
 
 
-class VirtualPowerSensor(SensorEntity, BaseEntity, PowerSensor):
+class VirtualPowerSensor(SensorEntity, PowerSensor):
     """Virtual power sensor"""
 
     _attr_device_class = SensorDeviceClass.POWER
@@ -314,12 +317,13 @@ class VirtualPowerSensor(SensorEntity, BaseEntity, PowerSensor):
         self._sleep_power_timer: CALLBACK_TYPE | None = None
         if entity_category:
             self._attr_entity_category = EntityCategory(entity_category)
-        self._attr_extra_state_attributes = {
-            ATTR_CALCULATION_MODE: calculation_strategy,
-            ATTR_INTEGRATION: DOMAIN,
-            ATTR_SOURCE_ENTITY: source_entity.entity_id,
-            ATTR_SOURCE_DOMAIN: source_entity.domain,
-        }
+        if not sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
+            self._attr_extra_state_attributes = {
+                ATTR_CALCULATION_MODE: calculation_strategy,
+                ATTR_INTEGRATION: DOMAIN,
+                ATTR_SOURCE_ENTITY: source_entity.entity_id,
+                ATTR_SOURCE_DOMAIN: source_entity.domain,
+            }
         self._power_profile = power_profile
         self._sub_profile_selector: SubProfileSelector | None = None
         if (
@@ -552,6 +556,8 @@ class VirtualPowerSensor(SensorEntity, BaseEntity, PowerSensor):
 
     def set_energy_sensor_attribute(self, entity_id: str):
         """Set the energy sensor on the state attributes"""
+        if self._sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
+            return
         self._attr_extra_state_attributes.update(
             {ATTR_ENERGY_SENSOR_ENTITY_ID: entity_id}
         )

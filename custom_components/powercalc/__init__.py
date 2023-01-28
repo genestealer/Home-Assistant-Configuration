@@ -5,42 +5,29 @@ from __future__ import annotations
 import logging
 
 import homeassistant.helpers.config_validation as cv
-import homeassistant.helpers.entity_registry as er
 import voluptuous as vol
 from awesomeversion.awesomeversion import AwesomeVersion
-from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
-from homeassistant.components.media_player import DOMAIN as MEDIA_PLAYER_DOMAIN
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
-from homeassistant.components.switch import DOMAIN as SWITCH_DOMAIN
 from homeassistant.components.utility_meter import DEFAULT_OFFSET, max_28_days
 from homeassistant.components.utility_meter.const import METER_TYPES
-from homeassistant.config_entries import (
-    SOURCE_INTEGRATION_DISCOVERY,
-    SOURCE_USER,
-    ConfigEntry,
-    ConfigEntryState,
-)
+from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.const import (
     CONF_DOMAIN,
     CONF_ENTITIES,
-    CONF_ENTITY_ID,
-    CONF_NAME,
-    CONF_PLATFORM,
     CONF_SCAN_INTERVAL,
-    CONF_UNIQUE_ID,
     EVENT_HOMEASSISTANT_STARTED,
     Platform,
 )
 from homeassistant.const import __version__ as HA_VERSION
-from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers import discovery, discovery_flow
-from homeassistant.helpers.typing import ConfigType
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.discovery import async_load_platform
 
 from .common import SourceEntity, create_source_entity, validate_name_pattern
 from .const import (
     CONF_CREATE_DOMAIN_GROUPS,
     CONF_CREATE_ENERGY_SENSORS,
     CONF_CREATE_UTILITY_METERS,
+    CONF_DISABLE_EXTENDED_ATTRIBUTES,
     CONF_ENABLE_AUTODISCOVERY,
     CONF_ENERGY_INTEGRATION_METHOD,
     CONF_ENERGY_SENSOR_CATEGORY,
@@ -51,11 +38,13 @@ from .const import (
     CONF_FORCE_UPDATE_FREQUENCY,
     CONF_IGNORE_UNAVAILABLE_STATE,
     CONF_MANUFACTURER,
+    CONF_MODE,
     CONF_MODEL,
     CONF_POWER_SENSOR_CATEGORY,
     CONF_POWER_SENSOR_FRIENDLY_NAMING,
     CONF_POWER_SENSOR_NAMING,
     CONF_POWER_SENSOR_PRECISION,
+    CONF_SENSOR_TYPE,
     CONF_UTILITY_METER_OFFSET,
     CONF_UTILITY_METER_TARIFFS,
     CONF_UTILITY_METER_TYPES,
@@ -80,16 +69,17 @@ from .const import (
     ENERGY_INTEGRATION_METHODS,
     ENTITY_CATEGORIES,
     MIN_HA_VERSION,
+    CalculationStrategy,
     PowercalcDiscoveryType,
+    SensorType,
     UnitPrefix,
 )
-from .errors import ModelNotSupported
-from .power_profile.model_discovery import (
-    PowerProfile,
-    get_power_profile,
-    has_manufacturer_and_model_information,
+from .discovery import DiscoveryManager
+from .power_profile.power_profile import DEVICE_DOMAINS
+from .sensors.group import (
+    remove_group_from_power_sensor_entry,
+    remove_power_sensor_from_associated_groups,
 )
-from .sensors.group import update_associated_group_entry
 from .strategy.factory import PowerCalculatorStrategyFactory
 
 PLATFORMS = [Platform.SENSOR]
@@ -123,6 +113,9 @@ CONFIG_SCHEMA = vol.Schema(
                     vol.Optional(
                         CONF_ENERGY_SENSOR_CATEGORY, default=DEFAULT_ENTITY_CATEGORY
                     ): vol.In(ENTITY_CATEGORIES),
+                    vol.Optional(
+                        CONF_DISABLE_EXTENDED_ATTRIBUTES, default=False
+                    ): cv.boolean,
                     vol.Optional(CONF_ENABLE_AUTODISCOVERY, default=True): cv.boolean,
                     vol.Optional(CONF_CREATE_ENERGY_SENSORS, default=True): cv.boolean,
                     vol.Optional(CONF_CREATE_UTILITY_METERS, default=False): cv.boolean,
@@ -166,10 +159,13 @@ _LOGGER = logging.getLogger(__name__)
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     if AwesomeVersion(HA_VERSION) < AwesomeVersion(MIN_HA_VERSION):
-        _LOGGER.critical(
-            "Your HA version is outdated for this version of powercalc. Minimum required HA version is %s",
-            MIN_HA_VERSION,
+        msg = (
+            "This integration require at least HomeAssistant version "
+            f" {MIN_HA_VERSION}, you are running version {HA_VERSION}."
+            " Please upgrade HomeAssistant to continue use this integration."
         )
+        _notify_message(hass, "inv_ha_version", "PowerCalc", msg)
+        _LOGGER.critical(msg)
         return False
 
     domain_config = config.get(DOMAIN) or {
@@ -182,6 +178,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
         CONF_ENERGY_SENSOR_CATEGORY: DEFAULT_ENTITY_CATEGORY,
         CONF_ENERGY_SENSOR_UNIT_PREFIX: UnitPrefix.KILO,
         CONF_FORCE_UPDATE_FREQUENCY: DEFAULT_UPDATE_FREQUENCY,
+        CONF_DISABLE_EXTENDED_ATTRIBUTES: False,
         CONF_IGNORE_UNAVAILABLE_STATE: False,
         CONF_CREATE_DOMAIN_GROUPS: [],
         CONF_CREATE_ENERGY_SENSORS: True,
@@ -241,12 +238,6 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
     )
 
     if unload_ok:
-        updated_group_entry = await update_associated_group_entry(
-            hass, config_entry, remove=True
-        )
-        if updated_group_entry and updated_group_entry.state == ConfigEntryState.LOADED:
-            await hass.config_entries.async_reload(updated_group_entry.entry_id)
-
         used_unique_ids: list[str] = hass.data[DOMAIN][DATA_USED_UNIQUE_IDS]
         try:
             used_unique_ids.remove(config_entry.unique_id)
@@ -254,6 +245,23 @@ async def async_unload_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
             return True
 
     return unload_ok
+
+
+async def async_remove_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> None:
+    """Called after a config entry is removed."""
+    updated_entries: list[ConfigEntry] = []
+
+    sensor_type = config_entry.data.get(CONF_SENSOR_TYPE)
+    if sensor_type == SensorType.VIRTUAL_POWER:
+        updated_entries = await remove_power_sensor_from_associated_groups(
+            hass, config_entry
+        )
+    if sensor_type == SensorType.GROUP:
+        updated_entries = await remove_group_from_power_sensor_entry(hass, config_entry)
+
+    for entry in updated_entries:
+        if entry.state == ConfigEntryState.LOADED:
+            await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def create_domain_groups(
@@ -269,7 +277,7 @@ async def create_domain_groups(
         domain_entities = hass.data[DOMAIN].get(DATA_DOMAIN_ENTITIES)[domain]
 
         hass.async_create_task(
-            discovery.async_load_platform(
+            async_load_platform(
                 hass,
                 SENSOR_DOMAIN,
                 DOMAIN,
@@ -283,183 +291,18 @@ async def create_domain_groups(
         )
 
 
-class DiscoveryManager:
-    """
-    This class is responsible for scanning the HA instance for entities and their manufacturer / model info
-    It checks if any of these devices is supported in the powercalc library
-    When entities are found it will dispatch a discovery flow, so the user can add them to their HA instance
-    """
-
-    def __init__(self, hass: HomeAssistant, ha_config: ConfigType):
-        self.hass = hass
-        self.ha_config = ha_config
-        self.manually_configured_entities: list[str] | None = None
-
-    async def start_discovery(self):
-        """Start the discovery procedure"""
-
-        _LOGGER.debug("Start auto discovering entities")
-        entity_registry = er.async_get(self.hass)
-        for entity_entry in list(entity_registry.entities.values()):
-            if entity_entry.disabled:
-                continue
-
-            if entity_entry.domain not in (
-                LIGHT_DOMAIN,
-                SWITCH_DOMAIN,
-                MEDIA_PLAYER_DOMAIN,
-            ):
-                continue
-
-            if not await has_manufacturer_and_model_information(
-                self.hass, entity_entry
-            ):
-                continue
-
-            source_entity = await create_source_entity(
-                entity_entry.entity_id, self.hass
-            )
-            try:
-                power_profile = await get_power_profile(
-                    self.hass, {}, source_entity.entity_entry
-                )
-                if not power_profile:
-                    continue
-            except ModelNotSupported:
-                _LOGGER.debug(
-                    "%s: Model not found in library, skipping discovery",
-                    entity_entry.entity_id,
-                )
-                continue
-
-            has_user_config = self._is_user_configured(entity_entry.entity_id)
-
-            if (
-                power_profile.is_additional_configuration_required
-                and not has_user_config
-            ):
-                _LOGGER.warning(
-                    f"{entity_entry.entity_id}: Model found in database, but needs additional manual configuration to be loaded"
-                )
-                continue
-
-            if has_user_config:
-                _LOGGER.debug(
-                    "%s: Entity is manually configured, skipping auto configuration",
-                    entity_entry.entity_id,
-                )
-                continue
-
-            if not power_profile.is_entity_domain_supported(source_entity.domain):
-                continue
-
-            self._init_entity_discovery(source_entity, power_profile)
-
-        _LOGGER.debug("Done auto discovering entities")
-
-    @callback
-    def _init_entity_discovery(
-        self, source_entity: SourceEntity, power_profile: PowerProfile
-    ):
-        """Dispatch the discovery flow for a given entity"""
-        existing_entries = [
-            entry
-            for entry in self.hass.config_entries.async_entries(DOMAIN)
-            if entry.unique_id == source_entity.unique_id
-        ]
-        if existing_entries:
-            _LOGGER.debug(
-                f"{source_entity.entity_id}: Already setup with discovery, skipping new discovery"
-            )
-            return
-
-        discovery_flow.async_create_flow(
-            self.hass,
-            DOMAIN,
-            context={"source": SOURCE_INTEGRATION_DISCOVERY},
-            data={
-                CONF_UNIQUE_ID: source_entity.unique_id,
-                CONF_NAME: source_entity.name,
-                CONF_ENTITY_ID: source_entity.entity_id,
-                CONF_MANUFACTURER: power_profile.manufacturer,
-                CONF_MODEL: power_profile.model,
+def _notify_message(
+    hass: HomeAssistant, notification_id: str, title: str, message: str
+) -> None:
+    """Notify user with persistent notification"""
+    hass.async_create_task(
+        hass.services.async_call(
+            domain="persistent_notification",
+            service="create",
+            service_data={
+                "title": title,
+                "message": message,
+                "notification_id": f"{DOMAIN}.{notification_id}",
             },
         )
-
-        # Code below if for legacy discovery routine, will be removed somewhere in the future
-        discovery_info = {
-            CONF_ENTITY_ID: source_entity.entity_id,
-            DISCOVERY_SOURCE_ENTITY: source_entity,
-            DISCOVERY_POWER_PROFILE: power_profile,
-            DISCOVERY_TYPE: PowercalcDiscoveryType.LIBRARY,
-        }
-        self.hass.async_create_task(
-            discovery.async_load_platform(
-                self.hass, SENSOR_DOMAIN, DOMAIN, discovery_info, self.ha_config
-            )
-        )
-
-    def _is_user_configured(self, entity_id: str) -> bool:
-        """
-        Check if user have setup powercalc sensors for a given entity_id.
-        Either with the YAML or GUI method.
-        """
-        if not self.manually_configured_entities:
-            self.manually_configured_entities = (
-                self._load_manually_configured_entities()
-            )
-
-        return entity_id in self.manually_configured_entities
-
-    def _load_manually_configured_entities(self) -> list[str]:
-        """Looks at the YAML and GUI config entries for all the configured entity_id's"""
-        entities = []
-
-        # Find entity ids in yaml config
-        if SENSOR_DOMAIN in self.ha_config:
-            sensor_config = self.ha_config.get(SENSOR_DOMAIN)
-            platform_entries = [
-                item
-                for item in sensor_config
-                if isinstance(item, dict) and item.get(CONF_PLATFORM) == DOMAIN
-            ]
-            for entry in platform_entries:
-                entities.extend(self._find_entity_ids_in_yaml_config(entry))
-
-        # Add entities from existing config entries
-        entities.extend(
-            [
-                entry.data.get(CONF_ENTITY_ID)
-                for entry in self.hass.config_entries.async_entries(DOMAIN)
-                if entry.source == SOURCE_USER
-            ]
-        )
-
-        return entities
-
-    def _find_entity_ids_in_yaml_config(self, search_dict: dict):
-        """
-        Takes a dict with nested lists and dicts,
-        and searches all dicts for a key of the field
-        provided.
-        """
-        found_entity_ids = []
-
-        for key, value in search_dict.items():
-
-            if key == "entity_id":
-                found_entity_ids.append(value)
-
-            elif isinstance(value, dict):
-                results = self._find_entity_ids_in_yaml_config(value)
-                for result in results:
-                    found_entity_ids.append(result)
-
-            elif isinstance(value, list):
-                for item in value:
-                    if isinstance(item, dict):
-                        results = self._find_entity_ids_in_yaml_config(item)
-                        for result in results:
-                            found_entity_ids.append(result)
-
-        return found_entity_ids
+    )

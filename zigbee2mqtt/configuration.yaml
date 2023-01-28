@@ -50,8 +50,6 @@ devices:
     illuminance_below_threshold_check: true
   '0xb4e3f9fffef34402':
     friendly_name: Office Remote
-  '0x5c0272fffec8ba7e':
-    friendly_name: '0x5c0272fffec8ba7e'
   '0xd0cf5efffec7e1fb':
     friendly_name: Office Cabinets Inside
   '0x588e81fffe6c99fd':

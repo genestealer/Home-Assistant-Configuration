@@ -47,43 +47,41 @@
     - light.outside_4_up
     - light.outside_4_down
     - light.outside_5_down
+# Ikea Lights now grouped via zigbee2mqtt groups
+# - platform: group
+#   name: Dining Room Lights
+#   entities:
+#     - light.dining_room_left
+#     - light.dining_room_right
+#     - light.dining_room_ceiling_1
+#     - light.dining_room_ceiling_2
+#     - light.dining_room_ceiling_3
+#     - light.dining_room_ceiling_4
 
-- platform: group
-  name: Dining Room Lights
-  entities:
-    - light.dining_room_left
-    - light.dining_room_right
-    - light.dining_room_ceiling_1
-    - light.dining_room_ceiling_2
-    - light.dining_room_ceiling_3
-    - light.dining_room_ceiling_4
+# - platform: group
+#   name: Dining Room Ceiling Lights
+#   entities:
+#     - light.dining_room_ceiling_1
+#     - light.dining_room_ceiling_2
+#     - light.dining_room_ceiling_3
+#     - light.dining_room_ceiling_4
 
-- platform: group
-  name: Dining Room Ceiling Lights
-  entities:
-    - light.dining_room_ceiling_1
-    - light.dining_room_ceiling_2
-    - light.dining_room_ceiling_3
-    - light.dining_room_ceiling_4
+# - platform: group
+#   name: Dining Room Side Lights
+#   entities:
+#     - light.dining_room_left
+#     - light.dining_room_right
 
-- platform: group
-  name: Dining Room Side Lights
-  entities:
-    - light.dining_room_left
-    - light.dining_room_right
-    
-- platform: group
-  name: Office Lights
-  entities:
-    - light.office_lamp
-    - light.office_cabinet_front
-    - light.office_cabinet_inside
+# - platform: group
+#   name: Office Lights
+#   entities:
+#     - light.office_lamp
+#     - light.office_cabinet_front
+#     - light.office_cabinet_inside
 
-
-- platform: group
-  name: Kitchen Lights
-  entities:
-    - light.kitchen_lights_front
-    - light.kitchen_cabinets
-    - light.kitchen_under_counter
-    
+# - platform: group
+#   name: Kitchen Lights
+#   entities:
+#     - light.kitchen_lights_front
+#     - light.kitchen_cabinets
+#     - light.kitchen_under_counter

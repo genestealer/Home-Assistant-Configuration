@@ -1791,15 +1791,15 @@
       seconds: 0
   condition:
   - condition: zone
-    entity_id: device_tracker.insulin_pump
+    entity_id: device_tracker.insulin_pump_controller
     zone: zone.home
   action:
   - service: notify.mobile_app_rich_mob_app
     data:
-      message: Lucy Pump at Home!
+      message: Lucy Pump Controller was left at Home!
   - service: notify.mobile_app_lucy_app
     data:
-      message: Lucy Pump at Home!
+      message: Lucy Pump Controller was left at Home!
   mode: single
 - id: '1635187432504'
   alias: Outside Lights Motion Slow Fade
@@ -2801,7 +2801,7 @@
           brightness_pct: 50
         target:
           entity_id:
-          - light.kitchen
+          - light.kitchen_lights
       - delay:
           hours: 0
           minutes: 5
@@ -2838,11 +2838,12 @@
         brightness_pct: 100
       target:
         entity_id:
-        - light.kitchen
+        - light.kitchen_lights
     - service: light.turn_on
       data: {}
       target:
         entity_id: light.christmas_tree_lights
+      enabled: false
     - delay:
         hours: 0
         minutes: 10
@@ -2871,11 +2872,12 @@
           transition: 20
         target:
           entity_id:
-          - light.kitchen
+          - light.kitchen_lights
       - service: light.turn_off
         data: {}
         target:
           entity_id: light.christmas_tree_lights
+        enabled: false
   mode: restart
 - id: '1662324895501'
   alias: Occupancy Kitchen (Rev 2)  (delay till no motion)
@@ -3153,4 +3155,43 @@
         data: {}
         target:
           entity_id: light.outside_christmas_lights
+  mode: single
+- id: '1674941369558'
+  alias: Energenie eTRV Request Voltage Each Night
+  description: ''
+  trigger:
+  - platform: time
+    at: 04:00:00
+  condition: []
+  action:
+  - service: button.press
+    data: {}
+    target:
+      entity_id:
+      - button.5251_request_voltage
+      - button.3449_request_voltage
+      - button.5475_request_voltage
+      - button.5318_request_voltage
+      - button.3233_request_voltage
+  mode: single
+- id: '1674941449370'
+  alias: Energenie eTRV Calibrate Once a Week
+  description: ''
+  trigger:
+  - platform: time
+    at: 04:30:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - service: button.press
+    data: {}
+    target:
+      entity_id:
+      - button.5475_calibrate
+      - button.5318_calibrate
+      - button.5251_calibrate
+      - button.3449_calibrate
+      - button.3233_calibrate
   mode: single

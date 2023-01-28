@@ -185,25 +185,25 @@ logbook:
 
 # Tracked history is kept for 12 days. (Not cleared at startup)
 recorder:
-  purge_keep_days: 24
+  purge_keep_days: 48
   #db_url: !secret mariadb_db_url
-  exclude:
-    # domains:
-    #   - automation
-    #   - updater
-    entities:
-      - binary_sensor.cctv_garden_p3354_vmd3_0
-      - binary_sensor.cctv_garden_p3354_vmd4_camera1profileany
-      - binary_sensor.cctv_garden_p3354_vmd4_camera1profile1
-      - binary_sensor.cctv_garden_p3354_vmd3_0
-      - binary_sensor.cctv_garden_p3354_vmd3_0
-      - binary_sensor.cctv_garden_p3354_vmd3_0
-      - binary_sensor.drive_high_16_sound_1
-      # - binary_sensor.binary_sensor.p3364_l_0_vmd3_0
-      # - binary_sensor.p3364_l_0_vmd4_camera1profileany
-      # - binary_sensor.p3364_l_0_vmd4_camera1profile1
-      # - sensor.cpu_temperature
-    entity_globs: input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+  # exclude:
+  #   # domains:
+  #   #   - automation
+  #   #   - updater
+  #   entities:
+  #       entity_globs: input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
+  #     # - binary_sensor.cctv_garden_p3354_vmd4_camera1profileany
+  #     # - binary_sensor.cctv_garden_p3354_vmd4_camera1profile1
+  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
+  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
+  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
+  #     # - binary_sensor.drive_high_16_sound_1
+  #     # - binary_sensor.binary_sensor.p3364_l_0_vmd3_0
+  #     # - binary_sensor.p3364_l_0_vmd4_camera1profileany
+  #     # - binary_sensor.p3364_l_0_vmd4_camera1profile1
+  #     # - sensor.cpu_temperature
 
 # Enables a map showing the location of tracked devices
 map:
@@ -304,7 +304,9 @@ device_tracker:
     username: !secret google_maps_username
   # - platform: google_maps # Elements per day’ to a limit of 645.
   #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
+  # Example configuration.yaml entry
 
+  - platform: bluetooth_tracker
 # Moved to integrations UI from Rev 0.112
 # - platform: tile
 #   username: !secret tile_username
@@ -414,7 +416,7 @@ google_assistant:
     - scene
     - sensor
     # - media_player
-    # - climate
+    - climate
     # - group
 
   entity_config:
@@ -669,4 +671,3 @@ nextcloud:
   url: !secret nextcloud_url
   username: !secret nextcloud_username # App password
   password: !secret nextcloud_password
-
