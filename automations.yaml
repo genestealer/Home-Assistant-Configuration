@@ -2929,7 +2929,7 @@
   alias: Lucy Leave
   description: ''
   trigger:
-  - entity_id: person.Lucy
+  - entity_id: person.lucy
     for: 00:03:00
     from: home
     platform: state
