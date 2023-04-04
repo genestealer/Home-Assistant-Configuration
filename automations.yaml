@@ -1797,7 +1797,7 @@
   - service: notify.mobile_app_rich_mob_app
     data:
       message: Lucy Pump Controller was left at Home!
-  - service: notify.mobile_app_lucy_app
+  - service: notify.mobile_app_lucy_mob_app
     data:
       message: Lucy Pump Controller was left at Home!
   mode: single
@@ -2599,21 +2599,6 @@
       - media_player.kitchen_display
       - media_player.dining_room_display
   mode: single
-- id: '1655412239062'
-  alias: Chickens Warning Alert
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.chicken_water
-    below: input_number.chicken_water_low_level_warning
-  - platform: numeric_state
-    entity_id: sensor.chicken_food
-    below: input_number.chicken_food_low_level_warning
-  condition: []
-  action:
-  - service: persistent_notification.dismiss
-    data: {}
-  mode: single
 - id: '1658535783719'
   alias: 'Downstairs Lights Motion '
   description: ''
@@ -2797,7 +2782,7 @@
       sequence:
       - service: light.turn_on
         data:
-          transition: 1
+          transition: 2
           brightness_pct: 50
         target:
           entity_id:
@@ -2834,7 +2819,7 @@
     default:
     - service: light.turn_on
       data:
-        transition: 1
+        transition: 2
         brightness_pct: 100
       target:
         entity_id:
@@ -2940,69 +2925,6 @@
         entity_id:
         - light.kitchen
   mode: restart
-- id: '1665357306828'
-  alias: Motion Automation
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
-    entity_id: binary_sensor.motion_4b3b_occupancy
-    domain: binary_sensor
-    enabled: false
-  - type: motion
-    platform: device
-    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
-    entity_id: binary_sensor.0x60a423fffef26f3c_occupancy
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: fa69bc49d4bfe964b899661c045598c2
-    entity_id: binary_sensor.motion_99ad_occupancy
-    domain: binary_sensor
-    enabled: false
-  - type: motion
-    platform: device
-    device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: 8f93f025843a9a3da3c079739843e408
-    entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
-    domain: binary_sensor
-  condition: []
-  action:
-  - service: notify.mobile_app_rich_mob_app
-    data:
-      message: Motion
-      title: Motion
-  - repeat:
-      count: '4'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-          transition: 0.3
-        target:
-          entity_id:
-          - light.office
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 400
-      - service: light.turn_off
-        data:
-          transition: 0
-        target:
-          entity_id: light.office
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 250
-  mode: single
 - id: '1665959554800'
   alias: Lucy Leave
   description: ''
@@ -3164,15 +3086,107 @@
     at: 04:00:00
   condition: []
   action:
-  - service: button.press
-    data: {}
-    target:
-      entity_id:
-      - button.5251_request_voltage
-      - button.3449_request_voltage
-      - button.5475_request_voltage
-      - button.5318_request_voltage
-      - button.3233_request_voltage
+  - device_id: 19cbf4886ed19963f11d43ffa42e28a1
+    domain: button
+    entity_id: button.3233_request_voltage
+    type: press
+  - device_id: d337951ff2c335a3d5f683e67dfd26d2
+    domain: button
+    entity_id: button.living_room_5251_request_voltage
+    type: press
+  - device_id: f957cc27f4c122e6f0eacb4d243c9a8e
+    domain: button
+    entity_id: button.hall_5475_request_voltage
+    type: press
+  - device_id: 24bba5d362e56debd480c0f59f029f97
+    domain: button
+    entity_id: button.3449_request_voltage
+    type: press
+  - device_id: 83dc978cfbddb0f9764b377570699bc6
+    domain: button
+    entity_id: button.bedroom_5318_request_voltage
+    type: press
+  - device_id: b098db44bd582bb4fea96e6ed978bf77
+    domain: button
+    entity_id: button.downstairs_bathroom_3463_request_voltage
+    type: press
+  - device_id: 80740b24e9eb107b19783c422f97f7aa
+    domain: button
+    entity_id: button.guest_bedroom_5993_request_voltage
+    type: press
+  - device_id: 0f000d8183ab1dd480377756d16f5dfb
+    domain: button
+    entity_id: button.2989_request_voltage
+    type: press
+  - device_id: 8cd90fd55efb7302c051643b01637133
+    domain: button
+    entity_id: button.bathroom_4329_request_voltage
+    type: press
+  - device_id: b37b09196c9ead29fe67c3ac8e958a1d
+    domain: button
+    entity_id: button.4168_request_voltage
+    type: press
+  - device_id: 0cff734b573bdb8230ebd1bab69fb477
+    domain: button
+    entity_id: button.4324_request_voltage
+    type: press
+  - device_id: 1bb46d37b4b76e1074e643fa8e705965
+    domain: button
+    entity_id: button.4335_request_voltage
+    type: press
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - device_id: 19cbf4886ed19963f11d43ffa42e28a1
+    domain: button
+    entity_id: button.3233_request_diagnostics
+    type: press
+  - device_id: d337951ff2c335a3d5f683e67dfd26d2
+    domain: button
+    entity_id: button.living_room_5251_request_diagnostics
+    type: press
+  - device_id: f957cc27f4c122e6f0eacb4d243c9a8e
+    domain: button
+    entity_id: button.hall_5475_request_diagnostics
+    type: press
+  - device_id: 24bba5d362e56debd480c0f59f029f97
+    domain: button
+    entity_id: button.3449_request_diagnostics
+    type: press
+  - device_id: 83dc978cfbddb0f9764b377570699bc6
+    domain: button
+    entity_id: button.bedroom_5318_request_diagnostics
+    type: press
+  - device_id: b098db44bd582bb4fea96e6ed978bf77
+    domain: button
+    entity_id: button.downstairs_bathroom_3463_request_diagnostics
+    type: press
+  - device_id: 80740b24e9eb107b19783c422f97f7aa
+    domain: button
+    entity_id: button.guest_bedroom_5993_request_diagnostics
+    type: press
+  - device_id: 0f000d8183ab1dd480377756d16f5dfb
+    domain: button
+    entity_id: button.2989_request_diagnostics
+    type: press
+  - device_id: 8cd90fd55efb7302c051643b01637133
+    domain: button
+    entity_id: button.bathroom_4329_request_diagnostics
+    type: press
+  - device_id: b37b09196c9ead29fe67c3ac8e958a1d
+    domain: button
+    entity_id: button.4168_request_diagnostics
+    type: press
+  - device_id: 0cff734b573bdb8230ebd1bab69fb477
+    domain: button
+    entity_id: button.4324_request_diagnostics
+    type: press
+  - device_id: 1bb46d37b4b76e1074e643fa8e705965
+    domain: button
+    entity_id: button.4335_request_diagnostics
+    type: press
   mode: single
 - id: '1674941449370'
   alias: Energenie eTRV Calibrate Once a Week
@@ -3185,13 +3199,52 @@
     weekday:
     - sun
   action:
-  - service: button.press
-    data: {}
-    target:
-      entity_id:
-      - button.5475_calibrate
-      - button.5318_calibrate
-      - button.5251_calibrate
-      - button.3449_calibrate
-      - button.3233_calibrate
+  - device_id: 19cbf4886ed19963f11d43ffa42e28a1
+    domain: button
+    entity_id: button.3233_calibrate
+    type: press
+  - device_id: d337951ff2c335a3d5f683e67dfd26d2
+    domain: button
+    entity_id: button.living_room_5251_calibrate
+    type: press
+  - device_id: f957cc27f4c122e6f0eacb4d243c9a8e
+    domain: button
+    entity_id: button.hall_5475_calibrate
+    type: press
+  - device_id: 24bba5d362e56debd480c0f59f029f97
+    domain: button
+    entity_id: button.3449_calibrate
+    type: press
+  - device_id: 83dc978cfbddb0f9764b377570699bc6
+    domain: button
+    entity_id: button.bedroom_5318_calibrate
+    type: press
+  - device_id: b098db44bd582bb4fea96e6ed978bf77
+    domain: button
+    entity_id: button.downstairs_bathroom_3463_calibrate
+    type: press
+  - device_id: 80740b24e9eb107b19783c422f97f7aa
+    domain: button
+    entity_id: button.guest_bedroom_5993_calibrate
+    type: press
+  - device_id: 0f000d8183ab1dd480377756d16f5dfb
+    domain: button
+    entity_id: button.2989_calibrate
+    type: press
+  - device_id: 8cd90fd55efb7302c051643b01637133
+    domain: button
+    entity_id: button.bathroom_4329_calibrate
+    type: press
+  - device_id: b37b09196c9ead29fe67c3ac8e958a1d
+    domain: button
+    entity_id: button.4168_calibrate
+    type: press
+  - device_id: 0cff734b573bdb8230ebd1bab69fb477
+    domain: button
+    entity_id: button.4324_calibrate
+    type: press
+  - device_id: 1bb46d37b4b76e1074e643fa8e705965
+    domain: button
+    entity_id: button.4335_calibrate
+    type: press
   mode: single

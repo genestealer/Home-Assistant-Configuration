@@ -20,8 +20,8 @@
   devices:
     Maclean_0d52_04:
       name: Lamp_1 # renamed in customise.yaml to 'Libary Room Light'
-    Maclean_0d82_03:
-      name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Light'
+    # Maclean_0d82_03:
+    #   name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Light'
     # Maclean_0d85_02:
     #   name: Christmas Guest Bedroom Star
     # Maclean_0d82_02:
@@ -72,9 +72,6 @@
       name: Christmas Guest Bedroom Star
     Unitec_42d7_02:
       name: Christmas Living Room Star
-
-
-      
 # # 2022 No longer used as I've moved over to Ikea Tradfi
 # # 2.4GHz Lights Ikea Ansluta
 # - platform: rflink

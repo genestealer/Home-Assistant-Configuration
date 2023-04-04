@@ -43,6 +43,8 @@ sensor:
         sensor_type: humidity
         name: "Local Outside Humidity"
 
+
+   # Breaking Change: V1.0.11 to V1.1.0. and not worked out how this affects the code
   # https://github.com/petergridge/openweathermaphistory added via HACS (set to onecall_daily).
   # A home assistant sensor that uses the OpenWeatherMap API to return the last 5 days rainfall, min and max temperatures as attributes.
   - platform: openweathermaphistory
@@ -51,17 +53,19 @@ sensor:
     # latitude: -33.8302547
     # longitude: 151.1516128
     api_key: !secret openweathermap_api_key
-    num_days: 5
-    day0min: 1
-    day0max: 5
-    day1min: 6
-    day1max: 10
-    day2min: 11
-    day2max: 15
-    day3min: 16
-    day3max: 20
-    day4min: 21
-    day4max: 25
+    
+    # Breaking Change: V1.0.11 to V1.1.0. and not worked out how this affects the code
+        # num_days: 5 
+        # day0min: 1
+        # day0max: 5
+        # day1min: 6
+        # day1max: 10
+        # day2min: 11
+        # day2max: 15
+        # day3min: 16
+        # day3max: 20
+        # day4min: 21
+        # day4max: 25
     fine_icon: "mdi:weather-sunny"
     lightrain_icon: "mdi:weather-rainy"
     rain_icon: "mdi:weather-pouring"

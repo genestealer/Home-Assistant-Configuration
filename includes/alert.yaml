@@ -4,32 +4,3 @@
 #  https://www.home-assistant.io/integrations/alert/
 #
 ############################################################
- chicken_food_low_alert:
-   name: Chicken food low warning alert
-   done_message: Chickens Food Refilled
-   message: "Chicken Food Low Warning! {{ states.sensor.chicken_food.state }}kg"
-   entity_id: binary_sensor.chicken_low_food_level_warning
-   state: "on"
-   repeat:
-     - 60
-     - 120
-     - 240
-   can_acknowledge: true
-   skip_first: false
-   notifiers:
-     - mobile_app_rich_mob_app
-     
- chicken_water_low_alert:
-   name: Chicken water low warning alert
-   done_message: Chickens Water Refilled
-   message: "Chicken Water Low Warning! {{ states.sensor.chicken_water.state }}kg"
-   entity_id: binary_sensor.chicken_low_water_level_warning
-   state: "on"
-   repeat:
-     - 60
-     - 120
-     - 240
-   can_acknowledge: true
-   skip_first: false
-   notifiers:
-     - mobile_app_rich_mob_app

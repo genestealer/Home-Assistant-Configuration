@@ -8,8 +8,8 @@
 - platform: group
   name: Living Room Lights
   entities:
-    - light.sofa_left
-    - light.sofa_right
+    - light.living_room_sofa_left
+    - light.living_room_sofa_right
     - light.living_room_cabinet_inside
     - light.living_room_cabinet_front
     - light.living_room_ceiling_light

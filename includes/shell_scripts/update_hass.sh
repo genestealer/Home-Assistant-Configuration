@@ -1,4 +1,4 @@
-#!/bin/bash
+h#!/bin/bash
 
 # This is for log purposes
 echo

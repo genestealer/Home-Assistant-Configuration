@@ -306,7 +306,7 @@ device_tracker:
   #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
   # Example configuration.yaml entry
 
-  - platform: bluetooth_tracker
+  # - platform: bluetooth_tracker
 # Moved to integrations UI from Rev 0.112
 # - platform: tile
 #   username: !secret tile_username

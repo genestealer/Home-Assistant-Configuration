@@ -1,558 +1,560 @@
 kitchen_extractor_timer:
   alias: Kitchen Extractor Fan Timer
   sequence:
-    - entity_id: switch.kitchen_extractor_fan
-      service: switch.turn_on
-    - delay: 00:{{states('input_number.kitchen_fan_timer_duration') | round(0)}}:00
-    - entity_id: switch.kitchen_extractor_fan
-      service: switch.turn_off
+  - entity_id: switch.kitchen_extractor_fan
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.kitchen_fan_timer_duration') | round(0)}}:00
+  - entity_id: switch.kitchen_extractor_fan
+    service: switch.turn_off
   mode: restart
 front_garden_lawn_irrigation_timer:
   alias: Lawn Irrigation Timer
   sequence:
-    - entity_id: switch.front_garden_lawn_irrigation_valve
-      service: switch.turn_on
-    - delay: 00:{{states('input_number.front_garden_lawn_irrigation_duration') | round(0)}}
-    - entity_id: switch.front_garden_lawn_irrigation_valve
-      service: switch.turn_off
+  - entity_id: switch.front_garden_lawn_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.front_garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.front_garden_lawn_irrigation_valve
+    service: switch.turn_off
 front_garden_pot_irrigation_timer:
   alias: Pots Irrigation Timer
   sequence:
-    - entity_id: switch.front_garden_pot_irrigation_valve
-      service: switch.turn_on
-    - delay: 00:{{states('input_number.front_garden_pot_irrigation_duration') | round(0)}}
-    - entity_id: switch.front_garden_pot_irrigation_valve
-      service: switch.turn_off
+  - entity_id: switch.front_garden_pot_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.front_garden_pot_irrigation_duration') | round(0)}}
+  - entity_id: switch.front_garden_pot_irrigation_valve
+    service: switch.turn_off
 back_garden_irrigation_timer:
   alias: Garden Irrigation Timer
   sequence:
-    - entity_id: switch.back_garden_irrigation_valve
-      service: switch.turn_on
-    - delay: 00:{{states('input_number.back_garden_irrigation_duration') | round(0)}}
-    - entity_id: switch.back_garden_irrigation_valve
-      service: switch.turn_off
+  - entity_id: switch.back_garden_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.back_garden_irrigation_duration') | round(0)}}
+  - entity_id: switch.back_garden_irrigation_valve
+    service: switch.turn_off
 back_garden_lawn_irrigation_timer:
   alias: Garden Lawn Irrigation Timer
   sequence:
-    - entity_id: switch.back_garden_lawn_1_irrigation_valve
-      service: switch.turn_on
-    - delay: 00:{{states('input_number.back_garden_lawn_irrigation_duration') | round(0)}}
-    - entity_id: switch.back_garden_lawn_1_irrigation_valve
-      service: switch.turn_off
-    - entity_id: switch.back_garden_lawn_2_irrigation_valve
-      service: switch.turn_on
-    - delay: 00:{{states('input_number.back_garden_lawn_irrigation_duration') | round(0)}}
-    - entity_id: switch.back_garden_lawn_2_irrigation_valve
-      service: switch.turn_off
+  - entity_id: switch.back_garden_lawn_1_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.back_garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.back_garden_lawn_1_irrigation_valve
+    service: switch.turn_off
+  - entity_id: switch.back_garden_lawn_2_irrigation_valve
+    service: switch.turn_on
+  - delay: 00:{{states('input_number.back_garden_lawn_irrigation_duration') | round(0)}}
+  - entity_id: switch.back_garden_lawn_2_irrigation_valve
+    service: switch.turn_off
 saa_sleep_tracking_started:
   alias: Sleep Tracking Started
   sequence:
-    - service: light.turn_off
-      entity_id: light.bedroom
+  - service: light.turn_off
+    entity_id: light.bedroom
 saa_smart_period:
   alias: Sleep Tracking Smart Period
   sequence:
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 10
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 41
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 92
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 143
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 194
-    - delay:
-        minutes: 8
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 245
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 10
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 41
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 92
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 143
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 194
+  - delay:
+      minutes: 8
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 245
 saa_alarm_alert_start:
   alias: Sleep Tracking Alarm Alert
   sequence:
-    - service: light.turn_on
-      entity_id: light.bedroom
-      data:
-        brightness: 255
+  - service: light.turn_on
+    entity_id: light.bedroom
+    data:
+      brightness: 255
 bathroom_towel_rail_timer:
   alias: Bathroom Towel Rail Timer
   sequence:
-    - service: climate.set_hvac_mode
-      data:
-        hvac_mode: heat
-      target:
-        entity_id: climate.entryway
-    - data:
-        temperature: 29
-      service: climate.set_temperature
-      target:
-        entity_id: climate.entryway
-    - delay:
-        hours: 0
-        minutes: 10
-        seconds: 0
-        milliseconds: 0
-    - data:
-        temperature: 15
-      service: climate.set_temperature
-      target:
-        entity_id: climate.entryway
-    - data:
-        entity_id: bathroom_towel_rail_timer
-      service: script.turn_off
+  - service: climate.set_hvac_mode
+    data:
+      hvac_mode: heat
+    target:
+      device_id: f136402a1db4403ab554080d397b3fcb
+  - data:
+      temperature: 29
+    service: climate.set_temperature
+    target:
+      device_id: f136402a1db4403ab554080d397b3fcb
+  - delay:
+      hours: 0
+      minutes: '{{ states(''input_number.bathroom_towel_on_time'') | int }}'
+      seconds: 0
+      milliseconds: 0
+  - data:
+      temperature: 15
+    service: climate.set_temperature
+    target:
+      device_id: f136402a1db4403ab554080d397b3fcb
+  - data:
+      entity_id: bathroom_towel_rail_timer
+    service: script.turn_off
+    enabled: false
   mode: single
-"1576108013122":
+  icon: mdi:camera-timer
+'1576108013122':
   alias: Christmas Disco
   sequence:
-    - data: {}
-      entity_id: light.christmas_bedroom_star
-      service: light.toggle
-    - entity_id: light.christmas_garden_lights
-      service: light.toggle
-    - delay: 00:00:04
-    - entity_id: light.christmas_living_room_star
-      service: light.toggle
-    - delay: 00:00:04
-"1585905714103":
+  - data: {}
+    entity_id: light.christmas_bedroom_star
+    service: light.toggle
+  - entity_id: light.christmas_garden_lights
+    service: light.toggle
+  - delay: 00:00:04
+  - entity_id: light.christmas_living_room_star
+    service: light.toggle
+  - delay: 00:00:04
+'1585905714103':
   alias: BusyLight - I'm On A Call
   sequence:
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 0
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-"1585906019835":
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 0
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+'1585906019835':
   alias: BusyLight - I'm Free
   sequence:
-    - data:
-        brightness: 148
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 148
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 255
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 255
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 148
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 148
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 255
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 255
-        rgb_color:
-          - 0
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-"1585906111236":
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 0
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+'1585906111236':
   alias: BusyLight - I'm Working
   sequence:
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 148
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-    - delay: 00:00:01
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_1
-      service: light.turn_on
-    - data:
-        brightness: 255
-        rgb_color:
-          - 255
-          - 255
-          - 0
-      entity_id: light.busy_light_2
-      service: light.turn_on
-"1586361703646":
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 148
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+  - delay: 00:00:01
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_1
+    service: light.turn_on
+  - data:
+      brightness: 255
+      rgb_color:
+      - 255
+      - 255
+      - 0
+    entity_id: light.busy_light_2
+    service: light.turn_on
+'1586361703646':
   alias: BusyLight - I'm Away
   sequence:
-    - entity_id: light.busy_light_1
-      service: light.turn_off
-    - entity_id: light.busy_light_2
-      service: light.turn_off
-    - delay: 00:00:06
-    - entity_id: light.busy_light_1
-      service: light.turn_off
-    - entity_id: light.busy_light_2
-      service: light.turn_off
+  - entity_id: light.busy_light_1
+    service: light.turn_off
+  - entity_id: light.busy_light_2
+    service: light.turn_off
+  - delay: 00:00:06
+  - entity_id: light.busy_light_1
+    service: light.turn_off
+  - entity_id: light.busy_light_2
+    service: light.turn_off
 turn_on_then_dim_kitchen_under_counter_lights:
-  alias: "Dim Kitchen Lights "
+  alias: 'Dim Kitchen Lights '
   sequence:
-    - service: light.turn_on
-      data: {}
-      entity_id: light.kitchen_under_counter_lights
-    - delay: 00:00:10
-    - service: shell_command.rflink_dim_kitchen_lights
-      data: {}
+  - service: light.turn_on
+    data: {}
+    entity_id: light.kitchen_under_counter_lights
+  - delay: 00:00:10
+  - service: shell_command.rflink_dim_kitchen_lights
+    data: {}
   mode: single
   icon: mdi:brightness-6
 flash_dining_room_lights:
   alias: Flash Dining Room Lights
   sequence:
-    - service: scene.create
-      data:
-        scene_id: dining_room_before
-        snapshot_entities:
-          - light.sofa_left
-          - light.sofa_right
-          - light.cabinets
-    - repeat:
-        count: "20"
-        sequence:
-          - service: light.turn_on
-            data:
-              brightness_pct: 100
-            target:
-              entity_id:
-                - light.dining_room_lamp_left
-                - light.dining_room_lamp_right
-                - light.dining_room_ceiling_1
-                - light.dining_room_ceiling_2
-                - light.dining_room_ceiling_3
-                - light.dining_room_ceiling_4
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 0
-              milliseconds: 500
-          - service: light.turn_on
-            data:
-              brightness_pct: 1
-            target:
-              entity_id:
-                - light.dining_room_lamp_left
-                - light.dining_room_lamp_right
-                - light.dining_room_ceiling_1
-                - light.dining_room_ceiling_2
-                - light.dining_room_ceiling_3
-                - light.dining_room_ceiling_4
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 0
-              milliseconds: 500
-    - service: scene.turn_on
-      target:
-        entity_id: scene.dining_room_before
+  - service: scene.create
+    data:
+      scene_id: dining_room_before
+      snapshot_entities:
+      - light.sofa_left
+      - light.sofa_right
+      - light.cabinets
+  - repeat:
+      count: '20'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+        target:
+          entity_id:
+          - light.dining_room_lamp_left
+          - light.dining_room_lamp_right
+          - light.dining_room_ceiling_1
+          - light.dining_room_ceiling_2
+          - light.dining_room_ceiling_3
+          - light.dining_room_ceiling_4
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+        target:
+          entity_id:
+          - light.dining_room_lamp_left
+          - light.dining_room_lamp_right
+          - light.dining_room_ceiling_1
+          - light.dining_room_ceiling_2
+          - light.dining_room_ceiling_3
+          - light.dining_room_ceiling_4
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+  - service: scene.turn_on
+    target:
+      entity_id: scene.dining_room_before
   mode: restart
 flash_lights_red2:
   alias: Flash Living Room Lights
   sequence:
-    - service: scene.create
-      data:
-        scene_id: living_room_before
-        snapshot_entities:
+  - service: scene.create
+    data:
+      scene_id: living_room_before
+      snapshot_entities:
+      - light.sofa_left
+      - light.sofa_right
+      - light.cabinets
+  - repeat:
+      count: '5'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+          color_name: red
+        target:
+          entity_id:
           - light.sofa_left
           - light.sofa_right
-          - light.cabinets
-    - repeat:
-        count: "5"
-        sequence:
-          - service: light.turn_on
-            data:
-              brightness_pct: 100
-              color_name: red
-            target:
-              entity_id:
-                - light.sofa_left
-                - light.sofa_right
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 0
-              milliseconds: 500
-          - service: light.turn_on
-            data:
-              brightness_pct: 1
-              color_name: blue
-            target:
-              entity_id:
-                - light.sofa_left
-                - light.sofa_right
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 0
-              milliseconds: 500
-          - service: light.turn_on
-            data:
-              brightness_pct: 100
-              color_name: blue
-            target:
-              entity_id:
-                - light.sofa_left
-                - light.sofa_right
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 0
-              milliseconds: 500
-          - service: light.turn_on
-            data:
-              brightness_pct: 1
-              color_name: red
-            target:
-              entity_id:
-                - light.sofa_left
-                - light.sofa_right
-    - service: scene.turn_on
-      target:
-        entity_id: scene.living_room_before
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          color_name: blue
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
+          color_name: blue
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 1
+          color_name: red
+        target:
+          entity_id:
+          - light.sofa_left
+          - light.sofa_right
+  - service: scene.turn_on
+    target:
+      entity_id: scene.living_room_before
   mode: restart
 bedtime:
   alias: Bedtime
   sequence:
-    - choose:
-        - conditions:
-            - condition: device
-              type: is_on
-              device_id: 10355d9ecb235e8aa6db0db6ceba4a85
-              entity_id: light.lucy_bedside_light
-              domain: light
-          sequence:
-            - service: light.turn_on
-              data:
-                transition: 20
-                brightness_pct: 1
-                color_name: brown
-              target:
-                entity_id:
-                  - light.lucy_bedside_light
-                  - light.richard_bedside_bed
-      default:
-        - type: turn_off
-          device_id: d9b3a520d7afec5926573c6d91022d84
-          entity_id: light.richard_bedside_bed
-          domain: light
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 24
-        milliseconds: 0
-    - type: turn_off
-      device_id: 10355d9ecb235e8aa6db0db6ceba4a85
-      entity_id: light.lucy_bedside_light
-      domain: light
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 24
-        milliseconds: 0
-    - service: light.turn_on
-      data:
-        transition: 20
-        brightness_pct: 1
-        color_name: red
-      target:
-        entity_id:
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 10355d9ecb235e8aa6db0db6ceba4a85
+        entity_id: light.lucy_bedside_light
+        domain: light
+      sequence:
+      - service: light.turn_on
+        data:
+          transition: 20
+          brightness_pct: 1
+          color_name: brown
+        target:
+          entity_id:
           - light.lucy_bedside_light
           - light.richard_bedside_bed
+    default:
+    - type: turn_off
+      device_id: d9b3a520d7afec5926573c6d91022d84
+      entity_id: light.richard_bedside_bed
+      domain: light
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 24
+      milliseconds: 0
+  - type: turn_off
+    device_id: 10355d9ecb235e8aa6db0db6ceba4a85
+    entity_id: light.lucy_bedside_light
+    domain: light
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 24
+      milliseconds: 0
+  - service: light.turn_on
+    data:
+      transition: 20
+      brightness_pct: 1
+      color_name: red
+    target:
+      entity_id:
+      - light.lucy_bedside_light
+      - light.richard_bedside_bed
   mode: single
   icon: mdi:power-sleep
 new_script_test:
   alias: New Script test
   sequence:
-    - service: media_player.play_media
-      target:
-        entity_id: media_player.office_display
-      data:
-        media_content_id: media-source://camera/camera.testonvif_profile_1_h264
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: testonvif - profile_1 h264
-        thumbnail: /api/camera_proxy/camera.testonvif_profile_1_h264
-        media_class: video
-        children_media_class:
-        navigateIds:
-          - {}
-          - media_content_type: app
-            media_content_id: media-source://camera
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.office_display
+    data:
+      media_content_id: media-source://camera/camera.testonvif_profile_1_h264
+      media_content_type: application/vnd.apple.mpegurl
+    metadata:
+      title: testonvif - profile_1 h264
+      thumbnail: /api/camera_proxy/camera.testonvif_profile_1_h264
+      media_class: video
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://camera
   mode: single
 find_my_remote:
   alias: Find shield remote control
   sequence:
-    - data:
-        command: am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
-        entity_id: media_player.android_tv_192_168_10_34
-      service: androidtv.adb_command
+  - data:
+      command: am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
+      entity_id: media_player.android_tv_192_168_10_34
+    service: androidtv.adb_command
   mode: single
   icon: mdi:target
