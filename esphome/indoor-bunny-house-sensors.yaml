@@ -1,18 +1,18 @@
 ##############################################################
 # Richard Huish 2023
 # https://github.com/genestealer/Home-Assistant-Configuration
-# Bedroom Sensors
+# Indoor Bunny House Sensors
 ##############################################################
 # Config Header for Device
 ##############################################################
 substitutions:
   # Names
-  device_name: bedroom-sensor
-  friendly_name: "Bedroom Sensors"
-  ui_comment: "Bedroom Sensors - UPDATED" # Only shows in UI.
+  name: indoor-bunny-house
+  friendly_name: "Indoor Bunny House Sensors"
+  ui_comment: "Indoor Bunny House Sensors - UPDATED" # Only shows in UI.
   
   #Wifi Settings
-  ip: 192.168.2.38
+  ip: 192.168.2.37
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
@@ -22,9 +22,9 @@ substitutions:
   platform: ESP8266
   board: nodemcuv2
 
-  project_name: "genestealer.bedroom-sensors"
+  project_name: "genestealer.indoor-bunny-house-sensors"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/bedroom-sensor.yaml"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/indoor-bunny-house-sensors.yaml"
   
 
 ##############################################################
@@ -33,12 +33,9 @@ substitutions:
 
 # Packages
 packages:
-  device_base: !include .device_base.yaml
+  device_base: !include device_base.yaml
 
 esphome:
-  project:
-    name: ${project_name}
-    version: ${project_version}
 
 dashboard_import:
   package_import_url: ${package_import_url}

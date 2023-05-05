@@ -72,30 +72,83 @@
   condition: []
   action:
   - service: rest_command.cctv_front_door_restart
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
+    data: {}
+    enabled: false
   - service: rest_command.cctv_drive_restart
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
+    data: {}
+    enabled: false
   - service: rest_command.cctv_garage_restart
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - service: rest_command.cctv_garage2_restart
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
+    data: {}
+    enabled: false
   - service: rest_command.cctv_garden_restart
+    data: {}
+    enabled: false
+  - service: rest_command.cctv_garage2_restart
+    data: {}
+    enabled: false
+  - device_id: 853ca02c816df4ce4860c07060837a6a
+    domain: button
+    entity_id: button.front_door_11_onvif_reboot
+    type: press
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: 99689212065c11ebbd2ecbef1587dfe1
+    domain: button
+    entity_id: button.drive_high_16_reboot
+    type: press
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: ed137229065c11eb8030a1dacd09fb94
+    domain: button
+    entity_id: button.garage_13_onvif_reboot
+    type: press
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: 2318258f467e52e3ff856d5e31540329
+    domain: button
+    entity_id: button.garden_18_onvif_reboot
+    type: press
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: 9f2814a5af139ead2a88c4a477dda6c4
+    domain: button
+    entity_id: button.drive_long_12_reboot
+    type: press
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: 345bf174d40b5581b82ff49809885adf
+    domain: button
+    entity_id: button.chickens_15_onvif_reboot
+    type: press
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - device_id: 83dd8340e23fb86fef21b09a22a57929
+    domain: button
+    entity_id: button.drive_higher_21_onvif_reboot
+    type: press
 - id: '1564192629041'
   alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
   description: 'If script is turned off manually, then close valve, else it will stay
@@ -700,7 +753,7 @@
     service: script.turn_on
 - id: '1586868059957'
   alias: House Doorbell Button External Notify
-  description: https://github.com/home-assistant/core/issues/32236
+  description: Moved over to Companion App (from pushover)
   trigger:
   - device_id: b03ab12c707340e8849888171a79caed
     domain: binary_sensor
@@ -709,20 +762,113 @@
     type: turned_on
   condition: []
   action:
-  - data:
-      message: Ding Dong! Someone is at the door.
-      title: Doorbell Alert
-    service: notify.pushover_notify
-  - data:
-      filename: /config/www/tmp/front_door.jpg
-    service: camera.snapshot
-    entity_id: camera.front_door_11
+  - if:
+    - condition: state
+      entity_id: sensor.rich_mob_app_ringer_mode
+      state: normal
+    - condition: state
+      entity_id: sensor.rich_mob_app_do_not_disturb_sensor
+      state: 'off'
+    - condition: state
+      entity_id: sensor.rich_mob_app_audio_mode
+      state: normal
+    - condition: state
+      entity_id: binary_sensor.rich_mob_app_music_active
+      state: 'off'
+      enabled: false
+    then:
+    - service: notify.mobile_app_rich_mob_app
+      data:
+        data:
+          channel: DoorbellTTS2
+          importance: high
+          visibility: public
+          tts_text: Ding Dong Doorbell
+          media_stream: alarm_stream_max
+          ttl: 0
+          priority: high
+        message: TTS
+  - if:
+    - condition: state
+      entity_id: sensor.lucy_mob_app_ringer_mode
+      state: normal
+    - condition: state
+      entity_id: sensor.lucy_mob_app_do_not_disturb_sensor
+      state: 'off'
+    - condition: state
+      entity_id: sensor.lucy_mob_app_audio_mode
+      state: normal
+    - condition: state
+      entity_id: binary_sensor.lucy_mob_app_music_active
+      state: 'off'
+      enabled: false
+    then:
+    - service: notify.mobile_app_lucy_mob_app
+      data:
+        data:
+          channel: DoorbellTTS2
+          importance: high
+          visibility: public
+          tts_text: Ding Dong Doorbell
+          media_stream: alarm_stream_max
+          ttl: 0
+          priority: high
+        message: TTS
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      message: Front Door Doorbell.
+      data:
+        image: /api/camera_proxy/camera.front_door_11
+        color: red
+        channel: DoorbellImage2
+        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+        ttl: 0
+        priority: high
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      message: Front Door Doorbell.
+      data:
+        image: /api/camera_proxy/camera.front_door_11
+        color: red
+        channel: DoorbellImage2
+        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+        ttl: 0
+        priority: high
   - data:
       data:
         attachment: /config/www/tmp/front_door.jpg
       message: Photo
       title: Doorbell CCTV Photo
     service: notify.pushover_notify
+    enabled: false
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      message: Photo
+      data:
+        image: /api/camera_proxy/camera.drive_higher_21
+    enabled: false
+  - data:
+      filename: /config/www/tmp/front_door.jpg
+    service: camera.snapshot
+    entity_id: camera.front_door_11
+    enabled: false
+  - data:
+      message: Ding Dong! Someone is at the door.
+      title: Doorbell Alert
+    service: notify.pushover_notify
+    enabled: false
+  - condition:
+    - condition: state
+      entity_id: sensor.mobile_app_rich_mob_app_ringer_mode
+      state: normal
   mode: single
 - id: '1587600361094'
   alias: Busylight Controller Away Button Pressed
@@ -1808,7 +1954,7 @@
   - type: motion
     platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.drive_high_16_vmd4_profile_3
+    entity_id: binary_sensor.drive_high_16_vmd4_camera1profile3
     domain: binary_sensor
   condition:
   - condition: or

@@ -85,8 +85,6 @@ devices:
     friendly_name: Dining Room 3
   '0x000b57fffebdce17':
     friendly_name: Dining Room 1
-  '0x000b57fffebfd68d':
-    friendly_name: Dining Room 4
   '0xec1bbdfffe9eed51':
     friendly_name: Dining Room Remote
   '0xec1bbdfffedfbba3':
@@ -110,12 +108,30 @@ devices:
   '0xbc33acfffe98c391':
     friendly_name: Bedroom Lamp Right
   '0xd0cf5efffed992d0':
-    friendly_name: '0xd0cf5efffed992d0'
+    friendly_name: Repeater
   '0xb4e3f9fffef34402':
     friendly_name: Office Remote Control
   '0x842e14fffe422e7a':
     friendly_name: Living Room Remote Control
   '0xa4c1382cc73f5d09':
     friendly_name: '0xa4c1382cc73f5d09'
+  '0x000b57fffeb19864':
+    friendly_name: Outside 4 Down
+  '0x000b57fffebf28bc':
+    friendly_name: Outside 3 Up
+  '0x000b57fffebefcf4':
+    friendly_name: Outside 5 Down
+  '0x000b57fffebed036':
+    friendly_name: Outside 3 Down
+  '0x000b57fffe520a0e':
+    friendly_name: Outside 1 Up
+  '0x000b57fffeaffb7b':
+    friendly_name: Outside 1 Down
+  '0x000b57fffebfd68d':
+    friendly_name: Dining Room 4
+  '0x842e14fffe605be8':
+    friendly_name: Outside 2 Down
+  '0x000b57fffe8473b8':
+    friendly_name: Outside 2 Up
 availability: true
 groups: {}

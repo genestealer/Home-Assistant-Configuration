@@ -1,85 +1,108 @@
-- id: '1593956401387'
-  name: TEST
-  entities: {}
-- id: '1601166654813'
-  name: New Scene
-  entities:
-    light.richard_bed:
-      brightness: 67
-      friendly_name: Richard Bed
-      supported_features: 33
-      state: 'on'
 - id: '1608752142805'
   name: TV Time
   entities:
-    light.sofa_left:
-      min_mireds: 250
-      max_mireds: 454
-      supported_color_modes:
-      - color_temp
-      - hs
-      friendly_name: Living Room Sofa Left
-      supported_features: 51
-      state: 'off'
-    light.sofa_right:
-      min_mireds: 250
-      max_mireds: 454
-      supported_color_modes:
-      - color_temp
-      - hs
-      color_mode: hs
-      brightness: 51
-      hs_color:
-      - 30.427
-      - 64.705
-      rgb_color:
-      - 255
-      - 173
-      - 90
-      xy_color:
-      - 0.516
-      - 0.393
-      friendly_name: Living Room Sofa Right
-      supported_features: 51
-      state: 'on'
     light.living_room_ceiling_light:
       supported_color_modes:
       - onoff
       friendly_name: Living Room Ceiling Light
       supported_features: 0
       state: 'off'
-    light.living_room_cabinet_front:
+    light.living_room_sofa_left:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
       supported_color_modes:
-      - brightness
-      color_mode: brightness
-      brightness: 56
-      friendly_name: Living Room Cabinet Front
-      supported_features: 33
+      - color_temp
+      - xy
+      color_mode: color_temp
+      brightness: 102
+      hs_color:
+      - 28.502
+      - 67.279
+      rgb_color:
+      - 255
+      - 164
+      - 83
+      xy_color:
+      - 0.532
+      - 0.387
+      friendly_name: Living Room Sofa Left
+      supported_features: 44
+      color_temp_kelvin: 2652
+      color_temp: 377
       state: 'on'
-    light.living_room_cabinet_inside:
+    light.living_room_sofa_right:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4000
+      min_mireds: 250
+      max_mireds: 454
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - color_temp
+      - xy
+      friendly_name: Living Room Sofa Right
+      supported_features: 44
+      color_mode: color_temp
+      brightness: 127
+      hs_color:
+      - 28.47
+      - 66.821
+      rgb_color:
+      - 255
+      - 165
+      - 84
+      xy_color:
+      - 0.53
+      - 0.388
+      color_temp_kelvin: 2666
+      color_temp: 375
+      state: 'on'
+    light.living_room_cabinets_front:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
       supported_color_modes:
       - brightness
+      friendly_name: Living Room Cabinets Front
+      supported_features: 44
       color_mode: brightness
-      brightness: 56
-      friendly_name: Living Room Cabinet Inside
-      supported_features: 33
+      brightness: 51
+      state: 'on'
+    light.living_room_cabinets_inside:
+      effect_list:
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      supported_color_modes:
+      - brightness
+      friendly_name: Living Room Cabinets Inside
+      supported_features: 44
+      color_mode: brightness
+      brightness: 38
       state: 'on'
   icon: mdi:television-classic
-- id: '1625145522717'
-  name: Test office
-  entities:
-    media_player.office_display:
-      volume_level: 0.5600000023841858
-      is_volume_muted: false
-      media_content_id: gSdjztTxYgk
-      media_position: 0
-      media_position_updated_at: '2021-07-01T13:18:56.092324+00:00'
-      app_id: CC1AD845
-      app_name: Default Media Receiver
-      entity_picture_local:
-      friendly_name: Office display
-      supported_features: 152463
-      state: idle
+  metadata: {}
 - id: '1678302054815'
   name: Morning Heating
   entities:

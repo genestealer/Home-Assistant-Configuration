@@ -1,18 +1,18 @@
 ##############################################################
 # Richard Huish 2023
 # https://github.com/genestealer/Home-Assistant-Configuration
-# Loft Sensors
+# Bedroom Sensors
 ##############################################################
 # Config Header for Device
 ##############################################################
 substitutions:
   # Names
-  device_name: loft-sensor-sensor
-  friendly_name: "Loft Sensors"
-  ui_comment: "Loft Sensors - UPDATED" # Only shows in UI.
+  name: bedroom-sensor
+  friendly_name: "Bedroom Sensors"
+  ui_comment: "Bedroom Sensors - UPDATED" # Only shows in UI.
   
   #Wifi Settings
-  ip: 192.168.2.20
+  ip: 192.168.2.38
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
@@ -22,23 +22,21 @@ substitutions:
   platform: ESP8266
   board: nodemcuv2
 
-  project_name: "genestealer.loft-sensors"
+  project_name: "genestealer.bedroom-sensors"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/loft-sensor.yaml"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/bedroom-sensors.yaml"
   
 
 ##############################################################
 # Import shared code
 ##############################################################
-  
+
 # Packages
 packages:
-  device_base: !include .device_base.yaml
+  device_base: !include device_base.yaml
 
 esphome:
-  project:
-    name: ${project_name}
-    version: ${project_version}
+
 
 dashboard_import:
   package_import_url: ${package_import_url}

@@ -242,20 +242,20 @@ tts:
 
 # Use external MQTT broker.
 mqtt:
-  broker: !secret mqtt_broker
-  port: 1883
-  client_id: home-assistant
-  keepalive: 60
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-  discovery: true
+  # broker: !secret mqtt_broker
+  # port: 1883
+  # client_id: home-assistant
+  # keepalive: 60
+  # username: !secret mqtt_username
+  # password: !secret mqtt_password
+  # discovery: true
   binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
   cover: !include_dir_merge_list includes/mqtt/covers/
   sensor: !include_dir_merge_list includes/mqtt/sensors/
   switch: !include_dir_merge_list includes/mqtt/switches/
   light: !include_dir_merge_list includes/mqtt/lights/
 
-  # Push notification providers.
+# Push notification providers.
 notify:
   - name: Google Cloud Notify
     platform: html5
@@ -408,13 +408,20 @@ google_assistant:
   report_state: true
   expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
   exposed_domains: # This has no effect if expose_by_default is set to false.
+    - alarm_control_panel
     - switch
+    - input_boolean
+    - input_select
+    - fan
     - light
+    - lock
     - cover
     - camera
     - script
     - scene
     - sensor
+    - humidifie
+    - vacuum
     # - media_player
     - climate
     # - group
@@ -511,11 +518,11 @@ stream:
   # part_duration: 1.5
   # segment_duration: 10
 
-# Sep 2022, need to complete move to openweathermap
-weather:
-  - platform: darksky
-    api_key: !secret dark_sky_key
-    mode: daily
+# # Sep 2022, need to complete move to openweathermap
+# weather:
+#   - platform: darksky
+#     api_key: !secret dark_sky_key
+#     mode: daily
 
 # utility_meter:
 #   energy_cumulative_month:
@@ -667,7 +674,5 @@ input_text:
     min: 0
     max: 20
 
-nextcloud:
-  url: !secret nextcloud_url
-  username: !secret nextcloud_username # App password
-  password: !secret nextcloud_password
+
+media_source:

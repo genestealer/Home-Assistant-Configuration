@@ -105,12 +105,20 @@ bathroom_towel_rail_timer:
       temperature: 29
     service: climate.set_temperature
     target:
-      device_id: f136402a1db4403ab554080d397b3fcb
+      device_id:
+      - f136402a1db4403ab554080d397b3fcb
+      - 8cd90fd55efb7302c051643b01637133
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
   - delay:
       hours: 0
       minutes: '{{ states(''input_number.bathroom_towel_on_time'') | int }}'
       seconds: 0
       milliseconds: 0
+    enabled: false
   - data:
       temperature: 15
     service: climate.set_temperature
@@ -120,7 +128,7 @@ bathroom_towel_rail_timer:
       entity_id: bathroom_towel_rail_timer
     service: script.turn_off
     enabled: false
-  mode: single
+  mode: restart
   icon: mdi:camera-timer
 '1576108013122':
   alias: Christmas Disco
@@ -357,7 +365,7 @@ bathroom_towel_rail_timer:
   - entity_id: light.busy_light_2
     service: light.turn_off
 turn_on_then_dim_kitchen_under_counter_lights:
-  alias: 'Dim Kitchen Lights '
+  alias: Dim Kitchen Lights [OLD UNUSED]
   sequence:
   - service: light.turn_on
     data: {}
@@ -558,3 +566,19 @@ find_my_remote:
     service: androidtv.adb_command
   mode: single
   icon: mdi:target
+tea_brewing_timer:
+  alias: Tea Brewing Timer
+  sequence:
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 0
+      milliseconds: 0
+  - service: notify.google_assistant_sdk
+    data:
+      message: 'Your cup of tea has brewed. Your perfect cup of tea is ready! '
+      target:
+      - kitchen
+      - living room
+  mode: single
+  icon: mdi:coffee

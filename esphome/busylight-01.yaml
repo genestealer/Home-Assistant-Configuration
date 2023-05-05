@@ -26,7 +26,7 @@
 ##############################################################
 substitutions:
   # Used by ESP Home
-  device_name: busy-light-01
+  name: busy-light-01
   # Used by ESP Home
   device_description: "Busy Light 1"
   # Prefix used by Wifi IP, RSSI etc
@@ -43,7 +43,7 @@ substitutions:
 # Shared code from all my projects
 ##############################################################
 esphome:
-  name: ${device_name}
+  name: ${name}
   comment: ${device_description}
   platform: ${platform}
   board: ${board}

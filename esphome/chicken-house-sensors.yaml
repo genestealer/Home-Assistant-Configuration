@@ -25,7 +25,7 @@
 ##############################################################
 substitutions:
   # Names
-  device_name: chicken-house
+  name: chicken-house
   friendly_name: "Chicken House Sensors"
   ui_comment: "Chicken House Sensors - UPDATED" # Only shows in UI.
   
@@ -42,7 +42,7 @@ substitutions:
 
   project_name: "genestealer.chicken-house"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chicken-house.yaml"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chicken-house-sensors.yaml"
   
 
 ##############################################################
@@ -51,12 +51,12 @@ substitutions:
 
 # Packages
 packages:
-  device_base: !include .device_base.yaml
+  device_base: !include device_base.yaml
 
 esphome:
-  project:
-    name: ${project_name}
-    version: ${project_version}
+  # project:
+  #   name: ${project_name}
+  #   version: ${project_version}
 
 dashboard_import:
   package_import_url: ${package_import_url}
