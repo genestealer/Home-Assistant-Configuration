@@ -2701,6 +2701,7 @@
         - media_player.office_display
         - media_player.living_room_display
         - media_player.kitchen_display
+      enabled: false
     - service: media_player.play_media
       data:
         media_content_id: media-source://camera/camera.front_door_11
@@ -2715,11 +2716,11 @@
       target:
         entity_id: media_player.dining_room_display
       data:
-        media_content_id: media-source://camera/camera.drive_high_16
+        media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
         media_content_type: application/vnd.apple.mpegurl
       metadata:
-        title: P3364-L 0
-        thumbnail: /api/camera_proxy/camera.drive_high_16
+        title: Drive Higher .21 ONVIF profile_1 h264
+        thumbnail: /api/camera_proxy/camera.drive_higher_21_onvif_profile_1_h264
         media_class: video
         children_media_class:
         navigateIds:
@@ -2731,6 +2732,75 @@
         message: Ding! Dong! Someone is at the door
         entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
         cache: true
+    - service: camera.play_stream
+      data:
+        format: hls
+        media_player: media_player.office_display
+      target:
+        entity_id: camera.front_door_11_onvif_video
+      enabled: false
+    - service: camera.play_stream
+      data:
+        format: hls
+        media_player: media_player.office_display
+      target:
+        entity_id:
+        - camera.front_door_11_mjpg
+      enabled: false
+    - service: camera.play_stream
+      data:
+        format: hls
+        media_player: media_player.office_display
+      target:
+        entity_id:
+        - camera.front_door_11
+      enabled: false
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.office_display
+      data:
+        media_content_id: media-source://camera/camera.front_door_11_onvif_video
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: Front Door .11 ONVIF profile_1 h264
+        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
+      enabled: true
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.kitchen_display
+      data:
+        media_content_id: media-source://camera/camera.front_door_11_onvif_video
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: Front Door .11 ONVIF profile_1 h264
+        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.living_room_display
+      data:
+        media_content_id: media-source://camera/camera.front_door_11_onvif_video
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: Front Door .11 ONVIF profile_1 h264
+        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
   - delay:
       hours: 0
       minutes: 2
