@@ -1,4 +1,3 @@
-
 # ############################################################
 # #
 # # Home Assistant # views
@@ -25,7 +24,6 @@
 #     # - group.outside_weather_group
 
 #     - group.speed_test_group
-
 
 # irrigation_# view:
 #   name: Irrigation
@@ -62,7 +60,6 @@
 #   entities:
 #     - group.chicken_group
 
-
 # lights_# view:
 #   name: Lights
 #   # view: yes
@@ -73,7 +70,6 @@
 #     - group.inside_christmas_lights_group
 #     - group.outside_christmas_lights_group
 
-
 # bunny_shed_# view:
 #   name: Shed
 #   # view: yes
@@ -82,10 +78,6 @@
 #     - group.bunny_shed_controller_info_group
 #     - sensor.dark_sky_temperature
 #     - sensor.dark_sky_humidity
-
-
-
-
 
 # bedrooms_# view:
 #   name: Bedrooms
@@ -128,18 +120,13 @@
 #     - group.all_automations
 #     - group.all_scripts
 
-
-
 # ##########################
-
 
 # ############################################################
 # #
 # # Home Assistant Groups
 # #
 # ############################################################
-
-
 
 # cctv_group1:
 #   name: CCTV1
@@ -183,7 +170,6 @@
 # #     - device_tracker.google_maps_118405357218131797203
 # #     - device_tracker.google_maps_114635444798949098363
 
-
 # device_status_summary_group:
 #   name: Device Status Summary
 #   # view: no
@@ -204,7 +190,7 @@
 #     - binary_sensor.esp_link_status
 #     - binary_sensor.tor_db_status
 #     - binary_sensor.usp_network_online
-#     - binary_sensor.ikea_tradfri_gateway_online
+#     - binary_sensor.zigbee_gateway_online
 #     - binary_sensor.cc_status
 
 # cctv_status_group:
@@ -261,8 +247,6 @@
 #     - light.sofa_left
 #     - light.sofa_right
 
-
-
 # bunny_shed_group:
 #   name: Bunny Shed Climate Control
 #   # view: no
@@ -277,10 +261,8 @@
 #     - binary_sensor.bunny_shed_heater
 #     - sensor.bunny_shed_target_heat_temperature
 
-
 #     - binary_sensor.bunny_shed_cooler
 #     - sensor.bunny_shed_target_cool_temperature
-
 
 #     - sensor.bunny_shed_temperature_highest
 #     - sensor.bunny_shed_temperature_lowest
@@ -299,7 +281,6 @@
 #     - input_number.shed_target_heat_temp
 #     - input_number.shed_target_cool_temp
 
-
 # outside_weather_group:
 #   name: Outside Weather
 #   # view: no
@@ -311,7 +292,6 @@
 #     - sensor.dark_sky_precip_intensity_0d
 #     - sensor.dark_sky_wind_speed
 #     - sensor.dark_sky_wind_speed_0d
-
 
 # speed_test_group:
 #   name: Speed Test
@@ -381,8 +361,6 @@
 #     - script.back_garden_irrigation_timer
 #     - switch.back_garden_irrigation_valve
 
-
-
 # front_garden_pots_irrigation_group:
 #   name: Plant Pot Irrigation
 #   # view: no
@@ -397,7 +375,6 @@
 #     - input_number.irrigation_temperature_threshold
 #     - sensor.front_garden_pots_irrigation_interlock
 #     - group.front_garden_pots_irrigation_settings
-
 
 # front_garden_pots_irrigation_settings:
 #   name: Settings
@@ -424,7 +401,6 @@
 # #     - input_number.global_lawn_irrigation_wind_threshold
 # #     - script.back_garden_irrigation_timer
 # #     - switch.back_garden_irrigation_valve
-
 
 # # controller_info_groups
 # bunny_shed_controller_info_group:
@@ -475,20 +451,6 @@
 #     - binary_sensor.rf_link_status
 #     - sensor.esp_link_controller_signal_strength
 
-# tor_doorbell_info_group:
-#   name: TOR DoorBell Info
-#   # view: no
-#   # control: hidden
-#   entities:
-#     - binary_sensor.tor_db_status
-#     - sensor.tor_db_client_name
-#     - sensor.tor_db_host
-#     - sensor.tor_db_ip
-#     - sensor.tor_db_mac
-#     - sensor.tor_db_rssi
-#     - sensor.tor_db_ssid
-#     - counter.tor_db_disconnect_counter
-
 # ups_data_group:
 #   name: UPS Data
 #   # view: no
@@ -509,7 +471,6 @@
 #    - sensor.ups_last_self_test
 #    - sensor.ups_last_transfer
 #    - sensor.ups_transfer_from_battery
-
 
 # server_ilo_status_group:
 #   name: Server Status
@@ -554,8 +515,6 @@
 #     - sensor.server_thread
 #     - sensor.server_total
 
-
-
 # bedroom_master:
 #   name: Master Bedroom Lights
 #   # view: no
@@ -568,7 +527,6 @@
 #   # view: no
 #   entities:
 #     - light.lamp_2
-
 
 # bathroom_towel_rail_group:
 #   name: Bathroom Towel Rail

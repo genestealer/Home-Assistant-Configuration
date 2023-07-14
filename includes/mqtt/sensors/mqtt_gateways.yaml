@@ -66,60 +66,60 @@
   payload_not_available: "offline"
   icon: mdi:radio-tower
 
-############################################################
-#
-# Lighting Gateway Status
-#
-############################################################
+# ############################################################
+# #
+# # Lighting Gateway Status
+# #
+# ############################################################
 
-- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
-  name: "RFG Client Name"
-  value_template: "{{ value_json.ClientName }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
+# - state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+#   name: "RFG Client Name"
+#   value_template: "{{ value_json.ClientName }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
-  name: "RFG IP"
-  value_template: "{{ value_json.IP }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
+# - state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+#   name: "RFG IP"
+#   value_template: "{{ value_json.IP }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
-  name: "RFG MAC"
-  value_template: "{{ value_json.MAC }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
+# - state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+#   name: "RFG MAC"
+#   value_template: "{{ value_json.MAC }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
-  name: "RFG RSSI"
-  unit_of_measurement: "dB"
-  value_template: "{{ value_json.RSSI }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:signal-variant
+# - state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+#   name: "RFG RSSI"
+#   unit_of_measurement: "dB"
+#   value_template: "{{ value_json.RSSI }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:signal-variant
 
-- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
-  name: "RFG Host"
-  value_template: "{{ value_json.HostName }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
+# - state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+#   name: "RFG Host"
+#   value_template: "{{ value_json.HostName }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
-  name: "RFG SSID"
-  value_template: "{{ value_json.ConnectedSSID }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:radio-tower
+# - state_topic: "HUISHS/LightingGateway/NodeHealthJSON"
+#   name: "RFG SSID"
+#   value_template: "{{ value_json.ConnectedSSID }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:radio-tower
 
 ############################################################
 #
@@ -151,14 +151,14 @@
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
-  name: "IC Front RSSI"
-  unit_of_measurement: "dB"
-  value_template: "{{ value_json.RSSI }}"
-  availability_topic: "HUISHS/Irrigation1/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:signal-variant
+# - state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+#   name: "IC Front RSSI"
+#   unit_of_measurement: "dB"
+#   value_template: "{{ value_json.RSSI }}"
+#   availability_topic: "HUISHS/Irrigation1/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:signal-variant
 
 - state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
   name: "IC Front Host"
@@ -168,13 +168,13 @@
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
-  name: "IC Front SSID"
-  value_template: "{{ value_json.ConnectedSSID }}"
-  availability_topic: "HUISHS/Irrigation1/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:radio-tower
+# - state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+#   name: "IC Front SSID"
+#   value_template: "{{ value_json.ConnectedSSID }}"
+#   availability_topic: "HUISHS/Irrigation1/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:radio-tower
 
 ############################################################
 #
@@ -206,14 +206,14 @@
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
-  name: "IC Back RSSI"
-  unit_of_measurement: "dB"
-  value_template: "{{ value_json.RSSI }}"
-  availability_topic: "HUISHS/Irrigation2/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:signal-variant
+# - state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+#   name: "IC Back RSSI"
+#   unit_of_measurement: "dB"
+#   value_template: "{{ value_json.RSSI }}"
+#   availability_topic: "HUISHS/Irrigation2/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:signal-variant
 
 - state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
   name: "IC Back Host"
@@ -223,13 +223,13 @@
   payload_not_available: "offline"
   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
-  name: "IC Back SSID"
-  value_template: "{{ value_json.ConnectedSSID }}"
-  availability_topic: "HUISHS/Irrigation2/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:radio-tower
+# - state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+#   name: "IC Back SSID"
+#   value_template: "{{ value_json.ConnectedSSID }}"
+#   availability_topic: "HUISHS/Irrigation2/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:radio-tower
 ############################################################
 #
 # ESP-Link Controller Status
@@ -243,60 +243,6 @@
   value_template: "{{ value_json.rssi }}"
   icon: mdi:signal-variant
 
-############################################################
-#
-# TOR DoorBell Controller Status
-#
-############################################################
-
-- state_topic: "HUISHS/DoorBell/StatusJSON"
-  name: "TOR DB Client Name"
-  value_template: "{{ value_json.ClientName }}"
-  availability_topic: "HUISHS/DoorBell/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
-
-- state_topic: "HUISHS/DoorBell/StatusJSON"
-  name: "TOR DB IP"
-  value_template: "{{ value_json.IP }}"
-  availability_topic: "HUISHS/DoorBell/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
-
-- state_topic: "HUISHS/DoorBell/StatusJSON"
-  name: "TOR DB MAC"
-  value_template: "{{ value_json.MAC }}"
-  availability_topic: "HUISHS/DoorBell/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
-
-- state_topic: "HUISHS/DoorBell/StatusJSON"
-  name: "TOR DB RSSI"
-  unit_of_measurement: "dB"
-  value_template: "{{ value_json.RSSI }}"
-  availability_topic: "HUISHS/DoorBell/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:signal-variant
-
-- state_topic: "HUISHS/DoorBell/StatusJSON"
-  name: "TOR DB Host"
-  value_template: "{{ value_json.HostName }}"
-  availability_topic: "HUISHS/DoorBell/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
-
-- state_topic: "HUISHS/DoorBell/StatusJSON"
-  name: "TOR DB SSID"
-  value_template: "{{ value_json.ConnectedSSID }}"
-  availability_topic: "HUISHS/DoorBell/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:radio-tower
 
 ############################################################
 #
@@ -339,14 +285,14 @@
 #   payload_not_available: "offline"
 #   icon: mdi:desktop-classic
 
-- state_topic: "HUISHS/Chickens/Pi/Health"
-  name: "TOR DB RSSI"
-  unit_of_measurement: "dB"
-  value_template: "{{ value_json.RSSI }}"
-  availability_topic: "HUISHS/Chickens/Door/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:signal-variant
+# - state_topic: "HUISHS/Chickens/Pi/Health"
+#   name: "TOR DB RSSI"
+#   unit_of_measurement: "dB"
+#   value_template: "{{ value_json.RSSI }}"
+#   availability_topic: "HUISHS/Chickens/Door/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:signal-variant
 
 # - platform: mqtt
 #   state_topic: "HUISHS/Chickens/Pi/Health"

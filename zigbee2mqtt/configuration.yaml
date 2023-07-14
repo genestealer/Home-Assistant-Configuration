@@ -31,10 +31,13 @@ devices:
     friendly_name: '0x000b57fffe13967e'
   '0x000d6ffffea20000':
     friendly_name: '0x000d6ffffea20000'
+    legacy: false
   '0x000b57fffe38a445':
     friendly_name: '0x000b57fffe38a445'
+    legacy: false
   '0x000d6ffffe9c3ea8':
     friendly_name: '0x000d6ffffe9c3ea8'
+    legacy: false
   '0x588e81fffe787201':
     friendly_name: Spare
   '0x60a423fffef24b3b':
@@ -46,7 +49,7 @@ devices:
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0x60a423fffef26f3c':
-    friendly_name: Motion 6f3c
+    friendly_name: Kitchen Motion Sensor 3
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0xd0cf5efffec7e1fb':
@@ -81,12 +84,14 @@ devices:
     friendly_name: Dining Room Lamp Left
   '0x000b57fffe51eb27':
     friendly_name: Dining Room 2
+    state_action: false
   '0x000b57fffeb829ec':
     friendly_name: Dining Room 3
   '0x000b57fffebdce17':
     friendly_name: Dining Room 1
   '0xec1bbdfffe9eed51':
     friendly_name: Dining Room Remote
+    legacy: false
   '0xec1bbdfffedfbba3':
     friendly_name: Living Room Cabinets Front
   '0x000d6ffffec3aef6':
@@ -97,6 +102,7 @@ devices:
     friendly_name: Living Room Sofa Left
   '0xccccccfffe924b3c':
     friendly_name: Guest Bedroom Remote
+    legacy: false
   '0x70ac08fffeee86c6':
     friendly_name: Guest Bedroom Lamp Left
   '0xbc33acfffea1daa2':
@@ -105,16 +111,19 @@ devices:
     friendly_name: Bedroom Lamp Left
   '0x000b57fffef3701e':
     friendly_name: Bedroom Remote
+    legacy: false
   '0xbc33acfffe98c391':
     friendly_name: Bedroom Lamp Right
   '0xd0cf5efffed992d0':
     friendly_name: Repeater
   '0xb4e3f9fffef34402':
     friendly_name: Office Remote Control
+    legacy: false
   '0x842e14fffe422e7a':
     friendly_name: Living Room Remote Control
+    legacy: false
   '0xa4c1382cc73f5d09':
-    friendly_name: '0xa4c1382cc73f5d09'
+    friendly_name: Parcel Box
   '0x000b57fffeb19864':
     friendly_name: Outside 4 Down
   '0x000b57fffebf28bc':
@@ -133,5 +142,15 @@ devices:
     friendly_name: Outside 2 Down
   '0x000b57fffe8473b8':
     friendly_name: Outside 2 Up
+  '0x5c0272fffec8ba7e':
+    friendly_name: '0x5c0272fffec8ba7e'
+  '0xa4c1383ed970356b':
+    friendly_name: 'Garage Door Sensor '
+  '0xa4c1387ab3af9d49':
+    friendly_name: Back Door Sensor
+  '0xa4c138fdb6272825':
+    friendly_name: 'Front Door Sensor '
+  '0x000b57fffe27203b':
+    friendly_name: Dining Room Lamp Right
 availability: true
 groups: {}

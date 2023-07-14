@@ -12,17 +12,18 @@
 #       off_delay: 4
 #       force_update: true
 
-# Repurposed door sensor for parcel box
-- platform: rflink
-  devices:
-    eurodomest_2a2868_01:
-      name: "Parcel Box Sensor"
-      device_class: opening
-      off_delay: 4
-      force_update: true
-      # aliases:
-      #   - ev1527_01e9f5_07
-      #   - ev1527_05d797_0e
+# # Repurposed door sensor for parcel box. No longer in use 2023
+# - platform: rflink
+#   automatic_add: false
+#   devices:
+#     eurodomest_2a2868_01:
+#       name: "Parcel Box Sensor"
+#       device_class: opening
+#       off_delay: 4
+#       force_update: true
+#       # aliases:
+#       #   - ev1527_01e9f5_07
+#       #   - ev1527_05d797_0e
 
 ############################################################
 #

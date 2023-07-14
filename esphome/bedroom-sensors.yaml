@@ -18,7 +18,7 @@ substitutions:
 
   #Board Settings
   status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  status_led_inverted: "true"
   platform: ESP8266
   board: nodemcuv2
 
@@ -26,38 +26,101 @@ substitutions:
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/bedroom-sensors.yaml"
   
-
+  # PMSX003 Air Sensor Settings
+  sensor_update_interval: 300000ms #5 mins
+  # If > 30 seconds, and  tx_pin is set in the UART configuration, the fan will be spun down between measurements.
+  
 ##############################################################
 # Import shared code
 ##############################################################
 
-# Packages
+# Packages 
 packages:
   device_base: !include device_base.yaml
-
-esphome:
-
 
 dashboard_import:
   package_import_url: ${package_import_url}
   import_full_config: false # or true
 
+esphome:
+  # Set the pmsx003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
+  on_boot:
+    - delay: 3000ms
+    - logger.log: "Resetting pmsx003"
+    - output.turn_on: reset_pin
+    - delay: 1000ms
+    - output.turn_off: reset_pin
+    - delay: 1000ms
+    - output.turn_on: reset_pin
 ##############################################################
 # Main Code
 ##############################################################
 
-sensor:
-# Air Temperature and Humidity Sensor
-  - platform: dht
-    pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
-    temperature:
-      name: Temperature
-      state_class: measurement
-      device_class: temperature
-    humidity:
-      name: Humidity
-      state_class: measurement
-      device_class: humidity
-    update_interval: 300s
-    model: DHT22
+output:
+  # pmsx003 reset pin
+  - platform: gpio
+    pin: D1 # GPIO5 on nodemcuv2
+    id: reset_pin
 
+
+# Serial for pmsx003
+uart:
+  baud_rate: 9600
+  rx_pin: D6 #GPIO 12 on nodemcuv2
+  tx_pin: D5 #GPIO 14 on nodemcuv2
+
+sensor:
+  # Air sensor # https://esphome.io/components/sensor/pmsx003.html
+  - platform: pmsx003
+    type: PMS5003T
+    id: sensor01
+    update_interval: ${sensor_update_interval}
+    temperature:
+      name: "Temperature"
+      device_class: temperature
+      state_class: measurement
+   
+    humidity:
+      name: "Humidity"
+      device_class: humidity
+      state_class: measurement
+
+    # formaldehyde:
+    #   name: "Formaldehyde Concentration"
+    #   device_class: volatile_organic_compounds
+    #   state_class: measurement
+    
+    
+    # pm_1_0_std:
+
+    # pm_2_5_std:
+
+    # pm_10_0_std:
+      
+
+    pm_1_0:
+      name: "PM <1.0µm conc"
+      device_class: "pm1"
+      state_class: "measurement"
+    pm_2_5:
+      name: "PM <2.5µm conc"
+      device_class: "pm25"
+      state_class: "measurement"
+    pm_10_0:
+      name: "PM <10.0µm conc"
+      device_class: pm10
+      state_class: measurement
+
+    pm_0_3um:
+      name: "PM <0.3um in 0.1L of air"
+    pm_0_5um:
+      name: "PM <0.5um in 0.1L of air"
+    pm_1_0um:
+      name: "PM <1.0um in 0.1L of air"
+    pm_2_5um:
+      name: "PM <2.5um in 0.1L of air"
+    # pm_5_0um: # Value is not returned by PMS5003T
+    #   name: "PM <5.0um in 0.1L of air"
+    # pm_10_0um: # Value is not returned by PMS5003T
+    #   name: "PM <10.0um in 0.1L of air"
+    

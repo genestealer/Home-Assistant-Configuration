@@ -47,7 +47,6 @@ styles:
     - margin-top: -0.25em
     - margin-bottom: -1em
     - margin-left: 0.75em
-    - box-shadow: none
     - background: none
     - font-family: >
         [[[
@@ -117,7 +116,6 @@ tap_action:
           var entity_id = 'input_text.irrigation_cycle{{ cycle }}_name';
           return states[entity_id].state.toUpperCase() + ' SCHEDULE';
         ]]]
-      hide_header: false
       content:
         type: vertical-stack
         cards:
@@ -142,28 +140,10 @@ tap_action:
                   - entity: input_select.irrigation_cycle{{ cycle }}_start_time_type
                     state: Actual Time
                 card:
-                  type: custom:time-picker-card
-                  entity: input_datetime.irrigation_cycle{{ cycle }}_start_time
-                  name: Start Time
-                  layout:
-                    name: inside
-                  style:
-                    .time-picker-row:
-                      .time-picker-content:
-                        .: |
-                          .time-separator {
-                            display: none;
-                          }
-                        time-unit:
-                          $: |
-                            .time-unit {
-                              padding: 2px !important;
-                            }
-                            .time-input {
-                              border: 2px solid var(--primary-color) !important;
-                              background-color: rgba(0,0,0,0) !important;
-                              border-radius: 5px;
-                            }     
+                  type: entities
+                  entities:
+                    - entity: input_datetime.irrigation_cycle{{ cycle }}_start_time
+                      name: Start Time
 
               #=== Sunrise Offset
               - type: custom:hui-element
@@ -188,6 +168,68 @@ tap_action:
                   entities:
                     - entity: input_number.irrigation_cycle{{ cycle }}_start_time_sunset_offset
                       name: Offset in minutes
+
+              - type: custom:hui-element
+                card_type: markdown
+                content: >
+                  <font color=var(--primary-text-color)>
+                  At the cycle start time it is possible to wait for an entity to be in a certain state.
+                  </font>
+                style: >
+                  ha-card {
+                    font-size: 16px;
+                  }
+
+              #=== Wait for entity
+              - entity: input_boolean.irrigation_cycle{{ cycle }}_wait_for_entity
+                name: Wait For Entity
+
+              #=== Wait For Entity Details
+              - type: custom:hui-element
+                card_type: conditional
+                conditions:
+                  - entity: input_boolean.irrigation_cycle{{ cycle }}_wait_for_entity
+                    state: 'on'
+                card:
+                  type: entities
+                  entities:
+                    - entity: input_text.irrigation_cycle{{ cycle }}_wait_for_entity_name
+                      name: Entity Name
+
+                    - entity: input_text.irrigation_cycle{{ cycle }}_wait_for_entity_state
+                      name: Entity State
+
+                    - entity: input_boolean.irrigation_cycle{{ cycle }}_wait_for_entity_name_timeout_continue
+                      name: Wait Timeout Continue
+
+                    - entity: input_number.irrigation_cycle{{ cycle }}_wait_for_entity_name_timeout_duration
+                      name: Wait Timeout Duration
+
+              - type: custom:hui-element
+                card_type: conditional
+                conditions:
+                  - entity: input_boolean.irrigation_cycle{{ cycle }}_wait_for_entity
+                    state: 'on'
+                card:
+                  type: markdown
+                  content: >
+                    <font color=var(--primary-text-color)>
+                    Entity state can be a comma seperated list of states and may be prefixed with 'not in'.
+
+                    e.g.
+
+                    - open
+
+                    - open, closed
+
+                    - not open
+
+                    - not in open, closed
+                    </font>
+                  style: >
+                    ha-card {
+                      font-size: 16px;
+                    }
 
             card_mod:
               style: >

@@ -15,6 +15,7 @@
 
 # 433MHz switchs
 - platform: rflink
+  automatic_add: false
   device_defaults:
     signal_repetitions: 20
     fire_event: true
@@ -32,8 +33,9 @@
       name: Plug-In Air Freshener 1
     Eurodomest_0d25be_00: # Energenie MIHO002 plug in socket
       name: Plug-In Air Freshener 2
-      
+
 - platform: rflink
+  automatic_add: false
   device_defaults:
     signal_repetitions: 10
     fire_event: true
@@ -43,7 +45,7 @@
 
 # Not used
 # # Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
-# # Will genirate a 20;xx;CMD UNKNOWN; reponce 
+# # Will genirate a 20;xx;CMD UNKNOWN; reponce
 # - platform: rflink
 #   device_defaults:
 #     signal_repetitions: 1
@@ -52,8 +54,6 @@
 #     fake_fake_0:
 #         name: RFLink Fake Keep Alive Switch
 
-
-    
 # # Feb 2018: Removed and moved to "mqtt_switch.yaml" using my 433mhz MQTT controller
 # # https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway
 # # This is because of limitations with the HASS rflink not allowing custom "on" and "off"
@@ -71,9 +71,9 @@
 #     EV1527_080d40_4: # Office Blinds (THE BLIND GENIE)
 #       name: Office Blinds Open
 
-
 # Ikea two button round remote
 - platform: rflink
+  automatic_add: false
   device_defaults:
     fire_event: true
   devices:

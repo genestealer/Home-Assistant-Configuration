@@ -4,14 +4,14 @@
 #
 ############################################################
 
-# binary_sensor threshold does not support states for limits and we are forced to use a hardcoded values! 
+# binary_sensor threshold does not support states for limits and we are forced to use a hardcoded values!
 # https://community.home-assistant.io/t/use-template-for-binary-sensor-threshold/66577
 
 # https://www.home-assistant.io/integrations/threshold/
 binary_sensor:
   - platform: threshold
     name: Chicken Low Food Sensor
-    entity_id: sensor.chicken_house_sensors_chicken_food  #From EspHome Sensor
+    entity_id: sensor.chicken_house_sensors_chicken_food #From EspHome Sensor
     lower: 0.5
     device_class: problem
     hysteresis: 0.1
@@ -22,8 +22,6 @@ binary_sensor:
     lower: 0.5
     device_class: problem
     hysteresis: 0.1
-
-
 
 # Not used, as the moment as threshold does not support it.
 # https://www.home-assistant.io/integrations/input_number/
@@ -43,9 +41,6 @@ input_number:
     step: 0.01
     unit_of_measurement: kg
 
-
-
-
 # https://www.home-assistant.io/integrations/alert/
 alert:
   chicken_food_low_alert:
@@ -60,10 +55,15 @@ alert:
       - 240
     can_acknowledge: true
     skip_first: false
+    data:
+      channel: Chickens
+      importance: default
+      visibility: public
+      notification_icon: mdi:egg
     notifiers:
       - mobile_app_rich_mob_app
       - mobile_app_lucy_mob_app
-      
+
   chicken_water_low_alert:
     name: Chicken water low warning alert
     done_message: Chickens Water Refilled
@@ -76,9 +76,11 @@ alert:
       - 240
     can_acknowledge: true
     skip_first: false
+    data:
+      channel: Chickens
+      importance: default
+      visibility: public
+      notification_icon: mdi:egg
     notifiers:
       - mobile_app_rich_mob_app
       - mobile_app_lucy_mob_app
-      
-
-

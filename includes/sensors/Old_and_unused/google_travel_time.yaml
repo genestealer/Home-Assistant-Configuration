@@ -1,0 +1,44 @@
+# Old and unused
+
+# ###########################################################
+#
+# Google Travel Time Sensors
+#
+# Disabled as no longer used.
+#
+# ###########################################################
+
+# - platform: google_travel_time
+#   name: Morning Commute Home to Work
+#   api_key: !secret googlemaps_api_key
+#   origin: zone.home
+#   destination: zone.work
+#   scan_interval: 900 #15 mins. automation.update_frequency_morning_commute_sensor chanegs this to 5 mins in the mornings
+#   options:
+#     mode: driving
+
+# - platform: google_travel_time
+#   name: Evening Commute Home From Work
+#   api_key: !secret googlemaps_api_key
+#   origin: zone.work
+#   destination: zone.home
+#   scan_interval: 900 #15 mins
+#   options:
+#     mode: driving
+
+# - platform: google_travel_time
+#   name: Richard Travel Home
+#   api_key: !secret googlemaps_api_key
+#   origin: person.richard
+#   destination: zone.home
+#   scan_interval: 900 #15 mins
+#   options:
+#     mode: driving
+
+# - platform: google_travel_time2
+#   name: Richard to Home
+#   api_key: !secret googlemaps_api_key
+#   origin: device_tracker.Richard
+#   destination: zone.home
+#   options:
+#     mode: driving

@@ -52,18 +52,6 @@
       title: CCTV Offline
       message: '{{trigger.entity_id}} offline'
     service: notify.google_cloud_notify
-- id: '1557360744014'
-  alias: Increment TOR DB Disconnect Automation
-  trigger:
-  - entity_id: binary_sensor.tor_db_status
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: counter.tor_db_disconnect_counter
-    service: counter.increment
 - id: '1558317969078'
   alias: CCTV Reboot Each Day
   trigger:
@@ -213,7 +201,11 @@
       entity_id: sensor.back_garden_lawn_irrigation_interlock
       state: Uninhibited
   action:
-  - delay: 1 hour
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
   - entity_id: script.back_garden_lawn_irrigation_timer
     service: script.back_garden_lawn_irrigation_timer
 - id: '1564192623452'
@@ -625,25 +617,6 @@
         %I:%M %p')}}
       title: Irrigation offline
     service: notify.google_cloud_notify
-- id: '1581773383827'
-  alias: Irrigation controller status monitor notify
-  description: Monitor the health of my gateways
-  trigger:
-  - entity_id: binary_sensor.ic_front_status
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      message: Irrigation Controller has been offline for 10 mins. {{now().strftime('%Y-%m-%d
-        %I:%M %p')}}
-      title: Irrigation offline
-    service: notify.google_cloud_notify
 - id: '1581773123827'
   alias: 'Notify: Possible DDOS attack'
   trigger:
@@ -816,7 +789,7 @@
         message: TTS
   - service: notify.mobile_app_rich_mob_app
     data:
-      message: Front Door Doorbell.
+      message: Front Door Doorbell
       data:
         image: /api/camera_proxy/camera.front_door_11
         color: red
@@ -830,7 +803,7 @@
         priority: high
   - service: notify.mobile_app_lucy_mob_app
     data:
-      message: Front Door Doorbell.
+      message: Front Door Doorbell
       data:
         image: /api/camera_proxy/camera.front_door_11
         color: red
@@ -905,31 +878,82 @@
   alias: Parcel Box Opened Notify
   description: ''
   trigger:
-  - entity_id: binary_sensor.parcel_box_sensor
-    from: 'off'
-    platform: state
-    to: 'on'
+  - type: opened
+    platform: device
+    device_id: 2aadd916ad46270ecda5ab407a461e6c
+    entity_id: binary_sensor.parcel_box_contact
+    domain: binary_sensor
   condition: []
   action:
   - data:
       message: Parcel box has just been opened
       title: Delivery
     service: notify.pushover_notify
+    enabled: false
   - data:
       filename: /config/www/tmp/drive.jpg
     entity_id: camera.drive_high_16
     service: camera.snapshot
+    enabled: false
   - data:
       data:
         attachment: /config/www/tmp/drive.jpg
       message: Delivery person?
       title: Driveway CCTV Photo
     service: notify.pushover_notify
+    enabled: false
   - data:
       cache: false
       entity_id: media_player.whole_house
       message: Parcel box has just been opened
     service: tts.google_translate_say
+    enabled: false
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      message: Parcel Box Opened
+      data:
+        image: /api/camera_proxy/camera.garage_13
+        color: green
+        channel: ParcelBox1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
+    enabled: true
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      message: Front Door Doorbell
+      data:
+        image: /api/camera_proxy/camera.garage_13
+        color: green
+        channel: ParcelBox1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
+    enabled: true
+  - data:
+      filename: /config/www/tmp/garage.jpg
+    service: camera.snapshot
+    enabled: false
+    target:
+      entity_id:
+      - camera.garage_13
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      message: Parcel Box Opened
+      data:
+        image: /local/tmp/garage.jpg
+        color: green
+        channel: ParcelBox1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
+    enabled: false
   mode: single
 - id: '1592498327466'
   alias: House Doorbell Button Local Notify (OLD)
@@ -1071,7 +1095,7 @@
   - type: motion
     platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.drive_high_16_vmd4_profile_2
+    entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
   condition:
   - condition: time
@@ -1084,8 +1108,8 @@
     domain: binary_sensor
   - condition: device
     type: is_off
-    device_id: 68c0780a08a2a488fafcf891c0c971bf
-    entity_id: light.outside_1_up
+    device_id: 1a18e37d81f9eaee6c1870e944461b6b
+    entity_id: light.outside_1_down
     domain: light
   action:
   - delay:
@@ -1889,7 +1913,15 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: switch.button_1
+    entity_id:
+    - switch.button_1
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id:
+    - switch.button_1
+    from: 'off'
+    to: 'on'
   condition: []
   action:
   - choose:
@@ -1901,6 +1933,7 @@
       - service: switch.turn_on
         target:
           entity_id: switch.back_garden_irrigation_valve
+        data: {}
     - conditions:
       - condition: state
         entity_id: switch.button_1
@@ -1909,6 +1942,7 @@
       - service: switch.turn_off
         target:
           entity_id: switch.back_garden_irrigation_valve
+        data: {}
     default: []
   mode: single
 - id: '1631609930867'
@@ -1928,12 +1962,13 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: person.lucy
+    entity_id:
+    - person.lucy
     from: home
     to: not_home
     for:
       hours: 0
-      minutes: 5
+      minutes: 1
       seconds: 0
   condition:
   - condition: zone
@@ -2712,26 +2747,6 @@
         - media_player.living_room_display
         - media_player.kitchen_display
       enabled: false
-    - service: media_player.play_media
-      target:
-        entity_id: media_player.dining_room_display
-      data:
-        media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: Drive Higher .21 ONVIF profile_1 h264
-        thumbnail: /api/camera_proxy/camera.drive_higher_21_onvif_profile_1_h264
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
-    - service: tts.google_translate_say
-      data:
-        message: Ding! Dong! Someone is at the door
-        entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
-        cache: true
     - service: camera.play_stream
       data:
         format: hls
@@ -2755,6 +2770,50 @@
         entity_id:
         - camera.front_door_11
       enabled: false
+    - service: tts.google_translate_say
+      data:
+        message: Ding! Dong! Someone is at the door
+        entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
+        cache: true
+      enabled: false
+    - service: notify.google_assistant_sdk
+      data:
+        message: Ding! Dong! Someone is at the door
+        target:
+        - bathroom_speaker
+        - garage
+        - guest_bedroom
+        - bedroom
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.living_room_display
+      data:
+        media_content_id: media-source://camera/camera.front_door_11_onvif_video
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: Front Door .11 ONVIF profile_1 h264
+        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.dining_room_display
+      data:
+        media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
+        media_content_type: application/vnd.apple.mpegurl
+      metadata:
+        title: Drive Higher .21 ONVIF profile_1 h264
+        thumbnail: /api/camera_proxy/camera.drive_higher_21_onvif_profile_1_h264
+        media_class: video
+        children_media_class:
+        navigateIds:
+        - {}
+        - media_content_type: app
+          media_content_id: media-source://camera
     - service: media_player.play_media
       target:
         entity_id: media_player.office_display
@@ -2786,26 +2845,12 @@
         - {}
         - media_content_type: app
           media_content_id: media-source://camera
-    - service: media_player.play_media
-      target:
-        entity_id: media_player.living_room_display
-      data:
-        media_content_id: media-source://camera/camera.front_door_11_onvif_video
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: Front Door .11 ONVIF profile_1 h264
-        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
   - delay:
       hours: 0
       minutes: 2
       seconds: 0
       milliseconds: 0
+    enabled: false
   - service: media_player.turn_off
     data: {}
     target:
@@ -2814,6 +2859,7 @@
       - media_player.living_room_display
       - media_player.kitchen_display
       - media_player.dining_room_display
+    enabled: false
   mode: single
 - id: '1658535783719'
   alias: 'Downstairs Lights Motion '
@@ -2988,6 +3034,11 @@
     domain: binary_sensor
   - platform: event
     event_type: kitchen_occupied
+  - type: motion
+    platform: device
+    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
+    entity_id: 28a3386f16c485cc33b63825d1ee3184
+    domain: binary_sensor
   condition: []
   action:
   - choose:
@@ -3464,3 +3515,37 @@
     entity_id: button.4335_calibrate
     type: press
   mode: single
+- id: '1689364304362'
+  alias: Irrigation Notify When Controllers Goes Offline
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.ic_back_status
+    to:
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - platform: state
+    entity_id:
+    - binary_sensor.ic_front_status
+    to:
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      message: Irrigation Controller Offline
+      data:
+        channel: Irrigation
+        importance: default
+        visibility: public
+        notification_icon: mdi:water-alert-outline
+    enabled: true
+  mode: queued

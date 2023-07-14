@@ -151,27 +151,42 @@ conversation:
 
 # Enables support for tracking state changes over time. (Cleared at startup)
 history:
-  exclude:
-    entities:
-      - sensor.server_server_health
-      # - sensor.pi_hole_ads_blocked_today
-      # - sensor.pi_hole_ads_percentage_blocked_today
-      # - sensor.pi_hole_dns_queries_today
-      - sensor.date_time
-      - sensor.time
-      - sensor.unscaled_house_consumption_current
-      - sensor.server_server_power_on_time
 
-# View all events in a logbook
+
+# Tracked history. Dependency of the history integration
+recorder:
+  purge_keep_days: 64
+  #db_url: !secret mariadb_db_url
+  exclude:
+    # domains:
+    #   - automation
+    #   - updater
+    entities:
+      - sensor.date
+      - sensor.time
+      - sensor.date_time
+      - sensor.date_time_utc
+      - sensor.time_date
+      - sensor.time_utc
+      - sensor.date_time_iso
+      - sensor.internet_time
+    entity_globs:
+      input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+
+
+# View all events in a logbook. Depends on the recorder integration for storing the data.
 logbook:
   exclude:
     entities:
-      - sensor.server_server_health
-      # - sensor.pi_hole_ads_blocked_today
-      # - sensor.pi_hole_ads_percentage_blocked_today
-      # - sensor.pi_hole_dns_queries_today
-      - sensor.date_time
+      - sensor.date
       - sensor.time
+      - sensor.date_time
+      - sensor.date_time_utc
+      - sensor.time_date
+      - sensor.time_utc
+      - sensor.date_time_iso
+      - sensor.internet_time
+      - sensor.server_server_health
       - sensor.unscaled_house_consumption_current
       - sensor.server_server_power_on_time
       - sensor.cc_cpu_temperature
@@ -183,27 +198,8 @@ logbook:
       - sensor.adguard_safe_browsing_blocked
       - sensor.adguard_safe_searches_enforced
 
-# Tracked history is kept for 12 days. (Not cleared at startup)
-recorder:
-  purge_keep_days: 48
-  #db_url: !secret mariadb_db_url
-  # exclude:
-  #   # domains:
-  #   #   - automation
-  #   #   - updater
-  #   entities:
-  #       entity_globs: input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
-  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
-  #     # - binary_sensor.cctv_garden_p3354_vmd4_camera1profileany
-  #     # - binary_sensor.cctv_garden_p3354_vmd4_camera1profile1
-  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
-  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
-  #     # - binary_sensor.cctv_garden_p3354_vmd3_0
-  #     # - binary_sensor.drive_high_16_sound_1
-  #     # - binary_sensor.binary_sensor.p3364_l_0_vmd3_0
-  #     # - binary_sensor.p3364_l_0_vmd4_camera1profileany
-  #     # - binary_sensor.p3364_l_0_vmd4_camera1profile1
-  #     # - sensor.cpu_temperature
+
+
 
 # Enables a map showing the location of tracked devices
 map:
@@ -233,7 +229,7 @@ default_config:
 
 # Track the sun.
 sun:
-  elevation: !secret elevation
+  # elevation: !secret elevation
 
 # Text to speech.
 tts:
@@ -279,12 +275,7 @@ notify:
   #   platform: facebook
   #   page_access_token: !secret FB_Key
 
-# # Sep 2022, swapped to "Network UPS Tools" addon and integration.
-# # APC UPS Network Infomation Server, which talks to the networked UPS via apcupsd daemon (outside of HASS, but on same system).
-# apcupsd:
-#   host: a722577e-apcupsd-net
-# #  host: !secret apcupsdNisIP
-# #  port: !secret apcupsdNisPort
+
 
 #Google Nest integration.
 nest:
@@ -324,10 +315,6 @@ device_tracker:
 #   community: public
 #   baseoid: 1.3.6.1.2.1.2.2
 
-# IFTT integration.
-# ifttt:
-#   key: !secret ifttt_key
-
 # RFLink gateway integration, via ethernet bridge.
 #     Try socat pty,link=/config/serialport-rflink,echo=0 tcp:x.x.x.x:xxxx,forever,reuseaddr,keepalive,keepidle=10,keepintvl=10,keepcnt=2
 #       https://github.com/home-assistant/core/issues/23577
@@ -348,9 +335,8 @@ rflink:
     # - sensor.owl_cm113_ea9f_current3
     # - sensor.owl_cm130_007f_kwatt
 
-    # - sensor.alectov5_*
+
     - sensor.v2phoenix_*
-    # - sensor.dkw2012_*
     - light.drayton_*
     - light.elrodb_*
     - light.mertik_*
@@ -358,46 +344,6 @@ rflink:
     - light.btf_*
     - light.v2phoenix*
 
-# # Pi Hole integration sensor
-# pi_hole:
-#   host: !secret piHoleIPandPort
-
-# # Amazon Alexa integration via emulated Philips hue.
-# emulated_hue:
-#   host_ip: !secret Local_Host
-#   # listen_port: 8300
-#   entities:
-#     light.kitchen_under_counter_lights:
-#       name: "Kitchen Lights"
-
-# Side panel frames, but only externally accessible URLs work.
-# No longer wish to use.
-# panel_iframe:
-#   webmin1:
-#     title: StormBreaker Webmin
-#     icon: mdi:gauge
-#     url: !secret panel_iframe_StormBreaker_Webmin_URL
-#   downloads:
-#     title: Downloads
-#     icon: mdi:briefcase-download
-#     url: !secret panel_iframe_Downloads_URL
-#   sonarr:
-#     title: Sonarr
-#     icon: mdi:youtube-tv
-#     url: !secret panel_iframe_Sonarr_URL
-#   radarr:
-#     title: Radaar
-#     icon: mdi:filmstrip
-#     url: !secret panel_iframe_Radarr_URL
-#   subsonic:
-#     title: Subsonic
-#     icon: mdi:library-music
-#     url: !secret panel_iframe_Subsonic_URL
-#     # mdi:mdi-audiobook
-#     # webmin2:
-#     #   title: Thor Webmin
-#     #   icon: mdi:gauge
-#     #   url: !secret panel_iframe_Thor_Webmin_URL
 
 # Google Assistant intergration.
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
@@ -410,8 +356,8 @@ google_assistant:
   exposed_domains: # This has no effect if expose_by_default is set to false.
     - alarm_control_panel
     - switch
-    - input_boolean
-    - input_select
+    # - input_boolean
+    # - input_select
     - fan
     - light
     - lock
@@ -420,8 +366,8 @@ google_assistant:
     - script
     - scene
     - sensor
-    - humidifie
-    - vacuum
+    # - humidifier
+    # - vacuum
     # - media_player
     - climate
     # - group
@@ -492,25 +438,7 @@ google_assistant:
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token
 
-# # Unused Axis CCTV intergration.
-# axis:
-#    p3301:
-#      host: !secret axis_front_door_IP
-#      username: !secret axis_front_door_username
-#      password: !secret axis_front_door_password
-#      include:
-#       # - camera
-#       # - motion
-#       # - vmd3
-#       # - sound
-#      trigger_time: 0
 
-# Number counter
-counter:
-  tor_db_disconnect_counter:
-    name: TOR DB Disconnections
-    initial: 0
-    step: 1
 
 # Proxy video live streams through Home Assistant
 stream:
@@ -518,11 +446,7 @@ stream:
   # part_duration: 1.5
   # segment_duration: 10
 
-# # Sep 2022, need to complete move to openweathermap
-# weather:
-#   - platform: darksky
-#     api_key: !secret dark_sky_key
-#     mode: daily
+
 
 # utility_meter:
 #   energy_cumulative_month:
@@ -554,13 +478,13 @@ automation: !include automations.yaml # Cannot change location or filename as th
 script: !include scripts.yaml
 
 # Merge List
-automation old: !include_dir_merge_list includes/automation
+# automation old: !include_dir_merge_list includes/automation
 sensor: !include_dir_merge_list includes/sensors
 light: !include_dir_merge_list includes/lights
 binary_sensor: !include_dir_merge_list includes/binary_sensors
 switch: !include_dir_merge_list includes/switch
 cover: !include_dir_merge_list includes/cover
-camera: !include_dir_merge_list includes/cameras
+# camera: !include_dir_merge_list includes/cameras
 template: !include_dir_merge_list includes/template
 
 # Merge named dir
@@ -673,6 +597,5 @@ input_text:
   notifications_user2_name:
     min: 0
     max: 20
-
 
 media_source:

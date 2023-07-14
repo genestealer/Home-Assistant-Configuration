@@ -1,133 +1,127 @@
-#########################################################################################
-# Energenie MiHome https://energenie4u.co.uk/ 
-# Rest API interface https://mihome4u.co.uk/docs/api-documentation
-#########################################################################################
-# Richard Huish 2022
-#
-# This replaces the examples many people provided using command_sensor / command_switch 
-# with curl_commands.
-#
-# Notes: If you get  error message responses along the lines of:
-#  ""message": "`id` should be a `Integer` but is a `String`"
-#   double check you haven't accidentally put double quotes around the ID number.
-#
-# A very helpful website for debugging: https://reqbin.com/rest-api-testing / https://reqbin.com/req/v0crmky0/rest-api-post-example
-# 
-# Also, set the debugger to record all the detail about the rest components
-# in order to then see any error messages in the error log.
-#    logger:
-#      logs:
-#        homeassistant.components.rest: debug
-#########################################################################################
+# #  2023 Commented out, as I now use MQTT to locally control these via https://github.com/genestealer/node-red-energenie-ener314rt-home-assistant-mqtt
 
-###################################################################################################################
-# MiHome Switch ID:286134 Status Sensor
-# Control and Monitor Mi|Home Smart Plug+ MIHO005
-# Due to limitations with the RESTful switch integration (cannot have different resource URLs for on and off)
-# I have had to create a templated switch.
-# Sets the sensor as unavailable, if voltage_reported_at is more than 240 seconds ago.
-###################################################################################################################
-switch:
-  - platform: template
-    switches:
-      mihome_286134_switch:
-        friendly_name: "MiHome Ice Maker Switch"
-        # availability_template: "{{(now() - float(state_attr('sensor.mihome_286134_switch_status', 'voltage_reported_at'))| as_datetime).seconds < 240}}"
-        availability_template: "{{ as_timestamp(now()) - as_timestamp(state_attr('sensor.mihome_ice_maker_switch_status', 'voltage_reported_at')) < 240 }}"
-        value_template: "{{ is_state('sensor.mihome_ice_maker_switch_status', '1') }}"
-        turn_on:
-          - service: rest_command.mihome_286134_switch_on # Call RESTful Command to turn on switch.
-          - service: homeassistant.update_entity # Update switch status sensor now.
-            target:
-              entity_id: sensor.mihome_ice_maker_switch_status
-        turn_off:
-          - service: rest_command.mihome_286134_switch_off
-          - service: homeassistant.update_entity
-            target:
-              entity_id: sensor.mihome_ice_maker_switch_status
+# #########################################################################################
+# # Energenie MiHome https://energenie4u.co.uk/
+# # Rest API interface https://mihome4u.co.uk/docs/api-documentation
+# #########################################################################################
+# # Richard Huish 2022
+# #
+# # This replaces the examples many people provided using command_sensor / command_switch
+# # with curl_commands.
+# #
+# # Notes: If you get  error message responses along the lines of:
+# #  ""message": "`id` should be a `Integer` but is a `String`"
+# #   double check you haven't accidentally put double quotes around the ID number.
+# #
+# # A very helpful website for debugging: https://reqbin.com/rest-api-testing / https://reqbin.com/req/v0crmky0/rest-api-post-example
+# #
+# # Also, set the debugger to record all the detail about the rest components
+# # in order to then see any error messages in the error log.
+# #    logger:
+# #      logs:
+# #        homeassistant.components.rest: debug
+# #########################################################################################
 
+# ###################################################################################################################
+# # MiHome Switch ID:286134 Status Sensor
+# # Control and Monitor Mi|Home Smart Plug+ MIHO005
+# # Due to limitations with the RESTful switch integration (cannot have different resource URLs for on and off)
+# # I have had to create a templated switch.
+# # Sets the sensor as unavailable, if voltage_reported_at is more than 240 seconds ago.
+# ###################################################################################################################
+# switch:
+#   - platform: template
+#     switches:
+#       mihome_286134_switch:
+#         friendly_name: "MiHome Ice Maker Switch"
+#         # availability_template: "{{(now() - float(state_attr('sensor.mihome_286134_switch_status', 'voltage_reported_at'))| as_datetime).seconds < 240}}"
+#         availability_template: "{{ as_timestamp(now()) - as_timestamp(state_attr('sensor.mihome_ice_maker_switch_status', 'voltage_reported_at')) < 240 }}"
+#         value_template: "{{ is_state('sensor.mihome_ice_maker_switch_status', '1') }}"
+#         turn_on:
+#           - service: rest_command.mihome_286134_switch_on # Call RESTful Command to turn on switch.
+#           - service: homeassistant.update_entity # Update switch status sensor now.
+#             target:
+#               entity_id: sensor.mihome_ice_maker_switch_status
+#         turn_off:
+#           - service: rest_command.mihome_286134_switch_off
+#           - service: homeassistant.update_entity
+#             target:
+#               entity_id: sensor.mihome_ice_maker_switch_status
 
-rest_command:
-  mihome_286134_switch_on:
-    url: "https://mihome4u.co.uk/api/v1/subdevices/power_on"
-    payload: '{"id":286134}'
-    method: POST
-    content_type: application/json
-    username: !secret MiHome_ID
-    password: !secret MiHome_Password
-  mihome_286134_switch_off:
-    url: "https://mihome4u.co.uk/api/v1/subdevices/power_off"
-    payload: '{"id":286134}'
-    method: POST
-    content_type: application/json
-    username: !secret MiHome_ID
-    password: !secret MiHome_Password
+# rest_command:
+#   mihome_286134_switch_on:
+#     url: "https://mihome4u.co.uk/api/v1/subdevices/power_on"
+#     payload: '{"id":286134}'
+#     method: POST
+#     content_type: application/json
+#     username: !secret MiHome_ID
+#     password: !secret MiHome_Password
+#   mihome_286134_switch_off:
+#     url: "https://mihome4u.co.uk/api/v1/subdevices/power_off"
+#     payload: '{"id":286134}'
+#     method: POST
+#     content_type: application/json
+#     username: !secret MiHome_ID
+#     password: !secret MiHome_Password
 
+# sensor:
+#   - platform: rest
+#     name: "MiHome Ice Maker Switch Status"
+#     resource: 'https://mihome4u.co.uk/api/v1/subdevices/show'
+#     method: POST
+#     authentication: basic
+#     username: !secret MiHome_ID
+#     password: !secret MiHome_Password
+#     payload: '{"id":286134}'
+#     value_template: '{{ value_json.data.power_state }}'
+#     json_attributes_path: "data"
+#     json_attributes:
+#       - label
+#       - device_id
+#       - power_state
+#       - startup_mode
+#       - device_type
+#       - remote_id
+#       - voltage
+#       - voltage_reported_at
+#       - frequency
+#       - real_power
+#       - reactive_power
+#       - updated_at
+#       - today_wh
+#     headers:
+#       Content-Type: application/json
+#     force_update: true
+#     scan_interval: 60
 
+# # https://www.home-assistant.io/integrations/integration/
+# # https://community.home-assistant.io/t/powercalc-virtual-power-sensors/318515/3
+# # https://www.home-assistant.io/integrations/integration/#energy
+#   - platform: integration
+#     source: sensor.mihome_ice_maker_watts
+#     name: MiHome Ice Maker Energy
+#     unit_prefix: k
+#     unit_time: h
+#     round: 2
 
-sensor:
-  - platform: rest
-    name: "MiHome Ice Maker Switch Status"
-    resource: 'https://mihome4u.co.uk/api/v1/subdevices/show'
-    method: POST
-    authentication: basic
-    username: !secret MiHome_ID
-    password: !secret MiHome_Password
-    payload: '{"id":286134}'
-    value_template: '{{ value_json.data.power_state }}'
-    json_attributes_path: "data"
-    json_attributes:
-      - label
-      - device_id
-      - power_state
-      - startup_mode
-      - device_type
-      - remote_id
-      - voltage
-      - voltage_reported_at
-      - frequency
-      - real_power
-      - reactive_power
-      - updated_at
-      - today_wh
-    headers:
-      Content-Type: application/json
-    force_update: true
-    scan_interval: 60
+# # Not used in place of the newer template platform below.
+#   # - platform: template
+#   #   sensors:
+#   #     mihome_286134_watts:
+#   #       friendly_name: "MiHome Ice Maker Plug Watts2"
+#   #       value_template: "{{ state_attr('sensor.mihome_286134_switch_status', 'real_power') }}"
+#   #       availability_template: "{{(now() - state_attr('sensor.mihome_286134_switch_status', 'voltage_reported_at') | as_datetime).seconds < 240}}"
+#   #       unit_of_measurement: W
+#   #       device_class: power #Power, watts. Not "Energy" i.e. Wh.
+#   #       # state_class: measurement # Does not work on older template platform.
 
-# https://www.home-assistant.io/integrations/integration/
-# https://community.home-assistant.io/t/powercalc-virtual-power-sensors/318515/3
-# https://www.home-assistant.io/integrations/integration/#energy
-  - platform: integration
-    source: sensor.mihome_ice_maker_watts
-    name: MiHome Ice Maker Energy
-    unit_prefix: k
-    unit_time: h
-    round: 2
-
-# Not used in place of the newer template platform below.
-  # - platform: template
-  #   sensors:
-  #     mihome_286134_watts:
-  #       friendly_name: "MiHome Ice Maker Plug Watts2"
-  #       value_template: "{{ state_attr('sensor.mihome_286134_switch_status', 'real_power') }}"
-  #       availability_template: "{{(now() - state_attr('sensor.mihome_286134_switch_status', 'voltage_reported_at') | as_datetime).seconds < 240}}"
-  #       unit_of_measurement: W
-  #       device_class: power #Power, watts. Not "Energy" i.e. Wh.
-  #       # state_class: measurement # Does not work on older template platform.
-
-template: # https://www.home-assistant.io/integrations/template/#state-based-template-sensors
-  - sensor: #Use a template to create the wattage sensor, rather than an additional rest sensor, to reduce web queries to the mihome server
-      - name: "MiHome Ice Maker Watts"
-        # friendly_name: "MiHome Ice Maker Watts2"
-        state: "{{ state_attr('sensor.mihome_ice_maker_switch_status', 'real_power') }}"
-        # availability_template: "{{(now() - state_attr('sensor.mihome_286134_switch_status', 'voltage_reported_at') | as_datetime).seconds < 240}}"
-        unit_of_measurement: W
-        device_class: power #Power, watts. Not "Energy" i.e. Wh.
-        state_class: measurement
-
-
-
-
-
+# template: # https://www.home-assistant.io/integrations/template/#state-based-template-sensors
+#   - sensor: #Use a template to create the wattage sensor, rather than an additional rest sensor, to reduce web queries to the mihome server
+#       - name: "MiHome Ice Maker Watts"
+#         # friendly_name: "MiHome Ice Maker Watts2"
+#         state: "{{ state_attr('sensor.mihome_ice_maker_switch_status', 'real_power') }}"
+#         # availability_template: "{{(now() - state_attr('sensor.mihome_286134_switch_status', 'voltage_reported_at') | as_datetime).seconds < 240}}"
+#         unit_of_measurement: W
+#         device_class: power #Power, watts. Not "Energy" i.e. Wh.
+#         state_class: measurement
 

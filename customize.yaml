@@ -255,9 +255,6 @@ sensor.dkw2012_009e_bat:
   device_class: battery
 sensor.alectov3_30d1_bat:
   device_class: battery
-sensor.alectov3_30d1_update_time: {}
-sensor.alectov5_00a3_update_time: {}
-sensor.dkw2012_009e_update_time: {}
 sensor.local_light_intensity:
   device_class: illuminance
 sensor.local_outside_humidity:

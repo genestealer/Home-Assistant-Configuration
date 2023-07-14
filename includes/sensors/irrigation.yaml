@@ -12,98 +12,100 @@
 ############################################################
 # Weather Interlock
 ############################################################
-- platform: template
-  sensors:
-    front_garden_lawn_irrigation_interlock:
-      friendly_name: "Inhibiter"
-      value_template: >
-        {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.lawns_irrigation_rain_threshold') | int %}
-          Inhibited: Forecasted rain {{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int}}mm, threshold is {{states('input_number.lawnsirrigation_rain_threshold') | int}}mm
-        {% elif states('sensor.dark_sky_wind_speed') | int > states('input_number.lawns_irrigation_wind_threshold') | int %}
-          Inhibited: Too windy at {{states('sensor.dark_sky_wind_speed')}}mph, threshold is {{states('input_number.lawns_irrigation_wind_threshold') | int}}mph
-        {% elif states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
-          Inhibited: Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
-        {% else %}
-          Uninhibited
-        {% endif %}
-      icon_template: >-
-        {% if is_state('sensor.front_garden_lawn_irrigation_interlock', 'Uninhibited') %}
-          mdi:check
-        {% elif 'Too windy' in states('sensor.front_garden_lawn_irrigation_interlock') %}
-          mdi:weather-windy
-        {% elif 'Too cold' in states('sensor.front_garden_lawn_irrigation_interlock') %}
-          mdi:snowflake-alert
-        {% else %}
-          mdi:alert
-        {% endif %}
+# - platform: template
+#   sensors:
+#     front_garden_lawn_irrigation_interlock:
+#       friendly_name: "Inhibiter"
+#       value_template: >
+#         {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.lawns_irrigation_rain_threshold') | int %}
+#           Inhibited: Forecasted rain {{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int}}mm, threshold is {{states('input_number.lawnsirrigation_rain_threshold') | int}}mm
+#         {% elif states('sensor.dark_sky_wind_speed') | int > states('input_number.lawns_irrigation_wind_threshold') | int %}
+#           Inhibited: Too windy at {{states('sensor.dark_sky_wind_speed')}}mph, threshold is {{states('input_number.lawns_irrigation_wind_threshold') | int}}mph
+#         {% elif states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
+#           Inhibited: Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
+#         {% else %}
+#           Uninhibited
+#         {% endif %}
+#       icon_template: >-
+#         {% if is_state('sensor.front_garden_lawn_irrigation_interlock', 'Uninhibited') %}
+#           mdi:check
+#         {% elif 'Too windy' in states('sensor.front_garden_lawn_irrigation_interlock') %}
+#           mdi:weather-windy
+#         {% elif 'Too cold' in states('sensor.front_garden_lawn_irrigation_interlock') %}
+#           mdi:snowflake-alert
+#         {% else %}
+#           mdi:alert
+#         {% endif %}
+
+# - platform: template
+#   sensors:
+#     front_garden_pots_irrigation_interlock:
+#       friendly_name: "Inhibiter"
+#       value_template: >
+#         {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
+#           Inhibited: Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
+#         {% else %}
+#           Uninhibited
+#         {% endif %}
+#       icon_template: >-
+#         {% if is_state('sensor.front_garden_pots_irrigation_interlock', 'Uninhibited') %}
+#           mdi:check
+#         {% elif 'Too windy' in states('sensor.front_garden_pots_irrigation_interlock') %}
+#           mdi:weather-windy
+#         {% elif 'Too cold' in states('sensor.front_garden_pots_irrigation_interlock') %}
+#           mdi:snowflake-alert
+#         {% else %}
+#           mdi:alert
+#         {% endif %}
+
+# - platform: template
+#   sensors:
+#     back_garden_irrigation_interlock:
+#       friendly_name: "Inhibiter"
+#       value_template: >
+#         {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
+#           Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
+#         {% else %}
+#           Uninhibited
+#         {% endif %}
+#       icon_template: >-
+#         {% if is_state('sensor.back_garden_irrigation_interlock', 'Uninhibited') %}
+#           mdi:check
+#         {% elif 'Too windy' in states('sensor.back_garden_irrigation_interlock') %}
+#           mdi:weather-windy
+#         {% elif 'Too cold' in states('sensor.back_garden_irrigation_interlock') %}
+#           mdi:snowflake-alert
+#         {% else %}
+#           mdi:alert
+#         {% endif %}
+
+# - platform: template
+#   sensors:
+#     back_garden_lawn_irrigation_interlock:
+#       friendly_name: "Inhibiter"
+#       value_template: >
+#         {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.lawns_irrigation_rain_threshold') | int %}
+#           Inhibited: Forecasted rain {{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int}}mm, threshold is {{states('input_number.lawns_irrigation_rain_threshold') | int}}mm
+#         {% elif states('sensor.dark_sky_wind_speed') | int > states('input_number.lawns_irrigation_wind_threshold') | int %}
+#           Inhibited: Too windy at {{states('sensor.dark_sky_wind_speed')}}mph, threshold is {{states('input_number.lawns_irrigation_wind_threshold') | int}}mph
+#         {% elif states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
+#           Inhibited: Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
+#         {% else %}
+#           Uninhibited
+#         {% endif %}
+#       icon_template: >-
+#         {% if is_state('sensor.back_garden_lawn_irrigation_interlock', 'Uninhibited') %}
+#           mdi:check
+#         {% elif 'Too windy' in states('sensor.back_garden_lawn_irrigation_interlock') %}
+#           mdi:weather-windy
+#         {% elif 'Too cold' in states('sensor.back_garden_lawn_irrigation_interlock') %}
+#           mdi:snowflake-alert
+#         {% else %}
+#           mdi:alert
+#         {% endif %}
 
 - platform: template
   sensors:
-    front_garden_pots_irrigation_interlock:
-      friendly_name: "Inhibiter"
-      value_template: >
-        {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
-          Inhibited: Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
-        {% else %}
-          Uninhibited
-        {% endif %}
-      icon_template: >-
-        {% if is_state('sensor.front_garden_pots_irrigation_interlock', 'Uninhibited') %}
-          mdi:check
-        {% elif 'Too windy' in states('sensor.front_garden_pots_irrigation_interlock') %}
-          mdi:weather-windy
-        {% elif 'Too cold' in states('sensor.front_garden_pots_irrigation_interlock') %}
-          mdi:snowflake-alert
-        {% else %}
-          mdi:alert
-        {% endif %}
-
-- platform: template
-  sensors:
-    back_garden_irrigation_interlock:
-      friendly_name: "Inhibiter"
-      value_template: >
-        {% if states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
-          Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
-        {% else %}
-          Uninhibited
-        {% endif %}
-      icon_template: >-
-        {% if is_state('sensor.back_garden_irrigation_interlock', 'Uninhibited') %}
-          mdi:check
-        {% elif 'Too windy' in states('sensor.back_garden_irrigation_interlock') %}
-          mdi:weather-windy
-        {% elif 'Too cold' in states('sensor.back_garden_irrigation_interlock') %}
-          mdi:snowflake-alert
-        {% else %}
-          mdi:alert
-        {% endif %}
-
-- platform: template
-  sensors:
-    back_garden_lawn_irrigation_interlock:
-      friendly_name: "Inhibiter"
-      value_template: >
-        {% if (states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int) > states('input_number.lawns_irrigation_rain_threshold') | int %}
-          Inhibited: Forecasted rain {{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | int}}mm, threshold is {{states('input_number.lawns_irrigation_rain_threshold') | int}}mm
-        {% elif states('sensor.dark_sky_wind_speed') | int > states('input_number.lawns_irrigation_wind_threshold') | int %}
-          Inhibited: Too windy at {{states('sensor.dark_sky_wind_speed')}}mph, threshold is {{states('input_number.lawns_irrigation_wind_threshold') | int}}mph
-        {% elif states('sensor.dark_sky_overnight_low_temperature_0d') | int < states('input_number.irrigation_temperature_threshold') | int %}
-          Inhibited: Too cold, under {{states('input_number.irrigation_temperature_threshold')}}° at {{states('sensor.dark_sky_overnight_low_temperature_0d')}}°C
-        {% else %}
-          Uninhibited
-        {% endif %}
-      icon_template: >-
-        {% if is_state('sensor.back_garden_lawn_irrigation_interlock', 'Uninhibited') %}
-          mdi:check
-        {% elif 'Too windy' in states('sensor.back_garden_lawn_irrigation_interlock') %}
-          mdi:weather-windy
-        {% elif 'Too cold' in states('sensor.back_garden_lawn_irrigation_interlock') %}
-          mdi:snowflake-alert
-        {% else %}
-          mdi:alert
-        {% endif %}
-
     ############################################################
     # Global Settings
     ############################################################
@@ -112,10 +114,10 @@
       # With 2 hour positive offset to let the sun get up!
       value_template: "{{(as_timestamp((state_attr('sun.sun','next_rising')))) | timestamp_custom('%H:%M')}}"
 
-    forecast_rain_accumulated:
-      friendly_name: "Forecasted Accumulated Rain"
-      value_template: "{{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | round(2)}}"
-      unit_of_measurement: "mm"
+    # forecast_rain_accumulated:
+    #   friendly_name: "Forecasted Accumulated Rain"
+    #   value_template: "{{states('sensor.dark_sky_precip_intensity_0d') | multiply(24) | round(2)}}"
+    #   unit_of_measurement: "mm"
 
     ############################################################
     # Front Garden Plant Pots Settings
@@ -625,36 +627,36 @@
             {{weekday}}, {{runDate[8:10]}}-{{runDate[5:7]}}-{{runDate[0:4]}} at {{states.sensor.back_garden_lawn_irrigation_starttime.state}}
         {% endif %}
 
-    # https://github.com/kloggy/HA-Irrigation-Version2/blob/master/prerequisites.yaml
-    weather_just_icon:
-      friendly_name: "mdi Real Weather Icon"
-      icon_template: >-
-        {% if is_state("sensor.dark_sky_current_icon","clear-day") %} mdi:weather-sunny 
-        {% elif is_state("sensor.dark_sky_current_icon","clear-night") %} mdi:weather-night 
-        {% elif is_state("sensor.dark_sky_current_icon","rain") %} mdi:weather-rainy
-        {% elif is_state("sensor.dark_sky_current_icon","snow") %} mdi:weather-snowy
-        {% elif is_state("sensor.dark_sky_current_icon","fog") %} mdi:weather-fog
-        {% elif is_state("sensor.dark_sky_current_icon","sleet") %} mdi:weather-partly-snowy-rainy
-        {% elif is_state("sensor.dark_sky_current_icon","wind") %} mdi:weather-windy
-        {% elif is_state("sensor.dark_sky_current_icon","cloudy") %} mdi:weather-cloudy
-        {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-day") %} mdi:weather-partly-cloudy
-        {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
-        {% elif is_state("sensor.dark_sky_current_icon","hail") %} mdi:weather-hail
-        {% elif is_state("sensor.dark_sky_current_icon","lightning") %} mdi:weather-lightning
-        {% elif is_state("sensor.dark_sky_current_icon","thunderstorm") %} mdi:weather-lightning-rainy
-        {% endif %}
-      value_template: >-
-        {% if is_state("sensor.dark_sky_current_icon","clear-day") %} weather-sunny 
-        {% elif is_state("sensor.dark_sky_current_icon","clear-night") %} weather-night 
-        {% elif is_state("sensor.dark_sky_current_icon","rain") %} weather-rainy
-        {% elif is_state("sensor.dark_sky_current_icon","snow") %} weather-snowy
-        {% elif is_state("sensor.dark_sky_current_icon","fog") %} weather-fog
-        {% elif is_state("sensor.dark_sky_current_icon","sleet") %} weather-partly-snowy-rainy
-        {% elif is_state("sensor.dark_sky_current_icon","wind") %} weather-windy
-        {% elif is_state("sensor.dark_sky_current_icon","cloudy") %} weather-cloudy
-        {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-day") %} weather-partly-cloudy
-        {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-night") %} weather-night-partly-cloudy
-        {% elif is_state("sensor.dark_sky_current_icon","hail") %} weather-hail
-        {% elif is_state("sensor.dark_sky_current_icon","lightning") %} weather-lightning
-        {% elif is_state("sensor.dark_sky_current_icon","thunderstorm") %} weather-lightning-rainy
-        {% endif %}
+    # https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+    # weather_just_icon:
+    #   friendly_name: "mdi Real Weather Icon"
+    #   icon_template: >-
+    #     {% if is_state("sensor.dark_sky_current_icon","clear-day") %} mdi:weather-sunny
+    #     {% elif is_state("sensor.dark_sky_current_icon","clear-night") %} mdi:weather-night
+    #     {% elif is_state("sensor.dark_sky_current_icon","rain") %} mdi:weather-rainy
+    #     {% elif is_state("sensor.dark_sky_current_icon","snow") %} mdi:weather-snowy
+    #     {% elif is_state("sensor.dark_sky_current_icon","fog") %} mdi:weather-fog
+    #     {% elif is_state("sensor.dark_sky_current_icon","sleet") %} mdi:weather-partly-snowy-rainy
+    #     {% elif is_state("sensor.dark_sky_current_icon","wind") %} mdi:weather-windy
+    #     {% elif is_state("sensor.dark_sky_current_icon","cloudy") %} mdi:weather-cloudy
+    #     {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-day") %} mdi:weather-partly-cloudy
+    #     {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-night") %} mdi:weather-night-partly-cloudy
+    #     {% elif is_state("sensor.dark_sky_current_icon","hail") %} mdi:weather-hail
+    #     {% elif is_state("sensor.dark_sky_current_icon","lightning") %} mdi:weather-lightning
+    #     {% elif is_state("sensor.dark_sky_current_icon","thunderstorm") %} mdi:weather-lightning-rainy
+    #     {% endif %}
+    #   value_template: >-
+    #     {% if is_state("sensor.dark_sky_current_icon","clear-day") %} weather-sunny
+    #     {% elif is_state("sensor.dark_sky_current_icon","clear-night") %} weather-night
+    #     {% elif is_state("sensor.dark_sky_current_icon","rain") %} weather-rainy
+    #     {% elif is_state("sensor.dark_sky_current_icon","snow") %} weather-snowy
+    #     {% elif is_state("sensor.dark_sky_current_icon","fog") %} weather-fog
+    #     {% elif is_state("sensor.dark_sky_current_icon","sleet") %} weather-partly-snowy-rainy
+    #     {% elif is_state("sensor.dark_sky_current_icon","wind") %} weather-windy
+    #     {% elif is_state("sensor.dark_sky_current_icon","cloudy") %} weather-cloudy
+    #     {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-day") %} weather-partly-cloudy
+    #     {% elif is_state("sensor.dark_sky_current_icon","partly-cloudy-night") %} weather-night-partly-cloudy
+    #     {% elif is_state("sensor.dark_sky_current_icon","hail") %} weather-hail
+    #     {% elif is_state("sensor.dark_sky_current_icon","lightning") %} weather-lightning
+    #     {% elif is_state("sensor.dark_sky_current_icon","thunderstorm") %} weather-lightning-rainy
+    #     {% endif %}

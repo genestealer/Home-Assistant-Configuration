@@ -1,6 +1,6 @@
 ############################################################
 # Template Sensor
-# power consumption data 
+# power consumption data
 #
 ############################################################
 
@@ -19,29 +19,26 @@ template:
         state_class: measurement
         device_class: power
 
-
   - sensor:
-      - name: "UPS Watts"
+      - name: "UPS Watts Calculated"
         unique_id: "ups_watts"
         unit_of_measurement: "W"
         # Take UPS Amps and Volts to calculate  Wattage
         # Amps: sensor.myups_output_current
         # Volts: sensor.myups_input_voltage
-        state: "{{ states('sensor.myups_output_current')|float * states('sensor.myups_input_voltage')|float }}"
+        state: "{{ float(states('sensor.myups_output_current'),0) * float(states('sensor.myups_input_voltage'),0) }}"
         state_class: measurement
         device_class: power
 
   - sensor:
-      - name: "PC and Network Hardware Watts"
+      - name: "PC and Network Hardware Watts Calculated"
         unique_id: "pc_network_watts"
         unit_of_measurement: "W"
         # UPS feeds network equipment, PC and Server.
         # Sever has it's own current meter, so can calculate the UPS - Sever load.
-        state: "{{ states('sensor.ups_watts')|float - states('sensor.mihome_server_monitor_plug_watts')|float }}"
+        state: "{{ float(states('sensor.ups_watts'),0) - float(states('sensor.server_plug_1215_power'),0) }}"
         state_class: measurement
         device_class: power
-
-
 
 # https://www.home-assistant.io/integrations/integration/
 # https://community.home-assistant.io/t/powercalc-virtual-power-sensors/318515/3
@@ -49,6 +46,7 @@ template:
 sensor:
   - platform: integration
     name: TV Energy
+    unique_id: tv_energy
     source: sensor.tv_power
     unit_prefix: k
     unit_time: h
@@ -56,6 +54,7 @@ sensor:
 
   - platform: integration
     name: UPS Energy
+    unique_id: ups_energy
     source: sensor.ups_watts
     unit_prefix: k
     unit_time: h
@@ -63,7 +62,8 @@ sensor:
 
   - platform: integration
     name: PC and Network Energy
-    source: sensor.pc_and_network_hardware_watts
+    unique_id: pc_and_network_energy
+    source: sensor.pc_and_network_hardware_watts_calculated
     unit_prefix: k
     unit_time: h
     round: 2
@@ -84,4 +84,3 @@ sensor:
   #       friendly_name: 'House Wattage'
   #       unit_of_measurement: 'kW'
   #       availability_template: "{% if is_state('binary_sensor.esp_link_status',  'on' and states('binary_sensor.usp_network_online')) %} true {% endif %}"
-

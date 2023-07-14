@@ -10,10 +10,16 @@
   host: !secret apc_UPS_Network_IP
   scan_interval: 30
 
-# Ikea Tradfri gateway state
+# # Ikea Tradfri gateway state
+# - platform: ping
+#   name: "Ikea Tradfri Gateway Online"
+#   host: !secret Ikea_Tradfri_IP
+#   scan_interval: 30
+
+# Zigbee gateway state
 - platform: ping
-  name: "Ikea Tradfri Gateway Online"
-  host: !secret Ikea_Tradfri_IP
+  name: "Zigbee Gateway Online"
+  host: !secret Zigbee_IP
   scan_interval: 30
 
 # Bunny CCTV

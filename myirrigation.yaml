@@ -1,3 +1,4 @@
+# kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2
 title: My irrigation
 views:
   - !include lovelace/view_garden_irrigation.yaml
