@@ -2,6 +2,9 @@
 # Richard Huish 2023
 # https://github.com/genestealer/Home-Assistant-Configuration
 # Bedroom Sensors
+# 
+# To save the longevity of the air quality sensor, we turn it 
+# off and make only occasional reads.
 ##############################################################
 # Config Header for Device
 ##############################################################
@@ -11,12 +14,12 @@ substitutions:
   friendly_name: "Bedroom Sensors"
   ui_comment: "Bedroom Sensors - UPDATED" # Only shows in UI.
   
-  #Wifi Settings
+  # Wifi Settings
   ip: 192.168.2.38
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  #Board Settings
+  # Board Settings
   status_led: D0 # GPIO16 - NodeMCU on-board LED
   status_led_inverted: "true"
   platform: ESP8266
@@ -52,16 +55,24 @@ esphome:
     - output.turn_off: reset_pin
     - delay: 1000ms
     - output.turn_on: reset_pin
+
 ##############################################################
 # Main Code
 ##############################################################
 
+# bme280 I²C Bus
+i2c:
+  scl: D1
+  sda: D2
+  scan: true
+  # id: bus_a
+  frequency: 400kHz 
+
 output:
   # pmsx003 reset pin
   - platform: gpio
-    pin: D1 # GPIO5 on nodemcuv2
+    pin: D7 # GPIO13 on nodemcuv2
     id: reset_pin
-
 
 # Serial for pmsx003
 uart:
@@ -70,18 +81,18 @@ uart:
   tx_pin: D5 #GPIO 14 on nodemcuv2
 
 sensor:
-  # Air sensor # https://esphome.io/components/sensor/pmsx003.html
+  # PMSX003 Particulate Matter Sensor https://esphome.io/components/sensor/pmsx003.html
   - platform: pmsx003
     type: PMS5003T
     id: sensor01
     update_interval: ${sensor_update_interval}
     temperature:
-      name: "Temperature"
+      name: "Temperature 2"
       device_class: temperature
       state_class: measurement
    
     humidity:
-      name: "Humidity"
+      name: "Humidity 2"
       device_class: humidity
       state_class: measurement
 
@@ -124,3 +135,51 @@ sensor:
     # pm_10_0um: # Value is not returned by PMS5003T
     #   name: "PM <10.0um in 0.1L of air"
     
+
+
+
+
+# BME280 Environment Sensor https://esphome.io/cookbook/bme280_environment.html
+  - platform: bme280
+    update_interval: ${sensor_update_interval}
+    address: 0x76
+
+    temperature:
+      name: "Temperature"
+      oversampling: 16x
+      id: bme280_temperature
+      accuracy_decimals: 2
+
+    pressure:
+      name: "Pressure"
+      id: bme280_pressure
+      accuracy_decimals: 2
+
+    humidity:
+      name: "Humidity"
+      id: bme280_humidity
+      accuracy_decimals: 2
+    
+  # - platform: template
+  #   name: "Altitude"
+  #   lambda: |-
+  #     const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
+  #     return ((id(bme280_temperature).state + 273.15) / 0.0065) *
+  #       (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
+  #   update_interval: 15s
+  #   icon: 'mdi:signal'
+  #   unit_of_measurement: 'm'
+
+  - platform: absolute_humidity
+    name: "Absolute Humidity"
+    temperature: bme280_temperature
+    humidity: bme280_humidity
+
+  - platform: template
+    name: "Dew Point"
+    lambda: |-
+      return (243.5*(log(id(bme280_humidity).state/100)+((17.67*id(bme280_temperature).state)/
+      (243.5+id(bme280_temperature).state)))/(17.67-log(id(bme280_humidity).state/100)-
+      ((17.67*id(bme280_temperature).state)/(243.5+id(bme280_temperature).state))));
+    unit_of_measurement: °C
+    icon: 'mdi:thermometer-alert'

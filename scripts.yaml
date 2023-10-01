@@ -431,9 +431,8 @@ flash_lights_red2:
     data:
       scene_id: living_room_before
       snapshot_entities:
-      - light.sofa_left
-      - light.sofa_right
-      - light.cabinets
+      - light.living_room_sofa_left
+      - light.living_room_sofa_right
   - repeat:
       count: '5'
       sequence:
@@ -443,21 +442,8 @@ flash_lights_red2:
           color_name: red
         target:
           entity_id:
-          - light.sofa_left
-          - light.sofa_right
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-          color_name: blue
-        target:
-          entity_id:
-          - light.sofa_left
-          - light.sofa_right
+          - light.living_room_sofa_left
+          - light.living_room_sofa_right
       - delay:
           hours: 0
           minutes: 0
@@ -469,8 +455,8 @@ flash_lights_red2:
           color_name: blue
         target:
           entity_id:
-          - light.sofa_left
-          - light.sofa_right
+          - light.living_room_sofa_left
+          - light.living_room_sofa_right
       - delay:
           hours: 0
           minutes: 0
@@ -478,66 +464,35 @@ flash_lights_red2:
           milliseconds: 500
       - service: light.turn_on
         data:
-          brightness_pct: 1
+          brightness_pct: 100
+          color_name: blue
+        target:
+          entity_id:
+          - light.living_room_sofa_left
+          - light.living_room_sofa_right
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.turn_on
+        data:
+          brightness_pct: 100
           color_name: red
         target:
           entity_id:
-          - light.sofa_left
-          - light.sofa_right
+          - light.living_room_sofa_left
+          - light.living_room_sofa_right
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
   - service: scene.turn_on
     target:
       entity_id: scene.living_room_before
+    data: {}
   mode: restart
-bedtime:
-  alias: Bedtime
-  sequence:
-  - choose:
-    - conditions:
-      - condition: device
-        type: is_on
-        device_id: 10355d9ecb235e8aa6db0db6ceba4a85
-        entity_id: light.lucy_bedside_light
-        domain: light
-      sequence:
-      - service: light.turn_on
-        data:
-          transition: 20
-          brightness_pct: 1
-          color_name: brown
-        target:
-          entity_id:
-          - light.lucy_bedside_light
-          - light.richard_bedside_bed
-    default:
-    - type: turn_off
-      device_id: d9b3a520d7afec5926573c6d91022d84
-      entity_id: light.richard_bedside_bed
-      domain: light
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 24
-      milliseconds: 0
-  - type: turn_off
-    device_id: 10355d9ecb235e8aa6db0db6ceba4a85
-    entity_id: light.lucy_bedside_light
-    domain: light
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 24
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      transition: 20
-      brightness_pct: 1
-      color_name: red
-    target:
-      entity_id:
-      - light.lucy_bedside_light
-      - light.richard_bedside_bed
-  mode: single
-  icon: mdi:power-sleep
 new_script_test:
   alias: New Script test
   sequence:

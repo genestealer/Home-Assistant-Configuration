@@ -98,6 +98,7 @@ devices:
     friendly_name: Living Room Cabinets Inside
   '0xbc33acfffe9e1f16':
     friendly_name: Living Room Sofa Right
+    state_action: false
   '0xbc33acfffea1e1c6':
     friendly_name: Living Room Sofa Left
   '0xccccccfffe924b3c':
@@ -143,7 +144,7 @@ devices:
   '0x000b57fffe8473b8':
     friendly_name: Outside 2 Up
   '0x5c0272fffec8ba7e':
-    friendly_name: '0x5c0272fffec8ba7e'
+    friendly_name: Office Wall Lamp
   '0xa4c1383ed970356b':
     friendly_name: 'Garage Door Sensor '
   '0xa4c1387ab3af9d49':

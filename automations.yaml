@@ -725,7 +725,7 @@
     entity_id: script.1585905714103
     service: script.turn_on
 - id: '1586868059957'
-  alias: House Doorbell Button External Notify
+  alias: House Doorbell Button External Notify - Rev 1
   description: Moved over to Companion App (from pushover)
   trigger:
   - device_id: b03ab12c707340e8849888171a79caed
@@ -838,10 +838,6 @@
       title: Doorbell Alert
     service: notify.pushover_notify
     enabled: false
-  - condition:
-    - condition: state
-      entity_id: sensor.mobile_app_rich_mob_app_ringer_mode
-      state: normal
   mode: single
 - id: '1587600361094'
   alias: Busylight Controller Away Button Pressed
@@ -875,7 +871,7 @@
       message: Server is getting HOT!
     service: notify.google_cloud_notify
 - id: '1592486159377'
-  alias: Parcel Box Opened Notify
+  alias: Parcel Box Opened Notify - Rev 1
   description: ''
   trigger:
   - type: opened
@@ -1089,8 +1085,8 @@
         service: tts.google_translate_say
   mode: single
 - id: '1601317646616'
-  alias: Front Lawn Anti Cat Defences
-  description: FLAD
+  alias: Front Lawn Anti Cat Defence
+  description: Front Lawn Anti Cat Defence
   trigger:
   - type: motion
     platform: device
@@ -2978,40 +2974,6 @@
     target:
       entity_id: switch.back_garden_irrigation_valve
   mode: single
-- id: '1660674900866'
-  alias: Living Room TV Speakers Auto On-Off
-  description: ''
-  trigger:
-  - platform: device
-    type: changed_states
-    device_id: aa1e8f5d6dcb943b167eae97d9b8f05b
-    entity_id: media_player.tv_samsung_7_series_65
-    domain: media_player
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: device
-        device_id: aa1e8f5d6dcb943b167eae97d9b8f05b
-        domain: media_player
-        entity_id: media_player.tv_samsung_7_series_65
-        type: is_idle
-      sequence:
-      - type: turn_on
-        device_id: 8c3077e0600e4f78a7427ec178ee4e36
-        entity_id: switch.tv_speakers_plug
-        domain: switch
-    - conditions:
-      - condition: state
-        entity_id: media_player.tv_samsung_7_series_65
-        state: unavailable
-      sequence:
-      - type: turn_off
-        device_id: 8c3077e0600e4f78a7427ec178ee4e36
-        entity_id: switch.tv_speakers_plug
-        domain: switch
-    default: []
-  mode: single
 - id: '1661547535107'
   alias: Occupancy Kitchen (Rev 1)
   description: Triggered in motion, restarted on fresh motion detection (sensors set
@@ -3032,13 +2994,13 @@
     device_id: 8f93f025843a9a3da3c079739843e408
     entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
     domain: binary_sensor
-  - platform: event
-    event_type: kitchen_occupied
   - type: motion
     platform: device
     device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
     entity_id: 28a3386f16c485cc33b63825d1ee3184
     domain: binary_sensor
+  - platform: event
+    event_type: kitchen_occupied
   condition: []
   action:
   - choose:
@@ -3212,8 +3174,7 @@
   use_blueprint:
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
     input:
-      day: 1
-      time: '11:00:00'
+      time: '17:00:00'
       actions:
       - service: notify.mobile_app_rich_mob_app
         data:
@@ -3223,6 +3184,7 @@
             channel: Home Maintenance
             icon_url: https://hass.richardhuish.com/local/icon/battery-alert-variant-outline-48.png
       threshold: 20
+      day: 6
 - id: '1667073362846'
   alias: Spider Drop Remote
   description: ''
@@ -3549,3 +3511,338 @@
         notification_icon: mdi:water-alert-outline
     enabled: true
   mode: queued
+- id: '1694715667268'
+  alias: Parcel Box Opened Notify - Rev 2
+  description: Take photo first, rather than using camera_proxy, as camera_proxy only
+    takes the image when the notification is delivered, which may be later if signal
+    is poor.
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 2aadd916ad46270ecda5ab407a461e6c
+    entity_id: binary_sensor.parcel_box_contact
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: camera.snapshot
+    data:
+      filename: /media/garage.jpg
+    target:
+      entity_id: camera.garage_13
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      title: Parcel Box
+      message: Parcel Box Opened
+      data:
+        image: /media/local/garage.jpg
+        color: green
+        channel: ParcelBox1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      title: Parcel Box
+      message: Parcel Box Opened
+      data:
+        image: /media/local/garage.jpg
+        color: green
+        channel: ParcelBox1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
+  mode: single
+- id: '1694727006658'
+  alias: House Doorbell Button External Notify - Rev 2
+  description: Take photo first, rather than using camera_proxy, as camera_proxy only
+    takes the image when the notification is delivered, which may be later if signal
+    is poor.
+  trigger:
+  - device_id: b03ab12c707340e8849888171a79caed
+    domain: binary_sensor
+    entity_id: binary_sensor.doorbell_button
+    platform: device
+    type: turned_on
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: sensor.rich_mob_app_ringer_mode
+      state: normal
+    - condition: state
+      entity_id: sensor.rich_mob_app_do_not_disturb_sensor
+      state: 'off'
+    - condition: state
+      entity_id: sensor.rich_mob_app_audio_mode
+      state: normal
+    - condition: state
+      entity_id: binary_sensor.rich_mob_app_music_active
+      state: 'off'
+      enabled: false
+    then:
+    - service: notify.mobile_app_rich_mob_app
+      data:
+        data:
+          channel: DoorbellTTS2
+          importance: high
+          visibility: public
+          tts_text: Ding Dong Doorbell
+          media_stream: alarm_stream_max
+          ttl: 0
+          priority: high
+        message: TTS
+  - if:
+    - condition: state
+      entity_id: sensor.lucy_mob_app_ringer_mode
+      state: normal
+    - condition: state
+      entity_id: sensor.lucy_mob_app_do_not_disturb_sensor
+      state: 'off'
+    - condition: state
+      entity_id: sensor.lucy_mob_app_audio_mode
+      state: normal
+    - condition: state
+      entity_id: binary_sensor.lucy_mob_app_music_active
+      state: 'off'
+      enabled: false
+    then:
+    - service: notify.mobile_app_lucy_mob_app
+      data:
+        data:
+          channel: DoorbellTTS2
+          importance: high
+          visibility: public
+          tts_text: Ding Dong Doorbell
+          media_stream: alarm_stream_max
+          ttl: 0
+          priority: high
+        message: TTS
+  - service: camera.snapshot
+    data:
+      filename: /media/frontdoor.jpg
+    target:
+      entity_id: camera.front_door_11
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      data:
+        image: /media/local/frontdoor.jpg
+        color: red
+        channel: DoorbellImage2
+        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+        ttl: 0
+        priority: high
+      message: ' '
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      data:
+        image: /media/local/frontdoor.jpg
+        color: red
+        channel: DoorbellImage2
+        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+        ttl: 0
+        priority: high
+      message: ' '
+  mode: single
+- id: '1694790204906'
+  alias: Front door opened with no one home
+  description: As Lucy's phone has no internet, her location will continue to show
+    as at home even when she is away; However the location data will become "stale"
+    so we can assume she is not at home if the location is not updated for 10 mins
+    (600 seconds)
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 86b815b15cbf84a75984db3b46f6cc17
+    entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+    domain: binary_sensor
+  condition:
+  - condition: not
+    conditions:
+    - condition: numeric_state
+      entity_id: person.lucy
+      attribute: device_trackers
+      value_template: '{{ (as_timestamp( now()) - as_timestamp( states.person.lucy.last_updated))
+        | int }}
+
+        '
+      below: 600
+      enabled: false
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
+    - condition: state
+      entity_id: binary_sensor.is_lucy_s_location_data_valid
+      state: 'on'
+    enabled: true
+  action:
+  - service: camera.snapshot
+    data:
+      filename: /media/frontdoor_sensor.jpg
+    target:
+      entity_id: camera.front_door_11
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      title: Front Door
+      message: Door opened, but no one is home!
+      data:
+        image: /media/local/frontdoor_sensor.jpg
+        color: red
+        channel: DoorOpen1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      title: Front Door
+      message: Door opened, but no one is home!
+      data:
+        image: /media/local/frontdoor_sensor.jpg
+        color: red
+        channel: DoorOpen1
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+  mode: single
+- id: '1694795158536'
+  alias: Back door opened but no one is home
+  description: As Lucy's phone has no internet, her location will continue to show
+    as at home even when she is away; However the location data will become "stale"
+    so we can assume she is not at home if the location is not updated for 10 mins
+    (600 seconds)
+  trigger:
+  - type: opened
+    platform: device
+    device_id: dd6c9ee012d55a6e6f1b0ef375270d86
+    entity_id: 3cd6c236c41a010470145e104bd7f36f
+    domain: binary_sensor
+  condition:
+  - condition: not
+    conditions:
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    - condition: and
+      conditions:
+      - condition: zone
+        entity_id: person.lucy
+        zone: zone.home
+      - condition: state
+        entity_id: binary_sensor.is_lucy_s_location_data_valid
+        state: 'on'
+    enabled: true
+  action:
+  - service: camera.snapshot
+    data:
+      filename: /media/garden.jpg
+    target:
+      entity_id: camera.garden_18
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      title: Back Door
+      message: Back door opened, but no one is home!
+      data:
+        image: /media/local/garden.jpg
+        color: red
+        channel: BackDoorOpen
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      title: Back Door
+      message: Back door opened, but no one is home!
+      data:
+        image: /media/local/garden.jpg
+        color: red
+        channel: BackDoorOpen
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+  mode: single
+- id: '1696178796762'
+  alias: Living Room TV Speakers Auto On-Off
+  description: Turn on living room speakers when Shield is turned on
+  trigger:
+  - platform: device
+    device_id: 9bb121d12fd09dab5bdf2f7626487ae7
+    domain: media_player
+    entity_id: 79db4cc39138a29ada3b756bb783a495
+    type: turned_on
+  - platform: device
+    type: turned_on
+    device_id: 7e37b373bf8d07fd1841c01ade874b45
+    entity_id: 9fb7c85317eed58e2ae76859abb2c57e
+    domain: remote
+  - platform: device
+    device_id: 9bb121d12fd09dab5bdf2f7626487ae7
+    domain: media_player
+    entity_id: 79db4cc39138a29ada3b756bb783a495
+    type: turned_off
+  - platform: device
+    type: turned_off
+    device_id: 7e37b373bf8d07fd1841c01ade874b45
+    entity_id: 9fb7c85317eed58e2ae76859abb2c57e
+    domain: remote
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: device
+          device_id: 9bb121d12fd09dab5bdf2f7626487ae7
+          domain: media_player
+          entity_id: 79db4cc39138a29ada3b756bb783a495
+          type: is_on
+        - condition: device
+          device_id: 7e37b373bf8d07fd1841c01ade874b45
+          domain: media_player
+          entity_id: 619e5fe260c3c9be6440bdac42285078
+          type: is_on
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.living_room_speakers_power
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: device
+          device_id: 9bb121d12fd09dab5bdf2f7626487ae7
+          domain: media_player
+          entity_id: 79db4cc39138a29ada3b756bb783a495
+          type: is_off
+        - condition: device
+          device_id: 7e37b373bf8d07fd1841c01ade874b45
+          domain: media_player
+          entity_id: 619e5fe260c3c9be6440bdac42285078
+          type: is_off
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.living_room_speakers_power
+  mode: single

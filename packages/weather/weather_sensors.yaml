@@ -56,7 +56,7 @@ template:
 ####################################################
 sensor:
   - platform: rflink
-    automatic_add: false
+    automatic_add: true
     devices:
       alectov5_00a3_temp:
         sensor_type: uv_intensity

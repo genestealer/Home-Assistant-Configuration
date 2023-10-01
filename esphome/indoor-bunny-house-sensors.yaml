@@ -55,22 +55,6 @@ i2c:
   # id: bus_a
   frequency: 400kHz 
 
-
-# sensor:
-# # Air Temperature and Humidity Sensor
-#   - platform: dht
-#     pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
-#     temperature:
-#       name: Temperature
-#       state_class: measurement
-#       device_class: temperature
-#     humidity:
-#       name: Humidity
-#       state_class: measurement
-#       device_class: humidity
-#     update_interval: 300s
-#     model: DHT22
-
 sensor:
   - platform: bme280
     update_interval: ${sensor_update_interval}
@@ -78,7 +62,6 @@ sensor:
 
     temperature:
       name: "Temperature"
-      oversampling: 16x
       id: bme280_temperature
       accuracy_decimals: 2
 
@@ -92,19 +75,23 @@ sensor:
       id: bme280_humidity
       accuracy_decimals: 2
     
-  - platform: template
-    name: "Altitude"
-    lambda: |-
-      const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
-      return ((id(bme280_temperature).state + 273.15) / 0.0065) *
-        (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
-    update_interval: 15s
-    icon: 'mdi:signal'
-    unit_of_measurement: 'm'
+  # - platform: template
+  #   name: "Altitude"
+  #   lambda: |-
+  #     const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
+  #     return ((id(bme280_temperature).state + 273.15) / 0.0065) *
+  #       (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
+  #   update_interval: 15s
+  #   icon: 'mdi:signal'
+  #   unit_of_measurement: 'm'
+
+
   - platform: absolute_humidity
     name: "Absolute Humidity"
     temperature: bme280_temperature
     humidity: bme280_humidity
+
+
   - platform: template
     name: "Dew Point"
     lambda: |-

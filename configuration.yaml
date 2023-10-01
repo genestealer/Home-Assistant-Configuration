@@ -143,15 +143,14 @@ http:
   ip_ban_enabled: true
   login_attempts_threshold: 20
 
-# Discover some devices automatically
-discovery:
+# # Discover some devices automatically
+# discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
 # Enables support for tracking state changes over time. (Cleared at startup)
 history:
-
 
 # Tracked history. Dependency of the history integration
 recorder:
@@ -170,9 +169,7 @@ recorder:
       - sensor.time_utc
       - sensor.date_time_iso
       - sensor.internet_time
-    entity_globs:
-      input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
-
+    entity_globs: input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
 
 # View all events in a logbook. Depends on the recorder integration for storing the data.
 logbook:
@@ -197,9 +194,6 @@ logbook:
       - sensor.adguard_parental_control_blocked
       - sensor.adguard_safe_browsing_blocked
       - sensor.adguard_safe_searches_enforced
-
-
-
 
 # Enables a map showing the location of tracked devices
 map:
@@ -275,16 +269,18 @@ notify:
   #   platform: facebook
   #   page_access_token: !secret FB_Key
 
+# #Google Nest integration.
+# nest:
+#   client_id: !secret nest_id
+#   client_secret: !secret nest_secret
+# # climate:
+# #   - platform: nest
+# # - platform: generic_thermostat
+# #   name: Bunny Shed Thermostat
 
-
-#Google Nest integration.
-nest:
-  client_id: !secret nest_id
-  client_secret: !secret nest_secret
-# climate:
-#   - platform: nest
-# - platform: generic_thermostat
-#   name: Bunny Shed Thermostat
+# My Home Assistant integration https://www.home-assistant.io/integrations/my
+# Needed for 2023 Nest
+my:
 
 # Device trackers.
 device_tracker:
@@ -335,7 +331,6 @@ rflink:
     # - sensor.owl_cm113_ea9f_current3
     # - sensor.owl_cm130_007f_kwatt
 
-
     - sensor.v2phoenix_*
     - light.drayton_*
     - light.elrodb_*
@@ -343,7 +338,6 @@ rflink:
     - light.drayton_*
     - light.btf_*
     - light.v2phoenix*
-
 
 # Google Assistant intergration.
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
@@ -438,15 +432,11 @@ google_assistant:
   # client_id: !secret google_assistant_client_id
   # access_token: !secret google_assistant_access_token
 
-
-
 # Proxy video live streams through Home Assistant
 stream:
   # ll_hls: true
   # part_duration: 1.5
   # segment_duration: 10
-
-
 
 # utility_meter:
 #   energy_cumulative_month:
