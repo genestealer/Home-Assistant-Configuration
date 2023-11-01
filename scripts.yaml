@@ -527,13 +527,138 @@ tea_brewing_timer:
   - delay:
       hours: 0
       minutes: 3
-      seconds: 0
+      seconds: 3
       milliseconds: 0
   - service: notify.google_assistant_sdk
     data:
-      message: 'Your cup of tea has brewed. Your perfect cup of tea is ready! '
+      message: Your cup of tea has brewed.
       target:
       - kitchen
       - living room
+      title: Your cup of tea has brewed.
   mode: single
   icon: mdi:coffee
+energenie_etrv_set_reporting_interval:
+  alias: 'Energenie eTRV: Set Reporting Interval'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: number
+    entity_id: 259300e10fbba9cb42d5e9655cd6d747
+    type: set_value
+    value: 300
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: number
+    entity_id: 6b60505ff3f1c1cc78d487b66f56c94b
+    type: set_value
+    value: 300
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: number
+    entity_id: 7925ab4b821bb876bcc45a7431822d26
+    type: set_value
+    value: 300
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: number
+    entity_id: 7b5c6e97f3a71d9c2090b3c281164be6
+    type: set_value
+    value: 300
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: number
+    entity_id: 70f7b778cca89fa3a8465970c92ac92c
+    type: set_value
+    value: 300
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: number
+    entity_id: eabecc3a2d282f57ec79bd0e5d9dfa6f
+    type: set_value
+    value: 300
+  - device_id: edd53a3020762c37680c07cc4c38d557
+    domain: number
+    entity_id: 4eb9ae12e9a24ad04e38fbefd5043ac5
+    type: set_value
+    value: 300
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: number
+    entity_id: 08469c03165893efaa9b5a297374484f
+    type: set_value
+    value: 300
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: number
+    entity_id: 7cb4e59be67a4f8f1661a93858a3a851
+    type: set_value
+    value: 300
+  mode: single
+  icon: mdi:clock
+energenie_etrv_set_low_power_mode_off:
+  alias: 'Energenie eTRV: Set low power mode = OFF'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: select
+    entity_id: 551713a2c8fe453796e77dd1e0796152
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: select
+    entity_id: f18942e23b5ba88013eab01ead452bd6
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: select
+    entity_id: ba0a113a1b8f3c61503ffd672bd48629
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: select
+    entity_id: c1d57e0aff19de01e97c8f36a0d112d7
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: select
+    entity_id: 74de4da403c24cdb7e582b30d56bc168
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: select
+    entity_id: 47be01fbbccb610bccabc298ad1e103c
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: edd53a3020762c37680c07cc4c38d557
+    domain: select
+    entity_id: 2c591391732f9048068e2aede02816ae
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: select
+    entity_id: b73067f185ccb68fd06a1add939d4730
+    type: select_option
+    option: Low Power Mode OFF
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: select
+    entity_id: 4a3fe856a731d274a9eb0c1303ec77c8
+    type: select_option
+    option: Low Power Mode OFF
+  mode: single
+  icon: mdi:clock
+heat_bathroom_towel_rail:
+  alias: Heat Bathroom Towel Rail
+  sequence:
+  - service: climate.set_temperature
+    data:
+      hvac_mode: heat
+      temperature: 30
+    target:
+      entity_id:
+      - climate.hallway
+      - climate.bathroom_4329_climate_control
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_temperature
+    data:
+      hvac_mode: heat
+      temperature: 12
+    target:
+      entity_id: climate.hallway
+  mode: single
+  icon: mdi:radiator

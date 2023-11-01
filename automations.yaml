@@ -424,38 +424,6 @@
         - switch.plug_in_air_freshener_1
         - switch.plug_in_air_freshener_2
   mode: restart
-- id: '1576601191279'
-  alias: obsolete - Plug-in Air Freshener Stop
-  description: 'Turn off in the evening or when no one is home. Repeat as it sometimes
-    doesn''t work '
-  trigger:
-  - at: '18:00:00'
-    platform: time
-  - platform: zone
-    entity_id: person.richard
-    zone: zone.home
-    event: leave
-  - platform: zone
-    entity_id: person.lucy
-    zone: zone.home
-    event: leave
-  condition: []
-  action:
-  - repeat:
-      count: '2'
-      sequence:
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id:
-          - switch.plug_in_air_freshener_1
-          - switch.plug_in_air_freshener_2
-      - delay:
-          hours: 0
-          minutes: 10
-          seconds: 0
-          milliseconds: 0
-  mode: single
 - id: '1576601770197'
   alias: Welcome home Lucy
   description: 'Note: These actions can only be edited with YAML'
@@ -632,9 +600,16 @@
     service: notify.google_cloud_notify
 - id: '1581123123827'
   alias: Simulate Presence Lights
-  description: Automation Simulate Presence / Occupancy Simulation
+  description: Automation Simulate Presence / Occupancy Simulation. Runs single and
+    if we get home it will turn off all the lights (cancel the run)
   trigger:
-  - entity_id: person.richard
+  - entity_id:
+    - person.richard
+    from: home
+    platform: state
+    to:
+  - entity_id:
+    - person.lucy
     from: home
     platform: state
     to: not_home
@@ -643,10 +618,6 @@
     platform: sun
   - event_type: event_simulate_presence
     platform: event
-  - entity_id: person.lucy
-    from: home
-    platform: state
-    to: not_home
   condition:
   - condition: and
     conditions:
@@ -666,197 +637,53 @@
       state: not_home
   action:
   - data_template:
-      entity_id: light.lamp_{{ (range(1, 4) | random) }}
+      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+        | random }}'
+    service: light.turn_on
+  - delay: 00:{{ (range(10, 30) | random) }}:00
+  - if:
+    - condition: or
+      conditions:
+      - condition: time
+        after: '11:50:00'
+      - condition: state
+        entity_id: person.lucy
+        state: home
+      - condition: state
+        entity_id: person.richard
+        state: home
+    then:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.presence_simulation_lights
+  - data_template:
+      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+        | random }}'
     service: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
   - data_template:
-      entity_id: light.lamp_{{ (range(1, 4) | random) }}
-    service: light.turn_on
-  - delay: 00:{{ (range(10, 30) | random) }}:00
-  - entity_id: light.lamp_1
+      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+        | random }}'
     service: light.turn_off
-  - entity_id: light.lamp_2
-    service: light.turn_off
-  - entity_id: light.lamp_3
-    service: light.turn_off
-  - delay: 00:00:{{ (range(3, 10) | random) }}
+  - if:
+    - condition: or
+      conditions:
+      - condition: time
+        after: '11:50:00'
+        enabled: false
+      - condition: state
+        entity_id: person.lucy
+        state: home
+      - condition: state
+        entity_id: person.richard
+        state: home
+    then:
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.presence_simulation_lights
   - event: event_simulate_presence
-  mode: single
-- id: '1586039811102'
-  alias: Busylight Controller Free Button Pressed
-  description: ''
-  trigger:
-  - device_id: 881a0e3accbc43d7b2bbc2b4559863b4
-    domain: binary_sensor
-    entity_id: binary_sensor.button_a
-    platform: device
-    type: turned_on
-  condition: []
-  action:
-  - data: {}
-    entity_id: script.1585906019835
-    service: script.turn_on
-- id: '1586039888917'
-  alias: Busylight Controller Working Button Pressed
-  description: ''
-  trigger:
-  - device_id: 881a0e3accbc43d7b2bbc2b4559863b4
-    domain: binary_sensor
-    entity_id: binary_sensor.button_b
-    platform: device
-    type: turned_on
-  condition: []
-  action:
-  - data: {}
-    entity_id: script.1585906111236
-    service: script.turn_on
-- id: '1586039921673'
-  alias: Busylight Controller On Call Button Pressed
-  description: ''
-  trigger:
-  - device_id: 881a0e3accbc43d7b2bbc2b4559863b4
-    domain: binary_sensor
-    entity_id: binary_sensor.button_c
-    platform: device
-    type: turned_on
-  condition: []
-  action:
-  - data: {}
-    entity_id: script.1585905714103
-    service: script.turn_on
-- id: '1586868059957'
-  alias: House Doorbell Button External Notify - Rev 1
-  description: Moved over to Companion App (from pushover)
-  trigger:
-  - device_id: b03ab12c707340e8849888171a79caed
-    domain: binary_sensor
-    entity_id: binary_sensor.doorbell_button
-    platform: device
-    type: turned_on
-  condition: []
-  action:
-  - if:
-    - condition: state
-      entity_id: sensor.rich_mob_app_ringer_mode
-      state: normal
-    - condition: state
-      entity_id: sensor.rich_mob_app_do_not_disturb_sensor
-      state: 'off'
-    - condition: state
-      entity_id: sensor.rich_mob_app_audio_mode
-      state: normal
-    - condition: state
-      entity_id: binary_sensor.rich_mob_app_music_active
-      state: 'off'
-      enabled: false
-    then:
-    - service: notify.mobile_app_rich_mob_app
-      data:
-        data:
-          channel: DoorbellTTS2
-          importance: high
-          visibility: public
-          tts_text: Ding Dong Doorbell
-          media_stream: alarm_stream_max
-          ttl: 0
-          priority: high
-        message: TTS
-  - if:
-    - condition: state
-      entity_id: sensor.lucy_mob_app_ringer_mode
-      state: normal
-    - condition: state
-      entity_id: sensor.lucy_mob_app_do_not_disturb_sensor
-      state: 'off'
-    - condition: state
-      entity_id: sensor.lucy_mob_app_audio_mode
-      state: normal
-    - condition: state
-      entity_id: binary_sensor.lucy_mob_app_music_active
-      state: 'off'
-      enabled: false
-    then:
-    - service: notify.mobile_app_lucy_mob_app
-      data:
-        data:
-          channel: DoorbellTTS2
-          importance: high
-          visibility: public
-          tts_text: Ding Dong Doorbell
-          media_stream: alarm_stream_max
-          ttl: 0
-          priority: high
-        message: TTS
-  - service: notify.mobile_app_rich_mob_app
-    data:
-      message: Front Door Doorbell
-      data:
-        image: /api/camera_proxy/camera.front_door_11
-        color: red
-        channel: DoorbellImage2
-        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
-        importance: high
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:door
-        ttl: 0
-        priority: high
-  - service: notify.mobile_app_lucy_mob_app
-    data:
-      message: Front Door Doorbell
-      data:
-        image: /api/camera_proxy/camera.front_door_11
-        color: red
-        channel: DoorbellImage2
-        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
-        importance: high
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:door
-        ttl: 0
-        priority: high
-  - data:
-      data:
-        attachment: /config/www/tmp/front_door.jpg
-      message: Photo
-      title: Doorbell CCTV Photo
-    service: notify.pushover_notify
-    enabled: false
-  - service: notify.mobile_app_rich_mob_app
-    data:
-      message: Photo
-      data:
-        image: /api/camera_proxy/camera.drive_higher_21
-    enabled: false
-  - data:
-      filename: /config/www/tmp/front_door.jpg
-    service: camera.snapshot
-    entity_id: camera.front_door_11
-    enabled: false
-  - data:
-      message: Ding Dong! Someone is at the door.
-      title: Doorbell Alert
-    service: notify.pushover_notify
-    enabled: false
-  mode: single
-- id: '1587600361094'
-  alias: Busylight Controller Away Button Pressed
-  description: Set to turn off lights when controller goes offline
-  trigger:
-  - device_id: 90dc8f86fc67483880990d09cd5cf02c
-    domain: binary_sensor
-    entity_id: binary_sensor.busy_light_controller_status
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
-    platform: device
-    type: not_connected
-  condition: []
-  action:
-  - data: {}
-    entity_id: script.1586361703646
-    service: script.turn_on
   mode: single
 - id: '1590103997253'
   alias: 'Server Getting Hot '
@@ -951,70 +778,6 @@
         notification_icon: mdi:package-variant-closed
     enabled: false
   mode: single
-- id: '1592498327466'
-  alias: House Doorbell Button Local Notify (OLD)
-  description: CCTV needs to have anonymous viewer enabled or I need to pass the username
-    in the media_content_id. Note, during testing you need to turn off the media_player
-    device after each test, else is will not show the video again.
-  trigger:
-  - device_id: b03ab12c707340e8849888171a79caed
-    domain: binary_sensor
-    entity_id: binary_sensor.doorbell_button
-    platform: device
-    type: turned_on
-  condition:
-  - condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.richard
-      zone: zone.home
-    - condition: zone
-      entity_id: person.lucy
-      zone: zone.home
-  action:
-  - data:
-      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
-      media_content_type: image/jpg
-    service: media_player.play_media
-    target:
-      entity_id:
-      - media_player.kitchen_display
-      - media_player.office_display
-      - media_player.bedroom_display_gen2
-      - media_player.living_room_display
-      - media_player.dining_room_display
-  - data:
-      cache: false
-      entity_id: media_player.bathroom_speaker
-      message: Ding! Dong! Someone is at the door
-    service: tts.google_translate_say
-  - data:
-      cache: false
-      entity_id: media_player.garage
-      message: Ding! Dong! Someone is at the door
-    service: tts.google_translate_say
-  - delay:
-      hours: 0
-      minutes: 3
-      seconds: 0
-      milliseconds: 0
-  - service: media_player.media_stop
-    target:
-      entity_id:
-      - media_player.kitchen_display
-      - media_player.office_display
-      - media_player.bedroom_display_gen2
-      - media_player.living_room_display
-      - media_player.dining_room_display
-    data: {}
-  - data:
-      media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
-      media_content_type: image/jpg
-    service: media_player.play_media
-    target:
-      entity_id:
-      - media_player.office_display
-  mode: single
 - id: '1601037277352'
   alias: Proximity/Perimeter Warning System - Primary and Secondary Zone Failure
   description: ''
@@ -1085,7 +848,7 @@
         service: tts.google_translate_say
   mode: single
 - id: '1601317646616'
-  alias: Front Lawn Anti Cat Defence
+  alias: Front Lawn Anti Cat Defences
   description: Front Lawn Anti Cat Defence
   trigger:
   - type: motion
@@ -1107,6 +870,10 @@
     device_id: 1a18e37d81f9eaee6c1870e944461b6b
     entity_id: light.outside_1_down
     domain: light
+  - condition: numeric_state
+    entity_id: weather.openweathermap
+    attribute: temperature
+    below: 2
   action:
   - delay:
       hours: 0
@@ -1118,13 +885,13 @@
   - delay:
       hours: 0
       minutes: 0
-      seconds: 6
+      seconds: 4
       milliseconds: 0
   - service: switch.turn_off
     entity_id: switch.front_garden_lawn_irrigation_valve
   - delay:
       hours: 0
-      minutes: 10
+      minutes: 5
       seconds: 0
       milliseconds: 0
   mode: restart
@@ -1135,6 +902,10 @@
   trigger:
   - platform: webhook
     webhook_id: 6pKQYcAJY3kWdj56MVUYb4tWLr9QmGP7kKYBd5rMBz9r6ZBrQXyKhJPbuYR3vVkV
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: true
   condition: []
   action:
   - service: input_text.set_value
@@ -1326,43 +1097,6 @@
     device_id: 78678bdb2e4faa8982a4681b31f899ba
     entity_id: switch.ice_maker_switch
     domain: switch
-  mode: single
-- id: '1614817579397'
-  alias: 'emw100_d018_00 '
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: light.emw100_d018_00
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: light.emw100_d018_00
-        state: 'on'
-      sequence:
-      - type: turn_on
-        device_id: f96140facdbde173c77c7f4b65915404
-        entity_id: light.office
-        domain: light
-        brightness_pct: 100
-      - service: light.turn_on
-        data:
-          rgb_color:
-          - 255
-          - 145
-          - 145
-        entity_id: light.office
-    - conditions:
-      - condition: state
-        entity_id: light.emw100_d018_00
-        state: 'off'
-      sequence:
-      - type: turn_off
-        device_id: f96140facdbde173c77c7f4b65915404
-        entity_id: light.office
-        domain: light
-    default: []
   mode: single
 - id: '1619902648352'
   alias: Outside lights Chase
@@ -1961,10 +1695,10 @@
     entity_id:
     - person.lucy
     from: home
-    to: not_home
+    to:
     for:
       hours: 0
-      minutes: 1
+      minutes: 5
       seconds: 0
   condition:
   - condition: zone
@@ -1973,7 +1707,16 @@
   action:
   - service: notify.mobile_app_rich_mob_app
     data:
-      message: Lucy Pump Controller was left at Home!
+      message: Lucy's Insulin pump controller may have been left at Home!
+      data:
+        color: red
+        channel: PumpController
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:pump
+      title: Pump Controller
   - service: notify.mobile_app_lucy_mob_app
     data:
       message: Lucy Pump Controller was left at Home!
@@ -2630,78 +2373,8 @@
     target:
       entity_id: light.outside_1_down
   mode: restart
-- id: '1652208601188'
-  alias: House Doorbell Button Local Notify (Duplicate)
-  description: Update CCTV no longer needs to have anonymous viewer enabled, as its
-    using the local media-source. ...CCTV needs to have anonymous viewer enabled or
-    I need to pass the username in the media_content_id. Note, during testing you
-    need to turn off the media_player device after each test, else is will not show
-    the video again.
-  trigger:
-  - device_id: b03ab12c707340e8849888171a79caed
-    domain: binary_sensor
-    entity_id: binary_sensor.doorbell_button
-    platform: device
-    type: turned_on
-  condition:
-  - condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.richard
-      zone: zone.home
-    - condition: zone
-      entity_id: person.lucy
-      zone: zone.home
-  action:
-  - parallel:
-    - service: media_player.play_media
-      target:
-        entity_id:
-        - media_player.kitchen_display
-        - media_player.office_display
-        - media_player.bedroom_display_gen2
-        - media_player.living_room_display
-        - media_player.dining_room_display
-      data:
-        media_content_id: media-source://camera/camera.front_door_11
-        media_content_type: application/vnd.apple.mpegurl
-    - service: media_player.play_media
-      target:
-        entity_id: media_player.dining_room_display
-      data:
-        media_content_id: media-source://camera/camera.drive_high_16
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: P3364-L 0
-        thumbnail: /api/camera_proxy/camera.drive_high_16
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
-    - service: tts.google_translate_say
-      data:
-        message: Ding! Dong! Someone is at the door
-        entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
-        cache: true
-  - delay:
-      hours: 0
-      minutes: 3
-      seconds: 0
-      milliseconds: 0
-  - service: media_player.media_stop
-    target:
-      entity_id:
-      - media_player.kitchen_display
-      - media_player.office_display
-      - media_player.bedroom_display_gen2
-      - media_player.living_room_display
-      - media_player.dining_room_display
-    data: {}
-  mode: single
 - id: '1652210144322'
-  alias: House Doorbell Button Local Notify (Improved)
+  alias: House Doorbell - Local Notify
   description: CCTV needs to have anonymous viewer enabled or I need to pass the username
     in the media_content_id. Note, during testing you need to turn off the media_player
     device after each test, else is will not show the video again. (local media-source
@@ -2722,6 +2395,90 @@
       entity_id: person.lucy
       zone: zone.home
   action:
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id:
+      - media_player.office_display
+      - media_player.living_room_display
+      - media_player.kitchen_display
+      - media_player.dining_room_display
+    enabled: false
+  - service: notify.google_assistant_sdk
+    data:
+      message: Ding! Dong! Someone is at the door
+      target:
+      - bathroom_speaker
+      - garage
+      - guest_bedroom
+      - bedroom
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.office_display
+    data:
+      media_content_id: media-source://camera/camera.front_door_11_onvif_video
+      media_content_type: application/vnd.apple.mpegurl
+    metadata:
+      title: Front Door .11 ONVIF profile_1 h264
+      thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+      media_class: video
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://camera
+    enabled: true
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.living_room_display
+    data:
+      media_content_id: media-source://camera/camera.front_door_11_onvif_video
+      media_content_type: application/vnd.apple.mpegurl
+    metadata:
+      title: Front Door .11 ONVIF profile_1 h264
+      thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+      media_class: video
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://camera
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.dining_room_display
+    data:
+      media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
+      media_content_type: application/vnd.apple.mpegurl
+    metadata:
+      title: Drive Higher .21 ONVIF profile_1 h264
+      thumbnail: /api/camera_proxy/camera.drive_higher_21_onvif_profile_1_h264
+      media_class: video
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://camera
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.kitchen_display
+    data:
+      media_content_id: media-source://camera/camera.front_door_11_onvif_video
+      media_content_type: application/vnd.apple.mpegurl
+    metadata:
+      title: Front Door .11 ONVIF profile_1 h264
+      thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+      media_class: video
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://camera
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+    enabled: true
   - parallel:
     - service: media_player.play_media
       data:
@@ -2841,21 +2598,7 @@
         - {}
         - media_content_type: app
           media_content_id: media-source://camera
-  - delay:
-      hours: 0
-      minutes: 2
-      seconds: 0
-      milliseconds: 0
-    enabled: false
-  - service: media_player.turn_off
-    data: {}
-    target:
-      entity_id:
-      - media_player.office_display
-      - media_player.living_room_display
-      - media_player.kitchen_display
-      - media_player.dining_room_display
-    enabled: false
+    enabled: true
   mode: single
 - id: '1658535783719'
   alias: 'Downstairs Lights Motion '
@@ -3168,7 +2911,7 @@
   mode: single
 - id: '1666971475237'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
-  description: 'Updated 2022 10 28
+  description: 'Updated 2023 10 13
 
     '
   use_blueprint:
@@ -3178,12 +2921,17 @@
       actions:
       - service: notify.mobile_app_rich_mob_app
         data:
-          title: Low Battery Warning
-          message: 'Low battery warning for: {{sensors}}'
+          title: Battery Level
+          message: Battery low {{sensors}}
           data:
-            channel: Home Maintenance
-            icon_url: https://hass.richardhuish.com/local/icon/battery-alert-variant-outline-48.png
-      threshold: 20
+            color: purple
+            channel: Battery
+            notification_icon: mdi:battery-alert-variant-outline
+      - service: persistent_notification.create
+        data:
+          title: Battery Low
+          message: Battery low {{sensors}}
+      threshold: 15
       day: 6
 - id: '1667073362846'
   alias: Spider Drop Remote
@@ -3307,175 +3055,62 @@
         target:
           entity_id: light.outside_christmas_lights
   mode: single
-- id: '1674941369558'
-  alias: Energenie eTRV Request Voltage Each Night
-  description: ''
-  trigger:
-  - platform: time
-    at: 04:00:00
-  condition: []
-  action:
-  - device_id: 19cbf4886ed19963f11d43ffa42e28a1
-    domain: button
-    entity_id: button.3233_request_voltage
-    type: press
-  - device_id: d337951ff2c335a3d5f683e67dfd26d2
-    domain: button
-    entity_id: button.living_room_5251_request_voltage
-    type: press
-  - device_id: f957cc27f4c122e6f0eacb4d243c9a8e
-    domain: button
-    entity_id: button.hall_5475_request_voltage
-    type: press
-  - device_id: 24bba5d362e56debd480c0f59f029f97
-    domain: button
-    entity_id: button.3449_request_voltage
-    type: press
-  - device_id: 83dc978cfbddb0f9764b377570699bc6
-    domain: button
-    entity_id: button.bedroom_5318_request_voltage
-    type: press
-  - device_id: b098db44bd582bb4fea96e6ed978bf77
-    domain: button
-    entity_id: button.downstairs_bathroom_3463_request_voltage
-    type: press
-  - device_id: 80740b24e9eb107b19783c422f97f7aa
-    domain: button
-    entity_id: button.guest_bedroom_5993_request_voltage
-    type: press
-  - device_id: 0f000d8183ab1dd480377756d16f5dfb
-    domain: button
-    entity_id: button.2989_request_voltage
-    type: press
-  - device_id: 8cd90fd55efb7302c051643b01637133
-    domain: button
-    entity_id: button.bathroom_4329_request_voltage
-    type: press
-  - device_id: b37b09196c9ead29fe67c3ac8e958a1d
-    domain: button
-    entity_id: button.4168_request_voltage
-    type: press
-  - device_id: 0cff734b573bdb8230ebd1bab69fb477
-    domain: button
-    entity_id: button.4324_request_voltage
-    type: press
-  - device_id: 1bb46d37b4b76e1074e643fa8e705965
-    domain: button
-    entity_id: button.4335_request_voltage
-    type: press
-  - delay:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - device_id: 19cbf4886ed19963f11d43ffa42e28a1
-    domain: button
-    entity_id: button.3233_request_diagnostics
-    type: press
-  - device_id: d337951ff2c335a3d5f683e67dfd26d2
-    domain: button
-    entity_id: button.living_room_5251_request_diagnostics
-    type: press
-  - device_id: f957cc27f4c122e6f0eacb4d243c9a8e
-    domain: button
-    entity_id: button.hall_5475_request_diagnostics
-    type: press
-  - device_id: 24bba5d362e56debd480c0f59f029f97
-    domain: button
-    entity_id: button.3449_request_diagnostics
-    type: press
-  - device_id: 83dc978cfbddb0f9764b377570699bc6
-    domain: button
-    entity_id: button.bedroom_5318_request_diagnostics
-    type: press
-  - device_id: b098db44bd582bb4fea96e6ed978bf77
-    domain: button
-    entity_id: button.downstairs_bathroom_3463_request_diagnostics
-    type: press
-  - device_id: 80740b24e9eb107b19783c422f97f7aa
-    domain: button
-    entity_id: button.guest_bedroom_5993_request_diagnostics
-    type: press
-  - device_id: 0f000d8183ab1dd480377756d16f5dfb
-    domain: button
-    entity_id: button.2989_request_diagnostics
-    type: press
-  - device_id: 8cd90fd55efb7302c051643b01637133
-    domain: button
-    entity_id: button.bathroom_4329_request_diagnostics
-    type: press
-  - device_id: b37b09196c9ead29fe67c3ac8e958a1d
-    domain: button
-    entity_id: button.4168_request_diagnostics
-    type: press
-  - device_id: 0cff734b573bdb8230ebd1bab69fb477
-    domain: button
-    entity_id: button.4324_request_diagnostics
-    type: press
-  - device_id: 1bb46d37b4b76e1074e643fa8e705965
-    domain: button
-    entity_id: button.4335_request_diagnostics
-    type: press
-  mode: single
 - id: '1674941449370'
   alias: Energenie eTRV Calibrate Once a Week
   description: ''
   trigger:
   - platform: time
-    at: 04:30:00
+    at: 00:00:00
   condition:
   - condition: time
     weekday:
     - sun
   action:
-  - device_id: 19cbf4886ed19963f11d43ffa42e28a1
-    domain: button
-    entity_id: button.3233_calibrate
-    type: press
-  - device_id: d337951ff2c335a3d5f683e67dfd26d2
-    domain: button
-    entity_id: button.living_room_5251_calibrate
-    type: press
-  - device_id: f957cc27f4c122e6f0eacb4d243c9a8e
-    domain: button
-    entity_id: button.hall_5475_calibrate
-    type: press
-  - device_id: 24bba5d362e56debd480c0f59f029f97
-    domain: button
-    entity_id: button.3449_calibrate
-    type: press
-  - device_id: 83dc978cfbddb0f9764b377570699bc6
-    domain: button
-    entity_id: button.bedroom_5318_calibrate
-    type: press
-  - device_id: b098db44bd582bb4fea96e6ed978bf77
-    domain: button
-    entity_id: button.downstairs_bathroom_3463_calibrate
-    type: press
-  - device_id: 80740b24e9eb107b19783c422f97f7aa
-    domain: button
-    entity_id: button.guest_bedroom_5993_calibrate
-    type: press
-  - device_id: 0f000d8183ab1dd480377756d16f5dfb
-    domain: button
-    entity_id: button.2989_calibrate
-    type: press
-  - device_id: 8cd90fd55efb7302c051643b01637133
-    domain: button
-    entity_id: button.bathroom_4329_calibrate
-    type: press
-  - device_id: b37b09196c9ead29fe67c3ac8e958a1d
-    domain: button
-    entity_id: button.4168_calibrate
-    type: press
-  - device_id: 0cff734b573bdb8230ebd1bab69fb477
-    domain: button
-    entity_id: button.4324_calibrate
-    type: press
-  - device_id: 1bb46d37b4b76e1074e643fa8e705965
-    domain: button
-    entity_id: button.4335_calibrate
-    type: press
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: select
+    entity_id: 551713a2c8fe453796e77dd1e0796152
+    type: select_option
+    option: Exercise Valve
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: select
+    entity_id: f18942e23b5ba88013eab01ead452bd6
+    type: select_option
+    option: Exercise Valve
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: select
+    entity_id: ba0a113a1b8f3c61503ffd672bd48629
+    type: select_option
+    option: Exercise Valve
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: select
+    entity_id: c1d57e0aff19de01e97c8f36a0d112d7
+    type: select_option
+    option: Exercise Valve
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: select
+    entity_id: 74de4da403c24cdb7e582b30d56bc168
+    type: select_option
+    option: Exercise Valve
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: select
+    entity_id: 47be01fbbccb610bccabc298ad1e103c
+    type: select_option
+    option: Exercise Valve
+  - device_id: edd53a3020762c37680c07cc4c38d557
+    domain: select
+    entity_id: 2c591391732f9048068e2aede02816ae
+    type: select_option
+    option: Exercise Valve
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: select
+    entity_id: b73067f185ccb68fd06a1add939d4730
+    type: select_option
+    option: Exercise Valve
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: select
+    entity_id: 4a3fe856a731d274a9eb0c1303ec77c8
+    type: select_option
+    option: Exercise Valve
   mode: single
 - id: '1689364304362'
   alias: Irrigation Notify When Controllers Goes Offline
@@ -3555,9 +3190,39 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:package-variant-closed
+  - service: camera.snapshot
+    data:
+      filename: /media/garage2.jpg
+    target:
+      entity_id:
+      - camera.drive_higher_21
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      title: Parcel Box
+      message: Parcel Box Opened Photo 2
+      data:
+        image: /media/local/garage2.jpg
+        color: green
+        channel: ParcelBox2
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      title: Parcel Box
+      message: Parcel Box Opened Photo 2
+      data:
+        image: /media/local/garage2.jpg
+        color: green
+        channel: ParcelBox2
+        importance: default
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:package-variant-closed
   mode: single
 - id: '1694727006658'
-  alias: House Doorbell Button External Notify - Rev 2
+  alias: House Doorbell - External Notify
   description: Take photo first, rather than using camera_proxy, as camera_proxy only
     takes the image when the notification is delivered, which may be later if signal
     is poor.
@@ -3657,10 +3322,7 @@
   mode: single
 - id: '1694790204906'
   alias: Front door opened with no one home
-  description: As Lucy's phone has no internet, her location will continue to show
-    as at home even when she is away; However the location data will become "stale"
-    so we can assume she is not at home if the location is not updated for 10 mins
-    (600 seconds)
+  description: ''
   trigger:
   - type: opened
     platform: device
@@ -3670,24 +3332,12 @@
   condition:
   - condition: not
     conditions:
-    - condition: numeric_state
-      entity_id: person.lucy
-      attribute: device_trackers
-      value_template: '{{ (as_timestamp( now()) - as_timestamp( states.person.lucy.last_updated))
-        | int }}
-
-        '
-      below: 600
-      enabled: false
     - condition: zone
       entity_id: person.richard
       zone: zone.home
     - condition: zone
       entity_id: person.lucy
       zone: zone.home
-    - condition: state
-      entity_id: binary_sensor.is_lucy_s_location_data_valid
-      state: 'on'
     enabled: true
   action:
   - service: camera.snapshot
@@ -3724,10 +3374,7 @@
   mode: single
 - id: '1694795158536'
   alias: Back door opened but no one is home
-  description: As Lucy's phone has no internet, her location will continue to show
-    as at home even when she is away; However the location data will become "stale"
-    so we can assume she is not at home if the location is not updated for 10 mins
-    (600 seconds)
+  description: ''
   trigger:
   - type: opened
     platform: device
@@ -3740,14 +3387,9 @@
     - condition: zone
       entity_id: person.richard
       zone: zone.home
-    - condition: and
-      conditions:
-      - condition: zone
-        entity_id: person.lucy
-        zone: zone.home
-      - condition: state
-        entity_id: binary_sensor.is_lucy_s_location_data_valid
-        state: 'on'
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
     enabled: true
   action:
   - service: camera.snapshot
@@ -3845,4 +3487,341 @@
         data: {}
         target:
           entity_id: switch.living_room_speakers_power
+  mode: single
+- id: '1697309989912'
+  alias: Lucy Location Watchdog
+  description: Lucy has no mobile data on her phone, so when she is away without wifi,
+    the location automations at home will continue to think she is at home, causing
+    issues. This automation sets Lucy as away after a time of no loation updates,
+    to ensure the automations work.
+  trigger:
+  - platform: template
+    value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
+      | int) > 300 %}true{% endif %}
+
+      '
+  condition:
+  - condition: template
+    value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
+      | int) > 300 %}true{% endif %}
+
+      '
+  action:
+  - service: device_tracker.see
+    data:
+      dev_id: google_maps_114635444798949098363
+      location_name: not_home
+  mode: single
+- id: '1697311341807'
+  alias: Turn on lights when we get home
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.lucy
+    zone: zone.home
+    event: enter
+    enabled: false
+  - platform: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: enter
+    enabled: false
+  - type: opened
+    platform: device
+    device_id: 86b815b15cbf84a75984db3b46f6cc17
+    entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: fa69bc49d4bfe964b899661c045598c2
+    entity_id: da0967db8c828ae40c9a359bb2e0436d
+    domain: binary_sensor
+    enabled: true
+  condition:
+  - condition: sun
+    after: sunset
+    after_offset: 00:30
+  action:
+  - service: light.turn_on
+    data:
+      transition: 20
+      kelvin: 2700
+    target:
+      entity_id:
+      - light.downstairs_hallway_light
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - type: is_open
+        condition: device
+        device_id: 86b815b15cbf84a75984db3b46f6cc17
+        entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+        domain: binary_sensor
+      sequence:
+      - wait_for_trigger:
+        - type: not_opened
+          platform: device
+          device_id: 86b815b15cbf84a75984db3b46f6cc17
+          entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+          domain: binary_sensor
+        timeout:
+          hours: 0
+          minutes: 30
+          seconds: 0
+          milliseconds: 0
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.downstairs_hallway_light
+    - conditions:
+      - type: is_not_open
+        condition: device
+        device_id: 86b815b15cbf84a75984db3b46f6cc17
+        entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+        domain: binary_sensor
+      sequence:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.downstairs_hallway_light
+  mode: restart
+- id: '1697311647945'
+  alias: Garage door opened but no one is home
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 6d3f659d3b1cf6534dc09fa4fcca868d
+    entity_id: 17edc1d1385c61490d54f583bbb34c2b
+    domain: binary_sensor
+  condition:
+  - condition: not
+    conditions:
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
+    enabled: true
+  action:
+  - service: camera.snapshot
+    data:
+      filename: /media/garage_sensor.jpg
+    target:
+      entity_id: camera.garage_13
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      title: Front Door
+      message: Door opened, but no one is home!
+      data:
+        image: /media/local/garage_sensor.jpg
+        color: red
+        channel: DoorOpen3
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+  - service: notify.mobile_app_lucy_mob_app
+    data:
+      title: Front Door
+      message: Door opened, but no one is home!
+      data:
+        image: /media/local/garage_sensor.jpg
+        color: red
+        channel: DoorOpen3
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+  mode: single
+- id: '1697388186314'
+  alias: Energenie eTRV Error
+  description: ''
+  trigger:
+  - type: problem
+    platform: device
+    device_id: a46ff2f2479fd7381a267a77a12734ae
+    entity_id: cb5fcb489d2672ac9dad67779d1b5c08
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: e79922e5a787ed8db81ee253715ea823
+    entity_id: 240181bd9a3ee5f41a115bad8769841b
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: 061f81b04836d8e074d7e2542b21767c
+    entity_id: a050971712c4335b998b67489b3e07b8
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: 55d26468639a4f1005742215878de937
+    entity_id: c8108715bdfc512a18dfbbe5124bee96
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: f694a04cab17376f9ccbb97b67b6365d
+    entity_id: a1222f8d5b3d6a922a9e71ab061f2292
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    entity_id: 8e53453c39e12d27442ff5b35a6deced
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: edd53a3020762c37680c07cc4c38d557
+    entity_id: cd361b26865b69681400ee96ef06c9c6
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    entity_id: 2a0116895e15059336a19e2ee00a5b31
+    domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    entity_id: fc32779959e9512a07e24e50efad3521
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_rich_mob_app
+    data:
+      title: Energenie eTRV Error
+      message: Energenie eTRV Error {{ states('sensor.downstairs_bathroom_3463_error_text')
+        }}. This was triggered by {{ trigger.id }}
+      data:
+        color: red
+        channel: EnergenieeTRVError
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        visibility: public
+        notification_icon: mdi:alert-circle-outline
+  mode: single
+- id: '1697572691572'
+  alias: Simulate Presence Lights - DEV
+  description: Automation Simulate Presence / Occupancy Simulation. Runs single and
+    if we get home it will turn off all the lights (cancel the run)
+  trigger:
+  - entity_id:
+    - person.richard
+    from: home
+    platform: state
+    to:
+  - entity_id:
+    - person.lucy
+    from: home
+    platform: state
+    to:
+  - event: sunset
+    offset: +00:30:00
+    platform: sun
+  - event_type: event_simulate_presence
+    platform: event
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - before: '23:55:00'
+      condition: time
+    - condition: state
+      entity_id: input_boolean.simulate_presence_enable
+      state: 'on'
+    - condition: state
+      entity_id: person.lucy
+      state: not_home
+    - condition: state
+      entity_id: person.richard
+      state: not_home
+    enabled: false
+  action:
+  - if:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - before: '23:55:00'
+        condition: time
+        enabled: false
+      - condition: state
+        entity_id: input_boolean.simulate_presence_enable
+        state: 'on'
+      - condition: state
+        entity_id: person.lucy
+        state: not_home
+      - condition: state
+        entity_id: person.richard
+        state: not_home
+    then:
+    - data_template:
+        entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+          | random }}'
+      service: light.turn_on
+    - delay: 00:{{ (range(10, 30) | random) }}:00
+    - if:
+      - condition: or
+        conditions:
+        - condition: time
+          after: '11:50:00'
+        - condition: state
+          entity_id: person.lucy
+          state: home
+        - condition: state
+          entity_id: person.richard
+          state: home
+      then:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.presence_simulation_lights
+    - data_template:
+        entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+          | random }}'
+      service: light.turn_on
+    - delay: 00:{{ (range(10, 30) | random) }}:00
+    - data_template:
+        entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+          | random }}'
+      service: light.turn_off
+    - if:
+      - condition: or
+        conditions:
+        - condition: time
+          after: '11:50:00'
+          enabled: false
+        - condition: state
+          entity_id: person.lucy
+          state: home
+        - condition: state
+          entity_id: person.richard
+          state: home
+      then:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.presence_simulation_lights
+    - event: event_simulate_presence
+    else:
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: person.lucy
+        state: not_home
+      - condition: state
+        entity_id: person.richard
+        state: not_home
+      enabled: false
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.presence_simulation_lights
   mode: single

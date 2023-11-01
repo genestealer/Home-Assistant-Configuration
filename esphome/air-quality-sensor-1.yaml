@@ -20,8 +20,8 @@ substitutions:
   subnet: 255.255.255.0
 
   # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  status_led: GPIO16 # NodeMCU on-board LED
+  status_led_inverted: "true"
   platform: ESP8266
   board: nodemcuv2
 

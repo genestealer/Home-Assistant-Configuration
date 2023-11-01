@@ -45,7 +45,7 @@ devices:
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0x60a423fffece99ad':
-    friendly_name: Motion 99ad
+    friendly_name: Hallway Motion Sensor 99ad
     occupancy_timeout: 90
     illuminance_below_threshold_check: true
   '0x60a423fffef26f3c':

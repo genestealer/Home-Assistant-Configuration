@@ -22,13 +22,6 @@ light.christmas_garden_lights:
   icon: mdi:tree
 sensor.ssl_cert_expiry:
   icon: mdi:certificate
-light.lamp_1:
-  friendly_name: Library Light
-light.lamp_2:
-  friendly_name: Guest Bedroom Light
-  google_assistant_type: light
-light.lamp_3:
-  friendly_name: Upstairs Hall Light
 binary_sensor.bunny_shed_cooler:
   device_class: cold
   icon: mdi:fan

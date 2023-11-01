@@ -20,7 +20,7 @@
     signal_repetitions: 5
   devices:
     Maclean_0d52_04:
-      name: Lamp_1 # renamed in customise.yaml to 'Libary Room Light'
+      name: Library Light
     # Maclean_0d82_03:
     #   name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Light'
     # Maclean_0d85_02:

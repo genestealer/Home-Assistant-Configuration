@@ -292,81 +292,121 @@
 - id: '1678302175651'
   name: Midday Heating
   entities:
-    climate.bathroom_4329_radiator:
+    climate.downstairs_bathroom_3463_climate_control:
       hvac_modes:
       - heat
-      min_temp: -4
-      max_temp: 30
+      - 'off'
+      min_temp: 5
+      max_temp: 40
+      target_temp_step: 0.5
+      current_temperature: 18.7
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Downstairs Bathroom 3463 Climate Control
+      supported_features: 1
+      state: heat
+    climate.office_3233_climate_control:
+      hvac_modes:
+      - heat
+      - 'off'
+      min_temp: 5
+      max_temp: 40
+      target_temp_step: 0.5
+      current_temperature: 19.1
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Office 3233 Climate Control
+      supported_features: 1
+      state: heat
+    climate.dining_room_4335_climate_control:
+      hvac_modes:
+      - heat
+      - 'off'
+      min_temp: 5
+      max_temp: 40
+      target_temp_step: 0.5
+      current_temperature: 19.1
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Dining Room 4335 Climate Control
+      supported_features: 1
+      state: heat
+    climate.kitchen_4168_climate_control:
+      hvac_modes:
+      - heat
+      - 'off'
+      min_temp: 5
+      max_temp: 40
+      target_temp_step: 0.5
+      current_temperature: 19
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Kitchen 4168 Climate Control
+      supported_features: 1
+      state: heat
+    climate.living_room_5251_climate_control:
+      hvac_modes:
+      - heat
+      - 'off'
+      min_temp: 5
+      max_temp: 40
+      target_temp_step: 0.5
+      current_temperature: 20.1
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Living Room 5251 Climate Control
+      supported_features: 1
+      state: heat
+    climate.hall_5475_climate_control:
+      hvac_modes:
+      - heat
+      - 'off'
+      min_temp: 5
+      max_temp: 40
+      target_temp_step: 0.5
+      current_temperature: 18.3
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Hall 5475 Climate Control
+      supported_features: 1
+      state: heat
+    climate.bathroom_4329_climate_control:
+      hvac_modes:
+      - heat
+      - 'off'
+      min_temp: 5
+      max_temp: 40
       target_temp_step: 0.5
       current_temperature: 17.4
       temperature: 30
-      friendly_name: Bathroom 4329 Radiator
+      icon: mdi:radiator
+      friendly_name: Bathroom 4329 Climate Control
       supported_features: 1
       state: heat
-    climate.bedroom_5318_trv:
+    climate.guest_bedroom_5993_climate_control:
       hvac_modes:
       - heat
-      min_temp: -4
-      max_temp: 30
-      target_temp_step: 1
-      current_temperature: 15.7
-      temperature: 10
-      friendly_name: Bedroom 5318 Radiator
-      supported_features: 1
-      state: heat
-    climate.downstairs_bathroom_3463_radiator:
-      hvac_modes:
-      - heat
-      min_temp: -4
-      max_temp: 30
+      - 'off'
+      min_temp: 5
+      max_temp: 40
       target_temp_step: 0.5
-      current_temperature: 16.8
-      temperature: 16
-      friendly_name: Downstairs Bathroom 3463 Radiator
+      current_temperature: 18.2
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Guest Bedroom 5993 Climate Control
       supported_features: 1
       state: heat
-    climate.guest_bedroom_5993_radiator:
+    climate.bedroom_5318_climate_control:
       hvac_modes:
       - heat
-      min_temp: -4
-      max_temp: 30
+      - 'off'
+      min_temp: 5
+      max_temp: 40
       target_temp_step: 0.5
-      current_temperature: 22.3
-      temperature: 10
-      friendly_name: Guest Bedroom 5993 Radiator
-      supported_features: 1
-      state: heat
-    climate.hall_5475_trv:
-      hvac_modes:
-      - heat
-      min_temp: -4
-      max_temp: 30
-      target_temp_step: 0.5
-      current_temperature: 15.3
-      temperature: 12
-      friendly_name: Hall 5475 Radiator
-      supported_features: 1
-      state: heat
-    climate.living_room_5251_trv:
-      hvac_modes:
-      - heat
-      min_temp: -4
-      max_temp: 30
-      target_temp_step: 1
-      current_temperature: 18.7
-      temperature: 21
-      friendly_name: Living Room 5251 Radiator
-      supported_features: 1
-      state: heat
-    climate.3233_radiator:
-      hvac_modes:
-      - heat
-      min_temp: -4
-      max_temp: 30
-      target_temp_step: 0.5
-      current_temperature: 18.6
-      temperature: 21
-      friendly_name: Office 3233 Radiator
+      current_temperature: 18.5
+      temperature: 20
+      icon: mdi:radiator
+      friendly_name: Bedroom 5318 Climate Control
       supported_features: 1
       state: heat
   metadata: {}

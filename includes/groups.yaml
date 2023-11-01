@@ -236,10 +236,6 @@
 #   entities:
 #     - light.upstairs_hall_light
 #     - light.kitchen_under_counter_lights
-#     - light.lamp_1
-#     - light.lamp_2
-#     - light.lamp_3
-#     - light.lamp_4
 #     - light.bedroom
 #     - light.richard_bedside
 #     - light.lucy_bed
