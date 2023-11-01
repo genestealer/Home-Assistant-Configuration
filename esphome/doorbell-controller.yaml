@@ -1,8 +1,11 @@
 #############################################################
-# Richard Huish 2020
+# Richard Huish 2023
 # https://github.com/genestealer/Home-Assistant-Configuration
 # Doorbell controller & electricity meter monitor
 # See https://github.com/klaasnicolaas/home-assistant-glow
+# For automations for local Google Home/Nest notifications and push notifications, see automations.yaml code:
+#   id: '1694727006658' House Doorbell - External Notify
+#   id: '1652210144322' House Doorbell - Local Notify
 ##############################################################
 # Config Header for Device
 ##############################################################
@@ -53,11 +56,12 @@ dashboard_import:
 ##############################################################
 
 globals:
+  # Quiet time for doorbell ringer - start
  - id: nighttime_start
    type: int
    restore_value: no
    initial_value: '21'
-   
+  # Quiet time for doorbell ringer - finish
  - id: nighttime_stop
    type: int
    restore_value: no
