@@ -376,8 +376,6 @@
     at: input_datetime.air_freshener_on_time
   - platform: time
     at: input_datetime.air_freshener_off_time
-  - platform: homeassistant
-    event: start
   - platform: zone
     entity_id: person.richard
     zone: zone.home
@@ -417,12 +415,14 @@
           entity_id:
           - switch.plug_in_air_freshener_1
           - switch.plug_in_air_freshener_2
+        data: {}
     default:
     - service: switch.turn_off
       target:
         entity_id:
         - switch.plug_in_air_freshener_1
         - switch.plug_in_air_freshener_2
+      data: {}
   mode: restart
 - id: '1576601770197'
   alias: Welcome home Lucy
@@ -873,27 +873,22 @@
   - condition: numeric_state
     entity_id: weather.openweathermap
     attribute: temperature
-    below: 2
+    above: 3
+  - type: is_not_open
+    condition: device
+    device_id: 86b815b15cbf84a75984db3b46f6cc17
+    entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+    domain: binary_sensor
   action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 10
   - service: switch.turn_on
     entity_id: switch.front_garden_lawn_irrigation_valve
   - delay:
       hours: 0
       minutes: 0
-      seconds: 4
+      seconds: '{{ states(''input_number.fld_water_on_time'')|float }}'
       milliseconds: 0
   - service: switch.turn_off
     entity_id: switch.front_garden_lawn_irrigation_valve
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
   mode: restart
 - id: '1607604378569'
   alias: AutoHotKey - Webhook Driven - Busy Light - Process Presence Incoming Webhook
@@ -1097,178 +1092,6 @@
     device_id: 78678bdb2e4faa8982a4681b31f899ba
     entity_id: switch.ice_maker_switch
     domain: switch
-  mode: single
-- id: '1619902648352'
-  alias: Outside lights Chase
-  description: ''
-  trigger:
-  - platform: device
-    type: turned_on
-    device_id: 271291f2388c4b78b8eb8bedf5ac1260
-    entity_id: light.outside_2_down
-    domain: light
-  condition: []
-  action:
-  - service: light.turn_on
-    target:
-      device_id: 271291f2388c4b78b8eb8bedf5ac1260
-    data:
-      brightness_pct: 1
-  - service: light.turn_on
-    target:
-      device_id: 271291f2388c4b78b8eb8bedf5ac1260
-    data:
-      transition: 4
-      brightness_pct: 50
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: 68c0780a08a2a488fafcf891c0c971bf
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: 68c0780a08a2a488fafcf891c0c971bf
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: cb145ae0d47bb8242a1065359c1526a8
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: cb145ae0d47bb8242a1065359c1526a8
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: ed8273e13c392387f265d1be36133415
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: ed8273e13c392387f265d1be36133415
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: 8b55b43e0d5bf19f8f5eaf57f48f8448
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: 8b55b43e0d5bf19f8f5eaf57f48f8448
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: a80228a582b8c1d77941665dba6266cd
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: a80228a582b8c1d77941665dba6266cd
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: 752958ce41cdae33a5940fde71737e08
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: 752958ce41cdae33a5940fde71737e08
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: 7f1a0dc66db6e1b172af0f4f1f84e190
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: 7f1a0dc66db6e1b172af0f4f1f84e190
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: light.turn_on
-    data:
-      brightness_pct: 1
-    target:
-      device_id: c3c520f03d6b5a91b336e63fe62cd7b9
-  - service: light.turn_on
-    data:
-      transition: 4
-      brightness_pct: 50
-    target:
-      device_id: c3c520f03d6b5a91b336e63fe62cd7b9
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      device_id:
-      - 68c0780a08a2a488fafcf891c0c971bf
-      - ed8273e13c392387f265d1be36133415
-      - a80228a582b8c1d77941665dba6266cd
-      - 752958ce41cdae33a5940fde71737e08
-      - 8b55b43e0d5bf19f8f5eaf57f48f8448
-      - 7f1a0dc66db6e1b172af0f4f1f84e190
-      - c3c520f03d6b5a91b336e63fe62cd7b9
-      - 271291f2388c4b78b8eb8bedf5ac1260
-  - service: light.turn_on
-    target:
-      device_id: cb145ae0d47bb8242a1065359c1526a8
-    data:
-      brightness_pct: 1
   mode: single
 - id: '1619906359597'
   alias: Outside Lights Motion OLD
@@ -1491,7 +1314,7 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: +01:00:00
+    offset: +00:30:00
   - platform: time
     at: input_datetime.house_sign_light_off_time
   condition: []
@@ -1505,6 +1328,7 @@
         target:
           entity_id:
           - light.outside_2_down
+        data: {}
     - conditions:
       - condition: and
         conditions:
@@ -1516,6 +1340,7 @@
       - service: light.turn_on
         data:
           brightness_pct: 1
+          color_temp: 250
         target:
           entity_id:
           - light.outside_2_down
@@ -1524,20 +1349,7 @@
       target:
         entity_id:
         - light.outside_2_down
-  mode: single
-- id: '1620377256377'
-  alias: obsolete - Ice Maker - Back Online - Fire Custom Event "ice_maker_back_online"
-  description: Fires a custom event onto the event bus, which the icemaker schedule
-    blueprint monitors and uses as an additional trigger to its automation.
-  trigger:
-  - type: connected
-    platform: device
-    device_id: 78678bdb2e4faa8982a4681b31f899ba
-    entity_id: binary_sensor.ice_maker_status
-    domain: binary_sensor
-  condition: []
-  action:
-  - event: ice_maker_back_online
+      data: {}
   mode: single
 - id: '1621103260448'
   alias: Ice Maker - On-Off Automation
@@ -1757,21 +1569,11 @@
         data:
           brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
             | int(0) }}'
-          color_temp: 352
+          color_temp: 370
+          transition: 5
       - delay:
           minutes: '{{ states(''input_number.outside_lights_late_night_time_on_minutes'')
             | int(0) }}'
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_4_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 1
-          transition: 10
     default:
     - service: light.turn_on
       target:
@@ -1790,6 +1592,7 @@
         entity_id:
         - light.outside_2_down
       data:
+        color_temp: 370
         brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
@@ -1877,53 +1680,10 @@
         brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
-          | int(0) }}'
-    - delay:
-        milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
-          | int(0) }}'
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 60
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_up
-        - light.outside_1_down
-        - light.outside_2_up
-        - light.outside_2_down
-        - light.outside_3_up
-        - light.outside_3_down
-        - light.outside_4_up
-        - light.outside_4_down
-        - light.outside_5_down
-      data:
-        brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
           | int(0) }}'
     - delay:
         minutes: '{{ states(''input_number.outside_lights_early_night_time_on_minutes'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_up
-        - light.outside_1_down
-        - light.outside_2_up
-        - light.outside_2_down
-        - light.outside_3_up
-        - light.outside_3_down
-        - light.outside_4_up
-        - light.outside_4_down
-        - light.outside_5_down
-      data:
-        brightness_pct: 1
-        transition: 10
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 15
-      milliseconds: 0
   - service: light.turn_off
     target:
       entity_id:
@@ -1936,27 +1696,24 @@
       - light.outside_4_up
       - light.outside_4_down
       - light.outside_5_down
-    data: {}
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 4
-      milliseconds: 0
-  - choose:
-    - conditions:
-      - condition: time
-        before: input_datetime.house_sign_light_off_time
-        after: '16:00'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-          white_value: 250
-        target:
-          entity_id:
-          - light.outside_2_down
-    default: []
-  mode: single
+    data:
+      transition: 20
+  - if:
+    - condition: time
+      after: '16:00:00'
+    then:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+        milliseconds: 0
+    - service: light.turn_on
+      target:
+        entity_id: light.outside_2_down
+      data:
+        color_temp: 250
+        brightness_pct: 1
+  mode: restart
 - id: '1641665255926'
   alias: '[Backup]: Outside Lights Motion Slow Fade (Duplicate)'
   description: ''
@@ -2328,51 +2085,6 @@
           - light.outside_2_down
     default: []
   mode: single
-- id: '1648768380853'
-  alias: Outside Lights Motion Driveway Long
-  description: Activate Door Light from distance, will not run if other automation
-    is running (hopefully), Will not run if the lights are already on (if the lights
-    have already been triggered from another automation)
-  trigger:
-  - type: motion
-    platform: device
-    device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.drive_high_16_vmd4_profile_1
-    domain: binary_sensor
-    enabled: true
-  condition:
-  - condition: and
-    conditions:
-    - condition: or
-      conditions:
-      - condition: sun
-        after: sunset
-        after_offset: +00:30:00
-      - condition: sun
-        before: sunrise
-        before_offset: -00:30:00
-    - condition: device
-      type: is_off
-      device_id: 68c0780a08a2a488fafcf891c0c971bf
-      entity_id: light.outside_1_up
-      domain: light
-  action:
-  - service: light.turn_on
-    target:
-      entity_id:
-      - light.outside_1_down
-    data:
-      brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
-        | int(0) }}'
-  - delay:
-      minutes: '{{ states(''input_number.outside_lights_late_night_time_on_minutes'')
-        | int(0) }}'
-  - service: light.turn_off
-    data:
-      transition: 10
-    target:
-      entity_id: light.outside_1_down
-  mode: restart
 - id: '1652210144322'
   alias: House Doorbell - Local Notify
   description: CCTV needs to have anonymous viewer enabled or I need to pass the username
@@ -2600,45 +2312,6 @@
           media_content_id: media-source://camera
     enabled: true
   mode: single
-- id: '1658535783719'
-  alias: 'Downstairs Lights Motion '
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
-    entity_id: binary_sensor.ikea_motion_sensor_1_occupancy
-    domain: binary_sensor
-  - type: no_motion
-    platform: device
-    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
-    entity_id: binary_sensor.ikea_motion_sensor_1_occupancy
-    domain: binary_sensor
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - type: is_off
-        condition: device
-        device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
-        entity_id: binary_sensor.ikea_motion_sensor_1_illuminance_above_threshold
-        domain: binary_sensor
-      - type: is_motion
-        condition: device
-        device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
-        entity_id: binary_sensor.ikea_motion_sensor_1_occupancy
-        domain: binary_sensor
-      sequence:
-      - service: light.turn_on
-        data: {}
-        target:
-          entity_id: light.downstairs_hall_light
-    default:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.downstairs_hall_light
-  mode: single
 - id: '1658705666302'
   alias: Living Room Lights Motion 6f3c
   description: ''
@@ -2796,11 +2469,16 @@
       target:
         entity_id:
         - light.kitchen_lights
-    - service: light.turn_on
-      data: {}
-      target:
+    - if:
+      - condition: state
         entity_id: light.christmas_tree_lights
-      enabled: false
+        state: 'off'
+      then:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.christmas_tree_lights
+        enabled: true
     - delay:
         hours: 0
         minutes: 10
@@ -2834,7 +2512,7 @@
         data: {}
         target:
           entity_id: light.christmas_tree_lights
-        enabled: false
+        enabled: true
   mode: restart
 - id: '1662324895501'
   alias: Occupancy Kitchen (Rev 2)  (delay till no motion)
@@ -2897,18 +2575,6 @@
         entity_id:
         - light.kitchen
   mode: restart
-- id: '1665959554800'
-  alias: Lucy Leave
-  description: ''
-  trigger:
-  - entity_id: person.lucy
-    for: 00:03:00
-    from: home
-    platform: state
-    to: not_home
-  condition: []
-  action: []
-  mode: single
 - id: '1666971475237'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
   description: 'Updated 2023 10 13
@@ -2933,44 +2599,6 @@
           message: Battery low {{sensors}}
       threshold: 15
       day: 6
-- id: '1667073362846'
-  alias: Spider Drop Remote
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: ca61296154562d84a7271001aba10aa5
-    type: action
-    subtype: open
-    discovery_id: 0x000d6ffffe9c3ea8 action_open
-    id: open
-  - platform: device
-    domain: mqtt
-    device_id: ca61296154562d84a7271001aba10aa5
-    type: action
-    subtype: close
-    discovery_id: 0x000d6ffffe9c3ea8 action_close
-    id: close
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: open
-      sequence:
-      - service: switch.turn_on
-        data: {}
-        target:
-          entity_id: switch.spider_drop_switch
-    - conditions:
-      - condition: trigger
-        id: close
-      sequence:
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id: switch.spider_drop_switch
-  mode: single
 - id: '1667140350137'
   alias: Smoke Machine - Lights
   description: ' [Restarts]
@@ -3030,10 +2658,9 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: +01:00:00
     id: 'ON'
   - platform: time
-    at: '23:00:00'
+    at: '23:30:00'
     id: 'OFF'
   condition: []
   action:
@@ -3060,7 +2687,7 @@
   description: ''
   trigger:
   - platform: time
-    at: 00:00:00
+    at: 08:00:00
   condition:
   - condition: time
     weekday:
@@ -3109,6 +2736,11 @@
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: select
     entity_id: 4a3fe856a731d274a9eb0c1303ec77c8
+    type: select_option
+    option: Exercise Valve
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: select
+    entity_id: 859d0eff621e79af1a77a0a152a21a04
     type: select_option
     option: Exercise Valve
   mode: single
@@ -3208,6 +2840,7 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:package-variant-closed
+        sticky: 'true'
   - service: notify.mobile_app_lucy_mob_app
     data:
       title: Parcel Box
@@ -3220,6 +2853,7 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:package-variant-closed
+        sticky: 'true'
   mode: single
 - id: '1694727006658'
   alias: House Doorbell - External Notify
@@ -3304,6 +2938,7 @@
         notification_icon: mdi:door
         ttl: 0
         priority: high
+        sticky: 'true'
       message: ' '
   - service: notify.mobile_app_lucy_mob_app
     data:
@@ -3318,6 +2953,7 @@
         notification_icon: mdi:door
         ttl: 0
         priority: high
+        sticky: 'true'
       message: ' '
   mode: single
 - id: '1694790204906'
@@ -3426,86 +3062,57 @@
   mode: single
 - id: '1696178796762'
   alias: Living Room TV Speakers Auto On-Off
-  description: Turn on living room speakers when Shield is turned on
+  description: 'Turn on living room speakers when Samsung Smart TV is turned on.
+
+    '
   trigger:
   - platform: device
-    device_id: 9bb121d12fd09dab5bdf2f7626487ae7
+    type: changed_states
+    device_id: 99a89cc7d2a737c382a99397821a0522
+    entity_id: bff78da4f1f7d24e59e81c86729d0ceb
     domain: media_player
-    entity_id: 79db4cc39138a29ada3b756bb783a495
-    type: turned_on
-  - platform: device
-    type: turned_on
-    device_id: 7e37b373bf8d07fd1841c01ade874b45
-    entity_id: 9fb7c85317eed58e2ae76859abb2c57e
-    domain: remote
-  - platform: device
-    device_id: 9bb121d12fd09dab5bdf2f7626487ae7
-    domain: media_player
-    entity_id: 79db4cc39138a29ada3b756bb783a495
-    type: turned_off
-  - platform: device
-    type: turned_off
-    device_id: 7e37b373bf8d07fd1841c01ade874b45
-    entity_id: 9fb7c85317eed58e2ae76859abb2c57e
-    domain: remote
   condition: []
   action:
   - choose:
     - conditions:
-      - condition: or
-        conditions:
-        - condition: device
-          device_id: 9bb121d12fd09dab5bdf2f7626487ae7
-          domain: media_player
-          entity_id: 79db4cc39138a29ada3b756bb783a495
-          type: is_on
-        - condition: device
-          device_id: 7e37b373bf8d07fd1841c01ade874b45
-          domain: media_player
-          entity_id: 619e5fe260c3c9be6440bdac42285078
-          type: is_on
+      - condition: device
+        device_id: 99a89cc7d2a737c382a99397821a0522
+        domain: media_player
+        entity_id: bff78da4f1f7d24e59e81c86729d0ceb
+        type: is_on
       sequence:
       - service: switch.turn_on
         data: {}
         target:
-          entity_id: switch.living_room_speakers_power
+          entity_id: switch.192_168_10_21_tv_speakers_button
     - conditions:
-      - condition: and
-        conditions:
-        - condition: device
-          device_id: 9bb121d12fd09dab5bdf2f7626487ae7
-          domain: media_player
-          entity_id: 79db4cc39138a29ada3b756bb783a495
-          type: is_off
-        - condition: device
-          device_id: 7e37b373bf8d07fd1841c01ade874b45
-          domain: media_player
-          entity_id: 619e5fe260c3c9be6440bdac42285078
-          type: is_off
+      - condition: device
+        device_id: 99a89cc7d2a737c382a99397821a0522
+        domain: media_player
+        entity_id: bff78da4f1f7d24e59e81c86729d0ceb
+        type: is_off
       sequence:
       - service: switch.turn_off
         data: {}
         target:
-          entity_id: switch.living_room_speakers_power
-  mode: single
+          entity_id:
+          - switch.192_168_10_21_tv_speakers_button
+    enabled: true
+  mode: restart
 - id: '1697309989912'
   alias: Lucy Location Watchdog
   description: Lucy has no mobile data on her phone, so when she is away without wifi,
     the location automations at home will continue to think she is at home, causing
-    issues. This automation sets Lucy as away after a time of no loation updates,
+    issues. This automation sets Lucy as away after a time of no location updates,
     to ensure the automations work.
   trigger:
   - platform: template
     value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
-      | int) > 300 %}true{% endif %}
-
-      '
+      | int) > 600 %}true{% endif %}'
   condition:
   - condition: template
     value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
-      | int) > 300 %}true{% endif %}
-
-      '
+      | int) > 600 %}true{% endif %}'
   action:
   - service: device_tracker.see
     data:
@@ -3513,19 +3120,9 @@
       location_name: not_home
   mode: single
 - id: '1697311341807'
-  alias: Turn on lights when we get home
+  alias: Turn on hallway lights when we get home
   description: ''
   trigger:
-  - platform: zone
-    entity_id: person.lucy
-    zone: zone.home
-    event: enter
-    enabled: false
-  - platform: zone
-    entity_id: person.richard
-    zone: zone.home
-    event: enter
-    enabled: false
   - type: opened
     platform: device
     device_id: 86b815b15cbf84a75984db3b46f6cc17
@@ -3588,7 +3185,7 @@
         data: {}
         target:
           entity_id: light.downstairs_hallway_light
-  mode: restart
+  mode: single
 - id: '1697311647945'
   alias: Garage door opened but no one is home
   description: ''
@@ -3690,13 +3287,17 @@
     device_id: 71e963eadf1071d0f777742a6fbb5cf9
     entity_id: fc32779959e9512a07e24e50efad3521
     domain: binary_sensor
+  - type: problem
+    platform: device
+    device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    entity_id: 0e45a0c11ea5c5863f199013dec69f52
+    domain: binary_sensor
   condition: []
   action:
   - service: notify.mobile_app_rich_mob_app
     data:
       title: Energenie eTRV Error
-      message: Energenie eTRV Error {{ states('sensor.downstairs_bathroom_3463_error_text')
-        }}. This was triggered by {{ trigger.id }}
+      message: Energenie eTRV Error. This was triggered by {{ trigger.id }}
       data:
         color: red
         channel: EnergenieeTRVError
@@ -3714,11 +3315,19 @@
     from: home
     platform: state
     to:
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   - entity_id:
     - person.lucy
     from: home
     platform: state
     to:
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
   - event: sunset
     offset: +00:30:00
     platform: sun
@@ -3824,4 +3433,238 @@
       data: {}
       target:
         entity_id: light.presence_simulation_lights
+  mode: single
+- id: '1702742847276'
+  alias: 'Office Blinds Schedule '
+  description: "Opens in the morning, only if Richard is home. \nCloses in the evening
+    at dusk."
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 00:10:00
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunset
+        after_offset: -02:00:00
+      sequence:
+      - service: cover.close_cover
+        target:
+          entity_id: cover.office_blinds
+        data: {}
+    - conditions:
+      - condition: zone
+        entity_id: person.richard
+        zone: zone.home
+      sequence:
+      - service: cover.open_cover
+        target:
+          entity_id: cover.office_blinds
+        data: {}
+  mode: single
+- id: '1703811741320'
+  alias: Heat Bathroom Towel Rail Timer
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      hvac_mode: heat
+      temperature: 30
+    target:
+      entity_id:
+      - climate.hallway
+  - service: climate.set_temperature
+    data:
+      temperature: 29
+    target:
+      entity_id:
+      - climate.bathroom_4329_climate_control
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_temperature
+    data:
+      temperature: 12
+    target:
+      entity_id:
+      - climate.hallway
+  mode: single
+- id: '1705695753761'
+  alias: Bathroom Audio Remote - Google Home Speaker
+  description: 'Triggered by an IKEA five-button Zigbee remote through zigbee2mqtt,
+    this automation controls the Bluetooth functionality of a Google Home/Nest Mini
+    speaker.
+
+
+    Due to limitations in Home Assistant, direct control of a Google Home/Nest speaker''s
+    Bluetooth is not possible. To circumvent this, a toggle "helper" is employed,
+    acting as a trigger within a Google Home Automation to react to changes in the
+    toggle''s state and controls the Bluetooth state.
+
+
+    Once my phone is Bluetooth-paired to the Google Home/Nest speaker, volume control
+    commands issued to the speaker through Home Assistant are seamlessly relayed to
+    the phone. However, it''s important to note that these commands are presently
+    limited to pause and volume adjustments within Home Assistant, even though voice
+    commands can be used to control next/previous track functions. This is a limitation
+    of Google Home/Nest Mini, next/previous track works with Home Home/Nest Hubs just
+    fine.'
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_up_click
+    discovery_id: 0x000b57fffe38a445 action_brightness_up_click
+    id: up_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_down_click
+    discovery_id: 0x000b57fffe38a445 action_brightness_down_click
+    id: down_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: toggle
+    discovery_id: 0x000b57fffe38a445 action_toggle
+    id: middle_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_left_click
+    discovery_id: 0x000b57fffe38a445 action_arrow_left_click
+    id: left_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_right_click
+    discovery_id: 0x000b57fffe38a445 action_arrow_right_click
+    id: right_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_up_hold
+    discovery_id: 0x000b57fffe38a445 action_brightness_up_hold
+    id: hold_up
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_left_hold
+    discovery_id: 0x000b57fffe38a445 action_arrow_left_hold
+    id: hold_left
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_right_hold
+    discovery_id: 0x000b57fffe38a445 action_arrow_right_hold
+    id: hold_right
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_down_hold
+    discovery_id: 0x000b57fffe38a445 action_brightness_down_hold
+    id: hold_down
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - up_click
+      sequence:
+      - service: media_player.volume_up
+        metadata: {}
+        data: {}
+        target:
+          device_id: 30e5174b145711eb88da47ba37409372
+    - conditions:
+      - condition: trigger
+        id:
+        - down_click
+      sequence:
+      - service: media_player.volume_down
+        metadata: {}
+        data: {}
+        target:
+          device_id: 30e5174b145711eb88da47ba37409372
+    - conditions:
+      - condition: trigger
+        id:
+        - middle_click
+      sequence:
+      - service: media_player.media_play_pause
+        metadata: {}
+        data: {}
+        target:
+          device_id: 30e5174b145711eb88da47ba37409372
+    - conditions:
+      - condition: trigger
+        id:
+        - left_click
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+    - conditions:
+      - condition: trigger
+        id:
+        - right_click
+      sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+    - conditions:
+      - condition: trigger
+        id:
+        - hold_up
+      sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+        enabled: false
+    - conditions:
+      - condition: trigger
+        id:
+        - hold_down
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+        enabled: false
+  mode: single
+- id: '1706448756375'
+  alias: Heating Follow Radiator Demand
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - climate.living_room_radiator_climate_control
+    attribute: temperature
+  - platform: state
+    entity_id:
+    - climate.living_room_radiator_climate_control
+    attribute: current_temperature
+  condition: []
+  action: []
   mode: single
