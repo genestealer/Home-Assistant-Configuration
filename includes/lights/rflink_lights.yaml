@@ -12,19 +12,29 @@
 #
 ############################################################
 
-# 433MHz Maclean Plug in sockets conected to lights
+# 433MHz automated add
+- platform: rflink
+  automatic_add: true
+  device_defaults:
+    fire_event: true
+    signal_repetitions: 10
+
+# 433MHz UK Maclean Plug MCE07GB Remote Control Sockets connected to lights.
+# Q: I need help unlearning one of the sockets. It turns on two lamps as programmed but I no longer want it to do this. Anone know how please?
+# A: Yes you can.Press and hold the "Learn" button on the adaptor for about 3 secs until the light remains flashing, then select and hold the "Off" button corresponding to the number 1-4 switch you want off and hold it down until the Learn light stops flashing on the adaptor.
+# This will have de-selected that switch setting and you can then re learn it if you wish
 - platform: rflink
   automatic_add: false
   device_defaults:
     fire_event: true
-    signal_repetitions: 5
+    signal_repetitions: 10
   devices:
     Maclean_0d52_04:
       name: Library Light
     # Maclean_0d82_03:
     #   name: Lamp_2 # renamed in customise.yaml to 'Guest Bedroom Light'
-    # Maclean_0d85_02:
-    #   name: Christmas Guest Bedroom Star
+    Maclean_0d85_02:
+      name: Christmas Guest Bedroom Star
     # Maclean_0d82_02:
     #   name: Christmas Living Room Star
 #    Maclean_0d85_04:
@@ -61,21 +71,50 @@
 - platform: rflink
   automatic_add: false
   device_defaults:
+    fire_event: true
     signal_repetitions: 10
-    # fire_event: true
   devices:
     Unitec_9573_01:
       name: Christmas Garden Lights
     Unitec_9573_02:
       name: Christmas Bedroom Star
-    Unitec_9573_03:
-      name: Christmas Tree Lights
+    # Unitec_9573_03:
+    #   name: Christmas Tree Lights
     Unitec_9573_04:
       name: Christmas Library Star
-    Unitec_42d7_01:
-      name: Christmas Guest Bedroom Star
-    Unitec_42d7_02:
+    # Unitec_42d7_01:
+    #   name: Christmas Guest Bedroom Star
+    # Unitec_42d7_02:
+    #   name: Christmas Living Room Star
+#
+#
+#
+#
+# 433MHz UK branded as Status RCS-K09
+#    There is a single button on the front to the unit. Training is started by pressing and holding this button for a few seconds.
+#    The red LED will flash slowly. Then, send an 'On' command - the LED will blink rapidly, then go out.
+#    If mains power is lost for more than about 30secs, the unit forgets its training and needs to be re-trained.
+#    Custom programmed into rflink.
+- platform: rflink
+  automatic_add: false
+  device_defaults:
+    fire_event: true
+    signal_repetitions: 10
+  devices:
+    RFCustom_524643_6: # Status RCS-K09
+      name: Christmas Tree Lights
+    RFCustom_524643_8: # Status RCS-K09
       name: Christmas Living Room Star
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 # # 2022 No longer used as I've moved over to Ikea Tradfi
 # # 2.4GHz Lights Ikea Ansluta
 # - platform: rflink

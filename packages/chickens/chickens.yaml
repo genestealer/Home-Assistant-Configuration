@@ -12,14 +12,14 @@ binary_sensor:
   - platform: threshold
     name: Chicken Low Food Sensor
     entity_id: sensor.chicken_house_sensors_chicken_food #From EspHome Sensor
-    lower: 0.5
+    lower: 0.6
     device_class: problem
     hysteresis: 0.1
 
   - platform: threshold
     name: Chicken Low Water Sensor
     entity_id: sensor.chicken_house_sensors_chicken_water #From EspHome Sensor
-    lower: 0.5
+    lower: 0.6
     device_class: problem
     hysteresis: 0.1
 

@@ -85,13 +85,13 @@ sensor:
     type: PMS5003T
     update_interval: ${sensor_update_interval}
     temperature:
-      name: "Temperature"
+      name: "Temperature PMS"
       device_class: temperature
       state_class: measurement
       accuracy_decimals: 2
    
     humidity:
-      name: "Humidity"
+      name: "Humidity PMS"
       device_class: humidity
       state_class: measurement
       accuracy_decimals: 2
@@ -145,18 +145,18 @@ sensor:
     address: 0x76
 
     temperature:
-      name: "Temperature2"
+      name: "Temperature"
       oversampling: 16x
       id: bme280_temperature
       accuracy_decimals: 2
 
     pressure:
-      name: "Pressure2"
+      name: "Pressure"
       id: bme280_pressure
       accuracy_decimals: 2
 
     humidity:
-      name: "Humidity2"
+      name: "Humidity"
       id: bme280_humidity
       accuracy_decimals: 2
     

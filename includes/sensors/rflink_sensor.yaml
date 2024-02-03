@@ -1,13 +1,25 @@
-  ############################################################
-  #
-  # RFLink House Mains Measurement
-  # 
-  # Superseded by ESPHome Pulse Meter Sensor
-  #  on my doorbell_controller_electricity_monitor
-  #  So no longer need to find wattage from Current and Voltage.
-  #   E.G. {{states('sensor.house_power_meter') | float * (states('sensor.ups_input_voltage') | float / 1000)}}
-  #
-  ############################################################
+############################################################
+#
+# RFLink  Sensor
+#
+############################################################
+
+# 433MHz automated add
+- platform: rflink
+  automatic_add: true
+  device_defaults:
+    fire_event: true
+    signal_repetitions: 10
+############################################################
+#
+# RFLink House Mains Measurement
+#
+# Superseded by ESPHome Pulse Meter Sensor
+#  on my doorbell_controller_electricity_monitor
+#  So no longer need to find wattage from Current and Voltage.
+#   E.G. {{states('sensor.house_power_meter') | float * (states('sensor.ups_input_voltage') | float / 1000)}}
+#
+############################################################
 
 # # OWL CM113 sends Amps / Current in hexadecimal and not Watts, but you will have to convert it from hex to dec.
 # # Home assistant will error each time the send value is not in dec.
@@ -30,7 +42,6 @@
 #       unit_of_measurement: 'A'
 #       availability_template: "{% if is_state('binary_sensor.esp_link_status', 'on') %} true {% endif %}"
 
-
 # - platform: template
 #   sensors:
 #     true_house_current_consumption:
@@ -48,9 +59,6 @@
 #       unit_of_measurement: 'kW'
 #       availability_template: "{% if is_state('binary_sensor.esp_link_status',  'on' and states('binary_sensor.usp_network_online')) %} true {% endif %}"
 
-
-
-
 # # Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
 # - platform: tcp
 #   name: RFLink Keep Alive TCP
@@ -61,12 +69,4 @@
 #   # value_template: '{{ value }}'
 #   scan_interval: 18  #not sure if this works?
 #   value_template: "{{ value.split(';')[2] }}"
-
-
-
-
-
-
-
-
 

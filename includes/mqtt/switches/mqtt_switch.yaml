@@ -7,13 +7,13 @@
 #
 ############################################################
 
-# 433MHz switchs
-# THE BLIND GENIE Office Blinds
-- command_topic: "HUISHS/LightingGateway/transmit"
-  payload_on: "8442884"
-  payload_off: "8442888"
-  name: "Office Blinds"
-  optimistic: true
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
+# # 433MHz switchs
+# # THE BLIND GENIE Office Blinds
+# - command_topic: "HUISHS/LightingGateway/transmit"
+#   payload_on: "8442884"
+#   payload_off: "8442888"
+#   name: "Office Blinds"
+#   optimistic: true
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"

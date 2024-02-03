@@ -87,12 +87,12 @@ sensor:
     id: sensor01
     update_interval: ${sensor_update_interval}
     temperature:
-      name: "Temperature 2"
+      name: "Temperature PMS"
       device_class: temperature
       state_class: measurement
    
     humidity:
-      name: "Humidity 2"
+      name: "Humidity PMS"
       device_class: humidity
       state_class: measurement
 

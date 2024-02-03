@@ -1,0 +1,45 @@
+############################################################
+#
+# RFLink cover
+# For contoller:
+# see https://github.com/Genestealer/Home-Assistant-RFLink-Gateway-ESP8266
+#
+#
+############################################################
+
+# 433MHz Office blinds
+- platform: rflink
+  device_defaults:
+    signal_repetitions: 5
+    fire_event: true
+  devices:
+    EV1527_080d40_4: # Office Blinds (THE BLIND GENIE) OPENS fully on both ON and OFF commands, then CLOSES to the right fully on 2nd command.
+      name: Raw Office Blinds Open Command
+    EV1527_080d40_8: # Office Blinds (THE BLIND GENIE) CLOSES to the left fully on both ON and OFF commands
+      name: Raw Office Blinds Close Command
+    # RFCustom_524643_10: # Office Blinds (THE BLIND GENIE) ON (dont work)
+    #   name: Office Blinds Close 2
+    # RFCustom_524643_11: # Office Blinds (THE BLIND GENIE) OFF (dont work)
+    #   name: Office Blinds Open 2
+
+- platform: template
+  covers:
+    office_blinds:
+      unique_id: "office_blinds"
+      device_class: curtain
+      friendly_name: "Office Blind"
+      availability_template: "{{ states('binary_sensor.esp_link_gateway_status') }}"
+      open_cover:
+        - service: cover.open_cover
+          target:
+            entity_id: cover.raw_office_blinds_open_command
+      close_cover:
+        - service: cover.open_cover
+          target:
+            entity_id: cover.raw_office_blinds_close_command
+      # icon_template: >-
+      #   {% if states('cover.office_blinds') == 'open' %}
+      #     mdi:blinds-vertical
+      #   {% else %}
+      #     mdi:blinds-vertical-closed
+      #   {% endif %}

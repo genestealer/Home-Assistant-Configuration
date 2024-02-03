@@ -10,28 +10,11 @@
 #
 ############################################################
 homeassistant:
-  # # Moved to edit in GUI
-  #   # Name of the location where Home Assistant is running
-  #   name: Home
-  #   # Location required to calculate the time the sun rises and sets
-  #   latitude: !secret latitude
-  #   longitude: !secret longitude
-  #   # Impacts weather/sunrise data
-  #   elevation: !secret elevation
-  #   external_url: !secret Base_url
-  #   internal_url: !secret internal_ip
-  #   unit_system: metric
-  #   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  #   time_zone: Europe/London
-  #   currency: GBP
-
   # Customization file
   customize: !include customize.yaml
   #Unhide the push notifcation slider https://github.com/home-assistant/home-assistant/issues/16043
   auth_providers:
     - type: homeassistant
-    # uncomment this to enable backwards compatible API password support
-    # - type: legacy_api_password
   # whitelist_external_dirs:
   #   - /www
   #   - /tmp
@@ -56,54 +39,6 @@ lovelace_gen:
 lovelace:
   mode: storage
   resources:
-    # - type: module
-    #   url: browser_mod.js
-    # - type: module
-    #   url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
-    # - type: module
-    #   url: /hacsfiles/lovelace-card-mod/card-mod.js
-    # - type: module
-    #   url: /hacsfiles/button-card/button-card.js
-    # - type: module
-    #   url: /hacsfiles/config-template-card/config-template-card.js
-    # - type: module
-    #   url: /hacsfiles/lovelace-layout-card/layout-card.js
-    # - type: module
-    #   url: /hacsfiles/lovelace-state-switch/state-switch.js
-    # - type: module
-    #   url: /hacsfiles/lovelace-hui-element/hui-element.js
-    # - type: module
-    #   url: /hacsfiles/lovelace-time-picker-card/time-picker-card.js
-
-    # - url: browser_mod.js
-    #   type: js
-    # - url: /browser_mod.js
-    #   type: module
-
-    # - url: browser_mod.js
-    #   type: module
-    # - url: /local/community/lovelace-card-mod/card-mod.js
-    #   type: module
-    # - url: /local/community/lovelace-hui-element/hui-element.js
-    #   type: module
-    # - url: /local/community/button-card/button-card.js
-    #   type: module
-    # - url: /local/community/config-template-card/config-template-card.js
-    #   type: module
-    # - url: /local/community/mini-graph-card/mini-graph-card-bundle.js
-    #   type: module
-    # - url: /local/community/lovelace-layout-card/layout-card.js
-    #   type: module
-    # - url: /local/community/lovelace-state-switch/state-switch.js
-    #   type: module
-    # - url: /local/community/lovelace-time-picker-card/time-picker-card.js
-    #   type: module
-
-    # - url: /local/community/lovelace-multiple-entity-row/multiple-entity-row.js
-    #   type: module
-    # - url: /local/community/stack-in-card/stack-in-card.js
-    #   type: module
-
     #=== FONTS
     - url: https://fonts.googleapis.com/css?family=Oswald
       type: css
@@ -119,8 +54,6 @@ lovelace:
       filename: myirrigation.yaml
 # Enables configuration UI
 config:
-
-scene: !include scenes.yaml
 
 #Home Assistant Cloud - NOPE!
 cloud:
@@ -143,9 +76,6 @@ http:
   ip_ban_enabled: true
   login_attempts_threshold: 20
 
-# # Discover some devices automatically
-# discovery:
-
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
 
@@ -155,7 +85,6 @@ history:
 # Tracked history. Dependency of the history integration
 recorder:
   purge_keep_days: 64
-  #db_url: !secret mariadb_db_url
   exclude:
     # domains:
     #   - automation
@@ -188,12 +117,10 @@ logbook:
       - sensor.server_server_power_on_time
       - sensor.cc_cpu_temperature
       - sensor.cc_cpu_load
-      - sensor.adguard_average_processing_speed
-      - sensor.adguard_dns_queries
-      - sensor.adguard_dns_queries_blocked_ratio
-      - sensor.adguard_parental_control_blocked
-      - sensor.adguard_safe_browsing_blocked
-      - sensor.adguard_safe_searches_enforced
+    entity_globs:
+      - sensor.adguard_*
+      - sensor.*_last_seen
+      - sensor.*_retries
 
 # Enables a map showing the location of tracked devices
 map:
@@ -211,9 +138,19 @@ logger:
     # homeassistant.components.axis: debug
     homeassistant.components.rest: debug
 
+# System Health integration
 system_health:
 
+# Meta-component integration
 default_config:
+
+# My Home Assistant integration https://www.home-assistant.io/integrations/my
+# Needed for 2023 Nest
+my:
+
+# Media source integration platform allows integrations to expose media for use inside Home Assistant through the Media Browser panel or
+# through supported media players like Google Cast.
+media_source:
 
 ############################################################
 #
@@ -225,26 +162,22 @@ default_config:
 sun:
   # elevation: !secret elevation
 
+#################################################
 # Text to speech.
 tts:
   - platform: google_translate
     service_name: google_translate_say
 
+#################################################
 # Use external MQTT broker.
 mqtt:
-  # broker: !secret mqtt_broker
-  # port: 1883
-  # client_id: home-assistant
-  # keepalive: 60
-  # username: !secret mqtt_username
-  # password: !secret mqtt_password
-  # discovery: true
   binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
   cover: !include_dir_merge_list includes/mqtt/covers/
   sensor: !include_dir_merge_list includes/mqtt/sensors/
   switch: !include_dir_merge_list includes/mqtt/switches/
   light: !include_dir_merge_list includes/mqtt/lights/
 
+#################################################
 # Push notification providers.
 notify:
   - name: Google Cloud Notify
@@ -255,33 +188,7 @@ notify:
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
 
-  # Sep 2022, swapped integration (which has yet to support more than one user key)
-  # - platform: pushover
-  #   name: Pushover Notify
-  #   api_key: !secret pushover_api_key
-  #   user_key: !secret pushover_user_key
-  # - platform: pushover
-  #   name: Pushover Notify Doorbell
-  #   api_key: !secret pushover_api_key_doorbell
-  #   user_key: !secret pushover_user_key
-
-  # - name: Facebook Notify
-  #   platform: facebook
-  #   page_access_token: !secret FB_Key
-
-# #Google Nest integration.
-# nest:
-#   client_id: !secret nest_id
-#   client_secret: !secret nest_secret
-# # climate:
-# #   - platform: nest
-# # - platform: generic_thermostat
-# #   name: Bunny Shed Thermostat
-
-# My Home Assistant integration https://www.home-assistant.io/integrations/my
-# Needed for 2023 Nest
-my:
-
+#################################################
 # Device trackers.
 device_tracker:
   # - platform: owntracks
@@ -292,12 +199,6 @@ device_tracker:
   # - platform: google_maps # Elements per day’ to a limit of 645.
   #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
   # Example configuration.yaml entry
-
-  # - platform: bluetooth_tracker
-# Moved to integrations UI from Rev 0.112
-# - platform: tile
-#   username: !secret tile_username
-#   password: !secret tile_password
 
 # password: !secret google_maps_password
 # - platform: googlehome
@@ -315,30 +216,45 @@ device_tracker:
 #     Try socat pty,link=/config/serialport-rflink,echo=0 tcp:x.x.x.x:xxxx,forever,reuseaddr,keepalive,keepidle=10,keepintvl=10,keepcnt=2
 #       https://github.com/home-assistant/core/issues/23577
 #         Will not work, as socat is not in HASSIO!
+
+#################################################
 rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
   wait_for_ack: true
   reconnect_interval: 10 # seconds
-  tcp_keepalive_idle_timer: 60 # seconds
-  ignore_devices:
-    - owl_cm113_ead1_current3
-    - owl_cm113_ead1_current1
-    - ev1527_*
-    # - sensor.owl_cm113_ea7f_current2
-    # - sensor.owl_cm113_ea7f_current3
-    # - sensor.owl_cm113_ea9f_current2
-    # - sensor.owl_cm113_ea9f_current3
-    # - sensor.owl_cm130_007f_kwatt
+  tcp_keepalive_idle_timer: 600 # seconds
+  # ignore_devices:
+  # - owl_cm113_ead1_current3
+  # - owl_cm113_ead1_current1
+  # - ev1527_*
+  # - wh3_*
+  # - wt122*
+  # # - sensor.owl_cm113_ea7f_current2
+  # # - sensor.owl_cm113_ea7f_current3
+  # # - sensor.owl_cm113_ea9f_current2
+  # # - sensor.owl_cm113_ea9f_current3
+  # # - sensor.owl_cm130_007f_kwatt
 
-    - sensor.v2phoenix_*
-    - light.drayton_*
-    - light.elrodb_*
-    - light.mertik_*
-    - light.drayton_*
-    - light.btf_*
-    - light.v2phoenix*
+  # - sensor.v2phoenix_*
+  # - light.drayton_*
+  # - light.elrodb_*
+  # - light.mertik_*
+  # - light.drayton_*
+  # - light.btf_*
+  # - light.v2phoenix*
 
+# Define values that can be controlled via the frontend and can be used within conditions of automation
+# Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+input_text:
+  notifications_user1_name:
+    min: 0
+    max: 20
+  notifications_user2_name:
+    min: 0
+    max: 20
+
+#################################################
 # Google Assistant intergration.
 # Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
 google_assistant:
@@ -346,27 +262,37 @@ google_assistant:
   # api_key: !secret google_assistant_api_key # deprecated and will be removed in 0.105
   service_account: !include private/report_state Home Assistant hassio-214617-7388b38a261c.json
   report_state: true
-  expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
-  exposed_domains: # This has no effect if expose_by_default is set to false.
-    - alarm_control_panel
-    - switch
-    # - input_boolean
-    # - input_select
-    - fan
-    - light
-    - lock
-    - cover
-    - camera
-    - script
-    - scene
-    - sensor
-    # - humidifier
-    # - vacuum
-    # - media_player
-    - climate
-    # - group
+  # expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
+  # exposed_domains: # This has no effect if expose_by_default is set to false.
+  #   - alarm_control_panel
+  #   - switch
+  #   # - input_boolean
+  #   # - input_select
+  #   - fan
+  #   - light
+  #   - lock
+  #   - cover
+  #   - camera
+  #   - script
+  #   - scene
+  #   - sensor
+  #   # - humidifier
+  #   # - vacuum
+  #   # - media_player
+  #   - climate
+  #   # - group
 
   entity_config:
+    switch.adguard_parental_control:
+      expose: false
+    switch.adguard_safe_browsing:
+      expose: false
+    switch.adguard_safe_search:
+      expose: false
+    cover.raw_office_blinds_open_command:
+      expose: false
+    cover.raw_office_blinds_close_command:
+      expose: false
     # script.bedroom_lights_night_mode:
     #   expose: true
     # script.front_garden_lawn_irrigation_timer:
@@ -421,17 +347,8 @@ google_assistant:
 
     # switch.adguard_filtering:
     #   expose: false
-    switch.adguard_parental_control:
-      expose: false
-    switch.adguard_safe_browsing:
-      expose: false
-    switch.adguard_safe_search:
-      expose: false
 
-  # Not needed since release 0.80
-  # client_id: !secret google_assistant_client_id
-  # access_token: !secret google_assistant_access_token
-
+#################################################
 # Proxy video live streams through Home Assistant
 stream:
   # ll_hls: true
@@ -490,102 +407,4 @@ group: !include includes/groups.yaml
 # https://www.home-assistant.io/integrations/alert/
 alert: !include includes/alert.yaml
 
-# Plex Sensor
-# plex:
-#   host: !secret plex_server_host
-#   token: !secret plex_server_key
-
-# weblink:
-#   entities:
-#     - name: Router
-#       url: !secret RouterIP
-#       icon: mdi:router-wireless
-#
-#     - name: uTorrent
-#       url: !secret uTorrentIP
-#       icon: mdi:download
-#
-#     - name: SickRage
-#       url: !secret SickRageIP
-#       icon: mdi:monitor
-#
-#     - name: CouchPotato
-#       url: !secret CouchPotatoIP
-#       icon: mdi:filmstrip
-#
-#     - name: Server Glances
-#       url: !secret server_glancesIP
-#       icon: mdi:format-list-bulleted
-
-# #NOT WORKING!
-# alexa:
-#   intents:
-#     LocateIntent:
-#       action:
-#         service: notify.notify
-#         data_template:
-#           message: "The location of {{ User }} has been queried via Alexa."
-#           data:
-#             title: "Home Assistant"
-#             sound: falling
-#             device: pixel
-#             url: !secret web_address
-#       speech:
-#         type: plaintext
-#         text: >
-#           {%- for state in states.device_tracker -%}
-#             {%- if state.name.lower() == User.lower() -%}
-#               {{ state.name }} is currently at {{ state.state }}
-#             {%- endif -%}
-#           {%- else -%}
-#             I am sorry, I do not know where {{ User }} is.
-#           {%- endfor -%}
-#       card:
-#         type: simple
-#         title: Sample title
-#         content: Some more content
-
-#       alexa:
-# intents:
-#   LocateIntent:
-#     action:
-#       service: notify.notify
-#       data_template:
-#         message: The location of {{ User }} has been queried via Alexa.
-#     speech:
-#       type: plaintext
-#       text: >
-#         {%- for state in states.device_tracker -%}
-#           {%- if state.name.lower() == User.lower() -%}
-#             {{ state.name }} is at {{ state.state }}
-#           {%- endif -%}
-#         {%- else -%}
-#           I am sorry, I do not know where {{ User }} is.
-#         {%- endfor -%}
-#     card:
-#       type: simple
-#       title: Sample title
-#       content: Some more content
-
-#
-# #NOT WORKING!
-# api:
-#   intents:
-#     GetTemperature:
-#       speech: The temperature at home is {{ states.sensor.kitchen_temperature.state }} degrees
-#       async_action: False
-#       # action:
-#       #   service: notify.notify
-#       #   data_template:
-#       #     message: Api.ai has send a request
-
-# Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
-input_text:
-  notifications_user1_name:
-    min: 0
-    max: 20
-  notifications_user2_name:
-    min: 0
-    max: 20
-
-media_source:
+scene: !include scenes.yaml

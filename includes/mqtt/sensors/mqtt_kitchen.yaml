@@ -1,24 +1,24 @@
-############################################################
-#
-# mqtt Kitchen
-#
-############################################################
+# ############################################################
+# #
+# # mqtt Kitchen
+# #
+# ############################################################
 
-- state_topic: "HUISHS/LightingGateway/StatusJSON"
-  name: "Kitchen Temperature"
-  unit_of_measurement: "°C"
-  value_template: "{{ value_json.Temperature }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  device_class: temperature
+# - state_topic: "HUISHS/LightingGateway/StatusJSON"
+#   name: "Kitchen Temperature"
+#   unit_of_measurement: "°C"
+#   value_template: "{{ value_json.Temperature }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   device_class: temperature
 
-# Icon done in # Done in homeassistant:customize
-- state_topic: "HUISHS/LightingGateway/StatusJSON"
-  name: "Kitchen Humidity"
-  unit_of_measurement: "%"
-  value_template: "{{ value_json.Humidity }}"
-  availability_topic: "HUISHS/LightingGateway/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  device_class: humidity
+# # Icon done in # Done in homeassistant:customize
+# - state_topic: "HUISHS/LightingGateway/StatusJSON"
+#   name: "Kitchen Humidity"
+#   unit_of_measurement: "%"
+#   value_template: "{{ value_json.Humidity }}"
+#   availability_topic: "HUISHS/LightingGateway/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   device_class: humidity

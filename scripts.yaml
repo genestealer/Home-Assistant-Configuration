@@ -93,43 +93,6 @@ saa_alarm_alert_start:
     entity_id: light.bedroom
     data:
       brightness: 255
-bathroom_towel_rail_timer:
-  alias: Bathroom Towel Rail Timer
-  sequence:
-  - service: climate.set_hvac_mode
-    data:
-      hvac_mode: heat
-    target:
-      device_id: f136402a1db4403ab554080d397b3fcb
-  - data:
-      temperature: 29
-    service: climate.set_temperature
-    target:
-      device_id:
-      - f136402a1db4403ab554080d397b3fcb
-      - 8cd90fd55efb7302c051643b01637133
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - delay:
-      hours: 0
-      minutes: '{{ states(''input_number.bathroom_towel_on_time'') | int }}'
-      seconds: 0
-      milliseconds: 0
-    enabled: false
-  - data:
-      temperature: 15
-    service: climate.set_temperature
-    target:
-      device_id: f136402a1db4403ab554080d397b3fcb
-  - data:
-      entity_id: bathroom_towel_rail_timer
-    service: script.turn_off
-    enabled: false
-  mode: restart
-  icon: mdi:camera-timer
 '1576108013122':
   alias: Christmas Disco
   sequence:
@@ -524,19 +487,26 @@ find_my_remote:
 tea_brewing_timer:
   alias: Tea Brewing Timer
   sequence:
+  - service: notify.google_assistant_sdk
+    data:
+      message: Tea timer started
+      target:
+      - kitchen
+    enabled: false
   - delay:
       hours: 0
       minutes: 3
-      seconds: 3
+      seconds: 30
       milliseconds: 0
   - service: notify.google_assistant_sdk
     data:
-      message: Your cup of tea has brewed.
+      message: Perfect cup of tea brewed!   Your ready! Your tea of cup has perfected.
+        Ready now cup!
       target:
       - kitchen
       - living room
-      title: Your cup of tea has brewed.
-  mode: single
+    enabled: true
+  mode: restart
   icon: mdi:coffee
 energenie_etrv_set_reporting_interval:
   alias: 'Energenie eTRV: Set Reporting Interval'
@@ -586,8 +556,13 @@ energenie_etrv_set_reporting_interval:
     entity_id: 7cb4e59be67a4f8f1661a93858a3a851
     type: set_value
     value: 300
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: number
+    entity_id: 7f775e0fd1949553bc8c28923b13626e
+    type: set_value
+    value: 300
   mode: single
-  icon: mdi:clock
+  icon: mdi:clock-end
 energenie_etrv_set_low_power_mode_off:
   alias: 'Energenie eTRV: Set low power mode = OFF'
   sequence:
@@ -636,8 +611,13 @@ energenie_etrv_set_low_power_mode_off:
     entity_id: 4a3fe856a731d274a9eb0c1303ec77c8
     type: select_option
     option: Low Power Mode OFF
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: select
+    entity_id: 859d0eff621e79af1a77a0a152a21a04
+    type: select_option
+    option: Low Power Mode OFF
   mode: single
-  icon: mdi:clock
+  icon: mdi:speedometer-slow
 heat_bathroom_towel_rail:
   alias: Heat Bathroom Towel Rail
   sequence:
@@ -648,6 +628,11 @@ heat_bathroom_towel_rail:
     target:
       entity_id:
       - climate.hallway
+  - service: climate.set_temperature
+    data:
+      temperature: 29
+    target:
+      entity_id:
       - climate.bathroom_4329_climate_control
   - delay:
       hours: 0
@@ -656,9 +641,47 @@ heat_bathroom_towel_rail:
       milliseconds: 0
   - service: climate.set_temperature
     data:
-      hvac_mode: heat
       temperature: 12
     target:
-      entity_id: climate.hallway
-  mode: single
+      entity_id:
+      - climate.hallway
+  mode: restart
   icon: mdi:radiator
+temporarily_disable_front_lawn_defences_for_2_hours:
+  alias: 'Temporarily Disable Front Lawn Defences For 2 Hours '
+  sequence:
+  - service: automation.turn_off
+    data:
+      stop_actions: true
+    target:
+      entity_id: automation.front_lawn_anti_cat
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: automation.turn_on
+    data: {}
+    target:
+      entity_id: automation.front_lawn_anti_cat
+  mode: restart
+  icon: mdi:camera-timer
+broadcast_dinner_almost_ready:
+  alias: Broadcast dinner almost ready
+  sequence:
+  - service: notify.google_assistant_sdk
+    data:
+      message: Hello sweetie, dinner is almost ready. Just wanted to let you know.
+      target:
+      - kitchen
+      - living room
+  mode: single
+  icon: mdi:silverware-fork-knife
+sync_to_google:
+  alias: Sync To Google
+  sequence:
+  - service: google_assistant.request_sync
+    metadata: {}
+    data: {}
+  mode: single
+  icon: mdi:google

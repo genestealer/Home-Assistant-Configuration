@@ -1,0 +1,11 @@
+############################################################
+#
+# ESP-Link to RFLink Gateway
+#
+############################################################
+
+- binary_sensor:
+    - name: "ESP-Link Gateway Status"
+      unique_id: "esp_link_status"
+      device_class: "connectivity"
+      state: "{% if is_state('sensor.esp_link_controller_signal_strength', 'unknown') %}false{% else %}true{% endif %}"

@@ -43,7 +43,7 @@
 
 - state_topic: "HUISHS/BunnyShed/NodeHealthJSON"
   name: "BS RSSI"
-  unit_of_measurement: "dB"
+  unit_of_measurement: "dBm"
   value_template: "{{ value_json.RSSI }}"
   availability_topic: "HUISHS/BunnyShed/Status"
   payload_available: "online"
@@ -238,11 +238,10 @@
 
 - state_topic: "HUISHS/esp-link"
   name: "ESP-Link Controller RSSI"
-  unit_of_measurement: "dB"
+  unit_of_measurement: "dBm"
   expire_after: 125 # MQTT messages are only every 60 seconds, so 125 will permit it to miss two messages.
   value_template: "{{ value_json.rssi }}"
   icon: mdi:signal-variant
-
 
 ############################################################
 #

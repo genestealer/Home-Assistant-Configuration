@@ -33,7 +33,7 @@ devices:
     friendly_name: '0x000d6ffffea20000'
     legacy: false
   '0x000b57fffe38a445':
-    friendly_name: '0x000b57fffe38a445'
+    friendly_name: Test Remote
     legacy: false
   '0x000d6ffffe9c3ea8':
     friendly_name: '0x000d6ffffe9c3ea8'
@@ -80,6 +80,7 @@ devices:
   '0xbc33acfffebd4750':
     friendly_name: Office Lamp
     transition: 0
+    state_action: true
   '0x000b57fffe978d3f':
     friendly_name: Dining Room Lamp Left
   '0x000b57fffe51eb27':
@@ -98,9 +99,10 @@ devices:
     friendly_name: Living Room Cabinets Inside
   '0xbc33acfffe9e1f16':
     friendly_name: Living Room Sofa Right
-    state_action: false
+    state_action: true
   '0xbc33acfffea1e1c6':
     friendly_name: Living Room Sofa Left
+    state_action: true
   '0xccccccfffe924b3c':
     friendly_name: Guest Bedroom Remote
     legacy: false
@@ -136,15 +138,13 @@ devices:
   '0x000b57fffe520a0e':
     friendly_name: Outside 1 Up
   '0x000b57fffeaffb7b':
-    friendly_name: Outside 1 Down
+    friendly_name: Outside 4 Up
   '0x000b57fffebfd68d':
     friendly_name: Dining Room 4
   '0x842e14fffe605be8':
     friendly_name: Outside 2 Down
   '0x000b57fffe8473b8':
     friendly_name: Outside 2 Up
-  '0x5c0272fffec8ba7e':
-    friendly_name: Office Wall Lamp
   '0xa4c1383ed970356b':
     friendly_name: 'Garage Door Sensor '
   '0xa4c1387ab3af9d49':
@@ -153,5 +153,16 @@ devices:
     friendly_name: 'Front Door Sensor '
   '0x000b57fffe27203b':
     friendly_name: Dining Room Lamp Right
+  '0x1c34f1fffe7b15b8':
+    friendly_name: Office Wall Lamp
+    state_action: true
+  '0x6c5cb1fffe6730c8':
+    friendly_name: '0x6c5cb1fffe6730c8'
+  '0x60a423fffeadc632':
+    friendly_name: 'Bedroom Bedside Remote '
+    legacy: true
+  '0x943469fffe5fb1a8':
+    friendly_name: Outside 1 Down
+    state_action: true
 availability: true
 groups: {}

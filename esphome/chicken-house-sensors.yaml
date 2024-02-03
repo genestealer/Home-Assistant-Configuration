@@ -105,7 +105,7 @@ sensor:
           send_first_at: 3
     unit_of_measurement: kg
     state_class: measurement
-    accuracy_decimals: 5
+    accuracy_decimals: 3
 
     
   - platform: hx711
@@ -127,4 +127,4 @@ sensor:
           send_first_at: 3
     unit_of_measurement: kg
     state_class: measurement
-    accuracy_decimals: 5
+    accuracy_decimals: 3
