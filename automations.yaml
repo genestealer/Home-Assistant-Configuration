@@ -3084,7 +3084,8 @@
       - service: switch.turn_on
         data: {}
         target:
-          entity_id: switch.192_168_10_21_tv_speakers_button
+          entity_id:
+          - switch.tv_speakers_button_2_power
     - conditions:
       - condition: device
         device_id: 99a89cc7d2a737c382a99397821a0522
@@ -3095,8 +3096,7 @@
       - service: switch.turn_off
         data: {}
         target:
-          entity_id:
-          - switch.192_168_10_21_tv_speakers_button
+          entity_id: switch.tv_speakers_button_2_power
     enabled: true
   mode: restart
 - id: '1697309989912'

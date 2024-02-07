@@ -50,7 +50,7 @@ devices:
     illuminance_below_threshold_check: true
   '0x60a423fffef26f3c':
     friendly_name: Kitchen Motion Sensor 3
-    occupancy_timeout: 90
+    occupancy_timeout: 180
     illuminance_below_threshold_check: true
   '0xd0cf5efffec7e1fb':
     friendly_name: Office Cabinets Inside
@@ -71,11 +71,11 @@ devices:
     legacy: false
   '0x000b57fffe9bad09':
     friendly_name: Kitchen Motion Sensor 1
-    occupancy_timeout: 90
+    occupancy_timeout: 180
     illuminance_below_threshold_check: true
   '0x000b57fffe8edae5':
     friendly_name: Kitchen Motion Sensor 2
-    occupancy_timeout: 90
+    occupancy_timeout: 180
     illuminance_below_threshold_check: true
   '0xbc33acfffebd4750':
     friendly_name: Office Lamp
