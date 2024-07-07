@@ -40,7 +40,11 @@ substitutions:
   status_led_inverted: "false"
   platform: ESP8266
   board: huzzah
+  
+  # Debug Component
+  log_level: DEBUG 
 
+  # Project 
   project_name: "genestealer.busy-light-01"
   project_version: "1.5.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busy-light-01.yaml"

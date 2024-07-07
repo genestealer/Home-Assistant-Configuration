@@ -7,24 +7,23 @@
 ############################################################
 #
 # Homeassistant Configuration
-#
+# https://www.home-assistant.io/integrations/homeassistant/
 ############################################################
 homeassistant:
   # Customization file
   customize: !include customize.yaml
-  #Unhide the push notifcation slider https://github.com/home-assistant/home-assistant/issues/16043
+  # Note on auth_providers and packages https://www.home-assistant.io/docs/configuration/packages/#customizing-entities-with-packages
+  packages: !include_dir_named packages/
   auth_providers:
     - type: homeassistant
-  # whitelist_external_dirs:
-  #   - /www
-  #   - /tmp
-  packages: !include_dir_named packages/
 
 ############################################################
 #
 # Standard Configuration Elements
 #
 ############################################################
+
+
 
 # Enables the frontend
 frontend:
@@ -58,21 +57,17 @@ config:
 #Home Assistant Cloud - NOPE!
 cloud:
 
-# Enable web interface
+# Enable web interface https://www.home-assistant.io/integrations/http
 http:
-  #  api_password: !secret http_password
   server_port: 8123
-  # SSL is now performed by reverse proxy
-  #  ssl_certificate: !secret SSL_cert
-  #  ssl_key: !secret SSL_key
   cors_allowed_origins:
     - https://google.com
     - https://www.home-assistant.io
   use_x_forwarded_for: true
   trusted_proxies:
-    - 10.0.0.200 # Add the IP address of the proxy server
-    - 172.30.33.0/24 # You may also provide the subnet mask
-    # - 192.168.10.21/24 # IP Reverse_Proxy Nginx Proxy Manager
+    - 10.0.0.200 # Add the IP address of the proxy server - Home Assistant Community Add-on: Nginx Proxy Manager
+    - 172.30.33.0/24 # You may also provide the subnet mask - Home Assistant Community Add-on: Nginx Proxy Manager
+
   ip_ban_enabled: true
   login_attempts_threshold: 20
 
@@ -112,8 +107,6 @@ logbook:
       - sensor.time_utc
       - sensor.date_time_iso
       - sensor.internet_time
-      - sensor.server_server_health
-      - sensor.unscaled_house_consumption_current
       - sensor.server_server_power_on_time
       - sensor.cc_cpu_temperature
       - sensor.cc_cpu_load
@@ -121,9 +114,6 @@ logbook:
       - sensor.adguard_*
       - sensor.*_last_seen
       - sensor.*_retries
-
-# Enables a map showing the location of tracked devices
-map:
 
 # https://github.com/home-assistant/home-assistant/issues/1806
 logger:
@@ -254,99 +244,61 @@ input_text:
     min: 0
     max: 20
 
+#   #################################################
+#   # Google Assistant integration.
+#   # Fallback for re-linking hass ass
+# google_assistant:
+#   project_id: home-ass-40452
+#   service_account: !include SERVICE_ACCOUNT.JSON
+#   report_state: true
+#   expose_by_default: false
+#   entity_config:
+#     light.guest_bedroom_lamp_left:
+#       expose: true
+
+# #################################################
+# # Google Assistant integration.
+# # Fallback for re-linking
+# google_assistant:
+#   project_id: hassio-214617
+#   service_account: !include private/google_assistant_report_state_hassio_214617.json
+#   report_state: true
+#   expose_by_default: false
+#   entity_config:
+#     light.guest_bedroom_lamp_left:
+#       expose: true
+
 #################################################
-# Google Assistant intergration.
-# Every now and again have to visit this link and lick TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
+# Google Assistant integration.
+# Every now and again have to visit this link and click TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
 google_assistant:
-  project_id: !secret google_assistant_project_id
-  # api_key: !secret google_assistant_api_key # deprecated and will be removed in 0.105
-  service_account: !include private/report_state Home Assistant hassio-214617-7388b38a261c.json
+  project_id: hassio-214617
+  # secure_devices_pin: !secret google_assistant_secure_devices_pin
+  service_account: !include private/google_assistant_report_state_hassio_214617.json #Orginal
+  # service_account: !include private/hassio-214617-7641f87252da.json # new
+  # service_account: !include SERVICE_ACCOUNT2.JSON # test
   report_state: true
-  # expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
-  # exposed_domains: # This has no effect if expose_by_default is set to false.
-  #   - alarm_control_panel
-  #   - switch
-  #   # - input_boolean
-  #   # - input_select
-  #   - fan
-  #   - light
-  #   - lock
-  #   - cover
-  #   - camera
-  #   - script
-  #   - scene
-  #   - sensor
-  #   # - humidifier
-  #   # - vacuum
-  #   # - media_player
-  #   - climate
-  #   # - group
+  # expose_by_default: false # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
+  entity_config: !include_dir_named includes/google_assistant_entity_config.yaml
+  exposed_domains: # This has no effect if expose_by_default is set to false.
+    - switch
+    - fan
+    - light
+    - lock
+    - cover
+    - camera
+    - script
+    - scene
+    - sensor
+    - climate
 
-  entity_config:
-    switch.adguard_parental_control:
-      expose: false
-    switch.adguard_safe_browsing:
-      expose: false
-    switch.adguard_safe_search:
-      expose: false
-    cover.raw_office_blinds_open_command:
-      expose: false
-    cover.raw_office_blinds_close_command:
-      expose: false
-    # script.bedroom_lights_night_mode:
-    #   expose: true
-    # script.front_garden_lawn_irrigation_timer:
-    #   expose: true
-    # script.front_garden_pot_irrigation_timer:
-    #   expose: true
-    # script.back_garden_irrigation_timer:
-    #   expose: true
-    # script.back_garden_lawn_irrigation_timer:
-    #   expose: true
-    # climate.entryway:
-    #   expose: false
-
-    # group.all_automations:
-    #   expose: false # Hide this to avoid telling Google Assistant to shut down everything, it disabling all automations.
-    # group.all_covers:
-    #   expose: false
-    # group.all_lights:
-    #   expose: false
-    # group.all_switchs:
-    #   expose: false
-    # group.all_scripts:
-    #   expose: false
-    # group.automation_system_view:
-    #   expose: false
-    # group.bathroom_towel_rail_group:
-    #   expose: false
-    # group.bathroom_view:
-    #   expose: false
-    # group.bedroom_guest:
-    #   expose: false
-    # group.bedroom_master:
-    #   expose: false
-    # group.bunny_shed_controller_info_group:
-    #   expose: false
-    # group.bunny_shed_group:
-    #   expose: false
-    # group.bunny_shed_settings:
-    #   expose: false
-    # group.bunny_shed_view:
-    #   expose: false
-    # group.rf_link_group:
-    #   expose: false
-    # # group.server_ilo_status_group:
-    # #   expose: false
-    # group.groups:
-    #   expose: false
-    # group.media_players:
-    #   expose: false
-    # group.media_player:
-    #   expose: false
-
-    # switch.adguard_filtering:
-    #   expose: false
+# - alarm_control_panel
+# - group
+# - input_boolean
+# - input_select
+# - humidifier
+# - vacuum
+# - media_player
 
 #################################################
 # Proxy video live streams through Home Assistant
@@ -354,6 +306,8 @@ stream:
   # ll_hls: true
   # part_duration: 1.5
   # segment_duration: 10
+
+#################################################
 
 # utility_meter:
 #   energy_cumulative_month:
@@ -401,8 +355,8 @@ input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
 rest_command: !include_dir_merge_named includes/rest_commands
 
-# Merge Named
-group: !include includes/groups.yaml
+# # Merge Named
+# group: !include includes/groups.yaml
 
 # https://www.home-assistant.io/integrations/alert/
 alert: !include includes/alert.yaml

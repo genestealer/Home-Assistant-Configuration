@@ -12,7 +12,7 @@ entities:
   - entity: sensor.irrigation_sensor_current_temp
     color: SteelBlue
     show_legend: false
-  - entity: binary_sensor.above_horizon
+  - entity: binary_sensor.home_sun_above_horizon
     name: Night
     y_axis: secondary
     color: black

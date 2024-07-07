@@ -11,17 +11,21 @@ substitutions:
   friendly_name: "Indoor Bunny House Sensors"
   ui_comment: "Indoor Bunny House Sensors - UPDATED" # Only shows in UI.
   
-  #Wifi Settings
+  # Wifi Settings
   ip: 192.168.2.37
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  #Board Settings
+  # Board Settings
   status_led: D0 # GPIO16 - NodeMCU on-board LED
   status_led_inverted: "false"
   platform: ESP8266
   board: nodemcuv2
+  
+  # Debug Component
+  log_level: DEBUG 
 
+  # Project 
   project_name: "genestealer.indoor-bunny-house-sensors"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/indoor-bunny-house-sensors.yaml"
@@ -56,7 +60,7 @@ i2c:
   frequency: 400kHz 
 
 sensor:
-  - platform: bme280
+  - platform: bme280_i2c
     update_interval: ${sensor_update_interval}
     address: 0x76
 

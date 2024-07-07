@@ -10,7 +10,7 @@
 # 433MHz Office blinds
 - platform: rflink
   device_defaults:
-    signal_repetitions: 5
+    signal_repetitions: 4
     fire_event: true
   devices:
     EV1527_080d40_4: # Office Blinds (THE BLIND GENIE) OPENS fully on both ON and OFF commands, then CLOSES to the right fully on 2nd command.
@@ -26,9 +26,10 @@
   covers:
     office_blinds:
       unique_id: "office_blinds"
-      device_class: curtain
+      device_class: blind
       friendly_name: "Office Blind"
       availability_template: "{{ states('binary_sensor.esp_link_gateway_status') }}"
+      optimistic: true
       open_cover:
         - service: cover.open_cover
           target:

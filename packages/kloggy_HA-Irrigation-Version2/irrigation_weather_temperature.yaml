@@ -1,4 +1,3 @@
-
 #================
 #=== Automations
 #================
@@ -15,25 +14,24 @@ automation:
 
       - platform: state
         entity_id: input_text.irrigation_external_sensor_forecast_high_temp
-        to: ''
+        to: ""
 
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_text.irrigation_external_sensor_forecast_high_temp
-          state: 'unknown'
+          state: "unknown"
 
         - condition: state
           entity_id: input_text.irrigation_external_sensor_forecast_high_temp
-          state: ''
+          state: ""
 
     action:
       - service: input_text.set_value
         data_template:
           entity_id: input_text.irrigation_external_sensor_forecast_high_temp
-          value:  sensor.openweathermap_forecast_temperature
-
+          value: sensor.internet_forecast_temperature
 
   #===========================================
   #=== Set Default Current Temperature Sensor
@@ -47,25 +45,24 @@ automation:
 
       - platform: state
         entity_id: input_text.irrigation_external_sensor_current_temp
-        to: ''
+        to: ""
 
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_text.irrigation_external_sensor_current_temp
-          state: 'unknown'
+          state: "unknown"
 
         - condition: state
           entity_id: input_text.irrigation_external_sensor_current_temp
-          state: ''
+          state: ""
 
     action:
       - service: input_text.set_value
         data:
           entity_id: input_text.irrigation_external_sensor_current_temp
-          value: sensor.openweathermap_temperature
-
+          value: sensor.internet_forecast_temperature
 
   #======================================================
   #=== Initialise the Temperature Sensors when HA starts
@@ -80,10 +77,9 @@ automation:
     action:
       - service: homeassistant.update_entity
         data:
-          entity_id: 
+          entity_id:
             - sensor.irrigation_sensor_forecast_high_temp
             - sensor.irrigation_sensor_current_temp
-
 
   #================================================================
   #=== Update Highest Actual Temp Today if temperature has gone up
@@ -112,7 +108,6 @@ automation:
           entity_id: input_number.irrigation_temperature_highest_actual_temp_today
           value: >
             {{ states('sensor.irrigation_sensor_current_temp') | float }}
-
 
   #=====================================================================
   #=== Update Highest Forecast High Temperature Today if it has gone up
@@ -143,18 +138,17 @@ automation:
           value: >
             {{ states('sensor.irrigation_sensor_forecast_high_temp') | float }}
 
-
   #=================================================================
   #=== Cycle temperature history figures for the four previous days
   #=== and
   #=== Reset todays highest actual temp
   #=== Reset Todays highest forecast high Temperature
-  #=== 
+  #===
   #=== Update the temperature multiplier
   #=================================================================
   - alias: Irrigation Temperature Nightly Update
     id: irrigation_temperature_nightly_update
-    trigger: 
+    trigger:
       - platform: time
         at: "00:00:01"
 
@@ -204,7 +198,6 @@ automation:
       #=== Update the temperature multiplier
       - service: script.irrigation_temperature_calculate_multiplier
 
-
   #=============================================================================
   #=== Update the temperature multiplier when temp based UI options are changed
   #=============================================================================
@@ -221,7 +214,6 @@ automation:
     action:
       - service: script.irrigation_temperature_calculate_multiplier
 
-
 #============
 #=== scripts
 #============
@@ -230,7 +222,7 @@ script:
   #=== Calculate Temperature Multiplier
   #===
   #=== This multiplier will increase or decrease watering time proportionally
-  #=== based on the difference between the temperature threshold and the 
+  #=== based on the difference between the temperature threshold and the
   #=== average high temperature over the last few days.
   #===
   #=== It is calculated as High Temperature divided by Baseline Temperature.

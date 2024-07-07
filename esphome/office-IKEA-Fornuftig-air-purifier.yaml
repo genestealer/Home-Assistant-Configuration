@@ -1,0 +1,265 @@
+##############################################################
+# Richard Huish 2024
+# https://github.com/genestealer/Home-Assistant-Configuration
+# Office Air Purifier Control
+# Sources: https://community.home-assistant.io/t/ikea-fornuftig-in-home-assistant/318341/32
+##############################################################
+# Config Header for Device
+##############################################################
+substitutions:
+  # Names
+  name: office-air-purifier
+  friendly_name: Office FORNÜFTIG Air Purifier
+  ui_comment: "Ikea FORNÜFTIG Air Purifier" # Only shows in UI.
+  
+  # Wifi Settings
+  ip: 192.168.2.49
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Board Settings
+  status_led: D0 # GPIO16 - NodeMCU on-board LED
+  status_led_inverted: "false"
+  platform: ESP8266
+  board: nodemcuv2
+  
+  # Debug Component
+  log_level: DEBUG 
+
+  # Project 
+  project_name: "genestealer.IKEA-Fornuftig-air-purifier"
+  project_version: "1.0.0"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/office-IKEA-Fornuftig-air-purifier.yaml"
+
+  # sensor_update_interval: 300000ms #5 mins
+  sensor_update_interval: 150000ms #2.5 mins
+  # sensor_update_interval: 5100ms 
+
+##############################################################
+# Import shared code
+##############################################################
+
+# Packages
+packages:
+  device_base: !include device_base.yaml
+
+# esphome:
+
+dashboard_import:
+  package_import_url: ${package_import_url}
+  import_full_config: false # or true
+
+##############################################################
+# Main Code
+##############################################################
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+     if:
+        condition:
+          lambda: 'return id(fan_internal).speed == 3;'
+        then:
+          - sensor.template.publish:
+              id: power_usage
+              state: 15
+        else:
+          - if:
+              condition:
+                lambda: 'return id(fan_internal).speed == 2;'
+              then:
+                - sensor.template.publish:
+                    id: power_usage
+                    state: 6.5
+              else:
+                - if:
+                    condition:
+                      lambda: 'return id(fan_internal).speed == 1;'
+                    then:
+                      - sensor.template.publish:
+                          id: power_usage
+                          state: 1.5
+                    else:
+                      - sensor.template.publish:
+                          id: power_usage
+                          state: 0.5
+
+
+# Enable logging
+logger:
+  logs:
+      # Make adc input less verbose
+      adc: INFO
+
+
+
+sensor:
+  # Read LED from adc input 10 times per second
+  - platform: adc
+    pin: A0
+    internal: true
+    id: led_internal
+    update_interval: 100ms
+    accuracy_decimals: 1
+    filters:
+      - delta: 0.1
+    on_value:
+      if:
+        condition:
+          lambda: 'return x < 0.2;'
+        then:
+          - binary_sensor.template.publish:
+              id: led_sensor
+              state: OFF
+        else:
+          - binary_sensor.template.publish:
+              id: led_sensor
+              state: ON
+
+              
+  - platform: template
+    name: Power Usage
+    id: power_usage
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+
+  # Total daily enery usage for dashboard
+  - platform: total_daily_energy
+    name: 'Energy'
+    id: sensor_total_daily_energy
+    power_id: power_usage
+    unit_of_measurement: 'kWh'
+    icon: mdi:circle-slice-3
+    state_class: total_increasing
+    device_class: energy
+    accuracy_decimals: 4
+    filters:
+      # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+
+# Enable time component to reset energy at midnight
+# https://esphome.io/components/time/homeassistant.html
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+
+binary_sensor:
+  - platform: template
+    id: led_sensor
+    name: "Filter"
+    device_class: problem
+  - platform: gpio
+    internal: true
+    id: in_d1
+    name: "D1"
+    pin:
+      number: D1
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - fan.turn_off:
+          id: fan_internal
+  - platform: gpio
+    internal: true
+    id: in_d5
+    name: "D5"
+    pin:
+      number: D5
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - fan.turn_on:
+          id: fan_internal
+          speed: 1
+  - platform: gpio
+    internal: true
+    id: in_d6
+    name: "D6"
+    pin:
+      number: D6
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - fan.turn_on:
+          id: fan_internal
+          speed: 2
+  - platform: gpio
+    internal: true
+    id: in_d7
+    name: "D7"
+    pin:
+      number: D7
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - fan.turn_on:
+          id: fan_internal
+          speed: 3
+
+output:
+  - platform: gpio
+    pin: D2
+    id: gpio_d2
+    inverted: true
+  - platform: gpio
+    pin: D3
+    id: gpio_d3
+    inverted: true
+  - platform: gpio
+    pin: D4
+    id: gpio_d4
+    inverted: true
+  - platform: template
+    id: fan_out_internal
+    type: float
+    write_action:
+      if:
+        condition:
+          lambda: 'return state < 0.1;'
+        then:
+          - output.turn_off: gpio_d4
+          - output.turn_off: gpio_d3
+          - output.turn_off: gpio_d2
+          - sensor.template.publish:
+              id: power_usage
+              state: 0.5
+        else:
+          - if:
+              condition:
+                lambda: 'return state < 0.4;'
+              then:
+                - output.turn_on:  gpio_d4
+                - output.turn_off: gpio_d3
+                - output.turn_off: gpio_d2
+                - sensor.template.publish:
+                    id: power_usage
+                    state: 1.5
+              else:
+                - if:
+                    condition:
+                      lambda: 'return state < 0.7;'
+                    then:
+                      - output.turn_off: gpio_d4
+                      - output.turn_on:  gpio_d3
+                      - output.turn_off: gpio_d2
+                      - sensor.template.publish:
+                          id: power_usage
+                          state: 6.5
+                    else:
+                      - output.turn_off: gpio_d4
+                      - output.turn_off: gpio_d3
+                      - output.turn_on:  gpio_d2
+                      - sensor.template.publish:
+                          id: power_usage
+                          state: 15
+
+fan:
+  - platform: speed
+    output: fan_out_internal
+    id: fan_internal
+    name: "Fan"
+    speed_count: 3
+    restore_mode: RESTORE_DEFAULT_OFF 

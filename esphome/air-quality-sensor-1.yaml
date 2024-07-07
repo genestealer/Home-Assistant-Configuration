@@ -21,10 +21,14 @@ substitutions:
 
   # Board Settings
   status_led: GPIO16 # NodeMCU on-board LED
-  status_led_inverted: "true"
+  status_led_inverted: "false"
   platform: ESP8266
   board: nodemcuv2
 
+  # Debug Component
+  log_level: DEBUG 
+
+  # Project 
   project_name: "genestealer.air-quality-sensor"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-quality-sensor-1.yaml"
@@ -48,14 +52,25 @@ dashboard_import:
 esphome:
   # Set the pmsx003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
   on_boot:
+    - logger.log: "Turn pmsx003 on at boot"
+    - output.turn_on: reset_pin
     - delay: 3000ms
     - logger.log: "Resetting pmsx003"
-    - output.turn_on: reset_pin
-    - delay: 1000ms
     - output.turn_off: reset_pin
     - delay: 1000ms
     - output.turn_on: reset_pin
+    - logger.log: "pmsx003 Reset"
 
+# # Wifi Details
+# wifi:
+#   networks:
+#     - bssid: "1A:49:BC:5C:80:16"
+
+# # Wifi Details
+# wifi:
+#   ssid: !secret IoT_VLAN_SSID
+#   password: !secret IoT_VLAN_SSID_Key
+#   bssid: 1A:49:BC:5C:80:16
 ##############################################################
 # Main Code
 ##############################################################
@@ -65,7 +80,7 @@ i2c:
   sda: D2
   scan: true
   # id: bus_a
-  frequency: 400kHz 
+  # frequency: 400kHz 
 
 output:
   # pmsx003 reset pin
@@ -140,7 +155,7 @@ sensor:
 
 
 
-  - platform: bme280
+  - platform: bme280_i2c
     update_interval: ${sensor_update_interval}
     address: 0x76
 
@@ -169,10 +184,12 @@ sensor:
     update_interval: 15s
     icon: 'mdi:signal'
     unit_of_measurement: 'm'
+
   - platform: absolute_humidity
     name: "Absolute Humidity"
     temperature: bme280_temperature
     humidity: bme280_humidity
+    
   - platform: template
     name: "Dew Point"
     lambda: |-

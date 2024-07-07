@@ -484,30 +484,6 @@ find_my_remote:
     service: androidtv.adb_command
   mode: single
   icon: mdi:target
-tea_brewing_timer:
-  alias: Tea Brewing Timer
-  sequence:
-  - service: notify.google_assistant_sdk
-    data:
-      message: Tea timer started
-      target:
-      - kitchen
-    enabled: false
-  - delay:
-      hours: 0
-      minutes: 3
-      seconds: 30
-      milliseconds: 0
-  - service: notify.google_assistant_sdk
-    data:
-      message: Perfect cup of tea brewed!   Your ready! Your tea of cup has perfected.
-        Ready now cup!
-      target:
-      - kitchen
-      - living room
-    enabled: true
-  mode: restart
-  icon: mdi:coffee
 energenie_etrv_set_reporting_interval:
   alias: 'Energenie eTRV: Set Reporting Interval'
   sequence:
@@ -630,13 +606,30 @@ heat_bathroom_towel_rail:
       - climate.hallway
   - service: climate.set_temperature
     data:
-      temperature: 29
+      temperature: 30
+    target:
+      entity_id: climate.bathroom_radiator_climate_control
+  - delay: 00:{{states('input_number.bathroom_towel_on_time') | round(0)}}:00
+  - service: climate.set_temperature
+    data:
+      temperature: 12
     target:
       entity_id:
-      - climate.bathroom_4329_climate_control
+      - climate.hallway
   - delay:
       hours: 0
-      minutes: 15
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - service: climate.set_temperature
+    data:
+      temperature: 12
+    target:
+      entity_id:
+      - climate.hallway
+  - delay:
+      hours: 1
+      minutes: 30
       seconds: 0
       milliseconds: 0
   - service: climate.set_temperature
@@ -666,17 +659,6 @@ temporarily_disable_front_lawn_defences_for_2_hours:
       entity_id: automation.front_lawn_anti_cat
   mode: restart
   icon: mdi:camera-timer
-broadcast_dinner_almost_ready:
-  alias: Broadcast dinner almost ready
-  sequence:
-  - service: notify.google_assistant_sdk
-    data:
-      message: Hello sweetie, dinner is almost ready. Just wanted to let you know.
-      target:
-      - kitchen
-      - living room
-  mode: single
-  icon: mdi:silverware-fork-knife
 sync_to_google:
   alias: Sync To Google
   sequence:

@@ -141,6 +141,7 @@ devices:
     friendly_name: Outside 4 Up
   '0x000b57fffebfd68d':
     friendly_name: Dining Room 4
+    state_action: false
   '0x842e14fffe605be8':
     friendly_name: Outside 2 Down
   '0x000b57fffe8473b8':
@@ -160,9 +161,33 @@ devices:
     friendly_name: '0x6c5cb1fffe6730c8'
   '0x60a423fffeadc632':
     friendly_name: 'Bedroom Bedside Remote '
-    legacy: true
+    legacy: false
   '0x943469fffe5fb1a8':
     friendly_name: Outside 1 Down
     state_action: true
-availability: true
-groups: {}
+  '0x588e81fffe3ea2da':
+    friendly_name: Kitchen Action Button
+    legacy: false
+  '0x680ae2fffe8125b0':
+    friendly_name: '0x680ae2fffe8125b0'
+    legacy: false
+availability:
+  active:
+    timeout: 10
+  passive:
+    timeout: 1500
+groups:
+  '1':
+    friendly_name: example_group
+    devices:
+      - 0x000b57fffebdce17/1
+      - 0x000b57fffe51eb27/1
+      - 0x000b57fffeb829ec/1
+      - 0x000b57fffebfd68d/1
+  '2':
+    friendly_name: Dining Room Ceiling Lights
+    devices:
+      - 0x000b57fffebdce17/1
+      - 0x000b57fffe51eb27/1
+      - 0x000b57fffeb829ec/1
+      - 0x000b57fffebfd68d/1

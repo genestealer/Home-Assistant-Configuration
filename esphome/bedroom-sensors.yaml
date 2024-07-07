@@ -24,7 +24,11 @@ substitutions:
   status_led_inverted: "true"
   platform: ESP8266
   board: nodemcuv2
+  
+  # Debug Component
+  log_level: DEBUG 
 
+  # Project 
   project_name: "genestealer.bedroom-sensors"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/bedroom-sensors.yaml"
@@ -48,13 +52,15 @@ dashboard_import:
 esphome:
   # Set the pmsx003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
   on_boot:
+    - logger.log: "Turn pmsx003 on at boot"
+    - output.turn_on: reset_pin
     - delay: 3000ms
     - logger.log: "Resetting pmsx003"
-    - output.turn_on: reset_pin
-    - delay: 1000ms
     - output.turn_off: reset_pin
     - delay: 1000ms
     - output.turn_on: reset_pin
+    - logger.log: "pmsx003 Reset"
+
 
 ##############################################################
 # Main Code
@@ -140,7 +146,7 @@ sensor:
 
 
 # BME280 Environment Sensor https://esphome.io/cookbook/bme280_environment.html
-  - platform: bme280
+  - platform: bme280_i2c
     update_interval: ${sensor_update_interval}
     address: 0x76
 

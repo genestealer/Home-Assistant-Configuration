@@ -132,26 +132,6 @@ mqtt:
         via_device: "mqtt-ener314rt"
         suggested_area: "Living Room"
 
-    - name: "Light"
-      unique_id: MIHO010_Dimmer1
-      command_topic: energenie/ook/669/dimmer/command
-      optimistic: false
-      state_topic: energenie/ook/669/dimmer/state
-      state_value_template: "{{ 'OFF' if value == 'OFF' else 'ON' }}"
-      brightness_state_topic: energenie/ook/669/dimmer/state
-      brightness_command_topic: energenie/ook/669/dimmer/command
-      brightness_scale: 10
-      payload_on: "ON"
-      payload_off: "OFF"
-      on_command_type: "brightness"
-      availability_topic: energenie/availability/state
-      device:
-        name: "Kitchen Dimmer"
-        identifiers: "MIHO010_Dimmer1"
-        model: "Dimmer Switch (MIHO010) [669]"
-        manufacturer: "energenie"
-        via_device: "mqtt-ener314rt"
-
   switch:
     # energenie/ook/697441/2/command = Eurodomest;ID=055b9e;SWITCH=02;
     # energenie/ook/697441/3/command = Eurodomest;ID=055b9e;SWITCH=03;

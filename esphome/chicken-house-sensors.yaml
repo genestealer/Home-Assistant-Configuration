@@ -29,17 +29,21 @@ substitutions:
   friendly_name: "Chicken House Sensors"
   ui_comment: "Chicken House Sensors - UPDATED" # Only shows in UI.
   
-  #Wifi Settings
+  # Wifi Settings
   ip: 192.168.2.25
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  #Board Settings
+  # Board Settings
   status_led: LED_RED #GPIO0 https://github.com/esphome/esphome/blob/2b39988707a655c7745899f75d3946775f0de6a8/esphome/components/esp8266/boards.py
   status_led_inverted: "false"
   platform: ESP8266
   board: huzzah
+  
+  # Debug Component
+  log_level: DEBUG 
 
+  # Project 
   project_name: "genestealer.chicken-house"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chicken-house-sensors.yaml"

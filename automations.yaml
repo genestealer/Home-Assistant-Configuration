@@ -380,18 +380,40 @@
     entity_id: person.richard
     zone: zone.home
     event: leave
+    enabled: false
   - platform: zone
     entity_id: person.richard
     zone: zone.home
     event: enter
+    enabled: false
   - platform: zone
     entity_id: person.lucy
     zone: zone.home
     event: enter
+    enabled: false
   - platform: zone
     entity_id: person.lucy
     zone: zone.home
     event: leave
+    enabled: false
+  - platform: state
+    entity_id:
+    - person.lucy
+    to:
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    enabled: true
+  - platform: state
+    entity_id:
+    - person.richard
+    to:
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    enabled: true
   condition: []
   action:
   - choose:
@@ -403,17 +425,26 @@
           before: input_datetime.air_freshener_off_time
         - condition: or
           conditions:
-          - condition: zone
-            entity_id: person.richard
-            zone: zone.home
-          - condition: zone
+          - condition: state
             entity_id: person.lucy
-            zone: zone.home
+            state: home
+          - condition: state
+            entity_id: person.richard
+            state: home
       sequence:
       - service: switch.turn_on
         target:
           entity_id:
           - switch.plug_in_air_freshener_1
+        data: {}
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      - service: switch.turn_on
+        target:
+          entity_id:
           - switch.plug_in_air_freshener_2
         data: {}
     default:
@@ -421,6 +452,15 @@
       target:
         entity_id:
         - switch.plug_in_air_freshener_1
+      data: {}
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - service: switch.turn_off
+      target:
+        entity_id:
         - switch.plug_in_air_freshener_2
       data: {}
   mode: restart
@@ -1078,11 +1118,13 @@
     device_id: 78678bdb2e4faa8982a4681b31f899ba
     entity_id: switch.ice_maker_switch
     domain: switch
+    enabled: false
   action:
   - type: turn_on
     device_id: 78678bdb2e4faa8982a4681b31f899ba
     entity_id: switch.ice_maker_switch
     domain: switch
+    enabled: false
   - delay:
       hours: 0
       minutes: 15
@@ -1092,6 +1134,7 @@
     device_id: 78678bdb2e4faa8982a4681b31f899ba
     entity_id: switch.ice_maker_switch
     domain: switch
+    enabled: false
   mode: single
 - id: '1619906359597'
   alias: Outside Lights Motion OLD
@@ -1371,6 +1414,7 @@
     device_id: 78678bdb2e4faa8982a4681b31f899ba
     entity_id: binary_sensor.ice_maker_status
     domain: binary_sensor
+    enabled: false
   - platform: zone
     entity_id: person.richard
     zone: zone.home
@@ -1393,6 +1437,7 @@
         device_id: 78678bdb2e4faa8982a4681b31f899ba
         entity_id: switch.ice_maker_switch
         domain: switch
+        enabled: false
     - conditions:
       - condition: time
         after: input_datetime.ice_maker_on_time
@@ -1405,6 +1450,7 @@
         device_id: 78678bdb2e4faa8982a4681b31f899ba
         entity_id: switch.ice_maker_switch
         domain: switch
+        enabled: false
     - conditions:
       - condition: numeric_state
         entity_id: sensor.ice_maker_water_temperature
@@ -1414,6 +1460,7 @@
         device_id: 78678bdb2e4faa8982a4681b31f899ba
         entity_id: switch.ice_maker_switch
         domain: switch
+        enabled: false
       sequence:
       - type: turn_on
         device_id: 78678bdb2e4faa8982a4681b31f899ba
@@ -1428,11 +1475,13 @@
         device_id: 78678bdb2e4faa8982a4681b31f899ba
         entity_id: switch.ice_maker_switch
         domain: switch
+        enabled: false
     default:
     - type: turn_off
       device_id: 78678bdb2e4faa8982a4681b31f899ba
       entity_id: switch.ice_maker_switch
       domain: switch
+      enabled: false
   mode: restart
 - id: '1621109022540'
   alias: Close Chicken Door  Notification (App)
@@ -1507,11 +1556,12 @@
     entity_id:
     - person.lucy
     from: home
-    to:
+    to: not_home
     for:
       hours: 0
       minutes: 5
       seconds: 0
+    enabled: true
   condition:
   - condition: zone
     entity_id: device_tracker.insulin_pump_controller
@@ -2092,11 +2142,11 @@
     device after each test, else is will not show the video again. (local media-source
     is 30 seconds behind!)
   trigger:
-  - device_id: b03ab12c707340e8849888171a79caed
-    domain: binary_sensor
-    entity_id: binary_sensor.doorbell_button
+  - type: turned_on
     platform: device
-    type: turned_on
+    device_id: b03ab12c707340e8849888171a79caed
+    entity_id: 7c6911b35b21b35fae0f55d88984a7d9
+    domain: binary_sensor
   condition:
   - condition: or
     conditions:
@@ -2124,73 +2174,80 @@
       - garage
       - guest_bedroom
       - bedroom
+    enabled: false
+  - service: notify.google_assistant_sdk
+    data:
+      message: Someone is at the front door
   - service: media_player.play_media
     target:
       entity_id: media_player.office_display
     data:
-      media_content_id: media-source://camera/camera.front_door_11_onvif_video
+      media_content_id: media-source://camera/camera.front_door_11
       media_content_type: application/vnd.apple.mpegurl
     metadata:
-      title: Front Door .11 ONVIF profile_1 h264
-      thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+      title: Front Door .11
+      thumbnail: /api/camera_proxy/camera.front_door_11
       media_class: video
       children_media_class:
       navigateIds:
       - {}
       - media_content_type: app
         media_content_id: media-source://camera
-    enabled: true
+    enabled: false
   - service: media_player.play_media
     target:
       entity_id: media_player.living_room_display
     data:
-      media_content_id: media-source://camera/camera.front_door_11_onvif_video
+      media_content_id: media-source://camera/camera.front_door_11
       media_content_type: application/vnd.apple.mpegurl
     metadata:
-      title: Front Door .11 ONVIF profile_1 h264
-      thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+      title: Front Door .11
+      thumbnail: /api/camera_proxy/camera.front_door_11
       media_class: video
       children_media_class:
       navigateIds:
       - {}
       - media_content_type: app
         media_content_id: media-source://camera
+    enabled: false
   - service: media_player.play_media
     target:
       entity_id: media_player.dining_room_display
     data:
-      media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
+      media_content_id: media-source://camera/camera.drive_high_16
       media_content_type: application/vnd.apple.mpegurl
     metadata:
-      title: Drive Higher .21 ONVIF profile_1 h264
-      thumbnail: /api/camera_proxy/camera.drive_higher_21_onvif_profile_1_h264
+      title: Drive High .16
+      thumbnail: /api/camera_proxy/camera.drive_high_16
       media_class: video
       children_media_class:
       navigateIds:
       - {}
       - media_content_type: app
         media_content_id: media-source://camera
+    enabled: false
   - service: media_player.play_media
     target:
       entity_id: media_player.kitchen_display
     data:
-      media_content_id: media-source://camera/camera.front_door_11_onvif_video
+      media_content_id: media-source://camera/camera.front_door_11
       media_content_type: application/vnd.apple.mpegurl
     metadata:
-      title: Front Door .11 ONVIF profile_1 h264
-      thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
+      title: Front Door .11
+      thumbnail: /api/camera_proxy/camera.front_door_11
       media_class: video
       children_media_class:
       navigateIds:
       - {}
       - media_content_type: app
         media_content_id: media-source://camera
+    enabled: false
   - delay:
       hours: 0
       minutes: 2
       seconds: 0
       milliseconds: 0
-    enabled: true
+    enabled: false
   - parallel:
     - service: media_player.play_media
       data:
@@ -2310,7 +2367,7 @@
         - {}
         - media_content_type: app
           media_content_id: media-source://camera
-    enabled: true
+    enabled: false
   mode: single
 - id: '1658705666302'
   alias: Living Room Lights Motion 6f3c
@@ -2430,8 +2487,7 @@
           transition: 2
           brightness_pct: 50
         target:
-          entity_id:
-          - light.kitchen_lights
+          device_id: 061e0dd32d43fd2355543b4f4db149ac
       - delay:
           hours: 0
           minutes: 5
@@ -2789,6 +2845,12 @@
     device_id: 2aadd916ad46270ecda5ab407a461e6c
     entity_id: binary_sensor.parcel_box_contact
     domain: binary_sensor
+    enabled: false
+  - platform: state
+    entity_id:
+    - binary_sensor.parcel_box_contact
+    from: 'off'
+    to: 'on'
   condition: []
   action:
   - service: camera.snapshot
@@ -2861,11 +2923,11 @@
     takes the image when the notification is delivered, which may be later if signal
     is poor.
   trigger:
-  - device_id: b03ab12c707340e8849888171a79caed
-    domain: binary_sensor
-    entity_id: binary_sensor.doorbell_button
+  - type: turned_on
     platform: device
-    type: turned_on
+    device_id: b03ab12c707340e8849888171a79caed
+    entity_id: 7c6911b35b21b35fae0f55d88984a7d9
+    domain: binary_sensor
   condition: []
   action:
   - if:
@@ -3108,11 +3170,11 @@
   trigger:
   - platform: template
     value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
-      | int) > 600 %}true{% endif %}'
+      | int) > 1200 %}true{% endif %}'
   condition:
   - condition: template
     value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
-      | int) > 600 %}true{% endif %}'
+      | int) > 1200 %}true{% endif %}'
   action:
   - service: device_tracker.see
     data:
@@ -3144,8 +3206,7 @@
       transition: 20
       kelvin: 2700
     target:
-      entity_id:
-      - light.downstairs_hallway_light
+      device_id: 0e1ed242a4670cea76f671cc12039968
   - delay:
       hours: 0
       minutes: 10
@@ -3439,24 +3500,29 @@
   description: "Opens in the morning, only if Richard is home. \nCloses in the evening
     at dusk."
   trigger:
-  - platform: sun
-    event: sunset
-    offset: 00:10:00
   - platform: time
     at: 09:00:00
+    id: open
+  - platform: sun
+    event: sunset
+    offset: -02:00:00
+    id: close
   condition: []
   action:
   - choose:
     - conditions:
-      - condition: sun
-        after: sunset
-        after_offset: -02:00:00
+      - condition: trigger
+        id:
+        - close
       sequence:
       - service: cover.close_cover
         target:
           entity_id: cover.office_blinds
         data: {}
     - conditions:
+      - condition: trigger
+        id:
+        - open
       - condition: zone
         entity_id: person.richard
         zone: zone.home
@@ -3465,37 +3531,6 @@
         target:
           entity_id: cover.office_blinds
         data: {}
-  mode: single
-- id: '1703811741320'
-  alias: Heat Bathroom Towel Rail Timer
-  description: ''
-  trigger: []
-  condition: []
-  action:
-  - service: climate.set_temperature
-    data:
-      hvac_mode: heat
-      temperature: 30
-    target:
-      entity_id:
-      - climate.hallway
-  - service: climate.set_temperature
-    data:
-      temperature: 29
-    target:
-      entity_id:
-      - climate.bathroom_4329_climate_control
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - service: climate.set_temperature
-    data:
-      temperature: 12
-    target:
-      entity_id:
-      - climate.hallway
   mode: single
 - id: '1705695753761'
   alias: Bathroom Audio Remote - Google Home Speaker
@@ -3667,4 +3702,173 @@
     attribute: current_temperature
   condition: []
   action: []
+  mode: single
+- id: '1708473467198'
+  alias: Living Room Fairy Lights Follow Other Lights
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: 6e0ded4c47c76900af05e933f9348a46
+    entity_id: 020edf627efb532c118e3a6362fbc1a4
+    domain: light
+    id: 'on'
+  - platform: device
+    type: turned_off
+    device_id: 6e0ded4c47c76900af05e933f9348a46
+    entity_id: 020edf627efb532c118e3a6362fbc1a4
+    domain: light
+    id: 'off'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'on'
+      sequence:
+      - type: turn_on
+        device_id: c3b025b97185a156ea069417b14401b8
+        entity_id: ae59ac0fe7bafc0e550d02d7984ca5e9
+        domain: light
+    - conditions:
+      - condition: trigger
+        id:
+        - 'off'
+      sequence:
+      - type: turn_off
+        device_id: c3b025b97185a156ea069417b14401b8
+        entity_id: ae59ac0fe7bafc0e550d02d7984ca5e9
+        domain: light
+  mode: restart
+- id: '1710954157058'
+  alias: Pull Water meter data every hour
+  description: Warning this will kill the battery if overused
+  trigger:
+  - platform: time_pattern
+    minutes: '10'
+  condition: []
+  action:
+  - service: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.water_meter_request
+  mode: single
+- id: '1714268450987'
+  alias: Run off UPS
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:40:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - type: calibrate_start
+    device_id: 2852d68eacdcae952e6fd84251240afb
+    domain: nut
+  mode: single
+- id: '1715801236786'
+  alias: Tile Tracker Low Battery Alert
+  description: ''
+  trigger:
+  - platform: time
+    at: '11:00:00'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: device_tracker.small_water_bottle
+        attribute: last_timestamp
+        state: timedelta(days=4)
+      - condition: template
+        value_template: ' {{ now() - state_attr(''device_tracker.cold_sore_cream'',
+          ''last_timestamp'') | as_datetime > timedelta(days=4) }}'
+      sequence: []
+  mode: single
+- id: '1720117742034'
+  alias: Tea Brewing Timer
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 71d5510f501b15c01210dff88a9c5e31
+    type: action
+    subtype: 'on'
+  condition: []
+  action:
+  - service: notify.google_assistant_sdk
+    data:
+      message: 3 and a half minute tea timer started
+    enabled: false
+  - repeat:
+      count: 2
+      sequence:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id:
+          - 294f30f10444bcd2ef6ff9be250834f7
+          - 20b10b9b40bf37d01adb72fd60ea4149
+          - 061e0dd32d43fd2355543b4f4db149ac
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id:
+          - 294f30f10444bcd2ef6ff9be250834f7
+          - 20b10b9b40bf37d01adb72fd60ea4149
+          - 061e0dd32d43fd2355543b4f4db149ac
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 500
+  - delay:
+      hours: 0
+      minutes: 3
+      seconds: 30
+      milliseconds: 0
+  - service: notify.google_assistant_sdk
+    data:
+      message: Tea timer is up, your lovely cup of tea is ready. Enjoy!
+    enabled: true
+  mode: restart
+- id: '1720118905430'
+  alias: Broadcast dinner almost ready
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 71d5510f501b15c01210dff88a9c5e31
+    type: action
+    subtype: 'off'
+  condition: []
+  action:
+  - service: notify.google_assistant_sdk
+    data:
+      message: Dinner is ready.
+    enabled: true
+  - service: notify.google_assistant_sdk
+    data:
+      message: Dinner is ready Richard
+      target:
+      - office
+      - living room
+      - kichen
+      - dining room
+    enabled: false
+  - service: notify.google_assistant_sdk
+    data:
+      message: Hello sweetie, dinner is almost ready. Just wanted to let you know.
+    enabled: false
   mode: single

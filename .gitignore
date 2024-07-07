@@ -8,7 +8,6 @@
 *.crt
 *.key
 *.pem
-
 *.db-shm
 *.db-wal
 *.log.*
@@ -60,3 +59,4 @@ __pycache__/
 /image/
 ip_bans.yaml
 /custom_components
+SERVICE_ACCOUNT*.JSON

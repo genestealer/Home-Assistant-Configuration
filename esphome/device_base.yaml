@@ -16,28 +16,44 @@ esphome:
 
 # Enable logging
 logger:
-  # level: ${log_level}
+  level: ${log_level}
 
 # Enable Home Assistant API
 api:
   encryption:
     key: !secret esphome_api_encryption_key
   reboot_timeout: 1h
+
 # Enable over the air updates
 ota:
   password: !secret esphome_ota_pass
-  safe_mode: true
+  platform: esphome
+
+#Safe mode https://esphome.io/components/safe_mode
+safe_mode:
+  boot_is_good_after: 2min
   reboot_timeout: 10min
   num_attempts: 5
 
 # Wifi Details
 wifi:
-  ssid: !secret IoT_VLAN_SSID
-  password: !secret IoT_VLAN_SSID_Key
-  manual_ip:
-    static_ip: $ip
-    gateway: $gateway
-    subnet: $subnet
+  networks:
+    - ssid: !secret IoT_VLAN_SSID
+      password: !secret IoT_VLAN_SSID_Key
+      # bssid: "1A:49:BC:5C:80:16"
+      manual_ip:
+        static_ip: $ip
+        gateway: $gateway
+        subnet: $subnet
+
+    - ssid: !secret IoT_VLAN_SSID
+      password: !secret IoT_VLAN_SSID_Key
+      # bssid: "1A:49:BC:44:9B:90"
+      manual_ip:
+        static_ip: $ip
+        gateway: $gateway
+        subnet: $subnet
+
 
 # Status LED for connection
 status_led:
@@ -95,13 +111,31 @@ sensor:
     update_interval: 5min
     state_class: measurement
     device_class: duration
+    filters:
+      - lambda: return x / 3600.0;
+    unit_of_measurement: "hours"
+    accuracy_decimals: 2
+    id: uptime_s
+    entity_category: "diagnostic"
 
   # Wifi signal strength
-  - platform: wifi_signal
+  - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
     name: RSSI
+    id: wifi_signal_db
     update_interval: 300s
     device_class: signal_strength
     state_class: measurement
+    entity_category: "diagnostic"
+
+  - platform: copy # Reports the WiFi signal strength in %
+    source_id: wifi_signal_db
+    name: "WiFi Signal"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: "diagnostic"
+    device_class: ""
+
   # filters:  
   #   - median:  
   #  window_size: 7  

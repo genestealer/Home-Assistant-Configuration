@@ -3,11 +3,15 @@
 ####################################################
 
 binary_sensor:
-  # Sun2 Sensor https://github.com/pnbruckner/ha-sun2
-  # For https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
-  - platform: sun2
-    monitored_conditions:
-      - elevation
+  # # Sun2 Sensor https://github.com/pnbruckner/ha-sun2
+  # # For https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+  # #__sun2.__ This is a custom component (installable through HACS using the repository `https://github.com/pnbruckner/ha-sun2`) that provides lots of solar information and
+  # #  creates `binary_sensor.above_horizon` which is used in the graphs.
+
+  # # This has to be created via "Add Integration", but will also name it "binary_sensor.home_sun_above_horizon" rather than "binary_sensor.above_horizon".
+  # - platform: sun2
+  #   monitored_conditions:
+  #     - elevation
 
   - platform: trend
     sensors:
@@ -25,7 +29,7 @@ template:
   - binary_sensor:
       # Used by kloggy/HA-Irrigation-Version2
       - name: Raining Now
-        state: "{{ is_state('sensor.openweathermap_precipitation_kind', 'Rain') }}"
+        state: "{{ is_state('sensor.internet_precipitation_kind', 'Rain') }}"
 
   #  Track if an irrigation Controllers goes offline. Used in the alert and kloggy/HA-Irrigation-Version2
   - binary_sensor:

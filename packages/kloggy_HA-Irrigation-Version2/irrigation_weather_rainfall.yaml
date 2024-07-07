@@ -1,4 +1,3 @@
-
 #================
 #=== Automations
 #================
@@ -15,25 +14,24 @@ automation:
 
       - platform: state
         entity_id: input_text.irrigation_external_sensor_rainfall_today
-        to: ''
+        to: ""
 
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_text.irrigation_external_sensor_rainfall_today
-          state: 'unknown'
+          state: "unknown"
 
         - condition: state
           entity_id: input_text.irrigation_external_sensor_rainfall_today
-          state: ''
+          state: ""
 
     action:
       - service: input_text.set_value
         data_template:
           entity_id: input_text.irrigation_external_sensor_rainfall_today
           value: sensor.smartweather_average_rain_today
-
 
   #==========================================
   #=== Set Default Rainfall Yesterday Sensor
@@ -47,25 +45,24 @@ automation:
 
       - platform: state
         entity_id: input_text.irrigation_external_sensor_rainfall_yesterday
-        to: ''
+        to: ""
 
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_text.irrigation_external_sensor_rainfall_yesterday
-          state: 'unknown'
+          state: "unknown"
 
         - condition: state
           entity_id: input_text.irrigation_external_sensor_rainfall_yesterday
-          state: ''
+          state: ""
 
     action:
       - service: input_text.set_value
         data_template:
           entity_id: input_text.irrigation_external_sensor_rainfall_yesterday
           value: sensor.smartweather_average_rain_yesterday
-
 
   #===================================
   #=== Set Default Raining Now Sensor
@@ -79,25 +76,24 @@ automation:
 
       - platform: state
         entity_id: input_text.irrigation_external_sensor_raining_now
-        to: ''
+        to: ""
 
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_text.irrigation_external_sensor_raining_now
-          state: 'unknown'
+          state: "unknown"
 
         - condition: state
           entity_id: input_text.irrigation_external_sensor_raining_now
-          state: ''
+          state: ""
 
     action:
       - service: input_text.set_value
         data_template:
           entity_id: input_text.irrigation_external_sensor_raining_now
           value: binary_sensor.raining_now
-
 
   #=====================================
   #=== Set Default Forecast Rain Sensor
@@ -111,25 +107,24 @@ automation:
 
       - platform: state
         entity_id: input_text.irrigation_external_sensor_forecast_rain
-        to: ''
+        to: ""
 
     condition:
       condition: or
       conditions:
         - condition: state
           entity_id: input_text.irrigation_external_sensor_forecast_rain
-          state: 'unknown'
+          state: "unknown"
 
         - condition: state
           entity_id: input_text.irrigation_external_sensor_forecast_rain
-          state: ''
+          state: ""
 
     action:
       - service: input_text.set_value
         data_template:
           entity_id: input_text.irrigation_external_sensor_forecast_rain
-          value: sensor.openweathermap_forecast_precipitation
-
+          value: sensor.internet_forecast_precipitation
 
   #===================================================
   #=== Initialise the Rainfall Sensors when HA starts
@@ -144,19 +139,18 @@ automation:
     action:
       - service: homeassistant.update_entity
         data:
-          entity_id: 
+          entity_id:
             - sensor.irrigation_sensor_rainfall_today
             - sensor.irrigation_sensor_rainfall_yesterday
             - sensor.irrigation_sensor_forecast_rain
             - binary_sensor.irrigation_sensor_raining_now
-
 
   #===============================================================
   #=== Cycle rainfall history figures for the four previous days.
   #===============================================================
   - alias: Irrigation Rainfall Nightly Update
     id: irrigation_rainfall_nightly_update
-    trigger: 
+    trigger:
       - platform: time
         at: "00:00:01"
 
@@ -178,7 +172,6 @@ automation:
         data_template:
           value: >
             {{ states(states('input_text.irrigation_external_sensor_rainfall_yesterday')) | float }}
-
 
   #==============================================================================
   #=== Calculate rain multiplier
@@ -224,7 +217,7 @@ automation:
             {% set percent_2 = states('input_number.irrigation_rainfall_percentage_2') | float / 100 %}
             {% set percent_3 = states('input_number.irrigation_rainfall_percentage_3') | float / 100 %}
             {% set percent_4 = states('input_number.irrigation_rainfall_percentage_4') | float / 100 %}
-            
+
             {% set rain_1 = rain_1 * percent_1 %}
             {% set rain_2 = rain_2 * percent_2 %}
             {% set rain_3 = rain_3 * percent_3 %}
@@ -257,4 +250,3 @@ automation:
             {% else %}
               {{ multiplier }}
             {% endif %}
-
