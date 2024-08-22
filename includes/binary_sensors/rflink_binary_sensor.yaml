@@ -22,7 +22,6 @@
 
 # # Repurposed door sensor for parcel box. No longer in use 2023
 # - platform: rflink
-#   automatic_add: false
 #   devices:
 #     eurodomest_2a2868_01:
 #       name: "Parcel Box Sensor"

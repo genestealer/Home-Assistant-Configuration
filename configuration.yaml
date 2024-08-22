@@ -23,8 +23,6 @@ homeassistant:
 #
 ############################################################
 
-
-
 # Enables the frontend
 frontend:
   themes: !include_dir_merge_named themes
@@ -214,25 +212,25 @@ rflink:
   wait_for_ack: true
   reconnect_interval: 10 # seconds
   tcp_keepalive_idle_timer: 600 # seconds
-  # ignore_devices:
-  # - owl_cm113_ead1_current3
-  # - owl_cm113_ead1_current1
-  # - ev1527_*
-  # - wh3_*
-  # - wt122*
-  # # - sensor.owl_cm113_ea7f_current2
-  # # - sensor.owl_cm113_ea7f_current3
-  # # - sensor.owl_cm113_ea9f_current2
-  # # - sensor.owl_cm113_ea9f_current3
-  # # - sensor.owl_cm130_007f_kwatt
+  ignore_devices:
+    - owl_cm113_ead1_current3
+    - owl_cm113_ead1_current1
+    - ev1527_*
+    - wh3_*
+    - wt122*
+    # - sensor.owl_cm113_ea7f_current2
+    # - sensor.owl_cm113_ea7f_current3
+    # - sensor.owl_cm113_ea9f_current2
+    # - sensor.owl_cm113_ea9f_current3
+    # - sensor.owl_cm130_007f_kwatt
 
-  # - sensor.v2phoenix_*
-  # - light.drayton_*
-  # - light.elrodb_*
-  # - light.mertik_*
-  # - light.drayton_*
-  # - light.btf_*
-  # - light.v2phoenix*
+    - sensor.v2phoenix_*
+    - light.drayton_*
+    - light.elrodb_*
+    - light.mertik_*
+    - light.drayton_*
+    - light.btf_*
+    - light.v2phoenix*
 
 # Define values that can be controlled via the frontend and can be used within conditions of automation
 # Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md

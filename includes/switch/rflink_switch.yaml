@@ -22,7 +22,6 @@
 
 # 433MHz switchs
 - platform: rflink
-  automatic_add: false
   device_defaults:
     signal_repetitions: 20
     fire_event: true
@@ -42,7 +41,6 @@
       name: Plug-In Air Freshener 2
 
 - platform: rflink
-  automatic_add: false
   device_defaults:
     signal_repetitions: 10
     fire_event: true
@@ -70,7 +68,6 @@
 
 # Ikea two button round remote
 - platform: rflink
-  automatic_add: false
   device_defaults:
     fire_event: true
   devices:

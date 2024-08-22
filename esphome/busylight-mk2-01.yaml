@@ -1,0 +1,135 @@
+# #***************************************************
+# #   BusyLight Presence Indicator
+# #     Light Component
+# #   Richard Huish 2023
+# #   I built so my family can know when I'm busy and working in my Home Office.
+# #   ESP8266 based with local home-assistant.io GUI with controller with physical buttons and mini display
+# #   See busylight_controller.yaml for Controller Component
+# #   ----------
+# #   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
+# #   ----------
+# #   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
+# #   API: Locally hosted native API component https://esphome.io/components/api.html
+# #   OTA updates: https://esphome.io/components/ota.html
+# #   ----------
+# #   The circuit:
+# #     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
+# #     Breadboard-friendly RGB Smart NeoPixel https://www.adafruit.com/product/1312
+# #     4-channel I2C-safe Bi-directional Logic Level Converter - BSS138 https://www.adafruit.com/product/757
+# #     Ping pong ball to diffuse 
+# #   Inputs:
+# #     BusyLight Presence Indicator Controller via Home Assistant
+# #   Outputs:
+# #     NeoPixel, via Logic Level Converter as NeoPixel needs 5V and ESP8266 is 3.3V.
+# ##############################################################
+# # Config Header for Device
+# ##############################################################
+# substitutions:
+#   # Names
+#   name: busy-light-mk2-01
+#   friendly_name: "Busy Light Mk2 - 1"
+#   ui_comment: "Busy Light Mk2 -1 " # Only shows in UI.
+  
+#   # Wifi Settings
+#   ip: 192.168.2.33
+#   gateway: 192.168.2.1
+#   subnet: 255.255.255.0
+
+#   # Board Settings
+#   status_led: LED_RED
+#   status_led_inverted: "false"
+#   platform: ESP8266
+#   board: huzzah
+  
+#   # Debug Component
+#   log_level: DEBUG 
+
+#   # Project 
+#   project_name: "genestealer.busy-light-01"
+#   project_version: "1.5.0"
+#   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busy-light-01.yaml"
+
+
+# ##############################################################
+# # Shared code from all my projects
+# ##############################################################
+
+# # Packages 
+# packages:
+#   device_base: !include device_base.yaml
+
+# dashboard_import:
+#   package_import_url: ${package_import_url}
+#   import_full_config: false # or true
+
+# ##############################################################
+# # Main Code
+# ##############################################################
+
+# light:
+#   - platform: neopixelbus
+#     method: ESP8266_UART1
+#     type: GRB
+#     pin: 2
+#     num_leds: 1
+#     name: ${friendly_name}
+#     id: busylight
+#     variant: 800KBPS
+    
+# # light:
+# #   - platform: neopixelbus
+# #     method: ESP8266_UART1
+# #     type: GRB
+# #     pin: 2
+# #     num_leds: 8
+# #     name: ${upper_devicename}
+# #     id: busylight
+# #     variant: 800KBPS
+# #     effects:
+# #       - addressable_rainbow:
+# #       - addressable_rainbow:
+# #           name: Rainbow Effect With Custom Values
+# #           speed: 10
+# #           width: 50
+# #       - addressable_color_wipe:
+# #       - addressable_color_wipe:
+# #           name: Color Wipe Effect With Custom Values
+# #           colors:
+# #             - red: 100%
+# #               green: 100%
+# #               blue: 100%
+# #               num_leds: 1
+# #             - red: 0%
+# #               green: 0%
+# #               blue: 0%
+# #               num_leds: 1
+# #           add_led_interval: 100ms
+# #           reverse: false
+# #       - addressable_scan:
+# #       - addressable_scan:
+# #           name: Scan Effect With Custom Values
+# #           move_interval: 100ms
+# #           scan_width: 1
+# #       - addressable_twinkle:
+# #       - addressable_twinkle:
+# #           name: Twinkle Effect With Custom Values
+# #           twinkle_probability: 5%
+# #           progress_interval: 4ms
+# #       - addressable_random_twinkle:
+# #       - addressable_random_twinkle:
+# #           name: Random Twinkle Effect With Custom Values
+# #           twinkle_probability: 5%
+# #           progress_interval: 32ms
+# #       - addressable_fireworks:
+# #       - addressable_fireworks:
+# #           name: Fireworks Effect With Custom Values
+# #           update_interval: 32ms
+# #           spark_probability: 10%
+# #           use_random_color: false
+# #           fade_out_rate: 120
+# #       - addressable_flicker:
+# #       - addressable_flicker:
+# #           name: Flicker Effect With Custom Values
+# #           update_interval: 16ms
+# #           intensity: 5%
+

@@ -229,10 +229,10 @@
   name: Bedtime Mode
   entities:
     light.bedroom_lamp_left:
-      min_color_temp_kelvin: 2202
-      max_color_temp_kelvin: 4000
-      min_mireds: 250
-      max_mireds: 454
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
       effect_list:
       - blink
       - breathe
@@ -240,31 +240,31 @@
       - channel_change
       - finish_effect
       - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
       - color_temp
       - xy
-      color_mode: color_temp
-      brightness: 3
-      hs_color:
-      - 29.79
-      - 84.553
-      rgb_color:
-      - 255
-      - 146
-      - 39
-      xy_color:
-      - 0.579
-      - 0.388
       friendly_name: Bedroom Lamp Left
       supported_features: 44
-      color_temp_kelvin: 2202
-      color_temp: 454
+      color_mode: xy
+      brightness: 3
+      hs_color:
+      - 9.231
+      - 66.275
+      rgb_color:
+      - 255
+      - 112
+      - 86
+      xy_color:
+      - 0.589
+      - 0.329
       state: 'on'
     light.bedroom_lamp_right:
-      min_color_temp_kelvin: 2202
-      max_color_temp_kelvin: 4000
-      min_mireds: 250
-      max_mireds: 454
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
       effect_list:
       - blink
       - breathe
@@ -272,36 +272,24 @@
       - channel_change
       - finish_effect
       - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
       - color_temp
       - xy
       friendly_name: Bedroom Lamp Right
       supported_features: 44
-      color_mode: color_temp
-      brightness: 3
-      color_temp_kelvin: 2202
-      color_temp: 454
-      hs_color:
-      - 29.79
-      - 84.553
-      rgb_color:
-      - 255
-      - 146
-      - 39
-      xy_color:
-      - 0.579
-      - 0.388
-      state: 'on'
-    light.bedroom_ceiling_light:
+      state: 'off'
+    light.192_168_10_21_ceiling:
       supported_color_modes:
       - onoff
+      color_mode:
+      assumed_state: true
       friendly_name: Bedroom Ceiling Light
       supported_features: 0
       state: 'off'
   icon: mdi:bed
-  metadata:
-    light.bedroom_ceiling_light:
-      entity_only: true
+  metadata: {}
 - id: '1698951950685'
   name: Morning Heating
   entities:

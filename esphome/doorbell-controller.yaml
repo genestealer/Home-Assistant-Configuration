@@ -165,8 +165,12 @@ sensor:
     filters:
       # Multiplication factor from W to kW is 0.001
       - multiply: 0.001
-    # Wrong reading when using solar, use the left calculation method instead of the default (right).: https://glow-energy.io/docs/faq/abrupt_consumption_with_solar
-    method: left
+      # Update the sensor once per 0.1 kWh consumed, or every 10 seconds, whichever happens sooner.
+      # https://github.com/klaasnicolaas/home-assistant-glow/#reduce-the-amount-of-data-the-sensors-produce / https://glow-energy.io/docs/faq/reduce_sensor_data
+      # for more information.
+      - delta: 0.01
+      - heartbeat: 10s
+
 
 
 

@@ -135,6 +135,7 @@ sensor:
     unit_of_measurement: "%"
     entity_category: "diagnostic"
     device_class: ""
+    icon: "mdi:signal-variant"
 
   # filters:  
   #   - median:  

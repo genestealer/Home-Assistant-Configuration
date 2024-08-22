@@ -53,90 +53,64 @@
       message: '{{trigger.entity_id}} offline'
     service: notify.google_cloud_notify
 - id: '1558317969078'
-  alias: CCTV Reboot Each Day
+  alias: CCTV Reboot Each Monday
   trigger:
   - at: 06:45
     platform: time
-  condition: []
+  condition:
+  - condition: time
+    weekday:
+    - mon
   action:
-  - service: rest_command.cctv_front_door_restart
+  - action: button.press
+    metadata: {}
     data: {}
-    enabled: false
-  - service: rest_command.cctv_drive_restart
+    target:
+      entity_id: button.11_front_door_reboot
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
     data: {}
-    enabled: false
-  - service: rest_command.cctv_garage_restart
+    target:
+      entity_id:
+      - button.12_drive_long_reboot
+      - button.18_garden_reboot
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
     data: {}
-    enabled: false
-  - service: rest_command.cctv_garden_restart
+    target:
+      entity_id:
+      - button.13_garage_reboot
+      - button.15_chickens_reboot
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
     data: {}
-    enabled: false
-  - service: rest_command.cctv_garage2_restart
+    target:
+      entity_id: button.16_drive_high_reboot
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
     data: {}
-    enabled: false
-  - device_id: 853ca02c816df4ce4860c07060837a6a
-    domain: button
-    entity_id: button.front_door_11_onvif_reboot
-    type: press
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - device_id: 99689212065c11ebbd2ecbef1587dfe1
-    domain: button
-    entity_id: button.drive_high_16_reboot
-    type: press
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - device_id: ed137229065c11eb8030a1dacd09fb94
-    domain: button
-    entity_id: button.garage_13_onvif_reboot
-    type: press
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - device_id: 2318258f467e52e3ff856d5e31540329
-    domain: button
-    entity_id: button.garden_18_onvif_reboot
-    type: press
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - device_id: 9f2814a5af139ead2a88c4a477dda6c4
-    domain: button
-    entity_id: button.drive_long_12_reboot
-    type: press
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - device_id: 345bf174d40b5581b82ff49809885adf
-    domain: button
-    entity_id: button.chickens_15_onvif_reboot
-    type: press
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - device_id: 83dd8340e23fb86fef21b09a22a57929
-    domain: button
-    entity_id: button.drive_higher_21_onvif_reboot
-    type: press
+    target:
+      entity_id: button.21_drive_higher_reboot
 - id: '1564192629041'
   alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
   description: 'If script is turned off manually, then close valve, else it will stay
@@ -1081,16 +1055,6 @@
         - light.busy_light_2
         - light.busy_light_1
   mode: restart
-- id: '1608749551791'
-  alias: Motion-activated Light [Blueprint]
-  description: ''
-  use_blueprint:
-    path: homeassistant/motion_light.yaml
-    input:
-      motion_entity: binary_sensor.kichen_pir_sensor
-      light_target:
-        entity_id: light.kitchen_under_counter_lights
-      no_motion_wait: '3600'
 - id: '1612985120601'
   alias: obsolete - Ice Maker - On-Off Schedule [Blueprint]
   description: There is a separate automation which turns the ice maker on if the
@@ -1135,220 +1099,6 @@
     entity_id: switch.ice_maker_switch
     domain: switch
     enabled: false
-  mode: single
-- id: '1619906359597'
-  alias: Outside Lights Motion OLD
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile3
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: 853ca02c816df4ce4860c07060837a6a
-    entity_id: binary_sensor.p3364_l_1_vmd4_camera1profile3
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: ed137229065c11eb8030a1dacd09fb94
-    entity_id: binary_sensor.p3224_lv_0_vmd4_camera1profile2
-    domain: binary_sensor
-  condition:
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-  action:
-  - choose:
-    - conditions:
-      - condition: time
-        after: 00:01
-        before: 06:00
-      sequence:
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_3_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 1
-          color_temp: 352
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 2
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_3_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 30
-          transition: 5
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 8
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_3_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 30
-      - delay:
-          hours: 0
-          minutes: 5
-          seconds: 0
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_3_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 1
-          transition: 10
-    default:
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-        - light.outside_1_up
-        - light.outside_2_down
-        - light.outside_2_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_5_down
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 2
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-        - light.outside_2_down
-        - light.outside_3_down
-        - light.outside_3_down
-        - light.outside_5_down
-      data:
-        brightness_pct: 100
-        transition: 10
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 2
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_up
-        - light.outside_2_up
-        - light.outside_3_up
-        - light.outside_3_up
-      data:
-        brightness_pct: 100
-        transition: 8
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 10
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-        - light.outside_1_up
-        - light.outside_2_down
-        - light.outside_2_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_5_down
-      data:
-        brightness_pct: 100
-    - delay:
-        hours: 0
-        minutes: 5
-        seconds: 0
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-        - light.outside_1_up
-        - light.outside_2_down
-        - light.outside_2_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_5_down
-      data:
-        brightness_pct: 1
-        transition: 10
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 15
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.outside_1_down
-      - light.outside_1_up
-      - light.outside_2_down
-      - light.outside_2_up
-      - light.outside_3_down
-      - light.outside_3_up
-      - light.outside_3_down
-      - light.outside_3_up
-      - light.outside_5_down
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 2
-      milliseconds: 0
-  - choose:
-    - conditions:
-      - condition: time
-        before: input_datetime.house_sign_light_off_time
-        after: '16:00'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-          white_value: 250
-        target:
-          entity_id:
-          - light.outside_2_down
-    default: []
   mode: single
 - id: '1619906809678'
   alias: Outside Lights - House Number Sign Light Schedule
@@ -1536,18 +1286,6 @@
         data: {}
     default: []
   mode: single
-- id: '1631609930867'
-  alias: Wake-up light alarm with sunrise effect - [BluePrint]
-  description: ''
-  use_blueprint:
-    path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
-    input:
-      light_entity: light.richard_bedside_bed
-      timestamp_sensor: sensor.rich_mob_app_next_alarm
-      manual_time: 09:00:00
-      check_entity: person.richard
-      sunrise_duration: 15
-      start_brightness: 3
 - id: '1634179399421'
   alias: Notify when Lucy leaves her pump at home
   description: ''
@@ -1592,12 +1330,17 @@
     device_id: 99689212065c11ebbd2ecbef1587dfe1
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile3
     domain: binary_sensor
+  - type: opened
+    platform: device
+    device_id: 86b815b15cbf84a75984db3b46f6cc17
+    entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
+    domain: binary_sensor
   condition:
   - condition: or
     conditions:
     - condition: sun
       after: sunset
-      after_offset: +00:30:00
+      after_offset: '0'
     - condition: sun
       before: sunrise
       before_offset: -00:30:00
@@ -1608,8 +1351,7 @@
         after: input_datetime.outside_lights_late_night_start_time
         before: input_datetime.outside_lights_late_night_end_time
       sequence:
-      - service: light.turn_on
-        target:
+      - target:
           entity_id:
           - light.outside_1_down
           - light.outside_2_down
@@ -1621,12 +1363,12 @@
             | int(0) }}'
           color_temp: 370
           transition: 5
+        action: light.turn_on
       - delay:
           minutes: '{{ states(''input_number.outside_lights_late_night_time_on_minutes'')
             | int(0) }}'
     default:
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_1_down
       data:
@@ -1634,11 +1376,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_2_down
       data:
@@ -1647,11 +1389,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_3_down
       data:
@@ -1659,11 +1401,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_4_down
       data:
@@ -1671,11 +1413,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_5_down
       data:
@@ -1683,11 +1425,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_4_up
       data:
@@ -1695,11 +1437,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_3_up
       data:
@@ -1707,11 +1449,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_2_up
       data:
@@ -1719,11 +1461,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         milliseconds: '{{ states(''input_number.outside_lights_early_night_time_between_lights_milliseconds'')
           | int(0) }}'
-    - service: light.turn_on
-      target:
+    - target:
         entity_id:
         - light.outside_1_up
       data:
@@ -1731,11 +1473,11 @@
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
           | int(0) }}'
+      action: light.turn_on
     - delay:
         minutes: '{{ states(''input_number.outside_lights_early_night_time_on_minutes'')
           | int(0) }}'
-  - service: light.turn_off
-    target:
+  - target:
       entity_id:
       - light.outside_1_up
       - light.outside_1_down
@@ -1748,6 +1490,7 @@
       - light.outside_5_down
     data:
       transition: 20
+    action: light.turn_off
   - if:
     - condition: time
       after: '16:00:00'
@@ -1757,384 +1500,13 @@
         minutes: 0
         seconds: 2
         milliseconds: 0
-    - service: light.turn_on
-      target:
+    - target:
         entity_id: light.outside_2_down
       data:
         color_temp: 250
         brightness_pct: 1
+      action: light.turn_on
   mode: restart
-- id: '1641665255926'
-  alias: '[Backup]: Outside Lights Motion Slow Fade (Duplicate)'
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.p3364_l_0_vmd4_camera1profile3
-    domain: binary_sensor
-  condition:
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-  action:
-  - choose:
-    - conditions:
-      - condition: time
-        after: '22:00'
-        before: 06:00
-      sequence:
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_4_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 1
-          color_temp: 352
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_4_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 30
-          transition: 5
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 8
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_4_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 30
-      - delay:
-          hours: 0
-          minutes: 5
-          seconds: 0
-          milliseconds: 0
-      - service: light.turn_on
-        target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_4_down
-          - light.outside_5_down
-        data:
-          brightness_pct: 1
-          transition: 10
-    default:
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_up
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_up
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_2_down
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_2_down
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_2_up
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_2_up
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_down
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_down
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_up
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_up
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_down
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_down
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_up
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_3_up
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_5_down
-      data:
-        brightness_pct: 1
-        color_temp: 352
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 0
-        milliseconds: 150
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_5_down
-      data:
-        brightness_pct: 100
-        transition: 3
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 10
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-        - light.outside_1_up
-        - light.outside_2_down
-        - light.outside_2_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_4_down
-        - light.outside_5_down
-      data:
-        brightness_pct: 100
-    - delay:
-        hours: 0
-        minutes: 5
-        seconds: 0
-        milliseconds: 0
-    - service: light.turn_on
-      target:
-        entity_id:
-        - light.outside_1_down
-        - light.outside_1_up
-        - light.outside_2_down
-        - light.outside_2_up
-        - light.outside_3_down
-        - light.outside_3_up
-        - light.outside_4_down
-        - light.outside_5_down
-      data:
-        brightness_pct: 1
-        transition: 10
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 15
-      milliseconds: 0
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.outside_1_down
-      - light.outside_1_up
-      - light.outside_2_down
-      - light.outside_2_up
-      - light.outside_3_down
-      - light.outside_3_up
-      - light.outside_4_down
-      - light.outside_5_down
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - choose:
-    - conditions:
-      - condition: time
-        before: input_datetime.house_sign_light_off_time
-        after: '16:00'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-          white_value: 250
-        target:
-          entity_id:
-          - light.outside_2_down
-    default: []
-  mode: single
 - id: '1652210144322'
   alias: House Doorbell - Local Notify
   description: CCTV needs to have anonymous viewer enabled or I need to pass the username
@@ -2369,50 +1741,6 @@
           media_content_id: media-source://camera
     enabled: false
   mode: single
-- id: '1658705666302'
-  alias: Living Room Lights Motion 6f3c
-  description: ''
-  trigger:
-  - type: motion
-    platform: device
-    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
-    entity_id: binary_sensor.ikea_motion_sensor_6f3c_occupancy
-    domain: binary_sensor
-  - type: no_motion
-    platform: device
-    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
-    entity_id: binary_sensor.ikea_motion_sensor_6f3c_occupancy
-    domain: binary_sensor
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - type: is_off
-        condition: device
-        device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
-        entity_id: binary_sensor.ikea_motion_sensor_6f3c_illuminance_above_threshold
-        domain: binary_sensor
-        enabled: false
-      - type: is_motion
-        condition: device
-        device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
-        entity_id: binary_sensor.ikea_motion_sensor_6f3c_occupancy
-        domain: binary_sensor
-      sequence:
-      - service: light.turn_on
-        data: {}
-        target:
-          entity_id:
-          - light.living_room_cabinet_inside
-          - light.living_room_cabinet_front
-    default:
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id:
-        - light.living_room_cabinet_inside
-        - light.living_room_cabinet_front
-  mode: single
 - id: '1659697088299'
   alias: Garden Watering Remote Control Ikea Blind Open
   description: ''
@@ -2448,7 +1776,7 @@
       entity_id: switch.back_garden_irrigation_valve
   mode: single
 - id: '1661547535107'
-  alias: Occupancy Kitchen (Rev 1)
+  alias: Occupancy Kitchen (Rev 1) (With Christmas Tree)
   description: Triggered in motion, restarted on fresh motion detection (sensors set
     to 90 second timeout). On timer delay turn-off section, checks if motion is still
     being detected, to avoid issue with motion being continuity detected for entire
@@ -2457,20 +1785,15 @@
     turn off lights when no motion is detected, but this may risk the lights staying
     on all the time if off-motion event is not triggered.
   trigger:
-  - type: motion
+  - type: occupied
     platform: device
     device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+    entity_id: 7183e77199aa9682d16c03a011352ead
     domain: binary_sensor
-  - type: motion
+  - type: occupied
     platform: device
     device_id: 8f93f025843a9a3da3c079739843e408
-    entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: 04d4977d22e3ffbd2049e4ffd0d0d54d
-    entity_id: 28a3386f16c485cc33b63825d1ee3184
+    entity_id: 396dab2b22de1017ada5e53201d6abe0
     domain: binary_sensor
   - platform: event
     event_type: kitchen_occupied
@@ -2544,15 +1867,15 @@
       - conditions:
         - condition: or
           conditions:
-          - type: is_motion
+          - type: is_occupied
             condition: device
             device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-            entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+            entity_id: 7183e77199aa9682d16c03a011352ead
             domain: binary_sensor
-          - type: is_motion
+          - type: is_occupied
             condition: device
             device_id: 8f93f025843a9a3da3c079739843e408
-            entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+            entity_id: 396dab2b22de1017ada5e53201d6abe0
             domain: binary_sensor
         sequence:
         - event: kitchen_occupied
@@ -2569,67 +1892,6 @@
         target:
           entity_id: light.christmas_tree_lights
         enabled: true
-  mode: restart
-- id: '1662324895501'
-  alias: Occupancy Kitchen (Rev 2)  (delay till no motion)
-  description: Triggered in motion, restarted on fresh motion detection (sensors set
-    to 90 second timeout). Waits will no motion is detected, then turns off lights.
-  trigger:
-  - type: motion
-    platform: device
-    device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
-    domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: 8f93f025843a9a3da3c079739843e408
-    entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
-    domain: binary_sensor
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: time
-        after: 01:00:00
-        before: 07:00:00
-      sequence:
-      - service: light.turn_on
-        data:
-          transition: 1
-          brightness_pct: 50
-        target:
-          entity_id:
-          - light.kitchen
-      - wait_template: '{{ (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
-          == ''off'') and (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
-          == ''off'') }}'
-        continue_on_timeout: true
-        timeout: 01:00:00
-      - service: light.turn_off
-        data:
-          transition: 20
-        target:
-          entity_id:
-          - light.kitchen
-    default:
-    - service: light.turn_on
-      data:
-        transition: 1
-        brightness_pct: 100
-      target:
-        entity_id:
-        - light.kitchen
-    - wait_template: '{{ (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
-        == ''off'') and (states("binary_sensor.kitchen_motion_sensor_1_occupancy")
-        == ''off'') }}'
-      continue_on_timeout: true
-      timeout: 01:00:00
-    - service: light.turn_off
-      data:
-        transition: 20
-      target:
-        entity_id:
-        - light.kitchen
   mode: restart
 - id: '1666971475237'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
@@ -3182,7 +2444,7 @@
       location_name: not_home
   mode: single
 - id: '1697311341807'
-  alias: Turn on hallway lights when we get home
+  alias: Turn on hallway lights for a moment when we get home
   description: ''
   trigger:
   - type: opened
@@ -3190,16 +2452,11 @@
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
     domain: binary_sensor
-  - type: motion
-    platform: device
-    device_id: fa69bc49d4bfe964b899661c045598c2
-    entity_id: da0967db8c828ae40c9a359bb2e0436d
-    domain: binary_sensor
-    enabled: true
   condition:
   - condition: sun
     after: sunset
     after_offset: 00:30
+    before: sunrise
   action:
   - service: light.turn_on
     data:
@@ -3246,7 +2503,12 @@
         data: {}
         target:
           entity_id: light.downstairs_hallway_light
-  mode: single
+    enabled: false
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.downstairs_hallway_light
+  mode: restart
 - id: '1697311647945'
   alias: Garage door opened but no one is home
   description: ''
@@ -3872,3 +3134,79 @@
       message: Hello sweetie, dinner is almost ready. Just wanted to let you know.
     enabled: false
   mode: single
+- id: '1720571709980'
+  alias: Reboot bathroom speaker twice a day
+  description: For some reason my Google home seems to get stuck in a loop and becomes
+    unresponsive. This automation forces it to reboot as a workaround.
+  trigger:
+  - platform: time
+    at: '11:00:00'
+  - platform: time
+    at: '23:00:00'
+  condition:
+  - condition: device
+    device_id: 30e5174b145711eb88da47ba37409372
+    domain: media_player
+    entity_id: 92395fa37a44ae46a95d786ecf933dd3
+    type: is_off
+  action:
+  - service: google_home.reboot_device
+    metadata: {}
+    data: {}
+    target:
+      device_id: 127737e2a86b116da4274dcb735b0349
+  mode: single
+- id: '1721088060009'
+  alias: Remote control activate bedtime lights
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 26fbc14fff6a78d4c66a9f30fb62938b
+    type: action
+    subtype: arrow_right_hold
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: scene.turn_on
+    metadata: {}
+    target:
+      entity_id: scene.bedtime_mode
+  mode: single
+- id: '1722123544585'
+  alias: Garden Lights Motion
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: dd6c9ee012d55a6e6f1b0ef375270d86
+    entity_id: 3cd6c236c41a010470145e104bd7f36f
+    domain: binary_sensor
+  condition:
+  - condition: sun
+    after: sunset
+    after_offset: '0'
+    before: sunrise
+  action:
+  - data:
+      kelvin: 2700
+      brightness_pct: 100
+      transition: 2
+    target:
+      entity_id: light.garden_lights
+    action: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - data:
+      transition: 10
+    target:
+      device_id: d074b346c18b807df9deee8fe2408e7a
+    action: light.turn_off
+  mode: restart

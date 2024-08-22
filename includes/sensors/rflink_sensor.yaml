@@ -25,7 +25,6 @@
 # # Home assistant will error each time the send value is not in dec.
 # # Ref: https://github.com/home-assistant/core/issues/9564
 # - platform: rflink
-#   #automatic_add: false
 #   devices:
 #     owl_cm113_ea23_current2:
 #       sensor_type: current_phase_1
