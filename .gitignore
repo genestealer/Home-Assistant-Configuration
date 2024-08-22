@@ -43,6 +43,7 @@ harmony_media_room.conf
 pyozw.sqlite
 .*
 !/.gitignore
+!/zigbee2mqtt/.gitignore
 !/.travis.yml
 html5_push_registrations.conf
 ip_bans.yaml
@@ -63,3 +64,6 @@ SERVICE_ACCOUNT*.JSON
 coordinator_backup.json
 coordinator_backup_old.json
 database.db.backup
+zigbee2mqtt/coordinator_backup.json
+zigbee2mqtt/coordinator_backup_old.json
+zigbee2mqtt/database.db.backup
