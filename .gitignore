@@ -64,4 +64,3 @@ coordinator_backup.json
 coordinator_backup_old.json
 database.db.backup
 zigbee2mqtt/
-blueprints/
