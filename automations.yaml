@@ -15,43 +15,43 @@
     used ping detector binary sensors, but in 2022 migrated over to the camera availability,
     provided by the axis camera component. 2022, moved back to Ping detects binary
     sensors so that I can use the sensors for other things.
-  trigger:
+  triggers:
   - entity_id: binary_sensor.front_door_cctv_online
     for: 00:10:00
     from: 'on'
-    platform: state
     to: 'off'
+    trigger: state
   - entity_id: binary_sensor.bunny_cctv_online
     for: 00:10:00
     from: 'on'
-    platform: state
     to: 'off'
+    trigger: state
   - entity_id: binary_sensor.drive_cctv_online
     for: 00:10:00
     from: 'on'
-    platform: state
     to: 'off'
+    trigger: state
   - entity_id: binary_sensor.garden_cctv_online
     for: 00:10:00
     from: 'on'
-    platform: state
     to: 'off'
+    trigger: state
   - entity_id: binary_sensor.garage_cctv_online
     for: 00:10:00
     from: 'on'
-    platform: state
     to: 'off'
+    trigger: state
   - entity_id: binary_sensor.garage_2_cctv_online
     for: 00:10:00
     from: 'on'
-    platform: state
     to: 'off'
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - data:
       title: CCTV Offline
       message: '{{trigger.entity_id}} offline'
-    service: notify.google_cloud_notify
+    action: notify.mobile_app_rich_mob_app
 - id: '1558317969078'
   alias: CCTV Reboot Each Monday
   trigger:
@@ -523,15 +523,15 @@
 - id: '1581770041173'
   alias: 'Notify: Electricity supply voltage is LOW/HIGH'
   description: Send Notification when Electricity Voltage is Low or High
-  trigger:
+  triggers:
   - above: '254'
     entity_id: sensor.myups_input_voltage
-    platform: numeric_state
+    trigger: numeric_state
   - below: '220'
     entity_id: sensor.myups_input_voltage
-    platform: numeric_state
-  condition: []
-  action:
+    trigger: numeric_state
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: numeric_state
@@ -544,14 +544,7 @@
             }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
             '
-        service: notify.google_cloud_notify
-      - service: notify.pushover_notify
-        data:
-          title: Electricity Supply Voltage Low
-          message: 'Electricity Voltage Low: {{ states(''sensor.myups_input_voltage'')
-            }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
-
-            '
+        action: notify.mobile_app_rich_mob_app
     - conditions:
       - condition: numeric_state
         entity_id: sensor.myups_input_voltage
@@ -563,7 +556,7 @@
             }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
             '
-        service: notify.google_cloud_notify
+        action: notify.mobile_app_rich_mob_app
 - id: '1581770321118'
   alias: 'Notify: UPS is close to being depleted'
   description: Send Notification when UPS is about to shutdown (10 mins left)
@@ -613,26 +606,26 @@
       title: Possible DDOS Attack from inside network
     service: notify.google_cloud_notify
 - id: '1581123123827'
-  alias: Simulate Presence Lights
+  alias: Simulate Presence Lights - OLD
   description: Automation Simulate Presence / Occupancy Simulation. Runs single and
     if we get home it will turn off all the lights (cancel the run)
-  trigger:
+  triggers:
   - entity_id:
     - person.richard
     from: home
-    platform: state
     to:
+    trigger: state
   - entity_id:
     - person.lucy
     from: home
-    platform: state
     to: not_home
+    trigger: state
   - event: sunset
     offset: +00:30:00
-    platform: sun
+    trigger: sun
   - event_type: event_simulate_presence
-    platform: event
-  condition:
+    trigger: event
+  conditions:
   - condition: and
     conditions:
     - condition: state
@@ -649,11 +642,11 @@
     - condition: state
       entity_id: person.richard
       state: not_home
-  action:
+  actions:
   - data_template:
       entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
         | random }}'
-    service: light.turn_on
+    action: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
   - if:
     - condition: or
@@ -667,19 +660,19 @@
         entity_id: person.richard
         state: home
     then:
-    - service: light.turn_off
-      data: {}
+    - data: {}
       target:
         entity_id: light.presence_simulation_lights
+      action: light.turn_off
   - data_template:
       entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
         | random }}'
-    service: light.turn_on
+    action: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
   - data_template:
       entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
         | random }}'
-    service: light.turn_off
+    action: light.turn_off
   - if:
     - condition: or
       conditions:
@@ -693,10 +686,10 @@
         entity_id: person.richard
         state: home
     then:
-    - service: light.turn_off
-      data: {}
+    - data: {}
       target:
         entity_id: light.presence_simulation_lights
+      action: light.turn_off
   - event: event_simulate_presence
   mode: single
 - id: '1590103997253'
@@ -864,13 +857,13 @@
 - id: '1601317646616'
   alias: Front Lawn Anti Cat Defences
   description: Front Lawn Anti Cat Defence
-  trigger:
+  triggers:
   - type: motion
-    platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile2
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: time
     after: input_datetime.fld_active_start
     before: input_datetime.fld_active_till
@@ -887,22 +880,22 @@
   - condition: numeric_state
     entity_id: weather.openweathermap
     attribute: temperature
-    above: 3
+    above: 6
   - type: is_not_open
     condition: device
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
     domain: binary_sensor
-  action:
-  - service: switch.turn_on
-    entity_id: switch.front_garden_lawn_irrigation_valve
+  actions:
+  - entity_id: switch.front_garden_lawn_irrigation_valve
+    action: switch.turn_on
   - delay:
       hours: 0
       minutes: 0
       seconds: '{{ states(''input_number.fld_water_on_time'')|float }}'
       milliseconds: 0
-  - service: switch.turn_off
-    entity_id: switch.front_garden_lawn_irrigation_valve
+  - entity_id: switch.front_garden_lawn_irrigation_valve
+    action: switch.turn_off
   mode: restart
 - id: '1607604378569'
   alias: AutoHotKey - Webhook Driven - Busy Light - Process Presence Incoming Webhook
@@ -1055,51 +1048,6 @@
         - light.busy_light_2
         - light.busy_light_1
   mode: restart
-- id: '1612985120601'
-  alias: obsolete - Ice Maker - On-Off Schedule [Blueprint]
-  description: There is a separate automation which turns the ice maker on if the
-    water temperature gets too warm. Also triggered by Fire Custom Event "ice_maker_back_online".
-  use_blueprint:
-    path: EPMatt/on_off_schedule_state_persistence.yaml
-    input:
-      off_time: '23:30:00'
-      automation_target:
-        entity_id: switch.ice_maker_switch
-      on_time: 08:30:00
-      trigger_at_homeassistant_startup: true
-      custom_trigger_event: ice_maker_back_online
-- id: '1612985880086'
-  alias: 'obsolete - Ice Maker - Water High Temperature Action '
-  description: Turn on the ice maker for a set time if the water temperature goes
-    above a set threshold. Only run if ice maker is not already on.
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.ice_maker_water_temperature
-    above: input_number.ice_maker_water_high_temperature_threshold
-  condition:
-  - condition: device
-    type: is_off
-    device_id: 78678bdb2e4faa8982a4681b31f899ba
-    entity_id: switch.ice_maker_switch
-    domain: switch
-    enabled: false
-  action:
-  - type: turn_on
-    device_id: 78678bdb2e4faa8982a4681b31f899ba
-    entity_id: switch.ice_maker_switch
-    domain: switch
-    enabled: false
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - type: turn_off
-    device_id: 78678bdb2e4faa8982a4681b31f899ba
-    entity_id: switch.ice_maker_switch
-    domain: switch
-    enabled: false
-  mode: single
 - id: '1619906809678'
   alias: Outside Lights - House Number Sign Light Schedule
   description: ' Use wait to ensure the Choose action for time is after the trigger
@@ -1108,41 +1056,35 @@
   - platform: sun
     event: sunset
     offset: +00:30:00
+    id: Turn On
   - platform: time
     at: input_datetime.house_sign_light_off_time
+    id: Turn Off
   condition: []
   action:
   - choose:
     - conditions:
-      - condition: time
-        after: input_datetime.house_sign_light_off_time
+      - condition: trigger
+        id:
+        - Turn Off
       sequence:
-      - service: light.turn_off
-        target:
+      - target:
           entity_id:
           - light.outside_2_down
         data: {}
+        action: light.turn_off
     - conditions:
-      - condition: and
-        conditions:
-        - condition: sun
-          after: sunset
-        - condition: time
-          before: input_datetime.house_sign_light_off_time
+      - condition: trigger
+        id:
+        - Turn On
       sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-          color_temp: 250
+      - action: light.turn_on
         target:
           entity_id:
           - light.outside_2_down
-    default:
-    - service: light.turn_off
-      target:
-        entity_id:
-        - light.outside_2_down
-      data: {}
+        data:
+          brightness_pct: 1
+          kelvin: 6500
   mode: single
 - id: '1621103260448'
   alias: Ice Maker - On-Off Automation
@@ -1151,43 +1093,39 @@
     goes above a set threshold. Only run if ice maker is not already on). Removes
     the previous blueprint and other automations. Note: Zone trigger does not support
     delay, hence the use of the state trigger for presence awareness (to avoid frequent  switch
-    cycling whilst at home with poor location accuracy)'
+    cycling whilst at home with poor location accuracy) I.E. Check if the ice maker
+    is off before trying to turn it on, and vice versa.'
   trigger:
   - platform: time
     at: input_datetime.ice_maker_on_time
+    id: 'On'
   - platform: time
     at: input_datetime.ice_maker_off_time
-  - platform: homeassistant
-    event: start
-  - type: connected
-    platform: device
-    device_id: 78678bdb2e4faa8982a4681b31f899ba
-    entity_id: binary_sensor.ice_maker_status
-    domain: binary_sensor
-    enabled: false
+    id: 'Off'
   - platform: zone
     entity_id: person.richard
     zone: zone.home
     event: leave
+    id: 'Off'
   - platform: zone
     entity_id: person.richard
     zone: zone.home
     event: enter
+    id: 'On'
   - platform: numeric_state
-    entity_id: sensor.ice_maker_water_temperature
+    entity_id:
+    - sensor.icemaker_water_temperature
     above: input_number.ice_maker_water_high_temperature_threshold
+    id: Hot
+  - type: connected
+    platform: device
+    device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+    entity_id: 1ef6ddd3ef1e712df001733e0ac1d6a9
+    domain: binary_sensor
+    id: Check
   condition: []
   action:
   - choose:
-    - conditions:
-      - condition: time
-        after: input_datetime.ice_maker_off_time
-      sequence:
-      - type: turn_off
-        device_id: 78678bdb2e4faa8982a4681b31f899ba
-        entity_id: switch.ice_maker_switch
-        domain: switch
-        enabled: false
     - conditions:
       - condition: time
         after: input_datetime.ice_maker_on_time
@@ -1196,42 +1134,48 @@
         entity_id: person.richard
         zone: zone.home
       sequence:
-      - type: turn_on
-        device_id: 78678bdb2e4faa8982a4681b31f899ba
-        entity_id: switch.ice_maker_switch
-        domain: switch
-        enabled: false
+      - if:
+        - condition: device
+          type: is_off
+          device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+          entity_id: 9dc6d48cc35cec309bb214c849c5c7df
+          domain: switch
+          enabled: true
+        then:
+        - type: turn_on
+          device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+          entity_id: 9dc6d48cc35cec309bb214c849c5c7df
+          domain: switch
     - conditions:
       - condition: numeric_state
-        entity_id: sensor.ice_maker_water_temperature
+        entity_id: sensor.icemaker_water_temperature
         above: input_number.ice_maker_water_high_temperature_threshold
-      - condition: device
-        type: is_off
-        device_id: 78678bdb2e4faa8982a4681b31f899ba
-        entity_id: switch.ice_maker_switch
-        domain: switch
-        enabled: false
       sequence:
-      - type: turn_on
-        device_id: 78678bdb2e4faa8982a4681b31f899ba
-        entity_id: switch.ice_maker_switch
-        domain: switch
-      - delay:
-          hours: 0
-          minutes: 15
-          seconds: 0
-          milliseconds: 0
-      - type: turn_off
-        device_id: 78678bdb2e4faa8982a4681b31f899ba
-        entity_id: switch.ice_maker_switch
-        domain: switch
-        enabled: false
+      - if:
+        - condition: device
+          type: is_off
+          device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+          entity_id: 9dc6d48cc35cec309bb214c849c5c7df
+          domain: switch
+        then:
+        - type: turn_on
+          device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+          entity_id: 9dc6d48cc35cec309bb214c849c5c7df
+          domain: switch
+        - delay:
+            hours: 0
+            minutes: 15
+            seconds: 0
+            milliseconds: 0
+        - type: turn_off
+          device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+          entity_id: 9dc6d48cc35cec309bb214c849c5c7df
+          domain: switch
     default:
     - type: turn_off
-      device_id: 78678bdb2e4faa8982a4681b31f899ba
-      entity_id: switch.ice_maker_switch
+      device_id: 996ea9226cbd0c2fe7ddb21af32045f9
+      entity_id: 9dc6d48cc35cec309bb214c849c5c7df
       domain: switch
-      enabled: false
   mode: restart
 - id: '1621109022540'
   alias: Close Chicken Door  Notification (App)
@@ -1297,7 +1241,7 @@
     to: not_home
     for:
       hours: 0
-      minutes: 5
+      minutes: 10
       seconds: 0
     enabled: true
   condition:
@@ -1305,8 +1249,7 @@
     entity_id: device_tracker.insulin_pump_controller
     zone: zone.home
   action:
-  - service: notify.mobile_app_rich_mob_app
-    data:
+  - data:
       message: Lucy's Insulin pump controller may have been left at Home!
       data:
         color: red
@@ -1317,34 +1260,44 @@
         visibility: public
         notification_icon: mdi:pump
       title: Pump Controller
-  - service: notify.mobile_app_lucy_mob_app
-    data:
+    action: notify.mobile_app_rich_mob_app
+  - data:
       message: Lucy Pump Controller was left at Home!
+    action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1635187432504'
   alias: Outside Lights Motion Slow Fade
   description: Main Lights Profile
-  trigger:
+  triggers:
   - type: motion
-    platform: device
     device_id: 99689212065c11ebbd2ecbef1587dfe1
     entity_id: binary_sensor.drive_high_16_vmd4_camera1profile3
     domain: binary_sensor
+    trigger: device
+    enabled: false
   - type: opened
-    platform: device
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
     domain: binary_sensor
-  condition:
+    trigger: device
+  - type: occupied
+    device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
+    entity_id: c0aa981ae14899cc5d0ad845e5dfddb9
+    domain: binary_sensor
+    trigger: device
+  conditions:
   - condition: or
     conditions:
     - condition: sun
       after: sunset
-      after_offset: '0'
+      after_offset: 00:30:00
+      before_offset: -00:30:00
+      before: sunrise
     - condition: sun
       before: sunrise
       before_offset: -00:30:00
-  action:
+      enabled: false
+  actions:
   - choose:
     - conditions:
       - condition: time
@@ -1494,6 +1447,8 @@
   - if:
     - condition: time
       after: '16:00:00'
+    - condition: time
+      before: '23:00:00'
     then:
     - delay:
         hours: 0
@@ -1529,8 +1484,7 @@
       entity_id: person.lucy
       zone: zone.home
   action:
-  - service: media_player.turn_off
-    data: {}
+  - data: {}
     target:
       entity_id:
       - media_player.office_display
@@ -1538,8 +1492,8 @@
       - media_player.kitchen_display
       - media_player.dining_room_display
     enabled: false
-  - service: notify.google_assistant_sdk
-    data:
+    action: media_player.turn_off
+  - data:
       message: Ding! Dong! Someone is at the door
       target:
       - bathroom_speaker
@@ -1547,11 +1501,11 @@
       - guest_bedroom
       - bedroom
     enabled: false
-  - service: notify.google_assistant_sdk
-    data:
-      message: Someone is at the front door
-  - service: media_player.play_media
-    target:
+    action: notify.google_assistant_sdk
+  - data:
+      message: Front door
+    action: notify.google_assistant_sdk
+  - target:
       entity_id: media_player.office_display
     data:
       media_content_id: media-source://camera/camera.front_door_11
@@ -1566,8 +1520,8 @@
       - media_content_type: app
         media_content_id: media-source://camera
     enabled: false
-  - service: media_player.play_media
-    target:
+    action: media_player.play_media
+  - target:
       entity_id: media_player.living_room_display
     data:
       media_content_id: media-source://camera/camera.front_door_11
@@ -1582,8 +1536,8 @@
       - media_content_type: app
         media_content_id: media-source://camera
     enabled: false
-  - service: media_player.play_media
-    target:
+    action: media_player.play_media
+  - target:
       entity_id: media_player.dining_room_display
     data:
       media_content_id: media-source://camera/camera.drive_high_16
@@ -1598,8 +1552,8 @@
       - media_content_type: app
         media_content_id: media-source://camera
     enabled: false
-  - service: media_player.play_media
-    target:
+    action: media_player.play_media
+  - target:
       entity_id: media_player.kitchen_display
     data:
       media_content_id: media-source://camera/camera.front_door_11
@@ -1614,6 +1568,7 @@
       - media_content_type: app
         media_content_id: media-source://camera
     enabled: false
+    action: media_player.play_media
   - delay:
       hours: 0
       minutes: 2
@@ -1621,8 +1576,7 @@
       milliseconds: 0
     enabled: false
   - parallel:
-    - service: media_player.play_media
-      data:
+    - data:
         media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
         media_content_type: image/jpg
       target:
@@ -1631,8 +1585,8 @@
         - media_player.living_room_display
         - media_player.kitchen_display
       enabled: false
-    - service: media_player.play_media
-      data:
+      action: media_player.play_media
+    - data:
         media_content_id: media-source://camera/camera.front_door_11
         media_content_type: application/vnd.apple.mpegurl
       target:
@@ -1641,45 +1595,45 @@
         - media_player.living_room_display
         - media_player.kitchen_display
       enabled: false
-    - service: camera.play_stream
-      data:
+      action: media_player.play_media
+    - data:
         format: hls
         media_player: media_player.office_display
       target:
         entity_id: camera.front_door_11_onvif_video
       enabled: false
-    - service: camera.play_stream
-      data:
+      action: camera.play_stream
+    - data:
         format: hls
         media_player: media_player.office_display
       target:
         entity_id:
         - camera.front_door_11_mjpg
       enabled: false
-    - service: camera.play_stream
-      data:
+      action: camera.play_stream
+    - data:
         format: hls
         media_player: media_player.office_display
       target:
         entity_id:
         - camera.front_door_11
       enabled: false
-    - service: tts.google_translate_say
-      data:
+      action: camera.play_stream
+    - data:
         message: Ding! Dong! Someone is at the door
         entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
         cache: true
       enabled: false
-    - service: notify.google_assistant_sdk
-      data:
+      action: tts.google_translate_say
+    - data:
         message: Ding! Dong! Someone is at the door
         target:
         - bathroom_speaker
         - garage
         - guest_bedroom
         - bedroom
-    - service: media_player.play_media
-      target:
+      action: notify.google_assistant_sdk
+    - target:
         entity_id: media_player.living_room_display
       data:
         media_content_id: media-source://camera/camera.front_door_11_onvif_video
@@ -1693,8 +1647,8 @@
         - {}
         - media_content_type: app
           media_content_id: media-source://camera
-    - service: media_player.play_media
-      target:
+      action: media_player.play_media
+    - target:
         entity_id: media_player.dining_room_display
       data:
         media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
@@ -1708,8 +1662,8 @@
         - {}
         - media_content_type: app
           media_content_id: media-source://camera
-    - service: media_player.play_media
-      target:
+      action: media_player.play_media
+    - target:
         entity_id: media_player.office_display
       data:
         media_content_id: media-source://camera/camera.front_door_11_onvif_video
@@ -1724,8 +1678,8 @@
         - media_content_type: app
           media_content_id: media-source://camera
       enabled: true
-    - service: media_player.play_media
-      target:
+      action: media_player.play_media
+    - target:
         entity_id: media_player.kitchen_display
       data:
         media_content_id: media-source://camera/camera.front_door_11_onvif_video
@@ -1739,6 +1693,7 @@
         - {}
         - media_content_type: app
           media_content_id: media-source://camera
+      action: media_player.play_media
     enabled: false
   mode: single
 - id: '1659697088299'
@@ -1776,7 +1731,7 @@
       entity_id: switch.back_garden_irrigation_valve
   mode: single
 - id: '1661547535107'
-  alias: Occupancy Kitchen (Rev 1) (With Christmas Tree)
+  alias: Kitchen Motion Occupancy (Rev 1) (With Christmas Tree)
   description: Triggered in motion, restarted on fresh motion detection (sensors set
     to 90 second timeout). On timer delay turn-off section, checks if motion is still
     being detected, to avoid issue with motion being continuity detected for entire
@@ -1784,33 +1739,33 @@
     generated, even though motion is still true). Could set the automation to only
     turn off lights when no motion is detected, but this may risk the lights staying
     on all the time if off-motion event is not triggered.
-  trigger:
+  triggers:
   - type: occupied
-    platform: device
     device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
     entity_id: 7183e77199aa9682d16c03a011352ead
     domain: binary_sensor
+    trigger: device
   - type: occupied
-    platform: device
     device_id: 8f93f025843a9a3da3c079739843e408
     entity_id: 396dab2b22de1017ada5e53201d6abe0
     domain: binary_sensor
-  - platform: event
-    event_type: kitchen_occupied
-  condition: []
-  action:
+    trigger: device
+  - event_type: kitchen_occupied
+    trigger: event
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: time
         after: 02:00:00
         before: 07:00:00
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           transition: 2
           brightness_pct: 50
         target:
           device_id: 061e0dd32d43fd2355543b4f4db149ac
+        action: light.turn_on
       - delay:
           hours: 0
           minutes: 5
@@ -1834,33 +1789,38 @@
           - event: kitchen_occupied
             event_data: {}
         default:
-        - service: light.turn_off
-          data:
+        - data:
             transition: 20
+          action: light.turn_off
           target:
-            entity_id:
-            - light.kitchen
+            device_id: c8b85bb0a92c1f69c117b9217a6c86a8
     default:
-    - service: light.turn_on
-      data:
+    - data:
         transition: 2
         brightness_pct: 100
+      action: light.turn_on
       target:
-        entity_id:
-        - light.kitchen_lights
+        device_id: c8b85bb0a92c1f69c117b9217a6c86a8
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        device_id: b34f59aa5f7588a139a9162093de3262
     - if:
       - condition: state
         entity_id: light.christmas_tree_lights
         state: 'off'
+        enabled: true
       then:
-      - service: light.turn_on
-        data: {}
+      - data: {}
         target:
           entity_id: light.christmas_tree_lights
         enabled: true
+        action: light.turn_on
+      enabled: false
     - delay:
         hours: 0
-        minutes: 10
+        minutes: 15
         seconds: 0
         milliseconds: 0
     - choose:
@@ -1881,17 +1841,21 @@
         - event: kitchen_occupied
           event_data: {}
       default:
-      - service: light.turn_off
-        data:
+      - data:
           transition: 20
+        action: light.turn_off
         target:
-          entity_id:
-          - light.kitchen_lights
-      - service: light.turn_off
-        data: {}
+          device_id: c8b85bb0a92c1f69c117b9217a6c86a8
+      - data: {}
         target:
           entity_id: light.christmas_tree_lights
-        enabled: true
+        enabled: false
+        action: light.turn_off
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          device_id: b34f59aa5f7588a139a9162093de3262
   mode: restart
 - id: '1666971475237'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
@@ -1973,94 +1937,109 @@
 - id: '1671628022949'
   alias: Christmas Lights Timer
   description: ''
-  trigger:
-  - platform: sun
-    event: sunset
+  triggers:
+  - event: sunset
     id: 'ON'
-  - platform: time
-    at: '23:30:00'
+    trigger: sun
+    offset: -00:20:00
+  - at: '23:30:00'
     id: 'OFF'
-  condition: []
-  action:
+    trigger: time
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id: 'ON'
       sequence:
-      - service: light.turn_on
-        data: {}
+      - data: {}
         target:
-          entity_id: light.outside_christmas_lights
+          entity_id:
+          - light.christmas_tree_lights
+        action: light.turn_on
+      - data: {}
+        target:
+          entity_id:
+          - light.christmas_garden_lights
+        action: light.turn_on
     - conditions:
       - condition: trigger
         id: 'OFF'
       sequence:
-      - service: light.turn_off
-        data: {}
+      - data: {}
+        action: light.turn_off
         target:
-          entity_id: light.outside_christmas_lights
+          entity_id:
+          - light.christmas_tree_lights
+      - data: {}
+        action: light.turn_off
+        target:
+          entity_id:
+          - light.christmas_garden_lights
   mode: single
 - id: '1674941449370'
   alias: Energenie eTRV Calibrate Once a Week
   description: ''
-  trigger:
-  - platform: time
-    at: 08:00:00
-  condition:
+  triggers:
+  - at: 08:00:00
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - sun
-  action:
-  - device_id: 061f81b04836d8e074d7e2542b21767c
-    domain: select
-    entity_id: 551713a2c8fe453796e77dd1e0796152
-    type: select_option
-    option: Exercise Valve
-  - device_id: a46ff2f2479fd7381a267a77a12734ae
-    domain: select
-    entity_id: f18942e23b5ba88013eab01ead452bd6
-    type: select_option
-    option: Exercise Valve
-  - device_id: e79922e5a787ed8db81ee253715ea823
-    domain: select
-    entity_id: ba0a113a1b8f3c61503ffd672bd48629
-    type: select_option
-    option: Exercise Valve
-  - device_id: 55d26468639a4f1005742215878de937
-    domain: select
-    entity_id: c1d57e0aff19de01e97c8f36a0d112d7
-    type: select_option
-    option: Exercise Valve
-  - device_id: f694a04cab17376f9ccbb97b67b6365d
-    domain: select
-    entity_id: 74de4da403c24cdb7e582b30d56bc168
-    type: select_option
-    option: Exercise Valve
-  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
-    domain: select
-    entity_id: 47be01fbbccb610bccabc298ad1e103c
-    type: select_option
-    option: Exercise Valve
-  - device_id: edd53a3020762c37680c07cc4c38d557
-    domain: select
-    entity_id: 2c591391732f9048068e2aede02816ae
-    type: select_option
-    option: Exercise Valve
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: select
-    entity_id: b73067f185ccb68fd06a1add939d4730
-    type: select_option
-    option: Exercise Valve
-  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
-    domain: select
-    entity_id: 4a3fe856a731d274a9eb0c1303ec77c8
-    type: select_option
-    option: Exercise Valve
-  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
-    domain: select
-    entity_id: 859d0eff621e79af1a77a0a152a21a04
-    type: select_option
-    option: Exercise Valve
+  actions:
+  - parallel:
+    - device_id: 061f81b04836d8e074d7e2542b21767c
+      domain: climate
+      entity_id: 85fd7edb412d78a913c1bf7147db79a5
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: a46ff2f2479fd7381a267a77a12734ae
+      domain: climate
+      entity_id: 1dc6cd56095c82c66dc458c436527a3d
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: e79922e5a787ed8db81ee253715ea823
+      domain: climate
+      entity_id: 62b634275f68a5e6e82986ad6fe56f13
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: 55d26468639a4f1005742215878de937
+      domain: climate
+      entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: f694a04cab17376f9ccbb97b67b6365d
+      domain: climate
+      entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+      domain: climate
+      entity_id: f175045657712af0731ec9edf74b1479
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: d87bf9712abd725b400a815405c374ac
+      domain: climate
+      entity_id: e46f27494a4d65b24c09f340418a9438
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+      domain: climate
+      entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+      enabled: false
+    - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+      domain: climate
+      entity_id: b8a6f7260b91a515810a154c4bb51486
+      type: set_preset_mode
+      preset_mode: Exercise Valve
+    - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+      domain: climate
+      entity_id: c56d5518b41049387e082722202d573b
+      type: set_preset_mode
+      preset_mode: Exercise Valve
   mode: single
 - id: '1689364304362'
   alias: Irrigation Notify When Controllers Goes Offline
@@ -2389,14 +2368,14 @@
   description: 'Turn on living room speakers when Samsung Smart TV is turned on.
 
     '
-  trigger:
-  - platform: device
-    type: changed_states
+  triggers:
+  - type: changed_states
     device_id: 99a89cc7d2a737c382a99397821a0522
     entity_id: bff78da4f1f7d24e59e81c86729d0ceb
     domain: media_player
-  condition: []
-  action:
+    trigger: device
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: device
@@ -2405,11 +2384,11 @@
         entity_id: bff78da4f1f7d24e59e81c86729d0ceb
         type: is_on
       sequence:
-      - service: switch.turn_on
-        data: {}
+      - data: {}
         target:
           entity_id:
-          - switch.tv_speakers_button_2_power
+          - switch.tv_speakers
+        action: switch.turn_on
     - conditions:
       - condition: device
         device_id: 99a89cc7d2a737c382a99397821a0522
@@ -2417,10 +2396,11 @@
         entity_id: bff78da4f1f7d24e59e81c86729d0ceb
         type: is_off
       sequence:
-      - service: switch.turn_off
-        data: {}
+      - data: {}
         target:
-          entity_id: switch.tv_speakers_button_2_power
+          entity_id:
+          - switch.tv_speakers
+        action: switch.turn_off
     enabled: true
   mode: restart
 - id: '1697309989912'
@@ -2564,61 +2544,60 @@
 - id: '1697388186314'
   alias: Energenie eTRV Error
   description: ''
-  trigger:
+  triggers:
   - type: problem
-    platform: device
     device_id: a46ff2f2479fd7381a267a77a12734ae
     entity_id: cb5fcb489d2672ac9dad67779d1b5c08
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: e79922e5a787ed8db81ee253715ea823
     entity_id: 240181bd9a3ee5f41a115bad8769841b
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: 061f81b04836d8e074d7e2542b21767c
     entity_id: a050971712c4335b998b67489b3e07b8
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: 55d26468639a4f1005742215878de937
     entity_id: c8108715bdfc512a18dfbbe5124bee96
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: f694a04cab17376f9ccbb97b67b6365d
     entity_id: a1222f8d5b3d6a922a9e71ab061f2292
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
     entity_id: 8e53453c39e12d27442ff5b35a6deced
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
-    device_id: edd53a3020762c37680c07cc4c38d557
-    entity_id: cd361b26865b69681400ee96ef06c9c6
+    device_id: d87bf9712abd725b400a815405c374ac
+    entity_id: 7065503bc93ebbeb606463976d04f999
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: b1e80b075b7aff30c3ef1b6e6b022e25
     entity_id: 2a0116895e15059336a19e2ee00a5b31
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: 71e963eadf1071d0f777742a6fbb5cf9
     entity_id: fc32779959e9512a07e24e50efad3521
     domain: binary_sensor
+    trigger: device
   - type: problem
-    platform: device
     device_id: a9d1acaaf374a3234065ce3dca7d9f04
     entity_id: 0e45a0c11ea5c5863f199013dec69f52
     domain: binary_sensor
-  condition: []
-  action:
-  - service: notify.mobile_app_rich_mob_app
-    data:
+    trigger: device
+  conditions: []
+  actions:
+  - data:
       title: Energenie eTRV Error
       message: Energenie eTRV Error. This was triggered by {{ trigger.id }}
       data:
@@ -2627,160 +2606,151 @@
         vibrationPattern: 100,200,100,200,100,200,100,200
         visibility: public
         notification_icon: mdi:alert-circle-outline
+    action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1697572691572'
-  alias: Simulate Presence Lights - DEV
+  alias: Simulate Presence Lights When Away
   description: Automation Simulate Presence / Occupancy Simulation. Runs single and
     if we get home it will turn off all the lights (cancel the run)
-  trigger:
+  triggers:
+  - event_type: event_simulate_presence_loop
+    trigger: event
+    enabled: true
+  - event: sunset
+    offset: +00:30:00
+    trigger: sun
   - entity_id:
     - person.richard
     from: home
-    platform: state
-    to:
+    to: not_home
     for:
       hours: 0
-      minutes: 10
+      minutes: 20
       seconds: 0
+    trigger: state
   - entity_id:
     - person.lucy
     from: home
-    platform: state
-    to:
+    to: not_home
     for:
       hours: 0
-      minutes: 10
+      minutes: 20
       seconds: 0
-  - event: sunset
-    offset: +00:30:00
-    platform: sun
-  - event_type: event_simulate_presence
-    platform: event
-  condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
-    - before: '23:55:00'
-      condition: time
-    - condition: state
-      entity_id: input_boolean.simulate_presence_enable
-      state: 'on'
-    - condition: state
-      entity_id: person.lucy
-      state: not_home
-    - condition: state
-      entity_id: person.richard
-      state: not_home
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: input_boolean.simulate_presence_enable
+    state: 'on'
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  - condition: time
+    enabled: true
+    before: 01:30:00
+    after: '14:00:00'
+  - condition: state
+    entity_id: person.richard
+    state: not_home
+  - condition: state
+    entity_id: person.lucy
+    state: not_home
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.presence_simulation_lights
+    alias: 'Perform action ''Light: Turn off'' - Do this first in case the automation
+      gets restarted'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 20
+      milliseconds: 0
+    alias: Wait for RF to send commands
+  - data_template:
+      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+        | random }}'
+    action: light.turn_on
+    alias: 'Light: Turn on - Select light at random from light group'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 20
+      milliseconds: 0
+    alias: Wait for RF to send commands
+  - delay: 00:{{ (range(10, 30) | random) }}:00
+    alias: Delay for random amount of time
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.presence_simulation_lights
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.presence_simulation_lights
+    alias: 'Perform action ''Light: Turn off'' - Do this first in case the automation
+      gets restarted'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 20
+      milliseconds: 0
+    alias: Wait for RF to send commands
+  - event: event_simulate_presence_loop
+    enabled: true
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.simulate_presence_lights_dev
     enabled: false
-  action:
-  - if:
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: sun.sun
-        state: below_horizon
-      - before: '23:55:00'
-        condition: time
-        enabled: false
-      - condition: state
-        entity_id: input_boolean.simulate_presence_enable
-        state: 'on'
-      - condition: state
-        entity_id: person.lucy
-        state: not_home
-      - condition: state
-        entity_id: person.richard
-        state: not_home
-    then:
-    - data_template:
-        entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
-          | random }}'
-      service: light.turn_on
-    - delay: 00:{{ (range(10, 30) | random) }}:00
-    - if:
-      - condition: or
-        conditions:
-        - condition: time
-          after: '11:50:00'
-        - condition: state
-          entity_id: person.lucy
-          state: home
-        - condition: state
-          entity_id: person.richard
-          state: home
-      then:
-      - service: light.turn_off
-        data: {}
-        target:
-          entity_id: light.presence_simulation_lights
-    - data_template:
-        entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
-          | random }}'
-      service: light.turn_on
-    - delay: 00:{{ (range(10, 30) | random) }}:00
-    - data_template:
-        entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
-          | random }}'
-      service: light.turn_off
-    - if:
-      - condition: or
-        conditions:
-        - condition: time
-          after: '11:50:00'
-          enabled: false
-        - condition: state
-          entity_id: person.lucy
-          state: home
-        - condition: state
-          entity_id: person.richard
-          state: home
-      then:
-      - service: light.turn_off
-        data: {}
-        target:
-          entity_id: light.presence_simulation_lights
-    - event: event_simulate_presence
-    else:
-    - condition: and
-      conditions:
-      - condition: state
-        entity_id: person.lucy
-        state: not_home
-      - condition: state
-        entity_id: person.richard
-        state: not_home
-      enabled: false
-    - service: light.turn_off
-      data: {}
-      target:
-        entity_id: light.presence_simulation_lights
-  mode: single
+  mode: restart
 - id: '1702742847276'
-  alias: 'Office Blinds Schedule '
+  alias: Office Blinds Schedule + Remote Control
   description: "Opens in the morning, only if Richard is home. \nCloses in the evening
     at dusk."
-  trigger:
-  - platform: time
-    at: 09:00:00
+  triggers:
+  - at: 09:00:00
     id: open
-  - platform: sun
-    event: sunset
-    offset: -02:00:00
+    trigger: time
+  - domain: mqtt
+    device_id: ca61296154562d84a7271001aba10aa5
+    type: action
+    subtype: open
+    trigger: device
+    id: open
+  - event: sunset
     id: close
-  condition: []
-  action:
+    trigger: sun
+    offset: +02:00:00
+  - domain: mqtt
+    device_id: ca61296154562d84a7271001aba10aa5
+    type: action
+    subtype: close
+    trigger: device
+    id: close
+  - domain: mqtt
+    device_id: ca61296154562d84a7271001aba10aa5
+    type: action
+    subtype: stop
+    trigger: device
+    id: stop
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - close
       sequence:
-      - service: cover.close_cover
-        target:
-          entity_id: cover.office_blinds
+      - target:
+          device_id: 32f5bc90bdea3d225d1abb66083405ac
         data: {}
+        action: cover.close_cover
     - conditions:
       - condition: trigger
         id:
@@ -2789,9 +2759,19 @@
         entity_id: person.richard
         zone: zone.home
       sequence:
-      - service: cover.open_cover
+      - data: {}
+        action: cover.open_cover
         target:
-          entity_id: cover.office_blinds
+          device_id: 32f5bc90bdea3d225d1abb66083405ac
+    - conditions:
+      - condition: trigger
+        id:
+        - stop
+      sequence:
+      - action: cover.stop_cover
+        target:
+          device_id:
+          - 32f5bc90bdea3d225d1abb66083405ac
         data: {}
   mode: single
 - id: '1705695753761'
@@ -2952,56 +2932,111 @@
   mode: single
 - id: '1706448756375'
   alias: Heating Follow Radiator Demand
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - climate.living_room_radiator_climate_control
+  description: Run only between set hours and only if someone is home
+  triggers:
+  - entity_id:
+    - climate.living_room_radiator
     attribute: temperature
-  - platform: state
+    trigger: state
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    enabled: true
+  - trigger: numeric_state
     entity_id:
-    - climate.living_room_radiator_climate_control
+    - sensor.living_room_radiator_temperature_delta
+    above: 0.2
+  - trigger: numeric_state
+    entity_id:
+    - sensor.living_room_radiator_temperature_delta
+    below: -1
+  - entity_id:
+    - climate.living_room_radiator
     attribute: current_temperature
-  condition: []
-  action: []
+    trigger: state
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    enabled: false
+  conditions:
+  - alias: Check if anyone (OR) is home
+    condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+      enabled: true
+  - condition: time
+    after: 09:00:00
+    before: 01:00:00
+  actions:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.living_room_radiator_temperature_delta
+      below: -1
+    then:
+    - action: climate.set_temperature
+      target:
+        entity_id: climate.hallway
+      data:
+        temperature: '{{ (state_attr(''climate.hallway'', ''current_temperature'')|round(1))
+          + 0.5 }}'
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.living_room_radiator_temperature_delta
+      above: 0.2
+    then:
+    - action: climate.set_temperature
+      target:
+        entity_id: climate.hallway
+      data:
+        temperature: '{{ (state_attr(''climate.hallway'', ''current_temperature'')|round(0))
+          - 1 }}'
   mode: single
 - id: '1708473467198'
   alias: Living Room Fairy Lights Follow Other Lights
   description: ''
-  trigger:
-  - platform: device
-    type: turned_on
+  triggers:
+  - type: turned_on
     device_id: 6e0ded4c47c76900af05e933f9348a46
     entity_id: 020edf627efb532c118e3a6362fbc1a4
     domain: light
     id: 'on'
-  - platform: device
-    type: turned_off
+    trigger: device
+  - type: turned_off
     device_id: 6e0ded4c47c76900af05e933f9348a46
     entity_id: 020edf627efb532c118e3a6362fbc1a4
     domain: light
     id: 'off'
-  condition: []
-  action:
+    trigger: device
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
         id:
         - 'on'
       sequence:
-      - type: turn_on
-        device_id: c3b025b97185a156ea069417b14401b8
-        entity_id: ae59ac0fe7bafc0e550d02d7984ca5e9
-        domain: light
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.fairy_lights
     - conditions:
       - condition: trigger
         id:
         - 'off'
       sequence:
-      - type: turn_off
-        device_id: c3b025b97185a156ea069417b14401b8
-        entity_id: ae59ac0fe7bafc0e550d02d7984ca5e9
-        domain: light
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.fairy_lights
   mode: restart
 - id: '1710954157058'
   alias: Pull Water meter data every hour
@@ -3062,48 +3097,26 @@
     subtype: 'on'
   condition: []
   action:
-  - service: notify.google_assistant_sdk
-    data:
+  - data:
       message: 3 and a half minute tea timer started
     enabled: false
+    action: notify.google_assistant_sdk
   - repeat:
-      count: 2
+      count: 1
       sequence:
-      - service: light.toggle
-        metadata: {}
-        data: {}
-        target:
-          device_id:
-          - 294f30f10444bcd2ef6ff9be250834f7
-          - 20b10b9b40bf37d01adb72fd60ea4149
-          - 061e0dd32d43fd2355543b4f4db149ac
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-      - service: light.toggle
-        metadata: {}
-        data: {}
-        target:
-          device_id:
-          - 294f30f10444bcd2ef6ff9be250834f7
-          - 20b10b9b40bf37d01adb72fd60ea4149
-          - 061e0dd32d43fd2355543b4f4db149ac
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
+      - device_id: 061e0dd32d43fd2355543b4f4db149ac
+        domain: light
+        entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
+        type: flash
   - delay:
       hours: 0
       minutes: 3
       seconds: 30
       milliseconds: 0
-  - service: notify.google_assistant_sdk
-    data:
+  - data:
       message: Tea timer is up, your lovely cup of tea is ready. Enjoy!
     enabled: true
+    action: notify.google_assistant_sdk
   mode: restart
 - id: '1720118905430'
   alias: Broadcast dinner almost ready
@@ -3142,7 +3155,7 @@
   - platform: time
     at: '11:00:00'
   - platform: time
-    at: '23:00:00'
+    at: 00:00:01
   condition:
   - condition: device
     device_id: 30e5174b145711eb88da47ba37409372
@@ -3150,11 +3163,11 @@
     entity_id: 92395fa37a44ae46a95d786ecf933dd3
     type: is_off
   action:
-  - service: google_home.reboot_device
-    metadata: {}
+  - metadata: {}
     data: {}
     target:
       device_id: 127737e2a86b116da4274dcb735b0349
+    action: google_home.reboot_device
   mode: single
 - id: '1721088060009'
   alias: Remote control activate bedtime lights
@@ -3210,3 +3223,158 @@
       device_id: d074b346c18b807df9deee8fe2408e7a
     action: light.turn_off
   mode: restart
+- id: '1727031709340'
+  alias: 'Trigger bunny food announcement '
+  description: ''
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: ddd7697eb54412082fa357f4b4858d2f
+    entity_id: bc7ebc36dd87f8aa11180357b95ab0ed
+    domain: binary_sensor
+    enabled: false
+  - platform: state
+    entity_id:
+    - binary_sensor.bunny_feeder_paf_02_feeding
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.announce_bunny_food_time
+  mode: single
+- id: '1732218748464'
+  alias: Check Medication Stock - With Location
+  description: This automation periodically triggers the pyscript.check_stock script
+    to check for medication availability at nearby pharmacies based on the current
+    location of person.richard. It retrieves the latitude and longitude from the person.richard
+    entity and passes them, along with a configurable search radius, to the script.
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  - at: 07:30:00
+    trigger: time
+  - at: 08:00:00
+    trigger: time
+  - at: 08:30:00
+    trigger: time
+  - at: 09:00:00
+    trigger: time
+  - at: 09:30:00
+    trigger: time
+  - at: '10:00:00'
+    trigger: time
+  - at: '10:30:00'
+    trigger: time
+  - at: '11:00:00'
+    trigger: time
+  - at: '11:30:00'
+    trigger: time
+  - at: '12:00:00'
+    trigger: time
+  - at: '13:30:00'
+    trigger: time
+  - at: '14:00:00'
+    trigger: time
+  - at: '14:30:00'
+    trigger: time
+  - at: '15:00:00'
+    trigger: time
+  - at: '15:30:00'
+    trigger: time
+  - at: '16:00:00'
+    trigger: time
+  - at: '16:30:00'
+    trigger: time
+  - at: '17:00:00'
+    trigger: time
+  - at: '17:30:00'
+    trigger: time
+  - at: '18:00:00'
+    trigger: time
+  - at: '18:30:00'
+    trigger: time
+  conditions: []
+  actions:
+  - data_template:
+      base_lat: '{{ state_attr(''person.richard'', ''latitude'') }}'
+      base_lon: '{{ state_attr(''person.richard'', ''longitude'') }}'
+      distance: 60
+    action: pyscript.check_stock
+  mode: single
+- id: '1732218791930'
+  alias: Notify When Medication is In Stock
+  description: This automation monitors the sensor.medication_stock entity, which
+    is updated by the pyscript.check_stock script. When the sensor state changes to
+    on, indicating that medication is available within the specified distance from
+    the current location of person.richard, a notification is sent to the user.
+  triggers:
+  - entity_id:
+    - sensor.medication_stock
+    from: 'off'
+    to: 'on'
+    trigger: state
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  actions:
+  - data:
+      title: Medication Available
+      message: 'The following stores have stock: {{ state_attr(''sensor.medication_stock'',
+        ''stores'') | map(attribute=''displayName'') | join('', '') }}
+
+        '
+    action: notify.mobile_app_rich_mob_app
+  mode: single
+- id: '1732231906963'
+  alias: Notify on Medication Stock Check Failure
+  description: Notify if the medication stock check script encounters an error.
+  triggers:
+  - entity_id:
+    - binary_sensor.medication_check_error
+    to: 'on'
+    trigger: state
+    from: 'off'
+  actions:
+  - data_template:
+      title: Medication Stock Check Error
+      message: 'The stock check script failed with the following error: {{ state_attr(''sensor.medication_stock'',
+        ''error'') }}
+
+        '
+    action: notify.mobile_app_rich_mob_app
+  mode: single
+- id: '1734033969313'
+  alias: Turn off heating when no one is home
+  description: Set the nest target temperature low if no one is home
+  triggers:
+  - trigger: zone
+    entity_id: person.lucy
+    zone: zone.home
+    event: leave
+  - trigger: zone
+    entity_id: person.richard
+    zone: zone.home
+    event: leave
+  conditions:
+  - condition: not
+    conditions:
+    - condition: zone
+      entity_id: person.lucy
+      zone: zone.home
+    - condition: zone
+      entity_id: person.richard
+      zone: zone.home
+    alias: Check if anyone is NOT home
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 10
+    target:
+      device_id: df18efe5cd5bd9cf0330bcf82def7f62
+  mode: single

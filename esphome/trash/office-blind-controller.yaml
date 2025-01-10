@@ -1,0 +1,30 @@
+esphome:
+  name: office-blind-controller
+  friendly_name: Office_Blind_Controller
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "ObF21Qf1VZRMuo9QtqKwT6rypoOIJ7uWtnReeZ0FJE0="
+
+ota:
+  - platform: esphome
+    password: "b453452ab4d5587c729a1811f8bb906e"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Office-Blind-Controller"
+    password: "YuFGlpKPGO5z"
+
+captive_portal:
+    

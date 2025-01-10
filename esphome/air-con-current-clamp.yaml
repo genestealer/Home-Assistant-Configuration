@@ -93,7 +93,8 @@ sensor:
     filters:
       - calibrate_linear:
           # Measured value of 0 Volt to 0A
-          - -0.0004 -> 0
+          - 0.0005 -> 0
+
           # - -0.0000 -> 0
           # 1 V --> 15 Amp from CT sensor
           

@@ -1,0 +1,30 @@
+############################################################
+#
+# Template Integration
+# https://www.home-assistant.io/integrations/template/
+#
+############################################################
+
+############################################################
+#
+# UPS Office Network Power
+#
+############################################################
+- sensor:
+    - name: "Office Network Power"
+      unique_id: "office_network_watts_calculated"
+      unit_of_measurement: "W"
+      state_class: measurement
+      device_class: power
+      # UPS feeds network equipment, PC and Server.
+      # Sever and PC has it's own wattage meter, so can calculate the UPS - Sever load.
+      # Ensure you use real power (W) and not apparent power (VA).
+      state: "{{ (float(states('sensor.myups_current_real_power'),0) - float(states('sensor.server_real_power'),0) - float(states('sensor.pc_and_desk_real_power'),0)) | int }}"
+      # state: >
+      #   {{(
+      #       float(states('sensor.myups_current_real_power'),0) -
+      #       float(states('sensor.server_real_power'),0) -
+      #       float(states('sensor.pc_and_desk_real_power'),0))
+      #       | int
+      #   }}
+      availability: "{{ states('sensor.myups_current_real_power') | is_number and states('sensor.server_real_power') | is_number and states('sensor.pc_and_desk_real_power') | is_number }}"

@@ -338,124 +338,6 @@ turn_on_then_dim_kitchen_under_counter_lights:
     data: {}
   mode: single
   icon: mdi:brightness-6
-flash_dining_room_lights:
-  alias: Flash Dining Room Lights
-  sequence:
-  - service: scene.create
-    data:
-      scene_id: dining_room_before
-      snapshot_entities:
-      - light.sofa_left
-      - light.sofa_right
-      - light.cabinets
-  - repeat:
-      count: '20'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-        target:
-          entity_id:
-          - light.dining_room_lamp_left
-          - light.dining_room_lamp_right
-          - light.dining_room_ceiling_1
-          - light.dining_room_ceiling_2
-          - light.dining_room_ceiling_3
-          - light.dining_room_ceiling_4
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-      - service: light.turn_on
-        data:
-          brightness_pct: 1
-        target:
-          entity_id:
-          - light.dining_room_lamp_left
-          - light.dining_room_lamp_right
-          - light.dining_room_ceiling_1
-          - light.dining_room_ceiling_2
-          - light.dining_room_ceiling_3
-          - light.dining_room_ceiling_4
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-  - service: scene.turn_on
-    target:
-      entity_id: scene.dining_room_before
-  mode: restart
-flash_lights_red2:
-  alias: Flash Living Room Lights
-  sequence:
-  - service: scene.create
-    data:
-      scene_id: living_room_before
-      snapshot_entities:
-      - light.living_room_sofa_left
-      - light.living_room_sofa_right
-  - repeat:
-      count: '5'
-      sequence:
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-          color_name: red
-        target:
-          entity_id:
-          - light.living_room_sofa_left
-          - light.living_room_sofa_right
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-          color_name: blue
-        target:
-          entity_id:
-          - light.living_room_sofa_left
-          - light.living_room_sofa_right
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-          color_name: blue
-        target:
-          entity_id:
-          - light.living_room_sofa_left
-          - light.living_room_sofa_right
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-      - service: light.turn_on
-        data:
-          brightness_pct: 100
-          color_name: red
-        target:
-          entity_id:
-          - light.living_room_sofa_left
-          - light.living_room_sofa_right
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 0
-          milliseconds: 500
-  - service: scene.turn_on
-    target:
-      entity_id: scene.living_room_before
-    data: {}
-  mode: restart
 new_script_test:
   alias: New Script test
   sequence:
@@ -485,7 +367,7 @@ find_my_remote:
   mode: single
   icon: mdi:target
 energenie_etrv_set_reporting_interval:
-  alias: 'Energenie eTRV: Set Reporting Interval'
+  alias: 'Energenie eTRV: Set Reporting Interval = 300 (Winter Use)'
   sequence:
   - device_id: 061f81b04836d8e074d7e2542b21767c
     domain: number
@@ -517,9 +399,9 @@ energenie_etrv_set_reporting_interval:
     entity_id: eabecc3a2d282f57ec79bd0e5d9dfa6f
     type: set_value
     value: 300
-  - device_id: edd53a3020762c37680c07cc4c38d557
+  - device_id: d87bf9712abd725b400a815405c374ac
     domain: number
-    entity_id: 4eb9ae12e9a24ad04e38fbefd5043ac5
+    entity_id: 5d3fe98b3fe9a2d3448ec34131620091
     type: set_value
     value: 300
   - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
@@ -527,6 +409,7 @@ energenie_etrv_set_reporting_interval:
     entity_id: 08469c03165893efaa9b5a297374484f
     type: set_value
     value: 300
+    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: number
     entity_id: 7cb4e59be67a4f8f1661a93858a3a851
@@ -539,61 +422,69 @@ energenie_etrv_set_reporting_interval:
     value: 300
   mode: single
   icon: mdi:clock-end
+  description: 'Set Reporting Interval to 5 mins (minimum) for winter use
+
+    '
 energenie_etrv_set_low_power_mode_off:
-  alias: 'Energenie eTRV: Set low power mode = OFF'
+  alias: 'Energenie eTRV: Set low power mode = ON (Summer Use)'
   sequence:
   - device_id: 061f81b04836d8e074d7e2542b21767c
-    domain: select
-    entity_id: 551713a2c8fe453796e77dd1e0796152
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: a46ff2f2479fd7381a267a77a12734ae
-    domain: select
-    entity_id: f18942e23b5ba88013eab01ead452bd6
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: e79922e5a787ed8db81ee253715ea823
-    domain: select
-    entity_id: ba0a113a1b8f3c61503ffd672bd48629
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: 55d26468639a4f1005742215878de937
-    domain: select
-    entity_id: c1d57e0aff19de01e97c8f36a0d112d7
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: f694a04cab17376f9ccbb97b67b6365d
-    domain: select
-    entity_id: 74de4da403c24cdb7e582b30d56bc168
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
-    domain: select
-    entity_id: 47be01fbbccb610bccabc298ad1e103c
-    type: select_option
-    option: Low Power Mode OFF
-  - device_id: edd53a3020762c37680c07cc4c38d557
-    domain: select
-    entity_id: 2c591391732f9048068e2aede02816ae
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: select
-    entity_id: b73067f185ccb68fd06a1add939d4730
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
+    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
-    domain: select
-    entity_id: 4a3fe856a731d274a9eb0c1303ec77c8
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   - device_id: a9d1acaaf374a3234065ce3dca7d9f04
-    domain: select
-    entity_id: 859d0eff621e79af1a77a0a152a21a04
-    type: select_option
-    option: Low Power Mode OFF
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Low Power Mode ON
   mode: single
-  icon: mdi:speedometer-slow
+  icon: mdi:speedometer-fast
+  description: 'low power mode = On for summer use
+
+
+    '
 heat_bathroom_towel_rail:
   alias: Heat Bathroom Towel Rail
   sequence:
@@ -608,7 +499,7 @@ heat_bathroom_towel_rail:
     data:
       temperature: 30
     target:
-      entity_id: climate.bathroom_radiator_climate_control
+      entity_id: climate.bathroom_radiator
   - delay: 00:{{states('input_number.bathroom_towel_on_time') | round(0)}}:00
   - service: climate.set_temperature
     data:
@@ -667,3 +558,439 @@ sync_to_google:
     data: {}
   mode: single
   icon: mdi:google
+announce_bunny_food_time:
+  alias: Announce bunny food time
+  sequence:
+  - action: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.9
+    target:
+      entity_id:
+      - media_player.dining_room_display
+      - media_player.kitchen_display
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media_content_type: audio/mp3
+      media_content_id: https://hass.richardhuish.com/local/bunny_food_time.mp3
+    target:
+      entity_id:
+      - media_player.kitchen_display
+      - media_player.dining_room_display
+  description: ''
+  icon: mdi:rabbit-variant
+energenie_etrv_set_low_power_mode_on:
+  alias: 'Energenie eTRV: Set low power mode = OFF (Winter Use)'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+    enabled: false
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Low Power Mode OFF
+  mode: single
+  icon: mdi:speedometer
+  description: 'low power mode = OFF for winter use
+
+    '
+energenie_etrv_set_reporting_interval_3600:
+  alias: 'Energenie eTRV: Set Reporting Interval = 3600 (Summer Use)'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: number
+    entity_id: 259300e10fbba9cb42d5e9655cd6d747
+    type: set_value
+    value: 3600
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: number
+    entity_id: 6b60505ff3f1c1cc78d487b66f56c94b
+    type: set_value
+    value: 3600
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: number
+    entity_id: 7925ab4b821bb876bcc45a7431822d26
+    type: set_value
+    value: 3600
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: number
+    entity_id: 7b5c6e97f3a71d9c2090b3c281164be6
+    type: set_value
+    value: 3600
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: number
+    entity_id: 70f7b778cca89fa3a8465970c92ac92c
+    type: set_value
+    value: 3600
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: number
+    entity_id: eabecc3a2d282f57ec79bd0e5d9dfa6f
+    type: set_value
+    value: 3600
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: number
+    entity_id: 5d3fe98b3fe9a2d3448ec34131620091
+    type: set_value
+    value: 3600
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: number
+    entity_id: 08469c03165893efaa9b5a297374484f
+    type: set_value
+    value: 3600
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: number
+    entity_id: 7cb4e59be67a4f8f1661a93858a3a851
+    type: set_value
+    value: 3600
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: number
+    entity_id: 7f775e0fd1949553bc8c28923b13626e
+    type: set_value
+    value: 3600
+  mode: single
+  icon: mdi:clock-end
+  description: Set Reporting Interval to 1 hour for summer use
+energenie_etrv_set_valve_auto:
+  alias: 'Energenie eTRV: Set Valve Auto'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Valve Auto
+    enabled: false
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Valve Auto
+  mode: single
+  icon: mdi:thermostat-auto
+  description: ''
+energenie_etrv_set_valve_closed:
+  alias: 'Energenie eTRV: Set Valve Closed'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Valve Closed
+    enabled: false
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Valve Closed
+  mode: single
+  icon: mdi:valve-closed
+  description: ''
+energenie_etrv_set_valve_open:
+  alias: 'Energenie eTRV: Set Valve Open'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Valve Open
+    enabled: false
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Valve Open
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Valve Open
+  mode: single
+  icon: mdi:valve-open
+  description: ''
+energenie_etrv_set_to_summer_mode:
+  alias: 'Energenie eTRV: Set to summer mode'
+  sequence:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.energenie_etrv_set_reporting_interval_3600
+  - delay:
+      hours: 3
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.energenie_etrv_set_low_power_mode_off
+  - delay:
+      hours: 3
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.energenie_etrv_set_valve_auto
+  - delay:
+      hours: 6
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.energenie_etrv_calibrate_once_a_week
+  description: ''
+  icon: mdi:weather-sunny
+energenie_etrv_set_to_winter_mode:
+  alias: 'Energenie eTRV: Set to winter mode'
+  sequence:
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - script.energenie_etrv_set_reporting_interval
+  - delay:
+      hours: 3
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.energenie_etrv_set_low_power_mode_on
+  - delay:
+      hours: 3
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.energenie_etrv_set_valve_closed
+  description: ''
+  icon: mdi:snowflake
+energenie_etrv_set_valve_heat:
+  alias: 'Energenie eTRV: Set Valve Heat'
+  sequence:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_hvac_mode
+    hvac_mode: heat
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_hvac_mode
+    hvac_mode: heat
+  mode: single
+  icon: mdi:fire
+  description: ''

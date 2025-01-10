@@ -13,7 +13,7 @@ substitutions:
   # Names
   name: doorbell-and-elect-monitor
   friendly_name: "Doorbell and Electricity Monitor"
-  ui_comment: "Doorbell Controller and Electricity Monitor - Updated" # Only shows in UI.
+  ui_comment: "Doorbell Controller and Electricity Monitor" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.36
@@ -235,11 +235,11 @@ switch:
               lambda: 'return id(homeassistant_time).now().hour > id(nighttime_start) || id(homeassistant_time).now().hour < id(nighttime_stop);'
             then:
               - logger.log: "Doorbell pushed at nighttime"
-              - delay: 200ms
+              - delay: 400ms
               - switch.turn_off: bellRelay
             else:
               - logger.log: "Doorbell pushed at daytime"
-              - delay: 1250ms
+              - delay: 1500ms
               - switch.turn_off: bellRelay
                 
     # on_turn_on:
@@ -247,13 +247,14 @@ switch:
     # - switch.turn_off: bellRelay
   
    
-  #Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
+#Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
+button:
   - platform: template
     name: "Doorbell Ringer"
     icon: "mdi:alarm-bell"
-    turn_on_action:
-    - switch.turn_on: bellRelay
-    
+    on_press:
+      - switch.turn_on: bellRelay
+      
   # - platform: gpio
   #   pin:
   #     number: D5  # GPIO12

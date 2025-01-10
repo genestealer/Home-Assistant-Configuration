@@ -1,0 +1,13 @@
+############################################################
+# Integration Sensor
+# power consumption data
+#
+############################################################
+
+- platform: integration
+  name: UPS Energy
+  unique_id: ups_energy
+  source: sensor.myups_current_real_power # Ensure you use real power (W) and not apparent power (VA).
+  unit_prefix: k
+  unit_time: h
+  round: 2

@@ -27,7 +27,7 @@ substitutions:
   # Names
   name: chicken-house
   friendly_name: "Chicken House Sensors"
-  ui_comment: "Chicken House Sensors - UPDATED" # Only shows in UI.
+  ui_comment: "Chicken House Sensors" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.25
@@ -58,9 +58,6 @@ packages:
   device_base: !include device_base.yaml
 
 esphome:
-  # project:
-  #   name: ${project_name}
-  #   version: ${project_version}
 
 dashboard_import:
   package_import_url: ${package_import_url}

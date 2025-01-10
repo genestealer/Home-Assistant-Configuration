@@ -12,7 +12,7 @@ substitutions:
   # Names
   name: bedroom-sensor
   friendly_name: "Bedroom Sensors"
-  ui_comment: "Bedroom Sensors - UPDATED" # Only shows in UI.
+  ui_comment: "Bedroom Sensors" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.38

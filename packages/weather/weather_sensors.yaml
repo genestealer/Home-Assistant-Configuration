@@ -48,8 +48,11 @@ template:
 
   # Triggered template sensor that records each day’s maximum, to show yesterdays total rain.
   - trigger:
-      - platform: time
-        at: "23:59:50"
+      - trigger: time_pattern
+        # This will update every night
+        hours: "23"
+        minutes: "59"
+        seconds: "50"
     sensor:
       - name: "Yesterdays Local Total Rain"
         unique_id: yesterdays_local_total_rain
@@ -73,31 +76,31 @@ sensor:
         sensor_type: battery
         name: "Weather Station Battery A"
 
-      dkw2012_007d_temp:
+      dkw2012_0045_temp:
         sensor_type: temperature
         name: "Local Outside Temperature"
 
-      dkw2012_007d_hum:
+      dkw2012_0045_hum:
         sensor_type: humidity
         name: "Local Outside Humidity"
 
-      dkw2012_007d_winsp:
+      dkw2012_0045_winsp:
         sensor_type: windspeed
         name: "Local Wind Speed"
 
-      dkw2012_007d_wings:
+      dkw2012_0045_wings:
         sensor_type: windgusts
         name: "Local Wind Speed Gusts"
 
-      dkw2012_007d_rain:
+      dkw2012_0045_rain:
         sensor_type: total_rain
         name: "Local Total Rain"
 
-      dkw2012_007d_windir:
+      dkw2012_0045_windir:
         sensor_type: winddirection
         name: "Local Wind Direction"
 
-      dkw2012_007d_bat:
+      dkw2012_0045_bat:
         sensor_type: battery
         name: "Weather Station Battery B"
 

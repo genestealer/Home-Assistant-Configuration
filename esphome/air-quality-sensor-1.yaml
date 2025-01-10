@@ -12,7 +12,7 @@ substitutions:
   # Names
   name: air-quality-sensor-1 
   friendly_name: "Air Quality Sensor 1"
-  ui_comment: "Air Quality Sensor 1 - UPDATED" # Only shows in UI.
+  ui_comment: "Air Quality Sensor 1" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.42

@@ -15,8 +15,15 @@ homeassistant:
   # Note on auth_providers and packages https://www.home-assistant.io/docs/configuration/packages/#customizing-entities-with-packages
   packages: !include_dir_named packages/
   auth_providers:
-    - type: homeassistant
+    # - type: trusted_networks
 
+    #   allow_bypass_login: true
+
+    #   trusted_users:
+    #     192.168.10.119: 740fec422e6a4886937b348ac3017f05
+    #   trusted_networks:
+    #     - 192.168.10.0/24
+    - type: homeassistant
 ############################################################
 #
 # Standard Configuration Elements
@@ -82,6 +89,15 @@ recorder:
     # domains:
     #   - automation
     #   - updater
+    # entities:
+    #   - sensor.date
+    #   - sensor.time
+    #   - sensor.date_time
+    #   - sensor.date_time_utc
+    #   - sensor.time_date
+    #   - sensor.time_utc
+    #   - sensor.date_time_iso
+    #   - sensor.internet_time
     entities:
       - sensor.date
       - sensor.time
@@ -91,7 +107,17 @@ recorder:
       - sensor.time_utc
       - sensor.date_time_iso
       - sensor.internet_time
-    entity_globs: input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+      - sensor.server_server_power_on_time
+      - sensor.cc_cpu_temperature
+      - sensor.cc_cpu_load
+      - automation.process_presence_incoming_webhook
+
+    entity_globs:
+      - input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
+      - sensor.adguard_*
+      - sensor.*_last_seen # mqtt-energenie-ener314rt
+      - sensor.*_retries # mqtt-energenie-ener314rt
+      - sensor.*_last_reported # mqtt-energenie-ener314rt
 
 # View all events in a logbook. Depends on the recorder integration for storing the data.
 logbook:
@@ -108,10 +134,13 @@ logbook:
       - sensor.server_server_power_on_time
       - sensor.cc_cpu_temperature
       - sensor.cc_cpu_load
+      - automation.process_presence_incoming_webhook
+
     entity_globs:
       - sensor.adguard_*
-      - sensor.*_last_seen
-      - sensor.*_retries
+      - sensor.*_last_seen # mqtt-energenie-ener314rt
+      - sensor.*_retries # mqtt-energenie-ener314rt
+      - sensor.*_last_reported # mqtt-energenie-ener314rt
 
 # https://github.com/home-assistant/home-assistant/issues/1806
 logger:
@@ -164,46 +193,7 @@ mqtt:
   sensor: !include_dir_merge_list includes/mqtt/sensors/
   switch: !include_dir_merge_list includes/mqtt/switches/
   light: !include_dir_merge_list includes/mqtt/lights/
-
-#################################################
-# Push notification providers.
-notify:
-  - name: Google Cloud Notify
-    platform: html5
-    # gcm_api_key: !secret gcmKey
-    # gcm_sender_id: !secret gcmID
-    vapid_pub_key: !secret vapid_pub_key
-    vapid_prv_key: !secret vapid_prv_key
-    vapid_email: !secret vapid_email
-
-#################################################
-# Device trackers.
-device_tracker:
-  # - platform: owntracks
-  #   max_gps_accuracy: 250
-
-  - platform: google_maps # Elements per day’ to a limit of 645.
-    username: !secret google_maps_username
-  # - platform: google_maps # Elements per day’ to a limit of 645.
-  #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
-  # Example configuration.yaml entry
-
-# password: !secret google_maps_password
-# - platform: googlehome
-#   host: !secret google_home_hub_ip
-
-# - platform: ping
-#   hosts:
-#     hostone: 192.168.1.16
-# - platform: snmp
-#   host: 192.168.1.1
-#   community: public
-#   baseoid: 1.3.6.1.2.1.2.2
-
-# RFLink gateway integration, via ethernet bridge.
-#     Try socat pty,link=/config/serialport-rflink,echo=0 tcp:x.x.x.x:xxxx,forever,reuseaddr,keepalive,keepidle=10,keepintvl=10,keepcnt=2
-#       https://github.com/home-assistant/core/issues/23577
-#         Will not work, as socat is not in HASSIO!
+  climate: !include_dir_merge_list includes/mqtt/climates/
 
 #################################################
 rflink:
@@ -241,30 +231,6 @@ input_text:
   notifications_user2_name:
     min: 0
     max: 20
-
-#   #################################################
-#   # Google Assistant integration.
-#   # Fallback for re-linking hass ass
-# google_assistant:
-#   project_id: home-ass-40452
-#   service_account: !include SERVICE_ACCOUNT.JSON
-#   report_state: true
-#   expose_by_default: false
-#   entity_config:
-#     light.guest_bedroom_lamp_left:
-#       expose: true
-
-# #################################################
-# # Google Assistant integration.
-# # Fallback for re-linking
-# google_assistant:
-#   project_id: hassio-214617
-#   service_account: !include private/google_assistant_report_state_hassio_214617.json
-#   report_state: true
-#   expose_by_default: false
-#   entity_config:
-#     light.guest_bedroom_lamp_left:
-#       expose: true
 
 #################################################
 # Google Assistant integration.
@@ -307,22 +273,6 @@ stream:
 
 #################################################
 
-# utility_meter:
-#   energy_cumulative_month:
-#     source: sensor.esp_doorbell_elec_mon_house_power_meter
-#     cycle: monthly
-#     # tariffs:
-#     #   -
-#   energy_cumulative_daily:
-#     source: sensor.esp_doorbell_elec_mon_house_power_meter
-#     cycle: daily
-
-# # https://github.com/bramstroker/homeassistant-powercalc
-# powercalc:
-#   scan_interval: 00:01:00 #Each minute
-#   power_sensor_naming: "{} Powersensor"
-#   create_energy_sensors: false
-
 ############################################################
 #
 # Includes
@@ -331,7 +281,7 @@ stream:
 ############################################################
 
 # Single Files
-zone: !include includes/zone.yaml
+# zone: !include includes/zone.yaml
 shell_command: !include includes/shell_commands.yaml
 automation: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
 script: !include scripts.yaml
@@ -360,3 +310,80 @@ rest_command: !include_dir_merge_named includes/rest_commands
 alert: !include includes/alert.yaml
 
 scene: !include scenes.yaml
+###################################################################################################################################################
+# OLD OLD
+# #################################################
+# # Push notification providers.
+# notify:
+#   - name: Google Cloud Notify
+#     platform: html5
+#     # gcm_api_key: !secret gcmKey
+#     # gcm_sender_id: !secret gcmID
+#     vapid_pub_key: !secret vapid_pub_key
+#     vapid_prv_key: !secret vapid_prv_key
+#     vapid_email: !secret vapid_email
+
+#################################################
+# Device trackers.
+# device_tracker:
+# - platform: owntracks
+#   max_gps_accuracy: 250
+
+# - platform: google_maps # Elements per day’ to a limit of 645.
+#   username: !secret google_maps_username
+# # - platform: google_maps # Elements per day’ to a limit of 645.
+# #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
+# # Example configuration.yaml entry
+
+# - platform: ping
+#   hosts:
+#     hostone: 192.168.1.16
+# - platform: snmp
+#   host: 192.168.1.1
+#   community: public
+#   baseoid: 1.3.6.1.2.1.2.2
+
+# RFLink gateway integration, via ethernet bridge.
+#     Try socat pty,link=/config/serialport-rflink,echo=0 tcp:x.x.x.x:xxxx,forever,reuseaddr,keepalive,keepidle=10,keepintvl=10,keepcnt=2
+#       https://github.com/home-assistant/core/issues/23577
+#         Will not work, as socat is not in HASSIO!
+
+# utility_meter:
+#   energy_cumulative_month:
+#     source: sensor.esp_doorbell_elec_mon_house_power_meter
+#     cycle: monthly
+#     # tariffs:
+#     #   -
+#   energy_cumulative_daily:
+#     source: sensor.esp_doorbell_elec_mon_house_power_meter
+#     cycle: daily
+
+# # https://github.com/bramstroker/homeassistant-powercalc
+# powercalc:
+#   scan_interval: 00:01:00 #Each minute
+#   power_sensor_naming: "{} Powersensor"
+#   create_energy_sensors: false
+
+#   #################################################
+#   # Google Assistant integration.
+#   # Fallback for re-linking hass ass
+# google_assistant:
+#   project_id: home-ass-40452
+#   service_account: !include SERVICE_ACCOUNT.JSON
+#   report_state: true
+#   expose_by_default: false
+#   entity_config:
+#     light.guest_bedroom_lamp_left:
+#       expose: true
+
+# #################################################
+# # Google Assistant integration.
+# # Fallback for re-linking
+# google_assistant:
+#   project_id: hassio-214617
+#   service_account: !include private/google_assistant_report_state_hassio_214617.json
+#   report_state: true
+#   expose_by_default: false
+#   entity_config:
+#     light.guest_bedroom_lamp_left:
+#       expose: true

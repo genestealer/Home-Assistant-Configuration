@@ -1,0 +1,274 @@
+##############################################################
+# Richard Huish 2023
+# https://github.com/genestealer/Home-Assistant-Configuration
+# Indoor Air Quality Sensor #1
+# 
+# To save the longevity of the air quality sensor, we turn it 
+# off and make only occasional reads.
+##############################################################
+# Config Header for Device
+##############################################################
+substitutions:
+  # Names
+  name: office-blind-controller
+  friendly_name: "Office Blind Controller"
+  ui_comment: "Office Blind Controller" # Only shows in UI.
+  
+  # Wifi Settings
+  ip: 192.168.2.52
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Board Settings
+  status_led: D4
+  status_led_inverted: "false"
+  platform: ESP8266
+  board: d1_mini
+
+  # Debug Component
+  log_level: DEBUG 
+
+  # Project 
+  project_name: "genestealer.office-blind-controller"
+  project_version: "1.0.0"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/office-blind-controller.yaml"
+  
+
+##############################################################
+# Import shared code
+##############################################################
+
+# Packages 
+packages:
+  device_base: !include device_base.yaml
+
+dashboard_import:
+  package_import_url: ${package_import_url}
+  import_full_config: false # or true
+
+
+##############################################################
+# Main Code
+##############################################################
+
+output:
+  # Not exposed to home assistant.
+  - platform: gpio
+    id: gpio_d5
+    pin:
+      number: D5
+      inverted: true
+      mode: OUTPUT_OPEN_DRAIN # As we want to sink current
+
+  - platform: gpio
+    id: gpio_d6
+    pin:
+      number: D6
+      inverted: true
+      mode: OUTPUT_OPEN_DRAIN # As we want to sink current
+  - platform: gpio
+    id: gpio_d7
+    pin:
+      number: D7
+      inverted: true
+      mode: OUTPUT_OPEN_DRAIN # As we want to sink current
+
+
+button:
+  - platform: template
+    name: Open
+    id: open_button
+    on_press:
+      - logger.log: "Open"
+      - output.turn_on: gpio_d6
+      - delay: 110ms
+      - output.turn_off: gpio_d6
+
+  - platform: template
+    name: Close
+    id: Close_button
+    on_press:
+      - logger.log: "Close"
+      - output.turn_on: gpio_d5
+      - delay: 110ms
+      - output.turn_off: gpio_d5
+
+  - platform: template
+    name: Reset
+    id: reset_blinds_button
+    device_class: Restart
+    entity_category: DIAGNOSTIC 
+    on_press:
+      - logger.log: "Reset"
+      - output.turn_on: gpio_d7
+      - delay: 5000ms
+      - output.turn_off: gpio_d7
+
+
+  - platform: template
+    name: Tilt Open
+    id: tilt_open
+    on_press:
+      - logger.log: "Tilt Open"
+      - output.turn_on: gpio_d6
+      - delay: 110ms
+      - output.turn_off: gpio_d6
+      - delay: 110ms
+      - output.turn_on: gpio_d6
+      - delay: 110ms
+      - output.turn_off: gpio_d6
+
+  - platform: template
+    name: Tilt Close
+    id: tilt_closed
+    on_press:
+      - logger.log: "Tilt Closed"
+      - output.turn_on: gpio_d5
+      - delay: 110ms
+      - output.turn_off: gpio_d5
+      - delay: 110ms
+      - output.turn_on: gpio_d5
+      - delay: 110ms
+      - output.turn_off: gpio_d5
+
+
+globals:
+  - id: cover_moving #This is for the HW buttons to determine if a press should stop the blind or start moving it (this could probably be done without this var by reading id(time_cover).current_operation)
+    type: bool
+    initial_value: "0"
+  - id: cover_opening 
+    type: bool
+    initial_value: "0"
+  - id: cover_closing 
+    type: bool
+    initial_value: "0"
+
+cover:
+  - platform: template
+    name: "Blinds"
+    id: blinds
+    device_class: blind
+    optimistic: true
+    # has_position: true
+    assumed_state: True
+    
+    open_action:
+      - logger.log: "Open"
+      - globals.set:
+          id: cover_opening
+          value: "true"     
+      - output.turn_on: gpio_d6
+      - delay: 110ms
+      - output.turn_off: gpio_d6
+      - delay: 5000ms
+      - globals.set:
+          id: cover_opening
+          value: "false"     
+
+    close_action:
+      - logger.log: "Closing"
+      - globals.set:
+          id: cover_closing
+          value: "true"
+      - output.turn_on: gpio_d5
+      - delay: 110ms
+      - output.turn_off: gpio_d5
+      - delay: 5000ms
+      - globals.set:
+          id: cover_closing
+          value: "false"     
+
+    stop_action:
+        - if:
+            condition:
+              lambda: 'return id(cover_opening);'
+            then:
+              - output.turn_on: gpio_d6
+              - delay: 110ms
+              - output.turn_off: gpio_d6
+              - globals.set:
+                  id: cover_opening
+                  value: "false"  
+                  
+        - if:
+            condition:
+              lambda: 'return id(cover_closing);'
+            then:
+              - output.turn_on: gpio_d5
+              - delay: 110ms
+              - output.turn_off: gpio_d5
+              - globals.set:
+                  id: cover_closing
+                  value: "false"  
+    # tilt_action:
+    #   - logger.log:
+    #       format: "Tilting to: %.2f"
+    #       args: ["tilt"]
+
+    # position_action:
+    #   - cover.control:
+    #       id: time_cover
+    #       position: !lambda |-
+    #         return pos;
+
+
+# cover:
+#   - platform: template
+#     device_class: curtain
+#     name: Blinds
+#     on_closed:
+#       then:
+#         - logger.log: "Cover is Closed!"
+#     on_open:
+#       then:
+#         - logger.log: "Cover is Open!"
+#   # 
+
+# cover:
+#   - platform: template
+#       device_class: curtain
+#         # on_closed:
+#         #   then:
+#         #     - logger.log: "Cover is Closed!"
+#         # on_open:
+#         #   then:
+#         #     - logger.log: "Cover is Open!"
+#         # on_stop:
+#         #   then:
+#         #     - logger.log: "Cover is Stopping!"
+# https://gist.github.com/InToSSH/6f7eb0bd448d2060ca8f410d7a599b33
+
+# switch:
+#   - platform: homeassistant
+#     name: ${device_name} - HA UP
+#     entity_id: input_boolean.momentary_up
+#     on_press:
+#       then:
+#         - if:
+#             condition:
+#               lambda: 'return !id(cover_moving);'
+#             then:
+#               - cover.open: template_cover
+
+#     on_click:
+#       - min_length: 1ms
+#         max_length: 999ms
+#         then:
+#           - cover.stop: template_cover
+    
+#   - platform: homeassistant
+#     name: ${device_name} - HA DOWN
+#     entity_id: input_boolean.momentary_down
+#     on_press:
+#       then:
+#         - if:
+#             condition:
+#               lambda: 'return !id(cover_moving);'
+#             then:
+#               - cover.close: template_cover
+              
+#     on_click:
+#       - min_length: 1ms
+#         max_length: 999ms
+#         then:
+#           - cover.stop: template_cover

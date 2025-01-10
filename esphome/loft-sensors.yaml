@@ -9,7 +9,7 @@ substitutions:
   # Names
   name: loft-sensor-sensor
   friendly_name: "Loft Sensors"
-  ui_comment: "Loft Sensors - UPDATED" # Only shows in UI.
+  ui_comment: "Loft Sensors" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.20

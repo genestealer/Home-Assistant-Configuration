@@ -1,0 +1,79 @@
+#***************************************************
+# Ice Maker Controller
+####################################################
+# Config Header for Device
+####################################################
+substitutions:
+  # Names
+  name: icemaker
+  friendly_name: "Ice Maker"
+  ui_comment: "Ice Maker Controller" # Only shows in UI.
+  
+  # Wifi Settings
+  ip: 192.168.2.40
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Board Settings
+  status_led: LED_RED
+  status_led_inverted: "false"
+  platform: ESP8266
+  board: huzzah
+  
+  # Debug Component
+  log_level: DEBUG 
+
+  # Project 
+  project_name: "genestealer.ice-maker"
+  project_version: "1.1.0"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/ice-maker.yaml"
+  
+
+##############################################################
+# Shared code from all my projects
+##############################################################
+  
+# Packages
+packages:
+  device_base: !include device_base.yaml
+
+dashboard_import:
+  package_import_url: ${package_import_url}
+  import_full_config: false # or true
+
+##############################################################
+# Main Code
+##############################################################
+
+switch:
+  - platform: gpio
+    pin:
+      number: GPIO12
+      mode: OUTPUT
+    id: ICE_MAKER_SWITCH
+    restore_mode: RESTORE_DEFAULT_ON  
+    name: "Switch"
+
+# GND for dallas
+  - platform: gpio
+    pin:
+      number: GPIO13
+      mode: OUTPUT_OPEN_DRAIN
+    restore_mode: ALWAYS_OFF  
+    name: "Active Drain"
+    internal: true
+
+# fan:
+#   - platform: binary
+#     output: ICE_MAKER_SWITCH
+#     name: "Ice Maker"
+
+
+one_wire:
+  - platform: gpio
+    pin: GPIO14
+sensor:
+  - platform: dallas_temp
+    address: 0x93001414B455FF28
+    name: "Water Temperature"
+    update_interval: 180s

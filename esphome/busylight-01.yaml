@@ -28,7 +28,7 @@ substitutions:
   # Names
   name: busy-light-01
   friendly_name: "Busy Light 1"
-  ui_comment: "Busy Light 1 - UPDATED" # Only shows in UI.
+  ui_comment: "Busy Light 1" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.33

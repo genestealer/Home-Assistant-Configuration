@@ -1,0 +1,48 @@
+#########################################################################################
+# Energenie MiHome https://energenie4u.co.uk/
+# A MQTT node.js module to control the Energenie line of products via the ENER314-RT add-on board for the Raspberry Pi.
+# mqtt-energenie-ener314rt https://github.com/Achronite/mqtt-energenie-ener314rt
+#########################################################################################
+# If you don't set the "device, name" then the device will show in "/config/devices/dashboard" with the IP address prefix of the MQTT broker
+# The top-level name can be somthing other than then device name.
+
+# energenie/ook/697441/2/command = Eurodomest;ID=055b9e;SWITCH=02;
+# energenie/ook/697441/3/command = Eurodomest;ID=055b9e;SWITCH=03;
+
+# Ref: handheld remote control energenie/ook/697441/3/command : 20;C6;Eurodomest;ID=055b9e;SWITCH=02;CMD=OFF;
+
+############################################################
+#
+# Living Room TV Speakers
+#
+############################################################
+- name: null
+  unique_id: MIHO002_socket1_697441_2
+  command_topic: "energenie/ook/697441/2/command"
+  optimistic: true
+  state_topic: energenie/ook/697441/2/state
+  availability_topic: energenie/availability/state
+  device:
+    name: "TV Speakers"
+    identifiers: "miho002_socket1"
+    model: "Smart Plug (MIHO002) [697441/2] (Button 2)"
+    manufacturer: "Energenie [Manual]"
+    via_device: "mqtt-energenie-ener314rt"
+
+############################################################
+#
+# Living Room Laptop Power
+#
+############################################################
+- name: null
+  unique_id: MIHO002_socket2_697441_3
+  command_topic: "energenie/ook/697441/3/command"
+  optimistic: true
+  state_topic: energenie/ook/697441/3/state
+  availability_topic: energenie/availability/state
+  device:
+    name: "Laptop Power"
+    identifiers: "miho002_socket2"
+    model: "Smart Plug (MIHO002) [697441/3] (Button 3)"
+    manufacturer: "Energenie [Manual]"
+    via_device: "mqtt-energenie-ener314rt"

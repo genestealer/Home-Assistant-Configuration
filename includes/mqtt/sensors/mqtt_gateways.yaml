@@ -160,13 +160,13 @@
 #   payload_not_available: "offline"
 #   icon: mdi:signal-variant
 
-- state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
-  name: "IC Front Host"
-  value_template: "{{ value_json.HostName }}"
-  availability_topic: "HUISHS/Irrigation1/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
+# - state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
+#   name: "IC Front Host"
+#   value_template: "{{ value_json.HostName }}"
+#   availability_topic: "HUISHS/Irrigation1/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
 
 # - state_topic: "HUISHS/Irrigation1/NodeHealthJSON"
 #   name: "IC Front SSID"
@@ -215,13 +215,13 @@
 #   payload_not_available: "offline"
 #   icon: mdi:signal-variant
 
-- state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
-  name: "IC Back Host"
-  value_template: "{{ value_json.HostName }}"
-  availability_topic: "HUISHS/Irrigation2/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  icon: mdi:desktop-classic
+# - state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
+#   name: "IC Back Host"
+#   value_template: "{{ value_json.HostName }}"
+#   availability_topic: "HUISHS/Irrigation2/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   icon: mdi:desktop-classic
 
 # - state_topic: "HUISHS/Irrigation2/NodeHealthJSON"
 #   name: "IC Back SSID"
