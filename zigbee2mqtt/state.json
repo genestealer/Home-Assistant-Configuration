@@ -773,7 +773,7 @@
     },
     "0x000b57fffe9bad09": {
         "battery": 65,
-        "occupancy": true,
+        "occupancy": false,
         "illuminance_above_threshold": false,
         "last_seen": "2025-01-10T17:05:34.796Z",
         "linkquality": 105,
@@ -787,7 +787,7 @@
         "battery": 65,
         "last_seen": "2025-01-10T17:05:33.154Z",
         "linkquality": 80,
-        "occupancy": true,
+        "occupancy": false,
         "illuminance_above_threshold": false,
         "update": {
             "state": "idle",
@@ -826,7 +826,7 @@
         "valve_opening_limit_voltage": 2057,
         "valve_closing_limit_voltage": 2424,
         "valve_motor_running_voltage": 1490,
-        "local_temperature": 21.4,
+        "local_temperature": 20.9,
         "occupied_heating_setpoint": 11,
         "system_mode": "heat",
         "running_state": "idle",
