@@ -63,7 +63,5 @@ SERVICE_ACCOUNT*.JSON
 coordinator_backup.json
 coordinator_backup_old.json
 database.db.backup
-zigbee2mqtt/coordinator_backup.json
-zigbee2mqtt/coordinator_backup_old.json
-zigbee2mqtt/database.db.backup
-zigbee2mqtt/state.json
+zigbee2mqtt/
+
