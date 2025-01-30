@@ -1,0 +1,644 @@
+##############################################################
+# Richard Huish 2025
+# https://github.com/genestealer/Home-Assistant-Configuration
+# Indoor Air Quality Sensor #2
+# 
+# Atom-Matrix, ESP32-PICO-D4 chip
+#   RGB LED WS2812C 2020 x 25 Pin:G27
+#   MEMS MPU6886 (I2CAddress: 0x68) Pins: SDA: 25, SCL: 21
+#   Button Pin:39
+#   IR Pin:G12
+#   Ports: TypeC x 1, GROVE(I2C+I/0+UART) x 1
+#   Other pins: G19,G21,G22,G23,G25,G33
+# 
+# M5 Atom Matrix Configuration for m5atom01 which is an M5Stack Atom Matrix
+#    ESP32 Pico, 8x8 RGB LED Matrix (WS2812C), Infra-red LED, 
+#    MPU6886 Inertial Sensor - 6-axis attitude sensor with 3-axis gravity accelerometer and 3-axis gyroscope
+#
+# Pins/GPIO
+#
+# === M5Stack Atom Matrix Specific ===
+# @see https://github.com/m5stack/M5Stack/blob/31be29f3f743768778accb8d5f308583ba4d3d4c/src/utility/Config.h
+# @see https://docs.m5stack.com/#/en/core/atom_matrix
+# ------ Buttons ------
+# BUTTON_PIN      | 39 | Under LED's and on side - both are the same button
+# ------ RGB LEDs PIN ------
+# RGB_PIN         | 27 | 8x8 matrix, WS2812C
+# ------ Infra-Red LED PIN ------
+# INFRA_PIN       | 12 | 
+# -------- I2C ---------
+# SDA             | 25 | 
+# SCL             | 21 |
+# 
+# MPU6886 Inertial Sensor - I2C Address 0x68
+#
+# ---- Exposed Ports ----
+# -- | 3V3 | 5-pin connector pin 1
+# 19 | Tx  | 5-pin connector pin 3
+# 22 | Rx  | 5-pin connector pin 2
+# 23 | Neo | 5-pin connector pin 4 (Connected to 34 via 100ohm resistor?)
+# 33 | Adc | 5-pin connector pin 5
+#
+# 21 | SCL | 4-pin connector pin 1
+# 25 | SDA | 4-pin connector pin 2
+# -- | 5V  | 4-pin connector pin 3
+# -- | Gnd | 4-pin connector pin 4
+#
+# -- | Gnd | Grove connector pin 1
+# -- | 5V  | Grove connector pin 2
+# 26 |     | Grove connector pin 3
+# 32 |     | Grove connector pin 4
+#
+#
+
+
+
+# To save the longevity of the air quality sensor, we turn it 
+# off and make only occasional reads.
+##############################################################
+# Config Header for Device
+##############################################################
+substitutions:
+  # Names
+  name: air-quality-sensor-3
+  friendly_name: "Air Quality Sensor 3"
+  ui_comment: "Air Quality Sensor MK2 3" # Only shows in UI.
+  
+  # Wifi Settings
+  ip: 192.168.2.55
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Board Settings
+  # status_led: G27
+  # status_led_inverted: "false"
+
+  # Debug Component
+  log_level: DEBUG 
+
+  # Project 
+  project_name: "genestealer.xxx"
+  project_version: "1.0.0"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-quality-sensor-3.yaml"
+  
+  # PMSX003 Air Sensor Settings
+  PMSX003_sensor_update_interval: 150000ms # 2.5 mins
+  MPU6886_sensor_update_interval: 30000ms
+  bme280_sensor_update_interval: 30000ms 
+  # If > 30 seconds, and  tx_pin is set in the UART configuration, the fan will be spun down between measurements.
+
+##############################################################
+# Platform
+##############################################################
+esp32:
+  board: m5stack-atom
+
+##############################################################
+# Import shared code
+##############################################################
+
+# Packages 
+packages:
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+# # To remove status_led for a specific device:
+status_led: !remove
+
+dashboard_import:
+  package_import_url: ${package_import_url}
+  import_full_config: false # or true
+
+esphome:
+  on_boot: 
+    priority: 700
+    then: 
+      - output.turn_on: wifi_fix_output
+  # # Set the pmsx003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
+  # on_boot:
+  #   - logger.log: "Turn pmsx003 on at boot"
+  #   - output.turn_on: reset_pin
+  #   - delay: 3000ms
+  #   - logger.log: "Resetting pmsx003"
+  #   - output.turn_off: reset_pin
+  #   - delay: 1000ms
+  #   - output.turn_on: reset_pin
+  #   - logger.log: "pmsx003 Reset"
+
+# # Wifi Details
+# wifi:
+#   networks:
+#     - bssid: "1A:49:BC:5C:80:16"
+
+##############################################################
+# Main Code
+##############################################################
+
+output:
+  # Countermeasure to the problem that CH552 applies 4v to GPIO0, thus reducing WiFi sensitivity.
+  # Setting output_high adds a bias of 3.3v and suppresses overvoltage.
+  # From: https://github.com/m5stack/M5Unified/blob/d26d2415f409b664631ff066ceeaffd6a753a4ff/src/M5Unified.cpp#L506
+  - platform: gpio
+    id: wifi_fix_output
+    pin: GPIO0
+
+
+i2c:
+  sda: 25
+  scl: 21
+  scan: true
+  #frequency: 200kHz
+
+
+text_sensor:
+  - platform: homeassistant
+    entity_id: sensor.air_quality_sensor_1_air_quality_index
+    id: daqi_message
+
+sensor:
+
+
+  - platform: template
+    name: "Mapped DAQI Value"
+    lambda: |-
+      if (id(daqi_message).state == "Good") {
+        id(bar_height_1).publish_state(2);
+        return 2;
+      } else if (id(daqi_message).state == "Acceptable") {
+        id(bar_height_1).publish_state(3);
+        return 3;
+      } else if (id(daqi_message).state == "Bad") {
+        id(bar_height_1).publish_state(4);
+        return 4;
+      } else if (id(daqi_message).state == "Very Bad") {
+        id(bar_height_1).publish_state(5);
+        return 5;
+      } else {
+        id(bar_height_1).publish_state(0);
+        return 0;
+      }
+
+  ##############################################################
+  #  MPU6886 Accelerometer/Gyroscope Sensor (I2CAddress: 0x68)
+  ##############################################################
+  # - platform: mpu6886
+  #   address: 0x68
+  #   accel_x:
+  #     name: "MPU6886 Accel X"
+  #   accel_y:
+  #     name: "MPU6886 Accel Y"
+  #   accel_z:
+  #     name: "MPU6886 Accel z"
+  #   gyro_x:
+  #     name: "MPU6886 Gyro X"
+  #   gyro_y:
+  #     name: "MPU6886 Gyro Y"
+  #   gyro_z:
+  #     name: "MPU6886 Gyro z"
+  #   temperature:
+  #     name: "MPU6886 Temperature"
+  #   update_interval: ${MPU6886_sensor_update_interval}
+
+  ##############################################################
+  #  BME280 Temperature+Pressure+Humidity Sensor
+  ##############################################################
+  # - platform: bme280_i2c
+  #   update_interval: ${bme280_sensor_update_interval}
+  #   address: 0x76
+
+  #   temperature:
+  #     name: "Temperature"
+  #     oversampling: 16x
+  #     id: bme280_temperature
+  #     accuracy_decimals: 2
+
+  #   pressure:
+  #     name: "Pressure"
+  #     id: bme280_pressure
+  #     accuracy_decimals: 2
+
+  #   humidity:
+  #     name: "Humidity"
+  #     id: bme280_humidity
+  #     accuracy_decimals: 2
+    
+  # - platform: template
+  #   name: "Altitude"
+  #   lambda: |-
+  #     const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
+  #     return ((id(bme280_temperature).state + 273.15) / 0.0065) *
+  #       (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
+  #   update_interval: 15s
+  #   icon: 'mdi:signal'
+  #   unit_of_measurement: 'm'
+
+  # - platform: absolute_humidity
+  #   name: "Absolute Humidity"
+  #   temperature: bme280_temperature
+  #   humidity: bme280_humidity
+    
+  # - platform: template
+  #   name: "Dew Point"
+  #   lambda: |-
+  #     return (243.5*(log(id(bme280_humidity).state/100)+((17.67*id(bme280_temperature).state)/
+  #     (243.5+id(bme280_temperature).state)))/(17.67-log(id(bme280_humidity).state/100)-
+  #     ((17.67*id(bme280_temperature).state)/(243.5+id(bme280_temperature).state))));
+  #   unit_of_measurement: °C
+  #   icon: 'mdi:thermometer-alert'
+
+number:
+  - platform: template
+    id: bar_height_1
+    optimistic: true
+    min_value: 0
+    max_value: 5
+    initial_value: 0
+    step: 1
+
+  - platform: template
+    id: bar_height_2
+    optimistic: true
+    min_value: 0
+    max_value: 5
+    initial_value: 0
+    step: 1
+
+  - platform: template
+    id: bar_height_3
+    optimistic: true
+    min_value: 0
+    max_value: 5
+    initial_value: 0
+    step: 1
+
+  - platform: template
+    id: bar_height_4
+    optimistic: true
+    min_value: 0
+    max_value: 5
+    initial_value: 0
+    step: 1
+
+  - platform: template
+    id: bar_height_5
+    optimistic: true
+    min_value: 0
+    max_value: 5
+    initial_value: 0
+    step: 1
+
+binary_sensor:
+  - platform: gpio # btn
+    id: screen_button
+    name: "Screen Button"
+    pin:
+      number: 39
+      inverted: true
+    on_click:
+      then:
+        - number.increment:
+            id: bar_height_1
+            cycle: true
+        - number.increment:
+            id: bar_height_2
+            cycle: true
+        - number.increment:
+            id: bar_height_3
+            cycle: true
+        - number.increment:
+            id: bar_height_4
+            cycle: true
+        - number.increment:
+            id: bar_height_5
+            cycle: true
+
+
+        # - if:
+        #     condition:
+        #       - light.is_on: matrix_light
+        #     then:
+        #       - light.turn_off: matrix_light
+        #     else:
+        #       - light.turn_on:
+        #           id: matrix_light
+        #           effect: rainbow
+##############################################################
+#  xxxxx
+##############################################################
+# output:
+#   # pmsx003 reset pin
+#   - platform: gpio
+#     pin: 22
+#     id: reset_pin
+
+# # Serial for pmsx003
+# uart:
+#   baud_rate: 9600
+#   rx_pin: 
+#   tx_pin: 
+
+# sensor:
+#   # Air sensor # https://esphome.io/components/sensor/pmsx003.html
+#   - platform: pmsx003
+#     type: PMS5003T
+#     update_interval: ${PMSX003_sensor_update_interval}
+#     temperature:
+#       name: "Temperature PMS"
+#       device_class: temperature
+#       state_class: measurement
+#       accuracy_decimals: 2
+   
+#     humidity:
+#       name: "Humidity PMS"
+#       device_class: humidity
+#       state_class: measurement
+#       accuracy_decimals: 2
+
+#     # formaldehyde:
+#     #   name: "Formaldehyde Concentration"
+#     #   device_class: volatile_organic_compounds
+#     #   state_class: measurement
+    
+    
+#     # pm_1_0_std:
+
+#     # pm_2_5_std:
+
+#     # pm_10_0_std:
+      
+
+#     pm_1_0:
+#       name: "PM <1.0µm conc"
+#       device_class: "pm1"
+#       state_class: "measurement"
+#     pm_2_5:
+#       name: "PM <2.5µm conc"
+#       device_class: "pm25"
+#       state_class: "measurement"
+#     pm_10_0:
+#       name: "PM <10.0µm conc"
+#       device_class: pm10
+#       state_class: measurement
+
+#     pm_0_3um:
+#       name: "PM <0.3um in 0.1L of air"
+#     pm_0_5um:
+#       name: "PM <0.5um in 0.1L of air"
+#     pm_1_0um:
+#       name: "PM <1.0um in 0.1L of air"
+#     pm_2_5um:
+#       name: "PM <2.5um in 0.1L of air"
+#     # pm_5_0um: # Value is not returned by PMS5003T
+#     #   name: "PM <5.0um in 0.1L of air"
+#     # pm_10_0um: # Value is not returned by PMS5003T
+#     #   name: "PM <10.0um in 0.1L of air"
+    
+
+
+
+
+
+# MATRIX CODE for m5-atom-matrix
+
+
+# NEW
+light:
+  ##############################################################
+  # WS2812C 2020 x 25
+  ##############################################################
+  - platform: neopixelbus
+    type: GRB
+    variant: WS2812
+    pin: 27
+    num_leds: 25
+    name: "5x5 Matrix"
+    id: matrix_light
+    color_correct: [50%, 50%, 50%] # The LED's on the Atom Matrix should not be run at full power
+    restore_mode: ALWAYS_OFF
+
+  # - platform: partition
+  #   name: "Bar 1"
+  #   segments:
+  #     - id: matrix_light
+  #       from: 0
+  #       to: 4
+
+  # - platform: partition
+  #   name: "Bar 2"
+  #   segments:
+  #     - id: matrix_light
+  #       from: 5
+  #       to: 9
+
+  # - platform: partition
+  #   name: "Bar 3"
+  #   segments:
+  #     - id: matrix_light
+  #       from: 10
+  #       to: 14
+
+  # - platform: partition
+  #   name: "Bar 4"
+  #   segments:
+  #     - id: matrix_light
+  #       from: 15
+  #       to: 20
+
+
+display:
+  - platform: addressable_light
+    id: matrix_display
+    addressable_light_id: matrix_light
+    width: 5
+    height: 5
+    rotation: 180
+    update_interval: 16ms
+    lambda: |-
+      // Define colors for the gradient
+      Color start_color = Color(0x00FF00);  // Green
+      Color middle_color = Color(0xFFFF00); // Yellow
+      Color end_color = Color(0xFF0000);    // Red
+
+      // Helper function to draw a single bar
+      auto draw_bar = [&](int x, int bar_height) {
+        for (int y = 0; y < bar_height; y++) {
+          // Calculate the normalized position in the gradient (0.0 to 1.0)
+          float position = float(y) / 5.0;
+
+          // Initialize RGB values for the blended color
+          float r, g, b;
+
+          if (position < 0.5) {
+            // Blend between green and yellow
+            float blend = position * 2.5;
+            r = (1.0 - blend) * start_color.red + blend * middle_color.red;
+            g = (1.0 - blend) * start_color.green + blend * middle_color.green;
+            b = (1.0 - blend) * start_color.blue + blend * middle_color.blue;
+          } else {
+            // Blend between yellow and red
+            float blend = (position - 0.5) * 2.5;
+            r = (1.0 - blend) * middle_color.red + blend * end_color.red;
+            g = (1.0 - blend) * middle_color.green + blend * end_color.green;
+            b = (1.0 - blend) * middle_color.blue + blend * end_color.blue;
+          }
+
+          // Create the blended color
+          Color blended_color = Color(r, g, b);
+
+          // Set the pixel color for the specific bar
+          it.draw_pixel_at(x, y, blended_color);
+        }
+      };
+
+      // Draw each of the 5 bars
+      draw_bar(0, id(bar_height_1).state);  // First bar
+      draw_bar(1, id(bar_height_2).state);  // Second bar
+      draw_bar(2, id(bar_height_3).state);  // Third bar
+      draw_bar(3, id(bar_height_4).state);  // Fourth bar
+      draw_bar(4, id(bar_height_5).state);  // Fifth bar
+
+
+
+
+# green 2, yelow, orabge, red
+      # // Define colors for the gradient
+      # Color start_color = Color(0x00FF00);  // Green
+      # Color middle_color = Color(0xFFFF00); // Yellow
+      # Color end_color = Color(0xFF0000);    // Red
+
+      # // Helper function to draw a single bar
+      # auto draw_bar = [&](int x, int bar_height) {
+      #   for (int y = 0; y < bar_height; y++) {
+      #     // Calculate the normalized position in the gradient (0.0 to 1.0)
+      #     float position = float(y) / 5.0;
+
+      #     // Initialize RGB values for the blended color
+      #     float r, g, b;
+
+      #     if (position < 0.5) {
+      #       // Blend between green and yellow
+      #       float blend = position * 2.5;
+      #       r = (1.0 - blend) * start_color.red + blend * middle_color.red;
+      #       g = (1.0 - blend) * start_color.green + blend * middle_color.green;
+      #       b = (1.0 - blend) * start_color.blue + blend * middle_color.blue;
+      #     } else {
+      #       // Blend between yellow and red
+      #       float blend = (position - 0.5) * 2.5;
+      #       r = (1.0 - blend) * middle_color.red + blend * end_color.red;
+      #       g = (1.0 - blend) * middle_color.green + blend * end_color.green;
+      #       b = (1.0 - blend) * middle_color.blue + blend * end_color.blue;
+      #     }
+
+      #     // Create the blended color
+      #     Color blended_color = Color(r, g, b);
+
+      #     // Set the pixel color for the specific bar
+      #     it.draw_pixel_at(x, y, blended_color);
+      #   }
+      # };
+
+      # // Draw each of the 5 bars
+      # draw_bar(0, id(bar_height_1).state);  // First bar
+      # draw_bar(1, id(bar_height_2).state);  // Second bar
+      # draw_bar(2, id(bar_height_3).state);  // Third bar
+      # draw_bar(3, id(bar_height_4).state);  // Fourth bar
+      # draw_bar(4, id(bar_height_5).state);  // Fifth bar
+
+
+
+
+
+
+
+
+
+# Color red = Color(0xFF0000);
+# Color green = Color(0x00FF00);
+# Color yellow = Color(0xFFFF00);
+# int total_height = id(bar_height_1).state;  // Total bar height
+# // Draw the bar pixel by pixel
+# for (int y = 0; y < total_height; y++) {
+#   if (y < 2) {
+#     // First two pixels: Green
+#     it.draw_pixel_at(0, y, green);
+#   } else if (y < 4) {
+#     // Next two pixels: Yellow
+#     it.draw_pixel_at(0, y, yellow);
+#   } else {
+#     // Last pixel: Red
+#     it.draw_pixel_at(0, y, red);
+#   }
+# }
+
+
+
+
+
+
+
+
+
+
+
+  # - platform: neopixelbus
+  #   type: GRB
+  #   variant: WS2812
+  #   pin: 27
+  #   num_leds: 25
+  #   name: "5x5 Matrix"
+  #   id: matrix_light
+  #   color_correct: [75%, 75%, 75%] # The LED's on the Atom Matrix should not be run at full power
+  #   effects:
+  #     - addressable_rainbow:
+  #         name: rainbow
+  #     - addressable_rainbow:
+  #         name: Rainbow Wide
+  #         speed: 10
+  #         width: 100
+  #     - addressable_rainbow:
+  #         name: Rainbow Fast
+  #         speed: 20
+  #         width: 50
+  #     - addressable_rainbow:
+  #         name: Rainbow Wide and Fast
+  #         speed: 20
+  #         width: 100
+  #     - addressable_rainbow:
+  #         name: Rainbow Wider
+  #         speed: 10
+  #         width: 255
+  #     - addressable_rainbow:
+  #         name: Rainbow Faster
+  #         speed: 40
+  #         width: 50
+  #     - addressable_rainbow:
+  #         name: Rainbow Wider and Faster
+  #         speed: 40
+  #         width: 255
+  #     - addressable_twinkle:
+  #         name: Twinkle
+  #     - addressable_scan:
+  #         name: Scan
+  #     - addressable_random_twinkle:
+  #         name: Random Twinkle
+  #     - addressable_fireworks:
+  #         name: Fireworks
+  #     - addressable_flicker:
+  #         name: Flicker
+
+# display:
+#   - platform: addressable_light
+#     id: led_matrix_display
+#     addressable_light_id: matrix_light
+#     width: 5
+#     height: 5
+#     rotation: 0°
+#     update_interval: 16ms
+#     lambda: |-
+#           // Draw a bulls-eye pattern
+#           Color red = Color(0xFF0000);
+#           Color green = Color(0x00FF00);
+#           Color blue = Color(0x0000FF);
+#           it.rectangle(0, 0, 5, 5, red);
+#           it.rectangle(1, 1, 4, 4, green);
+#           it.rectangle(2, 2, 3, 3, blue);
+#           it.rectangle(4, 4, 4, 4, red);

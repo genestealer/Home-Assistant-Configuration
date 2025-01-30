@@ -527,52 +527,84 @@
   - above: '254'
     entity_id: sensor.myups_input_voltage
     trigger: numeric_state
+    id: high
   - below: '220'
     entity_id: sensor.myups_input_voltage
     trigger: numeric_state
+    id: low
   conditions: []
   actions:
   - choose:
     - conditions:
-      - condition: numeric_state
-        entity_id: sensor.myups_input_voltage
-        below: '220'
+      - condition: trigger
+        id:
+        - low
       sequence:
       - data:
-          title: Electricity Supply Voltage Low
-          message: 'Electricity Voltage Low: {{ states(''sensor.myups_input_voltage'')
+          data:
+            color: white
+            channel: Electricity
+            vibrationPattern: 100,500,100,500,100,500,100,500
+            importance: high
+            visibility: public
+            notification_icon: mdi:lightning-bolt
+            ttl: 0
+            priority: high
+            sticky: 'true'
+          message: 'Electricity Voltage: {{ states(''sensor.myups_input_voltage'')
             }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
             '
+          title: Electricity Voltage Low
         action: notify.mobile_app_rich_mob_app
     - conditions:
-      - condition: numeric_state
-        entity_id: sensor.myups_input_voltage
-        above: '254'
+      - condition: trigger
+        id:
+        - high
       sequence:
       - data:
-          title: Electricity Supply Voltage High
-          message: 'Electricity Voltage High: {{ states(''sensor.myups_input_voltage'')
+          data:
+            color: white
+            channel: Electricity
+            vibrationPattern: 100,500,100,500,100,500,100,500
+            importance: high
+            visibility: public
+            notification_icon: mdi:lightning-bolt
+            ttl: 0
+            priority: high
+            sticky: 'true'
+          message: 'Electricity Voltage: {{ states(''sensor.myups_input_voltage'')
             }} Volts. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
             '
+          title: Electricity Voltage High
         action: notify.mobile_app_rich_mob_app
 - id: '1581770321118'
   alias: 'Notify: UPS is close to being depleted'
   description: Send Notification when UPS is about to shutdown (10 mins left)
-  trigger:
+  triggers:
   - below: 600
     entity_id: sensor.myups_battery_runtime
-    platform: numeric_state
-  condition: []
-  action:
+    trigger: numeric_state
+  conditions: []
+  actions:
   - data:
+      data:
+        color: white
+        channel: Electricity
+        vibrationPattern: 100,500,100,500,100,500,100,500
+        importance: high
+        visibility: public
+        notification_icon: mdi:lightning-bolt
+        ttl: 0
+        priority: high
+        sticky: 'true'
       message: 'UPS is running low: {{ (((states(''sensor.myups_battery_runtime'')
         | int) / 60) | int  )}} minutes left. {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
 
         '
       title: 'WARNING: UPS close to being depleted'
-    service: notify.google_cloud_notify
+    action: notify.mobile_app_rich_mob_app
 - id: '1581773259354'
   alias: Bunny shed status monitor notify
   description: Monitor the health of my gateways
@@ -644,7 +676,7 @@
       state: not_home
   actions:
   - data_template:
-      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+      entity_id: '{{ state_attr(''light.presence_simulation_lights_group'', ''entity_id'')
         | random }}'
     action: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
@@ -662,15 +694,15 @@
     then:
     - data: {}
       target:
-        entity_id: light.presence_simulation_lights
+        entity_id: light.presence_simulation_lights_group
       action: light.turn_off
   - data_template:
-      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+      entity_id: '{{ state_attr(''light.presence_simulation_lights_group'', ''entity_id'')
         | random }}'
     action: light.turn_on
   - delay: 00:{{ (range(10, 30) | random) }}:00
   - data_template:
-      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+      entity_id: '{{ state_attr(''light.presence_simulation_lights_group'', ''entity_id'')
         | random }}'
     action: light.turn_off
   - if:
@@ -688,7 +720,7 @@
     then:
     - data: {}
       target:
-        entity_id: light.presence_simulation_lights
+        entity_id: light.presence_simulation_lights_group
       action: light.turn_off
   - event: event_simulate_presence
   mode: single
@@ -923,130 +955,130 @@
 - id: '1607605238090'
   alias: AutoHotKey - Webhook Driven - Busy Light - Change Busy Light Colours
   description: 'Change an RGB light to signal presence. Ref: https://github.com/ajobbins/AHK-Teams-Presence'
-  trigger:
-  - platform: state
-    entity_id: input_text.autohotkey1
-  condition: []
-  action:
+  triggers:
+  - entity_id: input_text.autohotkey1
+    trigger: state
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Available
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: green
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Busy
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: red
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: On The Phone
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: orange
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: In A Meeting
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: orange
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Do Not Disturb
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: blueviolet
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Focusing
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: blueviolet
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Presenting
       sequence:
-      - service: light.turn_on
-        data:
+      - data:
           color_name: red
           transition: 3
           brightness_pct: 100
         target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
+        action: light.turn_on
     - conditions:
       - condition: state
         entity_id: input_text.autohotkey1
         state: Away
       sequence:
-      - service: light.turn_off
-        target:
+      - target:
           entity_id:
-          - light.busy_light_2
-          - light.busy_light_1
+          - light.busy_light_mk2_2_busy_light
+          - light.busy_light_mk2_1_busy_light
         data:
           transition: 3
+        action: light.turn_off
     default:
-    - service: light.turn_off
-      data:
+    - data:
         transition: 3
       target:
         entity_id:
-        - light.busy_light_2
-        - light.busy_light_1
+        - light.busy_light_mk2_2_busy_light
+        - light.busy_light_mk2_1_busy_light
+      action: light.turn_off
   mode: restart
 - id: '1619906809678'
   alias: Outside Lights - House Number Sign Light Schedule
@@ -1290,7 +1322,7 @@
     conditions:
     - condition: sun
       after: sunset
-      after_offset: 00:30:00
+      after_offset: 00:00:00
       before_offset: -00:30:00
       before: sunrise
     - condition: sun
@@ -1857,30 +1889,6 @@
         target:
           device_id: b34f59aa5f7588a139a9162093de3262
   mode: restart
-- id: '1666971475237'
-  alias: Low battery level detection & notification for all battery sensors [Blueprint]
-  description: 'Updated 2023 10 13
-
-    '
-  use_blueprint:
-    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
-    input:
-      time: '17:00:00'
-      actions:
-      - service: notify.mobile_app_rich_mob_app
-        data:
-          title: Battery Level
-          message: Battery low {{sensors}}
-          data:
-            color: purple
-            channel: Battery
-            notification_icon: mdi:battery-alert-variant-outline
-      - service: persistent_notification.create
-        data:
-          title: Battery Low
-          message: Battery low {{sensors}}
-      threshold: 15
-      day: 6
 - id: '1667140350137'
   alias: Smoke Machine - Lights
   description: ' [Restarts]
@@ -1988,58 +1996,57 @@
     weekday:
     - sun
   actions:
-  - parallel:
-    - device_id: 061f81b04836d8e074d7e2542b21767c
-      domain: climate
-      entity_id: 85fd7edb412d78a913c1bf7147db79a5
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: a46ff2f2479fd7381a267a77a12734ae
-      domain: climate
-      entity_id: 1dc6cd56095c82c66dc458c436527a3d
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: e79922e5a787ed8db81ee253715ea823
-      domain: climate
-      entity_id: 62b634275f68a5e6e82986ad6fe56f13
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: 55d26468639a4f1005742215878de937
-      domain: climate
-      entity_id: 168ee9f59e0b15f8719800c92f16f8c9
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: f694a04cab17376f9ccbb97b67b6365d
-      domain: climate
-      entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
-      domain: climate
-      entity_id: f175045657712af0731ec9edf74b1479
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: d87bf9712abd725b400a815405c374ac
-      domain: climate
-      entity_id: e46f27494a4d65b24c09f340418a9438
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-      domain: climate
-      entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-      enabled: false
-    - device_id: 71e963eadf1071d0f777742a6fbb5cf9
-      domain: climate
-      entity_id: b8a6f7260b91a515810a154c4bb51486
-      type: set_preset_mode
-      preset_mode: Exercise Valve
-    - device_id: a9d1acaaf374a3234065ce3dca7d9f04
-      domain: climate
-      entity_id: c56d5518b41049387e082722202d573b
-      type: set_preset_mode
-      preset_mode: Exercise Valve
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+    enabled: false
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Exercise Valve
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Exercise Valve
   mode: single
 - id: '1689364304362'
   alias: Irrigation Notify When Controllers Goes Offline
@@ -2542,7 +2549,7 @@
         notification_icon: mdi:door
   mode: single
 - id: '1697388186314'
-  alias: Energenie eTRV Error
+  alias: Energenie eTRV Error Handler
   description: ''
   triggers:
   - type: problem
@@ -2659,7 +2666,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: light.presence_simulation_lights
+      entity_id: light.presence_simulation_lights_group
     alias: 'Perform action ''Light: Turn off'' - Do this first in case the automation
       gets restarted'
   - delay:
@@ -2669,7 +2676,7 @@
       milliseconds: 0
     alias: Wait for RF to send commands
   - data_template:
-      entity_id: '{{ state_attr(''light.presence_simulation_lights'', ''entity_id'')
+      entity_id: '{{ state_attr(''light.presence_simulation_lights_group'', ''entity_id'')
         | random }}'
     action: light.turn_on
     alias: 'Light: Turn on - Select light at random from light group'
@@ -2685,12 +2692,12 @@
     metadata: {}
     data: {}
     target:
-      entity_id: light.presence_simulation_lights
+      entity_id: light.presence_simulation_lights_group
   - action: light.turn_off
     metadata: {}
     data: {}
     target:
-      entity_id: light.presence_simulation_lights
+      entity_id: light.presence_simulation_lights_group
     alias: 'Perform action ''Light: Turn off'' - Do this first in case the automation
       gets restarted'
   - delay:
@@ -2726,7 +2733,7 @@
   - event: sunset
     id: close
     trigger: sun
-    offset: +02:00:00
+    offset: +01:00:00
   - domain: mqtt
     device_id: ca61296154562d84a7271001aba10aa5
     type: action
@@ -3306,28 +3313,33 @@
     action: pyscript.check_stock
   mode: single
 - id: '1732218791930'
-  alias: Notify When Medication is In Stock
-  description: This automation monitors the sensor.medication_stock entity, which
+  alias: Notify When Medication is in Stock
+  description: This automation monitors the sensor.adhd_medication_stock entity, which
     is updated by the pyscript.check_stock script. When the sensor state changes to
     on, indicating that medication is available within the specified distance from
     the current location of person.richard, a notification is sent to the user.
   triggers:
   - entity_id:
-    - sensor.medication_stock
-    from: 'off'
+    - sensor.adhd_medication_stock
     to: 'on'
     trigger: state
-    for:
-      hours: 0
-      minutes: 5
-      seconds: 0
   actions:
   - data:
-      title: Medication Available
-      message: 'The following stores have stock: {{ state_attr(''sensor.medication_stock'',
-        ''stores'') | map(attribute=''displayName'') | join('', '') }}
+      data:
+        color: blue
+        channel: ADHD
+        vibrationPattern: 100,500,100,500,100,500,100,500
+        importance: high
+        visibility: public
+        notification_icon: mdi:pill
+        ttl: 0
+        priority: high
+        sticky: 'true'
+      message: 'The following stores have stock: {{ state_attr(''sensor.adhd_medication_stock'',
+        ''stores'') | map(attribute=''displayName'') | join(''. '') }}
 
         '
+      title: ADHD Medication
     action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1732231906963'
@@ -3335,14 +3347,14 @@
   description: Notify if the medication stock check script encounters an error.
   triggers:
   - entity_id:
-    - binary_sensor.medication_check_error
+    - binary_sensor.adhd_medication_check_error
     to: 'on'
     trigger: state
     from: 'off'
   actions:
   - data_template:
       title: Medication Stock Check Error
-      message: 'The stock check script failed with the following error: {{ state_attr(''sensor.medication_stock'',
+      message: 'The stock check script failed with the following error: {{ state_attr(''sensor.adhd_medication_stock'',
         ''error'') }}
 
         '
@@ -3377,4 +3389,145 @@
       temperature: 10
     target:
       device_id: df18efe5cd5bd9cf0330bcf82def7f62
+  mode: single
+- id: '1736544967218'
+  alias: Low battery level detection & notification for all battery sensors [Blueprint]
+  description: ''
+  use_blueprint:
+    path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
+    input:
+      threshold: 15
+      day: 6
+      time: '18:00:00'
+      actions:
+      - data:
+          data:
+            color: purple
+            channel: batteries
+            visibility: public
+            notification_icon: mdi:battery-alert-variant-outline
+            ttl: 0
+            sticky: 'true'
+          message: 'Battery low: {{sensors}}
+
+            '
+          title: Battery Levels Low
+        action: notify.mobile_app_rich_mob_app
+      - data:
+          title: Battery Low
+          message: Battery low {{sensors}}
+        action: persistent_notification.create
+        enabled: false
+- id: '1736703475166'
+  alias: Energenie eTRV Diagnostics Once a Week
+  description: ''
+  triggers:
+  - at: 08:00:00
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+  actions:
+  - device_id: 061f81b04836d8e074d7e2542b21767c
+    domain: climate
+    entity_id: 85fd7edb412d78a913c1bf7147db79a5
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: a46ff2f2479fd7381a267a77a12734ae
+    domain: climate
+    entity_id: 1dc6cd56095c82c66dc458c436527a3d
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: e79922e5a787ed8db81ee253715ea823
+    domain: climate
+    entity_id: 62b634275f68a5e6e82986ad6fe56f13
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: 55d26468639a4f1005742215878de937
+    domain: climate
+    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: f694a04cab17376f9ccbb97b67b6365d
+    domain: climate
+    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+    domain: climate
+    entity_id: f175045657712af0731ec9edf74b1479
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: d87bf9712abd725b400a815405c374ac
+    domain: climate
+    entity_id: e46f27494a4d65b24c09f340418a9438
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
+    domain: climate
+    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+    enabled: false
+  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
+    domain: climate
+    entity_id: b8a6f7260b91a515810a154c4bb51486
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
+    domain: climate
+    entity_id: c56d5518b41049387e082722202d573b
+    type: set_preset_mode
+    preset_mode: Request Diagnostics
+  mode: single
+- id: '1736704010332'
+  alias: Track Heating Boiler State
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - climate.hallway
+    attribute: hvac_action
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: climate.hallway
+        attribute: hvac_action
+        state: heating
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          device_id: c1a95ebc950f2879ad90251c3400caf7
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '1'
+          retain: false
+          topic: energenie/boiler/state
+          payload: 'on'
+    - conditions:
+      - condition: state
+        entity_id: climate.hallway
+        attribute: hvac_action
+        state: idle
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data: {}
+        target:
+          device_id: c1a95ebc950f2879ad90251c3400caf7
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '1'
+          retain: false
+          topic: energenie/boiler/state
+          payload: 'off'
   mode: single

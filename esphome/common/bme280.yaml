@@ -1,0 +1,67 @@
+# Configuration for the BME280 temperature, humidity and pressure sensor
+# https://esphome.io/components/sensor/bme280.html
+# https://esphome.io/cookbook/bme280_environment.html
+#
+# Used substitutions:
+#
+# - i2c_pin_sda: SDA pin of the I²C bus for this sensor
+# - i2c_pin_scl: SCL pin of the I²C bus for this sensor
+# - bme280_i2c_address: I³c address of the sensor
+# - bme280_update_interval: update interval of the sensor
+# - bme280_offset_temperature: offset of the temperature, e.g. "-1" vs setting the Oversampling to x 1
+
+i2c:
+  sda: ${i2c_pin_sda}
+  scl: ${i2c_pin_scl}
+  scan: ${i2c_scan}
+  # id: bus_a
+  frequency: ${i2c_frequency} 
+
+sensor:
+  - platform: bme280_i2c
+    update_interval: ${bme280_update_interval}
+    address: 0x76
+
+    temperature:
+      name: "Temperature"
+      id: bme280_temperature
+      accuracy_decimals: 2
+      oversampling: 2x
+      filters:
+        - offset: ${bme280_offset_temperature}
+    pressure:
+      name: "Pressure"
+      id: bme280_pressure
+      oversampling: 2x
+      accuracy_decimals: 2
+
+    humidity:
+      name: "Humidity"
+      id: bme280_humidity
+      oversampling: 2x
+      accuracy_decimals: 2
+    
+  - platform: template
+    name: "Altitude"
+    lambda: |-
+      const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
+      return ((id(bme280_temperature).state + 273.15) / 0.0065) *
+        (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
+    update_interval: 15s
+    icon: 'mdi:signal'
+    unit_of_measurement: 'm'
+
+  - platform: absolute_humidity
+    name: "Absolute Humidity"
+    temperature: bme280_temperature
+    humidity: bme280_humidity
+    
+  - platform: template
+    name: "Dew Point"
+    lambda: |-
+      return (243.5*(log(id(bme280_humidity).state/100)+((17.67*id(bme280_temperature).state)/
+      (243.5+id(bme280_temperature).state)))/(17.67-log(id(bme280_humidity).state/100)-
+      ((17.67*id(bme280_temperature).state)/(243.5+id(bme280_temperature).state))));
+    unit_of_measurement: °C
+    icon: 'mdi:thermometer-alert'
+

@@ -1,0 +1,113 @@
+# Configuration for the PMS5003T Particulate Matter Sensor
+# https://esphome.io/components/sensor/pmsx003.html
+#
+# Used substitutions:
+#
+# - pmsx003_pin_rx: pin connected to the RX pin of the sensor
+# - pmsx003_pin_tx: pin connected to the TX pin of the sensor
+# - pmsx003_baud_rate: baud rate
+# - pmsx003_reset_pin_num: pin connected to the reset pin of the sensor
+# - pmsx003_update_interval: update interval of the sensor
+#
+# IDs used outside this file:
+# - pm1_0_value_std: PM1.0 standard concentration
+# - pm2_5_value_std: PM2.5 standard concentration
+# - pm10_value_std: PM10 standard concentration
+
+output:
+  # PMSX003 reset pin
+  - platform: gpio
+    pin: ${pmsx003_reset_pin_num}
+    id: pmsx003_reset_pin
+
+
+esphome:
+  # Set the PMSX003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
+  on_boot:
+    - logger.log: "Turn PMSX003 on at boot"
+    - output.turn_on: pmsx003_reset_pin
+    - delay: 3000ms
+    - logger.log: "Resetting PMSX003"
+    - output.turn_off: pmsx003_reset_pin
+    - delay: 1000ms
+    - output.turn_on: pmsx003_reset_pin
+    - logger.log: "PMSX003 Reset"
+
+# Serial for PMSX003
+uart:
+  baud_rate: ${pmsx003_baud_rate}
+  rx_pin: ${pmsx003_pin_rx}
+  tx_pin: ${pmsx003_pin_tx}
+
+
+sensor:
+
+  - platform: pmsx003
+    type: PMS5003T
+    update_interval: ${pmsx003_update_interval}
+    
+    temperature:
+      name: "Temperature PMS"
+      device_class: temperature
+      state_class: measurement
+
+    humidity:
+      name: "Humidity PMS"
+      device_class: humidity
+      state_class: measurement
+      accuracy_decimals: 2
+
+  # PMS5003T has no formaldehyde sensor
+    # formaldehyde:
+    #   name: "Formaldehyde Concentration"
+    #   device_class: volatile_organic_compounds
+    #   state_class: measurement
+    
+    
+    # Use Case: Suitable for comparisons with reference data or air quality indices (like DAQI), as many guidelines use standard conditions for consistency.
+    pm_1_0_std:
+      name: "Conc Std 01.0µm"
+      id: pm1_0_value_std
+      device_class: "pm1"
+      state_class: "measurement"
+    pm_2_5_std:
+      name: "Conc Std 02.5µm"
+      id: pm2_5_value_std
+      device_class: "pm25"
+      state_class: "measurement"
+    pm_10_0_std:
+      name: "Conc Std 10.0µm"
+      id: pm10_value_std
+      device_class: "pm10"
+      state_class: measurement
+
+    # Use Case: Useful for understanding the real-time, local particulate matter levels without adjustments.
+    pm_1_0:
+      name: "Conc 01.0µm"
+      id: pm1_0_value
+      device_class: "pm1"
+      state_class: "measurement"
+    pm_2_5:
+      name: "Conc 02.5µm"
+      id: pm2_5_value
+      device_class: "pm25"
+      state_class: "measurement"
+    pm_10_0:
+      name: "Conc 10.0µm"
+      id: pm10_value
+      device_class: "pm10"
+      state_class: measurement
+
+    pm_0_3um:
+      name: "0.1L air 00.3um"
+    pm_0_5um:
+      name: "0.1L air 00.5um"
+    pm_1_0um:
+      name: "0.1L air  1.0um"
+    pm_2_5um:
+      name: " 0.1L air  2.5um"
+    # pm_5_0um: # Value is not returned by PMS5003T
+    #   name: "PM <5.0um in 0.1L of air"
+    # pm_10_0um: # Value is not returned by PMS5003T
+    #   name: "PM <10.0um in 0.1L of air"
+    

@@ -17,9 +17,7 @@ substitutions:
   # Board Settings
   status_led: LED_RED
   status_led_inverted: "false"
-  platform: ESP8266
-  board: huzzah
-  
+
   # Debug Component
   log_level: DEBUG 
 
@@ -28,14 +26,22 @@ substitutions:
   project_version: "1.1.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/ice-maker.yaml"
   
+##############################################################
+# Platform
+##############################################################
+esp8266:
+  board: huzzah
 
 ##############################################################
 # Shared code from all my projects
 ##############################################################
   
-# Packages
+# Packages 
 packages:
-  device_base: !include device_base.yaml
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+# To remove status_led for a specific device, uncomment the line below:
+# status_led: !remove
 
 dashboard_import:
   package_import_url: ${package_import_url}

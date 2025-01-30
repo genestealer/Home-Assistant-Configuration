@@ -1,72 +1,73 @@
 ##############################################################
-# Richard Huish 2023
+# Richard Huish 2025
 # https://github.com/genestealer/Home-Assistant-Configuration
-# Loft Sensors
+# https://www.home-assistant.io/integrations/bluetooth
+# Office Air Purifier Control
+# Sources: https://github.com/esphome/bluetooth-proxies
 ##############################################################
 # Config Header for Device
 ##############################################################
 substitutions:
   # Names
-  name: loft-sensor-sensor
-  friendly_name: "Loft Sensors"
-  ui_comment: "Loft Sensors" # Only shows in UI.
+  name: bluetooth-proxy
+  friendly_name: "Bluetooth Proxy"
+  ui_comment: "Bluetooth Proxy" # Only shows in UI.
   
   # Wifi Settings
-  ip: 192.168.2.20
+  ip: 192.168.2.53
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
   # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
+  status_led: D0 
   status_led_inverted: "false"
 
+  
   # Debug Component
-  log_level: DEBUG 
+  log_level: DEBUG  
 
   # Project 
-  project_name: "genestealer.loft-sensors"
+  project_name: "Richard.TBD"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/loft-sensors.yaml"
-  
+  package_import_url: "TBD"
+
 ##############################################################
 # Platform
 ##############################################################
-esp8266:
-  board: nodemcuv2
+esp32:
+  board: m5stack-atom
+  framework:
+    type: esp-idf
 
 ##############################################################
 # Import shared code
 ##############################################################
-  
+
 # Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
 # To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+status_led: !remove
 
-esphome:
+# esphome:
 
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false # or true
+# dashboard_import:
+#   package_import_url: ${package_import_url}
+#   import_full_config: false # or true
 
 ##############################################################
 # Main Code
 ##############################################################
 
-sensor:
-# Air Temperature and Humidity Sensor
-  - platform: dht
-    pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
-    temperature:
-      name: Temperature
-      state_class: measurement
-      device_class: temperature
-    humidity:
-      name: Humidity
-      state_class: measurement
-      device_class: humidity
-    update_interval: 300s
-    model: DHT22
 
+    
+esp32_ble_tracker:
+  scan_parameters:
+    # We currently use the defaults to ensure Bluetooth
+    # can co-exist with WiFi In the future we may be able to
+    # enable the built-in coexistence logic in ESP-IDF
+    active: true
+
+bluetooth_proxy:
+  active: true

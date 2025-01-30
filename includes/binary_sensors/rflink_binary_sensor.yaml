@@ -32,3 +32,20 @@
 #       #   - ev1527_01e9f5_07
 #       #   - ev1527_05d797_0e
 
+# # Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
+
+# ############################################################
+# #
+# # RFLink TCP integration Binary Sensor Keep Connection alive
+# # As fix is not working https://github.com/home-assistant/home-assistant.io/pull/16527
+# #
+# ############################################################
+
+# - platform: tcp
+#   name: RFLink Keep Alive TCP
+#   host: !secret RF_Link_IP
+#   port: !secret RF_Link_Port
+#   payload: '10;PING'
+#   value_on: 'pong'
+#   value_template: "{{ value.split(';')[2] }}"
+

@@ -1,231 +1,109 @@
-- id: "1608752142805"
+- id: '1608752142805'
   name: TV Time
   entities:
     light.living_room_ceiling_light:
       supported_color_modes:
-        - onoff
+      - onoff
       friendly_name: Living Room Ceiling Light
       supported_features: 0
-      state: "off"
+      state: 'off'
     light.living_room_sofa_left:
       min_color_temp_kelvin: 2202
       max_color_temp_kelvin: 4000
       min_mireds: 250
       max_mireds: 454
       effect_list:
-        - blink
-        - breathe
-        - okay
-        - channel_change
-        - finish_effect
-        - stop_effect
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
       supported_color_modes:
-        - color_temp
-        - xy
+      - color_temp
+      - xy
       color_mode: color_temp
       brightness: 102
       hs_color:
-        - 28.502
-        - 67.279
+      - 28.502
+      - 67.279
       rgb_color:
-        - 255
-        - 164
-        - 83
+      - 255
+      - 164
+      - 83
       xy_color:
-        - 0.532
-        - 0.387
+      - 0.532
+      - 0.387
       friendly_name: Living Room Sofa Left
       supported_features: 44
       color_temp_kelvin: 2652
       color_temp: 377
-      state: "on"
+      state: 'on'
     light.living_room_sofa_right:
       min_color_temp_kelvin: 2202
       max_color_temp_kelvin: 4000
       min_mireds: 250
       max_mireds: 454
       effect_list:
-        - blink
-        - breathe
-        - okay
-        - channel_change
-        - finish_effect
-        - stop_effect
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
       supported_color_modes:
-        - color_temp
-        - xy
+      - color_temp
+      - xy
       friendly_name: Living Room Sofa Right
       supported_features: 44
       color_mode: color_temp
       brightness: 127
       hs_color:
-        - 28.47
-        - 66.821
+      - 28.47
+      - 66.821
       rgb_color:
-        - 255
-        - 165
-        - 84
+      - 255
+      - 165
+      - 84
       xy_color:
-        - 0.53
-        - 0.388
+      - 0.53
+      - 0.388
       color_temp_kelvin: 2666
       color_temp: 375
-      state: "on"
+      state: 'on'
     light.living_room_cabinets_front:
       effect_list:
-        - blink
-        - breathe
-        - okay
-        - channel_change
-        - finish_effect
-        - stop_effect
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
       supported_color_modes:
-        - brightness
+      - brightness
       friendly_name: Living Room Cabinets Front
       supported_features: 44
       color_mode: brightness
       brightness: 51
-      state: "on"
+      state: 'on'
     light.living_room_cabinets_inside:
       effect_list:
-        - blink
-        - breathe
-        - okay
-        - channel_change
-        - finish_effect
-        - stop_effect
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
       supported_color_modes:
-        - brightness
+      - brightness
       friendly_name: Living Room Cabinets Inside
       supported_features: 44
       color_mode: brightness
       brightness: 38
-      state: "on"
+      state: 'on'
   icon: mdi:television-classic
   metadata: {}
-- id: "1678302175651"
-  name: Midday Heating
-  entities:
-    climate.downstairs_bathroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 16.7
-      temperature: 17
-      icon: mdi:radiator
-      friendly_name: Downstairs Bathroom 3463 Climate Control
-      supported_features: 1
-      state: heat
-    climate.office_3233_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 19.2
-      temperature: 21
-      icon: mdi:radiator
-      friendly_name: Office 3233 Climate Control
-      supported_features: 1
-      state: heat
-    climate.dining_room_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 18.6
-      temperature: 16
-      icon: mdi:radiator
-      friendly_name: Dining Room 4335 Climate Control
-      supported_features: 1
-      state: heat
-    climate.kitchen_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 18.7
-      temperature: 16
-      icon: mdi:radiator
-      friendly_name: Kitchen 4168 Climate Control
-      supported_features: 1
-      state: heat
-    climate.living_room_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 19.2
-      temperature: 20
-      icon: mdi:radiator
-      friendly_name: Living Room 5251 Climate Control
-      supported_features: 1
-      state: heat
-    climate.hall_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 17.9
-      temperature: 14
-      icon: mdi:radiator
-      friendly_name: Hall 5475 Climate Control
-      supported_features: 1
-      state: heat
-    climate.bathroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 17.3
-      temperature: 28
-      icon: mdi:radiator
-      friendly_name: Bathroom 4329 Climate Control
-      supported_features: 1
-      state: heat
-    climate.guest_bedroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 16.7
-      temperature: 14
-      icon: mdi:radiator
-      friendly_name: Guest Bedroom 5993 Climate Control
-      supported_features: 1
-      state: heat
-    climate.bedroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 17.2
-      temperature: 14
-      icon: mdi:radiator
-      friendly_name: Bedroom 5318 Climate Control
-      supported_features: 1
-      state: heat
-  metadata: {}
-  icon: mdi:clock-outline
-- id: "1690503599771"
+- id: '1690503599771'
   name: Bedtime Mode
   entities:
     light.bedroom_lamp_left:
@@ -234,181 +112,59 @@
       min_mireds: 153
       max_mireds: 500
       effect_list:
-        - blink
-        - breathe
-        - okay
-        - channel_change
-        - finish_effect
-        - stop_effect
-        - colorloop
-        - stop_colorloop
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
-        - color_temp
-        - xy
+      - color_temp
+      - xy
       friendly_name: Bedroom Lamp Left
       supported_features: 44
       color_mode: xy
       brightness: 3
       hs_color:
-        - 9.231
-        - 66.275
+      - 9.231
+      - 66.275
       rgb_color:
-        - 255
-        - 112
-        - 86
+      - 255
+      - 112
+      - 86
       xy_color:
-        - 0.589
-        - 0.329
-      state: "on"
+      - 0.589
+      - 0.329
+      state: 'on'
     light.bedroom_lamp_right:
       min_color_temp_kelvin: 2000
       max_color_temp_kelvin: 6535
       min_mireds: 153
       max_mireds: 500
       effect_list:
-        - blink
-        - breathe
-        - okay
-        - channel_change
-        - finish_effect
-        - stop_effect
-        - colorloop
-        - stop_colorloop
+      - blink
+      - breathe
+      - okay
+      - channel_change
+      - finish_effect
+      - stop_effect
+      - colorloop
+      - stop_colorloop
       supported_color_modes:
-        - color_temp
-        - xy
+      - color_temp
+      - xy
       friendly_name: Bedroom Lamp Right
       supported_features: 44
-      state: "off"
+      state: 'off'
     light.192_168_10_21_ceiling:
       supported_color_modes:
-        - onoff
+      - onoff
       color_mode:
       assumed_state: true
       friendly_name: Bedroom Ceiling Light
       supported_features: 0
-      state: "off"
+      state: 'off'
   icon: mdi:bed
   metadata: {}
-- id: "1698951950685"
-  name: Morning Heating
-  entities:
-    climate.downstairs_bathroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 16.7
-      temperature: 17
-      icon: mdi:radiator
-      friendly_name: Downstairs Bathroom 3463 Climate Control
-      supported_features: 1
-      state: heat
-    climate.office_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 19.2
-      temperature: 21
-      icon: mdi:radiator
-      friendly_name: Office 3233 Climate Control
-      supported_features: 1
-      state: heat
-    climate.dining_room_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 18.6
-      temperature: 19
-      icon: mdi:radiator
-      friendly_name: Dining Room 4335 Climate Control
-      supported_features: 1
-      state: heat
-    climate.kitchen_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 18.7
-      temperature: 19
-      icon: mdi:radiator
-      friendly_name: Kitchen 4168 Climate Control
-      supported_features: 1
-      state: heat
-    climate.living_room_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 19.2
-      temperature: 20
-      icon: mdi:radiator
-      friendly_name: Living Room 5251 Climate Control
-      supported_features: 1
-      state: heat
-    climate.hall_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 17.9
-      temperature: 14
-      icon: mdi:radiator
-      friendly_name: Hall 5475 Climate Control
-      supported_features: 1
-      state: heat
-    climate.bathroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 17.3
-      temperature: 28
-      icon: mdi:radiator
-      friendly_name: Bathroom 4329 Climate Control
-      supported_features: 1
-      state: heat
-    climate.guest_bedroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 16.7
-      temperature: 14
-      icon: mdi:radiator
-      friendly_name: Guest Bedroom 5993 Climate Control
-      supported_features: 1
-      state: heat
-    climate.bedroom_radiator:
-      hvac_modes:
-        - heat
-        - "off"
-      min_temp: 5
-      max_temp: 40
-      target_temp_step: 0.5
-      current_temperature: 17.2
-      temperature: 14
-      icon: mdi:radiator
-      friendly_name: Bedroom 5318 Climate Control
-      supported_features: 1
-      state: heat
-  metadata: {}
-  icon: mdi:weather-sunset-up

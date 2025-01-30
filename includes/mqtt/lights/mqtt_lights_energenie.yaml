@@ -19,6 +19,7 @@
   optimistic: true
   state_topic: energenie/ook/87/1/state
   availability_topic: energenie/availability/state
+  icon: mdi:ceiling-light
   device:
     name: "Upstairs Hallway"
     identifiers: "miho009_light_hallway_up"
@@ -40,6 +41,7 @@
   optimistic: true
   state_topic: energenie/ook/87/2/state
   availability_topic: energenie/availability/state
+  icon: mdi:ceiling-light
   device:
     name: "Downstairs Hallway"
     identifiers: "miho009_light_hallway_down"
@@ -96,6 +98,7 @@
   optimistic: true
   state_topic: energenie/ook/88/1/state
   availability_topic: energenie/availability/state
+  icon: mdi:ceiling-light
   device:
     name: "Living Room Ceiling"
     identifiers: "miho008_light_living"
@@ -115,6 +118,7 @@
   optimistic: true
   state_topic: energenie/ook/500/1/state
   availability_topic: energenie/availability/state
+  icon: mdi:ceiling-light
   device:
     name: "Guest Bedroom Ceiling "
     identifiers: "miho008_light_guest_bed"
@@ -134,6 +138,7 @@
   optimistic: true
   state_topic: energenie/ook/600/1/state
   availability_topic: energenie/availability/state
+  icon: mdi:ceiling-light
   device:
     name: "Bedroom Ceiling"
     identifiers: "miho008_light_bedroom"
@@ -153,6 +158,7 @@
   optimistic: true
   state_topic: energenie/ook/697441/4/state
   availability_topic: energenie/availability/state
+  icon: mdi:ceiling-light
   device:
     name: "Fairy Lights"
     identifiers: "miho002_socket3"

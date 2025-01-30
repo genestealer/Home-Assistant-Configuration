@@ -121,7 +121,7 @@ async def check_stock(base_lat=0.0, base_lon=0.0, distance=30):
         # =======================================================================
         has_stock = bool(nearby_stores)  # True if there are any stores with stock
         state.set(
-            "sensor.medication_stock",  # The sensor entity to update
+            "sensor.adhd_medication_stock",  # The sensor entity to update
             "on" if has_stock else "off",  # Set the sensor state
             {
                 "stores": nearby_stores,  # List of stores with stock
@@ -131,7 +131,7 @@ async def check_stock(base_lat=0.0, base_lon=0.0, distance=30):
             },
         )
         # Set binary sensor indicating no error
-        state.set("binary_sensor.medication_check_error", "off")
+        state.set("binary_sensor.adhd_medication_check_error", "off")
         log.debug(f"Sensor updated: {'on' if has_stock else 'off'}")
     
     except Exception as e:
@@ -141,7 +141,7 @@ async def check_stock(base_lat=0.0, base_lon=0.0, distance=30):
         # =======================================================================
         log.error(f"Error checking stock: {e}")
         state.set(
-            "sensor.medication_stock",  # The sensor entity to update
+            "sensor.adhd_medication_stock",  # The sensor entity to update
             "error",  # State indicating an error
             {
                 "error": str(e),  # Log the error message
@@ -151,4 +151,4 @@ async def check_stock(base_lat=0.0, base_lon=0.0, distance=30):
         )
 
         # Set binary sensor indicating an error
-        state.set("binary_sensor.medication_check_error", "on")
+        state.set("binary_sensor.adhd_medication_check_error", "on")

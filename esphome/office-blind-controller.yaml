@@ -22,8 +22,6 @@ substitutions:
   # Board Settings
   status_led: D4
   status_led_inverted: "false"
-  platform: ESP8266
-  board: d1_mini
 
   # Debug Component
   log_level: DEBUG 
@@ -35,12 +33,21 @@ substitutions:
   
 
 ##############################################################
+# Platform
+##############################################################
+esp8266:
+  board: d1_mini
+
+##############################################################
 # Import shared code
 ##############################################################
 
 # Packages 
 packages:
-  device_base: !include device_base.yaml
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+# To remove status_led for a specific device, uncomment the line below:
+# status_led: !remove
 
 dashboard_import:
   package_import_url: ${package_import_url}

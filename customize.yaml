@@ -242,9 +242,9 @@ light.christmas_library_star:
   icon: mdi:star
 sensor.weather_station_battery:
   device_class: battery
-sensor.dkw2012_009e_bat:
+sensor.dkw2012_0045_bat:
   device_class: battery
-sensor.alectov3_30d1_bat:
+sensor.alectov3_00a3_bat:
   device_class: battery
 sensor.local_light_intensity:
   device_class: illuminance

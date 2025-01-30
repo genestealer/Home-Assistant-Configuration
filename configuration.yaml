@@ -196,12 +196,13 @@ mqtt:
   climate: !include_dir_merge_list includes/mqtt/climates/
 
 #################################################
+# RFLink with keep alive fix https://github.com/home-assistant/home-assistant.io/pull/16527
 rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
   wait_for_ack: true
   reconnect_interval: 10 # seconds
-  tcp_keepalive_idle_timer: 600 # seconds
+  tcp_keepalive_idle_timer: 60 # seconds
   ignore_devices:
     - owl_cm113_ead1_current3
     - owl_cm113_ead1_current1
@@ -221,6 +222,7 @@ rflink:
     - light.drayton_*
     - light.btf_*
     - light.v2phoenix*
+    - fineoffset_0000_*
 
 # Define values that can be controlled via the frontend and can be used within conditions of automation
 # Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
@@ -272,6 +274,24 @@ stream:
   # segment_duration: 10
 
 #################################################
+# Device trackers.
+device_tracker:
+#  Google Maps migrated to ha-google-maps https://github.com/pnbruckner/ha-google-maps
+
+# # google_maps - Uses cookie file
+# - platform: google_maps # Elements per day’ to a limit of 645.
+#   username: !secret google_maps_username
+# # - platform: google_maps # Elements per day’ to a limit of 645.
+# #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
+
+# # owntracks
+# - platform: owntracks
+#   max_gps_accuracy: 250
+
+#################################################
+# Bluetooth
+# See bluetooth-proxy-m5stack-atom-lite.yaml
+bluetooth:
 
 ############################################################
 #
@@ -283,8 +303,8 @@ stream:
 # Single Files
 # zone: !include includes/zone.yaml
 shell_command: !include includes/shell_commands.yaml
-automation: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
-script: !include scripts.yaml
+automation ui: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
+script ui: !include scripts.yaml
 
 # Merge List
 # automation old: !include_dir_merge_list includes/automation
@@ -297,7 +317,7 @@ cover: !include_dir_merge_list includes/cover
 template: !include_dir_merge_list includes/template
 
 # Merge named dir
-# script: !include_dir_merge_named includes/scripts
+# script manual: !include_dir_merge_named includes/scripts #https://www.home-assistant.io/docs/configuration/splitting_configuration/#example-combine-include_dir_merge_list-with-automationsyaml
 input_boolean: !include_dir_merge_named includes/input_boolean
 input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
@@ -308,6 +328,9 @@ rest_command: !include_dir_merge_named includes/rest_commands
 
 # https://www.home-assistant.io/integrations/alert/
 alert: !include includes/alert.yaml
+
+# https://www.home-assistant.io/integrations/universal/
+media_player: !include includes/media_player.yaml
 
 scene: !include scenes.yaml
 ###################################################################################################################################################
@@ -322,18 +345,6 @@ scene: !include scenes.yaml
 #     vapid_pub_key: !secret vapid_pub_key
 #     vapid_prv_key: !secret vapid_prv_key
 #     vapid_email: !secret vapid_email
-
-#################################################
-# Device trackers.
-# device_tracker:
-# - platform: owntracks
-#   max_gps_accuracy: 250
-
-# - platform: google_maps # Elements per day’ to a limit of 645.
-#   username: !secret google_maps_username
-# # - platform: google_maps # Elements per day’ to a limit of 645.
-# #   username: !secret google_maps_username2 # Removed second account, due to moving to using the HA Android App
-# # Example configuration.yaml entry
 
 # - platform: ping
 #   hosts:

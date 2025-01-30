@@ -67,42 +67,93 @@ sensor:
       alectov5_00a3_temp:
         sensor_type: uv_intensity
         name: "Local UV Intensity"
+        aliases:
+          - alectov5_30d1_temp
+          - alectov5_0046_temp
 
       alectov5_00a3_rain:
         sensor_type: light_intensity
         name: "Local Light Intensity"
+        aliases:
+          - alectov5_30d1_rain
+          - alectov5_0046_rain
+
+      alectov5_00a3_update_time:
+        sensor_type: timestamp
+        name: "Weather Station Update Time A"
+        aliases:
+          - alectov5_30d1_update_time
+          - alectov5_0046_update_time
 
       alectov5_00a3_bat:
         sensor_type: battery
         name: "Weather Station Battery A"
+        aliases:
+          - alectov5_30d1_bat
+          - alectov5_0046_bat
 
       dkw2012_0045_temp:
         sensor_type: temperature
         name: "Local Outside Temperature"
+        aliases:
+          - dkw2012_007d_temp
+          - dkw2012_00d0_temp
 
       dkw2012_0045_hum:
         sensor_type: humidity
         name: "Local Outside Humidity"
+        aliases:
+          - dkw2012_007d_hum
+          - dkw2012_00d0_hum
 
       dkw2012_0045_winsp:
         sensor_type: windspeed
         name: "Local Wind Speed"
+        aliases:
+          - dkw2012_007d_winsp
+          - dkw2012_00d0_winsp
 
       dkw2012_0045_wings:
         sensor_type: windgusts
         name: "Local Wind Speed Gusts"
+        aliases:
+          - dkw2012_007d_wings
+          - dkw2012_00d0_wings
 
       dkw2012_0045_rain:
         sensor_type: total_rain
         name: "Local Total Rain"
+        aliases:
+          - dkw2012_007d_rain
+          - dkw2012_00d0_rain
 
       dkw2012_0045_windir:
         sensor_type: winddirection
         name: "Local Wind Direction"
+        aliases:
+          - dkw2012_007d_windir
+          - dkw2012_00d0_windir
+
+      dkw2012_0045_wind:
+        sensor_type: winddirection
+        name: "Local Wind Direction"
+        aliases:
+          - dkw2012_007d_wind
+          - dkw2012_00d0_wind
 
       dkw2012_0045_bat:
         sensor_type: battery
         name: "Weather Station Battery B"
+        aliases:
+          - dkw2012_007d_bat
+          - dkw2012_00d0_bat
+
+      dkw2012_0045_update_time:
+        sensor_type: timestamp
+        name: "Weather Station Update Time B"
+        aliases:
+          - dkw2012_007d_update_time
+          - dkw2012_00d0_update_time
 
   # https://github.com/kloggy/HA-Irrigation-Version2
   # https://github.com/kloggy/HA-Irrigation-Version2/issues/44

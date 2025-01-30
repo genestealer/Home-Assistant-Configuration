@@ -114,7 +114,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 148
@@ -122,7 +122,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -131,7 +131,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 255
@@ -139,7 +139,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -148,7 +148,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 148
@@ -156,7 +156,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -165,7 +165,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 255
@@ -173,7 +173,7 @@ saa_alarm_alert_start:
       - 255
       - 0
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
 '1585906019835':
   alias: BusyLight - I'm Free
@@ -184,7 +184,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 148
@@ -192,7 +192,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -201,7 +201,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 255
@@ -209,7 +209,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -218,7 +218,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 148
@@ -226,7 +226,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -235,7 +235,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 255
@@ -243,7 +243,7 @@ saa_alarm_alert_start:
       - 0
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
 '1585906111236':
   alias: BusyLight - I'm Working
@@ -254,7 +254,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 148
@@ -262,7 +262,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -271,7 +271,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 255
@@ -279,7 +279,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -288,7 +288,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 148
@@ -296,7 +296,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
   - delay: 00:00:01
   - data:
@@ -305,7 +305,7 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_1
+    entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_on
   - data:
       brightness: 255
@@ -313,19 +313,19 @@ saa_alarm_alert_start:
       - 255
       - 255
       - 0
-    entity_id: light.busy_light_2
+    entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_on
 '1586361703646':
   alias: BusyLight - I'm Away
   sequence:
-  - entity_id: light.busy_light_1
+  - entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_off
-  - entity_id: light.busy_light_2
+  - entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_off
   - delay: 00:00:06
-  - entity_id: light.busy_light_1
+  - entity_id: light.busy_light_mk2_1_busy_light
     service: light.turn_off
-  - entity_id: light.busy_light_2
+  - entity_id: light.busy_light_mk2_2_busy_light
     service: light.turn_off
 turn_on_then_dim_kitchen_under_counter_lights:
   alias: Dim Kitchen Lights [OLD UNUSED]
@@ -873,16 +873,6 @@ energenie_etrv_set_to_summer_mode:
     metadata: {}
     data: {}
     target:
-      entity_id: script.energenie_etrv_set_reporting_interval_3600
-  - delay:
-      hours: 3
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - action: script.turn_on
-    metadata: {}
-    data: {}
-    target:
       entity_id: script.energenie_etrv_set_low_power_mode_off
   - delay:
       hours: 3
@@ -893,16 +883,21 @@ energenie_etrv_set_to_summer_mode:
     metadata: {}
     data: {}
     target:
-      entity_id: script.energenie_etrv_set_valve_auto
+      entity_id: script.energenie_etrv_set_valve_closed
   - delay:
-      hours: 6
+      hours: 3
       minutes: 0
       seconds: 0
       milliseconds: 0
-  - action: automation.trigger
+  - action: script.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: script.energenie_etrv_set_reporting_interval_3600
+  - action: automation.turn_off
     metadata: {}
     data:
-      skip_condition: true
+      stop_actions: true
     target:
       entity_id: automation.energenie_etrv_calibrate_once_a_week
   description: ''
@@ -917,25 +912,38 @@ energenie_etrv_set_to_winter_mode:
       entity_id:
       - script.energenie_etrv_set_reporting_interval
   - delay:
-      hours: 3
+      hours: 2
       minutes: 0
       seconds: 0
-      milliseconds: 0
   - action: script.turn_on
     metadata: {}
     data: {}
     target:
       entity_id: script.energenie_etrv_set_low_power_mode_on
   - delay:
-      hours: 3
+      hours: 2
       minutes: 0
       seconds: 0
-      milliseconds: 0
   - action: script.turn_on
     metadata: {}
     data: {}
     target:
-      entity_id: script.energenie_etrv_set_valve_closed
+      entity_id: script.energenie_etrv_set_valve_auto
+  - delay:
+      hours: 2
+      minutes: 0
+      seconds: 0
+  - action: automation.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: automation.energenie_etrv_calibrate_once_a_week
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.energenie_etrv_calibrate_once_a_week
   description: ''
   icon: mdi:snowflake
 energenie_etrv_set_valve_heat:
@@ -994,3 +1002,336 @@ energenie_etrv_set_valve_heat:
   mode: single
   icon: mdi:fire
   description: ''
+morning_heating_mode:
+  sequence:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - f694a04cab17376f9ccbb97b67b6365d
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a9d1acaaf374a3234065ce3dca7d9f04
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a46ff2f2479fd7381a267a77a12734ae
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - 55d26468639a4f1005742215878de937
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: 71e963eadf1071d0f777742a6fbb5cf9
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 15
+    target:
+      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 12
+    target:
+      device_id:
+      - d87bf9712abd725b400a815405c374ac
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 12
+    target:
+      device_id:
+      - e79922e5a787ed8db81ee253715ea823
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 23
+    target:
+      device_id: 3b3c00f965b2afd59841bcb492ec5a5f
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 17
+    target:
+      device_id: 061f81b04836d8e074d7e2542b21767c
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  alias: Morning Heating Mode
+  description: 'Cannot use scenes as they send mode and other data not just target
+    temperature '
+evening_heating_mode:
+  sequence:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - f694a04cab17376f9ccbb97b67b6365d
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a9d1acaaf374a3234065ce3dca7d9f04
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a46ff2f2479fd7381a267a77a12734ae
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - 55d26468639a4f1005742215878de937
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: 71e963eadf1071d0f777742a6fbb5cf9
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 22
+    target:
+      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - d87bf9712abd725b400a815405c374ac
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - e79922e5a787ed8db81ee253715ea823
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 3b3c00f965b2afd59841bcb492ec5a5f
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 12
+    target:
+      device_id: 061f81b04836d8e074d7e2542b21767c
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  alias: Evening Heating Mode
+  description: 'Cannot use scenes as they send mode and other data not just target
+    temperature '
+bedtime_heating_mode:
+  sequence:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - f694a04cab17376f9ccbb97b67b6365d
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a9d1acaaf374a3234065ce3dca7d9f04
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 22
+    target:
+      device_id:
+      - a46ff2f2479fd7381a267a77a12734ae
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 20
+    target:
+      device_id:
+      - 55d26468639a4f1005742215878de937
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: 71e963eadf1071d0f777742a6fbb5cf9
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - d87bf9712abd725b400a815405c374ac
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - e79922e5a787ed8db81ee253715ea823
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 3b3c00f965b2afd59841bcb492ec5a5f
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 061f81b04836d8e074d7e2542b21767c
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  alias: Bedtime Heating Mode
+  description: 'Cannot use scenes as they send mode and other data not just target
+    temperature '

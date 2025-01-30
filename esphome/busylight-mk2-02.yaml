@@ -1,51 +1,48 @@
 ##############################################################
-# Richard Huish 2023
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Loft Sensors
-##############################################################
 # Config Header for Device
 ##############################################################
 substitutions:
   # Names
-  name: loft-sensor-sensor
-  friendly_name: "Loft Sensors"
-  ui_comment: "Loft Sensors" # Only shows in UI.
+  name: busy-light-mk2-2
+  friendly_name: "Busy Light 2 Mk2"
+  ui_comment: "Busy Light 2 MK2 and Logitech Z-5500 Speaker Remote" # Only shows in UI.
   
   # Wifi Settings
-  ip: 192.168.2.20
+  ip: 192.168.2.53
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
   # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  # status_led: G27
+  # status_led_inverted: "false"
 
+  
   # Debug Component
   log_level: DEBUG 
 
   # Project 
-  project_name: "genestealer.loft-sensors"
+  project_name: "genestealer.busylight-mk2-02"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/loft-sensors.yaml"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busylight-mk2-02.yaml"
   
+
 ##############################################################
 # Platform
 ##############################################################
-esp8266:
-  board: nodemcuv2
+esp32:
+  board: m5stack-atom
 
 ##############################################################
-# Import shared code
+# Shared code from all my projects
 ##############################################################
-  
+
 # Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
 # To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+status_led: !remove
 
-esphome:
 
 dashboard_import:
   package_import_url: ${package_import_url}
@@ -55,18 +52,29 @@ dashboard_import:
 # Main Code
 ##############################################################
 
-sensor:
-# Air Temperature and Humidity Sensor
-  - platform: dht
-    pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
-    temperature:
-      name: Temperature
-      state_class: measurement
-      device_class: temperature
-    humidity:
-      name: Humidity
-      state_class: measurement
-      device_class: humidity
-    update_interval: 300s
-    model: DHT22
 
+
+output:
+  # Countermeasure to the problem that CH552 applies 4v to GPIO0, thus reducing WiFi sensitivity.
+  # Setting output_high adds a bias of 3.3v and suppresses overvoltage.
+  # From: https://github.com/m5stack/M5Unified/blob/d26d2415f409b664631ff066ceeaffd6a753a4ff/src/M5Unified.cpp#L506
+  - platform: gpio
+    id: wifi_fix_output
+    pin: GPIO0
+
+
+light:
+  - platform: neopixelbus
+    type: GRB
+    variant: SK6812
+    pin: 27
+    num_leds: 1
+    name: "Busy Light"
+    id: busy_light
+ 
+
+i2c:
+  sda: 25
+  scl: 21
+  #scan: true
+  #frequency: 200kHz

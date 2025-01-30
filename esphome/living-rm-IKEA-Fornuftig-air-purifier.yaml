@@ -20,9 +20,7 @@ substitutions:
   # Board Settings
   status_led: D0 # GPIO16 - NodeMCU on-board LED
   status_led_inverted: "false"
-  platform: ESP8266
-  board: nodemcuv2
-  
+
   # Debug Component
   log_level: DEBUG 
 
@@ -36,12 +34,21 @@ substitutions:
   # sensor_update_interval: 5100ms 
 
 ##############################################################
+# Platform
+##############################################################
+esp8266:
+  board: nodemcuv2
+
+##############################################################
 # Import shared code
 ##############################################################
 
-# Packages
+# Packages 
 packages:
-  device_base: !include device_base.yaml
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+# To remove status_led for a specific device, uncomment the line below:
+# status_led: !remove
 
 # esphome:
 
@@ -129,25 +136,25 @@ sensor:
     unit_of_measurement: W
     update_interval: 60s
 
-  # Total daily enery usage for dashboard
-  - platform: total_daily_energy
-    name: 'Energy'
-    id: sensor_total_daily_energy
-    power_id: power_usage
-    unit_of_measurement: 'kWh'
-    icon: mdi:circle-slice-3
-    state_class: total_increasing
-    device_class: energy
-    accuracy_decimals: 4
-    filters:
-      # Multiplication factor from W to kW is 0.001
-      - multiply: 0.001
-
-# Enable time component to reset energy at midnight
-# https://esphome.io/components/time/homeassistant.html
-time:
-  - platform: homeassistant
-    id: homeassistant_time
+  # # Total daily enery usage for dashboard. Note this resets on when firmware is loaded. so pointless.
+  # # Instead: Create a Integral helper and Utility Meter helper in home assistant instead. 
+  # - platform: total_daily_energy
+  #   name: 'Energy'
+  #   id: sensor_total_daily_energy
+  #   power_id: power_usage
+  #   unit_of_measurement: 'kWh'
+  #   icon: mdi:circle-slice-3
+  #   state_class: total_increasing
+  #   device_class: energy
+  #   accuracy_decimals: 4
+  #   filters:
+  #     # Multiplication factor from W to kW is 0.001
+  #     - multiply: 0.001
+# # Enable time component to reset energy at midnight
+# # https://esphome.io/components/time/homeassistant.html
+# time:
+#   - platform: homeassistant
+#     id: homeassistant_time
 
 binary_sensor:
   - platform: template

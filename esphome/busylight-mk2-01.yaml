@@ -1,34 +1,16 @@
-#***************************************************
-#   BusyLight Presence Indicator
-#     Light Component
-#   Richard Huish 2023
-#   I built so my family can know when I'm busy and working in my Home Office.
-#   ESP8266 based with local home-assistant.io GUI with controller with physical buttons and mini display
-#   See busylight_controller.yaml for Controller Component
-#   ----------
-#   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
-#   ----------
-#   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
-#   API: Locally hosted native API component https://esphome.io/components/api.html
-#   OTA updates: https://esphome.io/components/ota.html
-#   ----------
-#   The circuit:
-#     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
-#     Breadboard-friendly RGB Smart NeoPixel https://www.adafruit.com/product/1312
-#     4-channel I2C-safe Bi-directional Logic Level Converter - BSS138 https://www.adafruit.com/product/757
-#     Ping pong ball to diffuse 
-#   Inputs:
-#     BusyLight Presence Indicator Controller via Home Assistant
-#   Outputs:
-#     NeoPixel, via Logic Level Converter as NeoPixel needs 5V and ESP8266 is 3.3V.
+
+# M5Stack Mini Infrared Emitter & Receiver Unit https://shop.m5stack.com/products/ir-unit?
+
+
+
 ##############################################################
 # Config Header for Device
 ##############################################################
 substitutions:
   # Names
-  name: m5-atom-matrix
-  friendly_name: "m5-atom-matrix Busy Light Mk2 - 1"
-  ui_comment: "m5-atom-matrix Busy Light Mk2 -1 " # Only shows in UI.
+  name: busy-light-mk2-1
+  friendly_name: "Busy Light 1 Mk2"
+  ui_comment: "Busy Light 1 MK2 and Logitech Z-5500 Speaker Remote" # Only shows in UI.
   
   # Wifi Settings
   ip: 192.168.2.51
@@ -38,18 +20,22 @@ substitutions:
   # Board Settings
   # status_led: G27
   # status_led_inverted: "false"
-  platform: ESP32
-  board: m5stack-atom
+
   
   # Debug Component
   log_level: DEBUG 
 
   # Project 
-  project_name: "genestealer.xxx"
+  project_name: "genestealer.busylight-mk2-01"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/xxxx.yaml"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busylight-mk2-01.yaml"
   
 
+##############################################################
+# Platform
+##############################################################
+esp32:
+  board: m5stack-atom
 
 ##############################################################
 # Shared code from all my projects
@@ -57,21 +43,21 @@ substitutions:
 
 # Packages 
 packages:
-  device_base: !include device_base.yaml
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+# To remove status_led for a specific device, uncomment the line below:
+status_led: !remove
 
 
-# dashboard_import:
-#   package_import_url: ${package_import_url}
-#   import_full_config: false # or true
+dashboard_import:
+  package_import_url: ${package_import_url}
+  import_full_config: false # or true
 
 ##############################################################
 # Main Code
 ##############################################################
 
 
-
-# Remove an imported item in the package for a specific device:
-status_led: !remove
 
 output:
   # Countermeasure to the problem that CH552 applies 4v to GPIO0, thus reducing WiFi sensitivity.
@@ -82,90 +68,15 @@ output:
     pin: GPIO0
 
 
-binary_sensor:
-  - platform: gpio
-    id: btn1
-    pin:
-      number: 39
-      inverted: true
-    on_click:
-      then:
-        - if:
-            condition:
-              - light.is_on: matrix_light
-            then:
-              - light.turn_off: matrix_light
-            else:
-              - light.turn_on:
-                  id: matrix_light
-                  effect: rainbow
-    
-
-# NEW
 light:
   - platform: neopixelbus
     type: GRB
-    variant: WS2812
+    variant: SK6812
     pin: 27
-    num_leds: 25
-    name: "5x5 Matrix"
-    id: matrix_light
-    color_correct: [75%, 75%, 75%] # The LED's on the Atom Matrix should not be run at full power
-    effects:
-      - addressable_rainbow:
-          name: rainbow
-      - addressable_rainbow:
-          name: Rainbow Wide
-          speed: 10
-          width: 100
-      - addressable_rainbow:
-          name: Rainbow Fast
-          speed: 20
-          width: 50
-      - addressable_rainbow:
-          name: Rainbow Wide and Fast
-          speed: 20
-          width: 100
-      - addressable_rainbow:
-          name: Rainbow Wider
-          speed: 10
-          width: 255
-      - addressable_rainbow:
-          name: Rainbow Faster
-          speed: 40
-          width: 50
-      - addressable_rainbow:
-          name: Rainbow Wider and Faster
-          speed: 40
-          width: 255
-      - addressable_twinkle:
-          name: Twinkle
-      - addressable_scan:
-          name: Scan
-      - addressable_random_twinkle:
-          name: Random Twinkle
-      - addressable_fireworks:
-          name: Fireworks
-      - addressable_flicker:
-          name: Flicker
-
-# display:
-#   - platform: addressable_light
-#     id: led_matrix_display
-#     addressable_light_id: matrix_light
-#     width: 5
-#     height: 5
-#     rotation: 0°
-#     update_interval: 16ms
-#     lambda: |-
-#           // Draw a bulls-eye pattern
-#           Color red = Color(0xFF0000);
-#           Color green = Color(0x00FF00);
-#           Color blue = Color(0x0000FF);
-#           it.rectangle(0, 0, 5, 5, red);
-#           it.rectangle(1, 1, 4, 4, green);
-#           it.rectangle(2, 2, 3, 3, blue);
-#           it.rectangle(4, 4, 4, 4, red);
+    num_leds: 1
+    name: "Busy Light"
+    id: busy_light
+ 
 
 i2c:
   sda: 25
@@ -173,21 +84,276 @@ i2c:
   #scan: true
   #frequency: 200kHz
 
-sensor:
-  - platform: mpu6886
-    address: 0x68
-    accel_x:
-      name: "MPU6886 Accel X"
-    accel_y:
-      name: "MPU6886 Accel Y"
-    accel_z:
-      name: "MPU6886 Accel z"
-    gyro_x:
-      name: "MPU6886 Gyro X"
-    gyro_y:
-      name: "MPU6886 Gyro Y"
-    gyro_z:
-      name: "MPU6886 Gyro z"
-    temperature:
-      name: "MPU6886 Temperature"
-    update_interval: 60s
+
+remote_transmitter:
+  pin: 26 # connector
+  carrier_duty_percent: 50%
+
+
+# In case someone is looking for “new” Logitech Z5500 codes:
+# https://community.home-assistant.io/t/ir-change-in-nec-what-do-i-need-to-do/365840/26?page=2
+
+# 0xF708 address (for all codes!)
+# 0xEF10 power command
+# 0xE51A vol up command
+# 0xF10E vol dn command
+# 0xFA05 test command
+# 0xF50A direct command
+# 0xF40B optical command
+# 0xF30C coax command
+# 0xE21D effect command
+# 0xE01F settings command
+# 0xFC03 sub up command
+# 0xFE01 sub dn command
+# 0xFD02 center up command
+# 0xF906 center dn command
+# 0xFF00 surround up command
+# 0xFB04 surround dn command
+# 0xE916 mute command
+
+
+  
+button:
+
+          
+  - platform: template
+    name: "Power"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xEF10'
+          repeat:
+            times: 1
+
+  - platform: template
+    name: "Volume Up"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xE51A'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Volume Down"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xF10E'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Test"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xFA05'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Direct Input"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xF50A'
+          repeat:
+            times: 1
+
+
+  - platform: template
+    name: "Optical Input"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xF40B'
+          repeat:
+            times: 1 
+
+
+  - platform: template
+    name: "Coax Input"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xF30C'
+          repeat:
+            times: 1
+
+  - platform: template
+    name: "Effects"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xE21D'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Settings"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xE01F'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Subwoofer Up"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xFC03'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Subwoofer Down"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xFE01'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Center Up"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xFD02'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Center Down"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xF906'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Surround Up"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xFF00'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Surround Down"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xFB04'
+          repeat:
+            times: 1 
+
+  - platform: template
+    name: "Mute"
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: '0xF708'
+          command: '0xE916'
+          repeat:
+            times: 1 
+
+
+
+# MATRIX CODE for m5-atom-matrix
+
+
+# # NEW
+# light:
+#   - platform: neopixelbus
+#     type: GRB
+#     variant: WS2812
+#     pin: 27
+#     num_leds: 25
+#     name: "5x5 Matrix"
+#     id: matrix_light
+#     color_correct: [75%, 75%, 75%] # The LED's on the Atom Matrix should not be run at full power
+#     effects:
+#       - addressable_rainbow:
+#           name: rainbow
+#       - addressable_rainbow:
+#           name: Rainbow Wide
+#           speed: 10
+#           width: 100
+#       - addressable_rainbow:
+#           name: Rainbow Fast
+#           speed: 20
+#           width: 50
+#       - addressable_rainbow:
+#           name: Rainbow Wide and Fast
+#           speed: 20
+#           width: 100
+#       - addressable_rainbow:
+#           name: Rainbow Wider
+#           speed: 10
+#           width: 255
+#       - addressable_rainbow:
+#           name: Rainbow Faster
+#           speed: 40
+#           width: 50
+#       - addressable_rainbow:
+#           name: Rainbow Wider and Faster
+#           speed: 40
+#           width: 255
+#       - addressable_twinkle:
+#           name: Twinkle
+#       - addressable_scan:
+#           name: Scan
+#       - addressable_random_twinkle:
+#           name: Random Twinkle
+#       - addressable_fireworks:
+#           name: Fireworks
+#       - addressable_flicker:
+#           name: Flicker
+
+# # display:
+# #   - platform: addressable_light
+# #     id: led_matrix_display
+# #     addressable_light_id: matrix_light
+# #     width: 5
+# #     height: 5
+# #     rotation: 0°
+# #     update_interval: 16ms
+# #     lambda: |-
+# #           // Draw a bulls-eye pattern
+# #           Color red = Color(0xFF0000);
+# #           Color green = Color(0x00FF00);
+# #           Color blue = Color(0x0000FF);
+# #           it.rectangle(0, 0, 5, 5, red);
+# #           it.rectangle(1, 1, 4, 4, green);
+# #           it.rectangle(2, 2, 3, 3, blue);
+# #           it.rectangle(4, 4, 4, 4, red);
+
+# i2c:
+#   sda: 25
+#   scl: 21
+#   #scan: true
+#   #frequency: 200kHz
+
+# sensor:
+#   - platform: mpu6886
+#     address: 0x68
+#     accel_x:
+#       name: "MPU6886 Accel X"
+#     accel_y:
+#       name: "MPU6886 Accel Y"
+#     accel_z:
+#       name: "MPU6886 Accel z"
+#     gyro_x:
+#       name: "MPU6886 Gyro X"
+#     gyro_y:
+#       name: "MPU6886 Gyro Y"
+#     gyro_z:
+#       name: "MPU6886 Gyro z"
+#     temperature:
+#       name: "MPU6886 Temperature"
+#     update_interval: 60s

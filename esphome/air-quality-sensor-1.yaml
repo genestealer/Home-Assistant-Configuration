@@ -20,10 +20,8 @@ substitutions:
   subnet: 255.255.255.0
 
   # Board Settings
-  status_led: GPIO16 # NodeMCU on-board LED
+  status_led: D0 # GPIO16 - NodeMCU on-board LED
   status_led_inverted: "false"
-  platform: ESP8266
-  board: nodemcuv2
 
   # Debug Component
   log_level: DEBUG 
@@ -33,168 +31,61 @@ substitutions:
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-quality-sensor-1.yaml"
   
+# These are the DAQI threshold values and messages. Adapt to your needs.
+  daqi_pm2_5_avg_24h_max_good: "35"
+  daqi_pm2_5_avg_24h_max_acceptable: "53" 
+  daqi_pm2_5_avg_24h_max_bad: "70"  
+  daqi_pm10_avg_24h_max_good: "50"
+  daqi_pm10_avg_24h_max_acceptable: "75"  
+  daqi_pm10_avg_24h_max_bad: "100" 
+  daqi_message_good: "Good"
+  daqi_message_acceptable: "Acceptable"
+  daqi_message_bad: "Bad"
+  daqi_message_verybad: "Very Bad"
+
+  # bme280
+  i2c_pin_scl: D1
+  i2c_pin_sda: D2
+  i2c_scan: "true"
+  i2c_frequency: 400kHz
+  bme280_i2c_address: "0x76"
+  bme280_update_interval: 60s 
+  bme280_offset_temperature: "-1"  # - bme280_offset_temperature: offset of the temperature, e.g. "-1" vs setting the Oversampling to x 1
+
   # PMSX003 Air Sensor Settings
-  sensor_update_interval: 150000ms # 2.5 mins
-  # If > 30 seconds, and  tx_pin is set in the UART configuration, the fan will be spun down between measurements.
-  
+  # If > 30 seconds, and tx_pin is set in the UART configuration, the fan will be spun down between measurements.
+  pmsx003_update_interval: 60s
+  pmsx003_pin_rx: D6 #GPIO 12 on nodemcuv2
+  pmsx003_pin_tx: D5 #GPIO 14 on nodemcuv2
+  pmsx003_baud_rate: "9600"
+  pmsx003_reset_pin_num: D7 # GPIO13 on nodemcuv2
+  pmsx003_type: PMS5003T
+
+##############################################################
+# Platform
+##############################################################
+esp8266:
+  board: nodemcuv2
+
 ##############################################################
 # Import shared code
 ##############################################################
 
 # Packages 
 packages:
-  device_base: !include device_base.yaml
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+  # # To remove status_led for a specific device:
+  # status_led: !remove
+  bme280: !include common/bme280.yaml
+  pms5003t: !include common/pms5003t.yaml
+  daqi: !include common/daqi.yaml
+
 
 dashboard_import:
   package_import_url: ${package_import_url}
   import_full_config: false # or true
 
-esphome:
-  # Set the pmsx003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
-  on_boot:
-    - logger.log: "Turn pmsx003 on at boot"
-    - output.turn_on: reset_pin
-    - delay: 3000ms
-    - logger.log: "Resetting pmsx003"
-    - output.turn_off: reset_pin
-    - delay: 1000ms
-    - output.turn_on: reset_pin
-    - logger.log: "pmsx003 Reset"
-
-# # Wifi Details
-# wifi:
-#   networks:
-#     - bssid: "1A:49:BC:5C:80:16"
-
-# # Wifi Details
-# wifi:
-#   ssid: !secret IoT_VLAN_SSID
-#   password: !secret IoT_VLAN_SSID_Key
-#   bssid: 1A:49:BC:5C:80:16
 ##############################################################
 # Main Code
 ##############################################################
-
-i2c:
-  scl: D1
-  sda: D2
-  scan: true
-  # id: bus_a
-  # frequency: 400kHz 
-
-output:
-  # pmsx003 reset pin
-  - platform: gpio
-    pin: D7 # GPIO13 on nodemcuv2
-    id: reset_pin
-
-# Serial for pmsx003
-uart:
-  baud_rate: 9600
-  rx_pin: D6 #GPIO 12 on nodemcuv2
-  tx_pin: D5 #GPIO 14 on nodemcuv2
-
-sensor:
-  # Air sensor # https://esphome.io/components/sensor/pmsx003.html
-  - platform: pmsx003
-    type: PMS5003T
-    update_interval: ${sensor_update_interval}
-    temperature:
-      name: "Temperature PMS"
-      device_class: temperature
-      state_class: measurement
-      accuracy_decimals: 2
-   
-    humidity:
-      name: "Humidity PMS"
-      device_class: humidity
-      state_class: measurement
-      accuracy_decimals: 2
-
-    # formaldehyde:
-    #   name: "Formaldehyde Concentration"
-    #   device_class: volatile_organic_compounds
-    #   state_class: measurement
-    
-    
-    # pm_1_0_std:
-
-    # pm_2_5_std:
-
-    # pm_10_0_std:
-      
-
-    pm_1_0:
-      name: "PM <1.0µm conc"
-      device_class: "pm1"
-      state_class: "measurement"
-    pm_2_5:
-      name: "PM <2.5µm conc"
-      device_class: "pm25"
-      state_class: "measurement"
-    pm_10_0:
-      name: "PM <10.0µm conc"
-      device_class: pm10
-      state_class: measurement
-
-    pm_0_3um:
-      name: "PM <0.3um in 0.1L of air"
-    pm_0_5um:
-      name: "PM <0.5um in 0.1L of air"
-    pm_1_0um:
-      name: "PM <1.0um in 0.1L of air"
-    pm_2_5um:
-      name: "PM <2.5um in 0.1L of air"
-    # pm_5_0um: # Value is not returned by PMS5003T
-    #   name: "PM <5.0um in 0.1L of air"
-    # pm_10_0um: # Value is not returned by PMS5003T
-    #   name: "PM <10.0um in 0.1L of air"
-    
-
-
-
-
-
-  - platform: bme280_i2c
-    update_interval: ${sensor_update_interval}
-    address: 0x76
-
-    temperature:
-      name: "Temperature"
-      oversampling: 16x
-      id: bme280_temperature
-      accuracy_decimals: 2
-
-    pressure:
-      name: "Pressure"
-      id: bme280_pressure
-      accuracy_decimals: 2
-
-    humidity:
-      name: "Humidity"
-      id: bme280_humidity
-      accuracy_decimals: 2
-    
-  - platform: template
-    name: "Altitude"
-    lambda: |-
-      const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
-      return ((id(bme280_temperature).state + 273.15) / 0.0065) *
-        (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
-    update_interval: 15s
-    icon: 'mdi:signal'
-    unit_of_measurement: 'm'
-
-  - platform: absolute_humidity
-    name: "Absolute Humidity"
-    temperature: bme280_temperature
-    humidity: bme280_humidity
-    
-  - platform: template
-    name: "Dew Point"
-    lambda: |-
-      return (243.5*(log(id(bme280_humidity).state/100)+((17.67*id(bme280_temperature).state)/
-      (243.5+id(bme280_temperature).state)))/(17.67-log(id(bme280_humidity).state/100)-
-      ((17.67*id(bme280_temperature).state)/(243.5+id(bme280_temperature).state))));
-    unit_of_measurement: °C
-    icon: 'mdi:thermometer-alert'

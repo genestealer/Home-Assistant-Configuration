@@ -1,0 +1,47 @@
+# ############################################################
+# #
+# # Universal media player
+# #
+# ############################################################
+
+# platform: universal
+# name: Living Room Speakers
+
+# commands:
+#   turn_on:
+#     action: button.press
+#     target:
+#       entity_id: button.busy_light_mk2_1_power
+#   turn_off:
+#     action: button.press
+#     target:
+#       entity_id: button.busy_light_mk2_1_power
+#   volume_up:
+#     action: button.press
+#     target:
+#       entity_id: button.busy_light_mk2_1_volume_up
+#   volume_down:
+#     action: button.press
+#     target:
+#       entity_id: button.busy_light_mk2_1_volume_down
+#   volume_mute:
+#     action: button.press
+#     target:
+#       entity_id: button.busy_light_mk2_1_mute
+#   # media_play:
+#   #   action: SERVICE
+#   #   data: SERVICE_DATA
+#   # media_pause:
+#   #   action: SERVICE
+#   #   data: SERVICE_DATA
+#   # media_previous_track:
+#   #   action: SERVICE
+#   #   data: SERVICE_DATA
+#   # media_next_track:
+#   #   action: SERVICE
+#   #   data: SERVICE_DATA
+# # attributes:
+# #   is_volume_muted: ENTITY_ID|ATTRIBUTE
+# #   state: ENTITY_ID|ATTRIBUTE
+# device_class: speaker
+# unique_id: living_room_speakers

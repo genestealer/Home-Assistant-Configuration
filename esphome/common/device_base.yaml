@@ -1,0 +1,115 @@
+##############################################################
+# ESPHome Device Base
+#
+# Common
+#
+##############################################################
+
+
+
+# ESP Home
+esphome:
+  name: ${name}
+  comment: ${ui_comment}
+
+# Old-style platform options, which have been moved to the platform-specific esp32 and esp8266 sections 
+#   platform: ${platform}
+#   board: ${board}
+
+
+  # build_path: ./build/${name}
+  # Friendly names are used where appropriate in Home Assistant
+  friendly_name: "${friendly_name}"
+  # # Automatically add the mac address to the name
+  # # so you can use a single firmware for all devices
+  # name_add_mac_suffix: true
+  project:
+    name: ${project_name}
+    version: ${project_version}
+
+# Enable logging
+logger:
+  level: ${log_level}
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret esphome_api_encryption_key
+  reboot_timeout: 1h
+
+# Enable over the air updates
+ota:
+  password: !secret esphome_ota_pass
+  platform: esphome
+
+#Safe mode https://esphome.io/components/safe_mode
+safe_mode:
+  boot_is_good_after: 2min
+  reboot_timeout: 10min
+  num_attempts: 5
+
+##################################
+# Status LED
+##################################
+# Status LED for connection
+status_led:
+  pin:
+    number: ${status_led}
+    inverted: ${status_led_inverted}
+
+
+
+##################################
+# Buttons
+##################################
+# The restart button restarts the node remotely through Home Assistant.
+button:
+  - platform: restart
+    name: "Restart"
+    device_class: Restart
+
+
+##################################
+# Binary Sensors
+##################################
+binary_sensor:
+  # Device avaliablity
+  - platform: status
+    name: Status
+    device_class: connectivity
+
+##################################
+# Text Sensors
+##################################
+text_sensor:
+  # Wifi Data
+  - platform: wifi_info
+    ip_address:
+      name: IP
+      icon: "mdi:ip-network-outline"
+    mac_address:
+      name: MAC
+      icon: "mdi:access-point-network"
+    ssid:
+      name: SSID
+      icon: "mdi:help-network-outline"
+    bssid:
+      name: BSSID
+      icon: "mdi:access-point-network"
+
+##################################
+# Sensors
+##################################
+sensor:
+  # Up-time
+  - platform: uptime  
+    name: Uptime  
+    update_interval: 5min
+    state_class: measurement
+    device_class: duration
+    filters:
+      - lambda: return x / 3600.0;
+    unit_of_measurement: "hours"
+    accuracy_decimals: 2
+    id: uptime_s
+    entity_category: "diagnostic"
