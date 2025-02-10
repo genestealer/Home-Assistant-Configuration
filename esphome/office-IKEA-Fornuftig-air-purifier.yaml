@@ -1,114 +1,136 @@
 ##############################################################
-# Richard Huish 2024
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Office Air Purifier Control
-# Sources: https://community.home-assistant.io/t/ikea-fornuftig-in-home-assistant/318341/32
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - IKEA FORNÜFTIG Air Purifier Control
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration allows control of an IKEA FORNÜFTIG Air Purifier 
+# using an ESP8266 (NodeMCU v2) while retaining the original PCB.
+#
+# ✅ Fan speed control (OFF, Low, Medium, High)
+# ✅ Monitoring filter status via LED detection (ADC input)
+# ✅ Measuring power consumption per fan speed
+# ✅ Integration with Home Assistant for remote control
+# ✅ Can be powered from the purifier’s 24V DC supply via a DC-DC step-down module
+#
 ##############################################################
-# Config Header for Device
+# 🔩 HARDWARE
 ##############################################################
+# Main Components:
+# - ESP8266 (NodeMCU v2) - Wi-Fi microcontroller
+# - IKEA FORNÜFTIG Air Purifier (Factory PCB retained)
+# - DC-DC Step-Down Converter (e.g., LM2596 / Mini-360)
+#   - Steps down the IKEA purifier’s 24V DC to 3.3V (or 5V for VIN pin)
+#   - Connects to the ESP8266 for power supply
+# - Analog-to-Digital Converter (ADC) for filter LED monitoring
+# - GPIO-based fan control using relays or direct switching
+#
+##############################################################
+# 🛠 WIRING & PCB MODIFICATIONS
+##############################################################
+# Powering the ESP8266:
+# - The IKEA FORNÜFTIG air purifier operates at 24V DC.
+# - Use a DC-DC converter to step down 24V to 3.3V (or 5V for VIN pin on the ESP8266).
+#
+# Rotary Switch (Manual Control) Modifications:
+# - Cut the 5 pins connecting the rotary switch to the PCB.
+# - The ESP8266 will read manual switch positions while overriding fan speed control.
+#
+# Connections to ESP8266:
+# - Filter LED Detection (ADC Input):
+#   - A0 → Positive side of the IKEA filter LED
+#
+# - Fan Speed Outputs (ESP to IKEA PCB):
+#   - D2 → High Speed (PCB Pin 2)
+#   - D3 → Medium Speed (PCB Pin 3)
+#   - D4 → Low Speed (PCB Pin 4)
+#
+# - Rotary Switch Inputs (Manual Mode from User):
+#   - D1 → Off Position
+#   - D5 → Low Speed
+#   - D6 → Medium Speed
+#   - D7 → High Speed
+#
+# - GND Connections:
+#   - Two end pins of the rotary switch → ESP GND
+#
+# This allows both manual control and ESPHome automation!
+#
+##############################################################
+
+# 🔄 Substitutions for Easy Configuration
 substitutions:
-  # Names
+  # 📛 Naming
   name: office-air-purifier
-  friendly_name: Office FORNÜFTIG Air Purifier
-  ui_comment: "Ikea FORNÜFTIG Air Purifier" # Only shows in UI.
-  
-  # Wifi Settings
+  friendly_name: "Office FORNÜFTIG Air Purifier"
+  ui_comment: "IKEA FORNÜFTIG Air Purifier Control"
+
+  # 🌐 Network Configuration (Static IP)
   ip: 192.168.2.49
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  # 🔴 Status LED Configuration
+  status_led: D0  # GPIO16 - NodeMCU onboard LED
+  status_led_inverted: "true"
 
-  # Debug Component
-  log_level: DEBUG 
+  # 🛠 Debug Logging Level
+  log_level: DEBUG
 
-  # Project 
+  # 📦 Project Metadata
   project_name: "genestealer.IKEA-Fornuftig-air-purifier"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/office-IKEA-Fornuftig-air-purifier.yaml"
 
-  # sensor_update_interval: 300000ms #5 mins
-  sensor_update_interval: 150000ms #2.5 mins
-  # sensor_update_interval: 5100ms 
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 60s 
 
 ##############################################################
-# Platform
+# 🚀 ESP8266 Board Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# Import shared code
+# 🔗 Import Shared Code (Common Components)
 ##############################################################
-
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-# To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+  # Uncomment below to remove the status LED:
+  # status_led: !remove
 
-# esphome:
-
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
+  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# Main Code
+# 🏠 Home Assistant Integration
 ##############################################################
-
 esphome:
   on_boot:
     priority: -100.0
     then:
-     if:
-        condition:
-          lambda: 'return id(fan_internal).speed == 3;'
-        then:
-          - sensor.template.publish:
-              id: power_usage
-              state: 15
-        else:
-          - if:
-              condition:
-                lambda: 'return id(fan_internal).speed == 2;'
-              then:
-                - sensor.template.publish:
-                    id: power_usage
-                    state: 6.5
-              else:
-                - if:
-                    condition:
-                      lambda: 'return id(fan_internal).speed == 1;'
-                    then:
-                      - sensor.template.publish:
-                          id: power_usage
-                          state: 1.5
-                    else:
-                      - sensor.template.publish:
-                          id: power_usage
-                          state: 0.5
+      - lambda: |-
+          float power = 0.5;  // Default power usage when fan is off
+          if (id(fan_internal).speed == 1) power = 1.5;
+          else if (id(fan_internal).speed == 2) power = 6.5;
+          else if (id(fan_internal).speed == 3) power = 15;
+          id(power_usage).publish_state(power);
 
-
-# Enable logging
-logger:
-  logs:
-      # Make adc input less verbose
-      adc: INFO
-
-
-
+##############################################################
+# 🌡️ Sensor Configuration (Filter Status & Power Usage)
+##############################################################
 sensor:
-  # Read LED from adc input 10 times per second
+  # 🏷️ Filter LED Status (Detects when filter needs changing)
   - platform: adc
     pin: A0
     internal: true
     id: led_internal
-    update_interval: 100ms
+    update_interval: ${sensor_update_interval}
     accuracy_decimals: 1
+    samples: 10
     filters:
       - delta: 0.1
     on_value:
@@ -124,45 +146,55 @@ sensor:
               id: led_sensor
               state: ON
 
-              
+  # ⚡ Power Consumption Based on Fan Speed
   - platform: template
-    name: Power Usage
+    name: "Power Usage"
     id: power_usage
     device_class: power
     state_class: measurement
     unit_of_measurement: W
+    update_interval: ${sensor_update_interval}
 
-  # # Total daily enery usage for dashboard. Note this resets on when firmware is loaded. so pointless.
-  # # Instead: Create a Integral helper and Utility Meter helper in home assistant instead. 
-  # - platform: total_daily_energy
-  #   name: 'Energy'
-  #   id: sensor_total_daily_energy
-  #   power_id: power_usage
-  #   unit_of_measurement: 'kWh'
-  #   icon: mdi:circle-slice-3
-  #   state_class: total_increasing
-  #   device_class: energy
-  #   accuracy_decimals: 4
-  #   filters:
-  #     # Multiplication factor from W to kW is 0.001
-  #     - multiply: 0.001
+  # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # Create a Utility Meter in Home Assistant and ensure periodic resetting is enabled
+  # This value resets on ESP reboot and at midnight.
+  - platform: total_daily_energy
+    name: 'Air Purifier Energy Today'
+    id: sensor_total_daily_energy
+    power_id: power_usage
+    unit_of_measurement: 'kWh'
+    icon: mdi:circle-slice-3
+    state_class: total_increasing
+    device_class: energy
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${sensor_update_interval}  # Limit update rate
+      - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
+      - delta: 0.01  # Only update if energy changes by 0.01 kWh (10W)
+      - heartbeat: ${sensor_update_interval}  # Ensure at least one update per interval
 
-# # Enable time component to reset energy at midnight
-# # https://esphome.io/components/time/homeassistant.html
-# time:
-#   - platform: homeassistant
-#     id: homeassistant_time
+##############################################################
+# ⏳ Time Component (Used for Resetting Energy Meter at Midnight)
+##############################################################
+time:
+  - platform: homeassistant
+    id: homeassistant_time  # Sync time with HA for accurate resets
 
-
+##############################################################
+# 🚪 Binary Sensors (Filter Status & Fan Speed Buttons)
+##############################################################
 binary_sensor:
+  # 🚨 Filter Status LED
   - platform: template
     id: led_sensor
-    name: "Filter"
+    name: "Filter Status"
     device_class: problem
+
+  # 🛠 Fan Control Dial (Reads Physical Rotary Positions)
   - platform: gpio
     internal: true
     id: in_d1
-    name: "D1"
+    name: "Fan Off"
     pin:
       number: D1
       mode: INPUT_PULLUP
@@ -170,10 +202,11 @@ binary_sensor:
     on_press:
       - fan.turn_off:
           id: fan_internal
+
   - platform: gpio
     internal: true
     id: in_d5
-    name: "D5"
+    name: "Fan Low Speed"
     pin:
       number: D5
       mode: INPUT_PULLUP
@@ -182,10 +215,11 @@ binary_sensor:
       - fan.turn_on:
           id: fan_internal
           speed: 1
+
   - platform: gpio
     internal: true
     id: in_d6
-    name: "D6"
+    name: "Fan Medium Speed"
     pin:
       number: D6
       mode: INPUT_PULLUP
@@ -194,10 +228,11 @@ binary_sensor:
       - fan.turn_on:
           id: fan_internal
           speed: 2
+
   - platform: gpio
     internal: true
     id: in_d7
-    name: "D7"
+    name: "Fan High Speed"
     pin:
       number: D7
       mode: INPUT_PULLUP
@@ -207,67 +242,59 @@ binary_sensor:
           id: fan_internal
           speed: 3
 
+##############################################################
+# ⚙️ Fan Speed Control Outputs (ESP Overrides Rotary Switch)
+##############################################################
 output:
   - platform: gpio
     pin: D2
     id: gpio_d2
     inverted: true
+    
   - platform: gpio
     pin: D3
     id: gpio_d3
     inverted: true
+
   - platform: gpio
     pin: D4
     id: gpio_d4
     inverted: true
+
   - platform: template
     id: fan_out_internal
     type: float
     write_action:
-      if:
-        condition:
-          lambda: 'return state < 0.1;'
-        then:
-          - output.turn_off: gpio_d4
-          - output.turn_off: gpio_d3
-          - output.turn_off: gpio_d2
-          - sensor.template.publish:
-              id: power_usage
-              state: 0.5
-        else:
-          - if:
-              condition:
-                lambda: 'return state < 0.4;'
-              then:
-                - output.turn_on:  gpio_d4
-                - output.turn_off: gpio_d3
-                - output.turn_off: gpio_d2
-                - sensor.template.publish:
-                    id: power_usage
-                    state: 1.5
-              else:
-                - if:
-                    condition:
-                      lambda: 'return state < 0.7;'
-                    then:
-                      - output.turn_off: gpio_d4
-                      - output.turn_on:  gpio_d3
-                      - output.turn_off: gpio_d2
-                      - sensor.template.publish:
-                          id: power_usage
-                          state: 6.5
-                    else:
-                      - output.turn_off: gpio_d4
-                      - output.turn_off: gpio_d3
-                      - output.turn_on:  gpio_d2
-                      - sensor.template.publish:
-                          id: power_usage
-                          state: 15
+      - lambda: |-
+          if (state < 0.1) {
+            id(gpio_d2).turn_off();
+            id(gpio_d3).turn_off();
+            id(gpio_d4).turn_off();
+            id(power_usage).publish_state(0.5);
+          } else if (state < 0.4) {
+            id(gpio_d4).turn_on();
+            id(gpio_d3).turn_off();
+            id(gpio_d2).turn_off();
+            id(power_usage).publish_state(1.5);
+          } else if (state < 0.7) {
+            id(gpio_d4).turn_off();
+            id(gpio_d3).turn_on();
+            id(gpio_d2).turn_off();
+            id(power_usage).publish_state(6.5);
+          } else {
+            id(gpio_d4).turn_off();
+            id(gpio_d3).turn_off();
+            id(gpio_d2).turn_on();
+            id(power_usage).publish_state(15);
+          }
 
+##############################################################
+# 🌬️ Fan Component
+##############################################################
 fan:
   - platform: speed
     output: fan_out_internal
     id: fan_internal
-    name: "Fan"
+    name: "Air Purifier Fan"
     speed_count: 3
-    restore_mode: RESTORE_DEFAULT_OFF 
+    restore_mode: RESTORE_DEFAULT_OFF
