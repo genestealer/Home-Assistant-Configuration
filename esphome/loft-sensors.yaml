@@ -1,72 +1,95 @@
 ##############################################################
-# Richard Huish 2023
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Loft Sensors
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Loft Sensors
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration monitors the temperature and humidity
+# in the loft using a DHT22 sensor. It sends real-time data to 
+# Home Assistant via Wi-Fi.
+#
+# 🔩 Hardware:
+# - ESP8266 (NodeMCU v2)
+# - DHT22 Sensor (Temperature & Humidity)
+#
+# 🛠 Wiring:
+# - DHT22 Sensor
+#   - Data (OUT) → GPIO4 (D4)  
+#   - VCC (3.3V/5V) → 3.3V  
+#   - GND → GND  
+# - Status LED
+#   - GPIO16 (D0) → LED Indicator  
+#
 ##############################################################
-# Config Header for Device
-##############################################################
+
+# 🔄 Substitutions for Easy Configuration
 substitutions:
-  # Names
-  name: loft-sensor-sensor
+  # 📛 Naming & Identification
+  name: loft-sensor
   friendly_name: "Loft Sensors"
-  ui_comment: "Loft Sensors" # Only shows in UI.
-  
-  # Wifi Settings
+  ui_comment: "Loft Sensors"
+
+  # 🌐 Network Configuration (Static IP)
   ip: 192.168.2.20
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  # 🔴 Status LED Configuration
+  status_led: D0  # GPIO16 - NodeMCU onboard LED
+  status_led_inverted: "true"
 
-  # Debug Component
-  log_level: DEBUG 
-
-  # Project 
+  # 📦 Project Metadata
   project_name: "genestealer.loft-sensors"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/loft-sensors.yaml"
-  
+
+  # 🛠 Debug Logging Level
+  log_level: DEBUG
+
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 5min
+  wifi_sensor_update_interval: 10min
+
 ##############################################################
-# Platform
+# 🚀 ESP8266 Board Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# Import shared code
+# 🔗 Import Shared Code (Common Components)
 ##############################################################
-  
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-# To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+  # Uncomment below to remove the status LED:
+  # status_led: !remove
 
-esphome:
-
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
+  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# Main Code
+# 🌡️ Loft Sensor Configuration (DHT22)
 ##############################################################
-
 sensor:
-# Air Temperature and Humidity Sensor
+  # ----------------------
+  # 📌 Temperature & Humidity Sensor
+  # ----------------------
   - platform: dht
-    pin: D4 # GPIO2, pulled up - connected to on-board LED, boot fails if pulled LOW.
+    pin: D4  # GPIO2 (pulled up) - Connected to onboard LED; boot fails if pulled LOW.
     temperature:
-      name: Temperature
+      name: "Temperature"
       state_class: measurement
       device_class: temperature
+      unit_of_measurement: "°C"
+      accuracy_decimals: 1
     humidity:
-      name: Humidity
+      name: "Humidity"
       state_class: measurement
       device_class: humidity
-    update_interval: 300s
+      unit_of_measurement: "%"
+      accuracy_decimals: 1
+    update_interval: ${sensor_update_interval}
     model: DHT22
-

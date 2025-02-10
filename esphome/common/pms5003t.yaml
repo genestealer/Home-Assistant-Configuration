@@ -1,56 +1,65 @@
-# Configuration for the PMS5003T Particulate Matter Sensor
-# https://esphome.io/components/sensor/pmsx003.html
-#
-# Used substitutions:
-#
-# - pmsx003_pin_rx: pin connected to the RX pin of the sensor
-# - pmsx003_pin_tx: pin connected to the TX pin of the sensor
-# - pmsx003_baud_rate: baud rate
-# - pmsx003_reset_pin_num: pin connected to the reset pin of the sensor
-# - pmsx003_update_interval: update interval of the sensor
+##############################################################
+# 🌫️ ESPHome PMS5003T Sensor Configuration
+# 📌 Particulate Matter Sensor (PM1.0, PM2.5, PM10)
+# 🔗 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+##############################################################
+
+# 📌 Used Substitutions:
+# - pmsx003_pin_rx: RX pin for the sensor
+# - pmsx003_pin_tx: TX pin for the sensor
+# - pmsx003_baud_rate: Baud rate for serial communication
+# - pmsx003_reset_pin_num: Reset pin for the sensor
+# - pmsx003_update_interval: Data update frequency
 #
 # IDs used outside this file:
 # - pm1_0_value_std: PM1.0 standard concentration
 # - pm2_5_value_std: PM2.5 standard concentration
 # - pm10_value_std: PM10 standard concentration
 
+##################################
+# 🔄 PMS5003T Sensor Reset Pin
+##################################
 output:
-  # PMSX003 reset pin
   - platform: gpio
     pin: ${pmsx003_reset_pin_num}
     id: pmsx003_reset_pin
 
-
+##################################
+# 🚀 ESPHome Boot Actions
+##################################
 esphome:
   # Set the PMSX003 reset pin to ground for 1 second, then back to VCC each time the board starts. Else it sometimes will not work.
   on_boot:
-    - logger.log: "Turn PMSX003 on at boot"
+    - logger.log: "Initializing PMSX003X Sensor..."
     - output.turn_on: pmsx003_reset_pin
     - delay: 3000ms
-    - logger.log: "Resetting PMSX003"
+    - logger.log: "Resetting PMSX003X..."
     - output.turn_off: pmsx003_reset_pin
     - delay: 1000ms
     - output.turn_on: pmsx003_reset_pin
-    - logger.log: "PMSX003 Reset"
+    - logger.log: "PMSX003X Reset Complete"
 
-# Serial for PMSX003
+##################################
+# 🔌 UART Serial Communication
+##################################
 uart:
   baud_rate: ${pmsx003_baud_rate}
   rx_pin: ${pmsx003_pin_rx}
   tx_pin: ${pmsx003_pin_tx}
 
-
+##################################
+# 🌡️ Air Quality Sensor (PMS5003T)
+##################################
 sensor:
-
   - platform: pmsx003
     type: PMS5003T
     update_interval: ${pmsx003_update_interval}
-    
+
+    # 🌡️ Temperature & Humidity
     temperature:
       name: "Temperature PMS"
       device_class: temperature
       state_class: measurement
-
     humidity:
       name: "Humidity PMS"
       device_class: humidity
@@ -62,8 +71,10 @@ sensor:
     #   name: "Formaldehyde Concentration"
     #   device_class: volatile_organic_compounds
     #   state_class: measurement
-    
-    
+
+
+
+    # 🌫️ Standard Particulate Concentrations (Environmental Reference)
     # Use Case: Suitable for comparisons with reference data or air quality indices (like DAQI), as many guidelines use standard conditions for consistency.
     pm_1_0_std:
       name: "Conc Std 01.0µm"
@@ -81,6 +92,7 @@ sensor:
       device_class: "pm10"
       state_class: measurement
 
+    # 🌫️ Actual Particulate Concentrations (Raw Data)
     # Use Case: Useful for understanding the real-time, local particulate matter levels without adjustments.
     pm_1_0:
       name: "Conc 01.0µm"
@@ -97,7 +109,6 @@ sensor:
       id: pm10_value
       device_class: "pm10"
       state_class: measurement
-
     pm_0_3um:
       name: "0.1L air 00.3um"
     pm_0_5um:
@@ -110,4 +121,3 @@ sensor:
     #   name: "PM <5.0um in 0.1L of air"
     # pm_10_0um: # Value is not returned by PMS5003T
     #   name: "PM <10.0um in 0.1L of air"
-    

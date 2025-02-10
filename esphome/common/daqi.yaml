@@ -1,28 +1,76 @@
-# Ref: https://github.com/koenvervloesem/ESPHome-Air-Quality-Monitor/tree/main
-# Compute an Air Quality Index (daqi) based on the sensor values.
+##############################################################
+# 🏠 UK Daily Air Quality Index (DAQI)
+# 📌 Computes an Air Quality Index (DAQI) based on PM2.5 & PM10
+# 📂 https://github.com/koenvervloesem/ESPHome-Air-Quality-Monitor
 #
-# Used substitutions:
-#
-# - daqi_message_good: message shown for good air quality
-# - daqi_message_acceptable: message shown for acceptable air quality
-# - daqi_message_bad: message shown for bad air quality
-# - daqi_message_verybad: message shown for very bad air quality
-
-
-# - daqi_pm2_5_avg_24h_max_good: threshold for good 24h average PM2.5
-# - daqi_pm2_5_avg_24h_max_acceptable: threshold for acceptable 24h average PM2.5
-# - daqi_pm2_5_avg_24h_max_bad: threshold for bad 24h average PM10
-
-# - daqi_pm10_avg_24h_max_good: threshold for good 24h average PM10
-# - daqi_pm10_avg_24h_max_acceptable: threshold for acceptable 24h average PM10
-# - daqi_pm10_avg_24h_max_bad: threshold for bad 24h average PM10
+# 📌 Used Substitutions:
+# - daqi_message_good: Message for good air quality
+# - daqi_message_acceptable: Message for acceptable air quality
+# - daqi_message_bad: Message for bad air quality
+# - daqi_message_verybad: Message for very bad air quality
+# - daqi_pm2_5_avg_24h_max_good: Max PM2.5 for "good" air quality
+# - daqi_pm2_5_avg_24h_max_acceptable: Max PM2.5 for "acceptable" air quality
+# - daqi_pm2_5_avg_24h_max_bad: Max PM2.5 for "bad" air quality
+# - daqi_pm10_avg_24h_max_good: Max PM10 for "good" air quality
+# - daqi_pm10_avg_24h_max_acceptable: Max PM10 for "acceptable" air quality
+# - daqi_pm10_avg_24h_max_bad: Max PM10 for "bad" air quality
 #
 # IDs used outside this file:
 #
 # - update_daqi: script to update the daqi
+##############################################################
+# 🏠 UK Daily Air Quality Index (DAQI) Bands
+# 📌 Classification of Air Quality Based on PM2.5 & PM10
+##############################################################
+# 
+# 🌫️ DAQI Bands for PM2.5 (µg/m³) - 24-Hour Mean
+# ┌────────────┬────────┬───────────────────┐
+# │   Band     │ Index  │ PM2.5 Range (µg/m³) │
+# ├────────────┼────────┼───────────────────┤
+# │ Low        │ 1      │ 0 - 11             │
+# │ Low        │ 2      │ 12 - 23            │
+# │ Low        │ 3      │ 24 - 35            │
+# │ Moderate   │ 4      │ 36 - 41            │
+# │ Moderate   │ 5      │ 42 - 47            │
+# │ Moderate   │ 6      │ 48 - 53            │
+# │ High       │ 7      │ 54 - 58            │
+# │ High       │ 8      │ 59 - 64            │
+# │ High       │ 9      │ 65 - 70            │
+# │ Very High  │ 10     │ 71 or more         │
+# └────────────┴────────┴───────────────────┘
+# 
+# 🌫️ DAQI Bands for PM10 (µg/m³) - 24-Hour Mean
+# ┌────────────┬────────┬───────────────────┐
+# │   Band     │ Index  │ PM10 Range (µg/m³) │
+# ├────────────┼────────┼───────────────────┤
+# │ Low        │ 1      │ 0 - 16             │
+# │ Low        │ 2      │ 17 - 33            │
+# │ Low        │ 3      │ 34 - 50            │
+# │ Moderate   │ 4      │ 51 - 58            │
+# │ Moderate   │ 5      │ 59 - 66            │
+# │ Moderate   │ 6      │ 67 - 74            │
+# │ High       │ 7      │ 75 - 82            │
+# │ High       │ 8      │ 83 - 91            │
+# │ High       │ 9      │ 92 - 100           │
+# │ Very High  │ 10     │ 101 or more        │
+# └────────────┴────────┴───────────────────┘
 
-
-# The UK’s Daily Air Quality Index (DAQI) provides index bands to categorize air pollution levels. The index bands for PM2.5 (fine particulate matter) and PM10 (coarse particulate matter) are as follows:
+substitutions:
+# These are the DAQI threshold values and messages. Adapt to your needs.
+  daqi_pm2_5_avg_24h_max_good: "35"
+  daqi_pm2_5_avg_24h_max_acceptable: "53" 
+  daqi_pm2_5_avg_24h_max_bad: "70"  
+  daqi_pm10_avg_24h_max_good: "50"
+  daqi_pm10_avg_24h_max_acceptable: "75"  
+  daqi_pm10_avg_24h_max_bad: "100" 
+  daqi_message_good: "Good"
+  daqi_message_acceptable: "Acceptable"
+  daqi_message_bad: "Bad"
+  daqi_message_verybad: "Very Bad"
+  daqi_colour_good: "Green"
+  daqi_colour_acceptable: "Yellow"
+  daqi_colour_bad: "Orange"
+  daqi_colour_verybad: "Red"
 
 sensor:
   - platform: template
@@ -58,7 +106,7 @@ sensor:
   - platform: template
     name: "PM 10 24h average"
     id: pm10_avg_24h
-    icon: mdi:chemical-weapon
+    icon: mdi:air-filter
     unit_of_measurement: µg/m³
     lambda: |-
       return id(pm10_value_std).state;
@@ -70,6 +118,56 @@ sensor:
     on_value:
       then:
         - script.execute: update_daqi
+# 📊 DAQI Text Representation
+  - platform: template
+    name: "PM 01.0 rolling 30 minute average"
+    id: pm1_0_avg_30m
+    icon: mdi:molecule
+    unit_of_measurement: µg/m³
+    lambda: |-
+      return id(pm1_0_value_std).state;
+    update_interval: ${pmsx003_update_interval}
+    filters:
+      - sliding_window_moving_average:
+          window_size: 900
+          send_every: 15
+          send_first_at: 15
+    on_value:
+      then:
+        - script.execute: update_daqi
+  - platform: template
+    name: "PM 02.5 rolling 30 minute average"
+    id: pm2_5_avg_30m
+    icon: mdi:molecule
+    unit_of_measurement: µg/m³
+    lambda: |-
+      return id(pm2_5_value_std).state;
+    update_interval: ${pmsx003_update_interval}
+    filters:
+      - sliding_window_moving_average:
+          window_size: 900
+          send_every: 15
+          send_first_at: 15
+    on_value:
+      then:
+        - script.execute: update_daqi
+  - platform: template
+    name: "PM 10 rolling 30 minute average"
+    id: pm10_avg_30m
+    icon: mdi:molecule
+    unit_of_measurement: µg/m³
+    lambda: |-
+      return id(pm10_value_std).state;
+    update_interval: ${pmsx003_update_interval}
+    filters:
+      - sliding_window_moving_average:
+          window_size: 900
+          send_every: 15
+          send_first_at: 15
+    on_value:
+      then:
+        - script.execute: update_daqi
+
 
 
 # A textual presentation of the daqi: good, acceptable, bad
@@ -78,10 +176,15 @@ text_sensor:
     name: "Air Quality Index"
     id: daqi
     icon: mdi:air-filter
+    update_interval: never
 
+  - platform: template
+    name: DAQI Color
+    icon: mdi:pine-tree-fire
+    id: daqi_color
+    update_interval: never
 
-
-
+# 📜 DAQI Update Script
 # This script is called on every update of the relevant sensor values.
 script:
   - id: update_daqi
@@ -101,6 +204,9 @@ script:
             - text_sensor.template.publish:
                 id: daqi
                 state: ${daqi_message_verybad}
+            - text_sensor.template.publish:
+                id: daqi_color
+                state: ${daqi_colour_verybad}
           else:
             # Bad if at least one of the sensor values is bad
             - if:
@@ -116,6 +222,9 @@ script:
                   - text_sensor.template.publish:
                       id: daqi
                       state: ${daqi_message_bad}
+                  - text_sensor.template.publish:
+                      id: daqi_color
+                      state: ${daqi_colour_bad}
                   # - script.execute: show_bad
                 else:
                   # Acceptable if at least one of the sensor values is acceptable
@@ -132,12 +241,18 @@ script:
                         - text_sensor.template.publish:
                             id: daqi
                             state: ${daqi_message_acceptable}
+                        - text_sensor.template.publish:
+                            id: daqi_color
+                            state: ${daqi_colour_acceptable}
                         # - script.execute: show_acceptable
                       else:
                         # Otherwise good (all of the sensor values are good)
                         - text_sensor.template.publish:
                             id: daqi
                             state: ${daqi_message_good}
+                        -  text_sensor.template.publish:
+                            id: daqi_color
+                            state: ${daqi_colour_good}
                         # - script.execute: show_good
 
 
@@ -186,29 +301,4 @@ script:
 #                   # - script.execute: show_good
 
 
-# The UK’s Daily Air Quality Index (Ddaqi) provides index bands to categorize air pollution levels. The index bands for PM2.5 (fine particulate matter) and PM10 (coarse particulate matter) are as follows:
 
-# DAQI Bands for PM2.5 (µg/m³)
-# Band	Index	PM2.5 Range (24-hour mean)
-# Low	1	0 - 11
-# Low	2	12 - 23
-# Low	3	24 - 35
-# Moderate	4	36 - 41
-# Moderate	5	42 - 47
-# Moderate	6	48 - 53
-# High	7	54 - 58
-# High	8	59 - 64
-# High	9	65 - 70
-# Very High	10	71 or more
-# DAQI Bands for PM10 (µg/m³)
-# Band	Index	PM10 Range (24-hour mean)
-# Low	1	0 - 16
-# Low	2	17 - 33
-# Low	3	34 - 50
-# Moderate	4	51 - 58
-# Moderate	5	59 - 66
-# Moderate	6	67 - 74
-# High	7	75 - 82
-# High	8	83 - 91
-# High	9	92 - 100
-# Very High	10	101 or more

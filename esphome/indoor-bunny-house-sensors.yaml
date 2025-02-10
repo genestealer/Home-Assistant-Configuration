@@ -1,113 +1,83 @@
 ##############################################################
-# Richard Huish 2023
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Indoor Bunny House Sensors
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Bedroom Air Quality & Environment Sensors
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration monitors the indoor environment of a bunny house.
+# It tracks temperature, humidity, absolute humidity, and dew point using a
+# BME280 sensor connected via I2C.
+#
+# 🔩 Hardware:
+# - ESP8266 (NodeMCU v2)
+# - BME280 Sensor (Temperature, Humidity, Pressure)
+#
+# 🛠 Wiring:
+# - I2C (BME280):
+#   - SDA (Data Line) → D2  
+#   - SCL (Clock Line) → D1  
 ##############################################################
-# Config Header for Device
-##############################################################
+
+# 🔧 Substitutions for Easy Configuration
 substitutions:
-  # Names
+  # 📛 Naming
   name: indoor-bunny-house
   friendly_name: "Indoor Bunny House Sensors"
-  ui_comment: "Indoor Bunny House Sensors - UPDATED" # Only shows in UI.
-  
-  # Wifi Settings
+  ui_comment: "Indoor Bunny House Sensors - UPDATED" # Shown only in UI
+
+  # 🌐 Network Settings (Static IP)
   ip: 192.168.2.37
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  # 🔴 Status LED Configuration
+  status_led: D0 # GPIO16 - NodeMCU onboard LED
+  status_led_inverted: "true"
 
-  # Debug Component
-  log_level: DEBUG 
-
-  # Project 
+  # 📦 Project Metadata
   project_name: "genestealer.indoor-bunny-house-sensors"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/indoor-bunny-house-sensors.yaml"
 
-  # sensor_update_interval: 300000ms #5 mins
-  sensor_update_interval: 150000ms #2.5 mins
-  # sensor_update_interval: 5100ms 
+  # 🛠 Debug Logging Level
+  log_level: DEBUG 
+  
+    # 📟 BME280 Sensor Configuration
+  i2c_pin_scl: D1
+  i2c_pin_sda: D2
+  i2c_scan: "true"
+  i2c_frequency: 400kHz
+  bme280_i2c_address: "0x76"
+  bme280_update_interval: 60s
+  bme280_offset_temperature: "-1"  # Adjusts for minor temperature bias
+
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 1min
+  wifi_sensor_update_interval: 10min
 
 ##############################################################
-# Platform
+# 🚀 ESP Platform Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# Import shared code
+# 🔗 Import Shared Code (Common Components)
 ##############################################################
-
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-# To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+  # Uncomment below to remove the status LED:
+  # status_led: !remove
+  bme280: !include common/bme280.yaml
 
-esphome:
-
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
+  import_full_config: false # Import only specific sections
 
 ##############################################################
-# Main Code
+# 🌡️ Sensor Configuration (Temperature, Humidity)
 ##############################################################
 
-i2c:
-  scl: D1
-  sda: D2
-  scan: true
-  # id: bus_a
-  frequency: 400kHz 
-
-sensor:
-  - platform: bme280_i2c
-    update_interval: ${sensor_update_interval}
-    address: 0x76
-
-    temperature:
-      name: "Temperature"
-      id: bme280_temperature
-      accuracy_decimals: 2
-
-    pressure:
-      name: "Pressure"
-      id: bme280_pressure
-      accuracy_decimals: 2
-
-    humidity:
-      name: "Humidity"
-      id: bme280_humidity
-      accuracy_decimals: 2
-    
-  # - platform: template
-  #   name: "Altitude"
-  #   lambda: |-
-  #     const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
-  #     return ((id(bme280_temperature).state + 273.15) / 0.0065) *
-  #       (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
-  #   update_interval: 15s
-  #   icon: 'mdi:signal'
-  #   unit_of_measurement: 'm'
-
-
-  - platform: absolute_humidity
-    name: "Absolute Humidity"
-    temperature: bme280_temperature
-    humidity: bme280_humidity
-
-
-  - platform: template
-    name: "Dew Point"
-    lambda: |-
-      return (243.5*(log(id(bme280_humidity).state/100)+((17.67*id(bme280_temperature).state)/
-      (243.5+id(bme280_temperature).state)))/(17.67-log(id(bme280_humidity).state/100)-
-      ((17.67*id(bme280_temperature).state)/(243.5+id(bme280_temperature).state))));
-    unit_of_measurement: °C
-    icon: 'mdi:thermometer-alert'
+# ✅ Uses shared configurations from `bme280.yaml`

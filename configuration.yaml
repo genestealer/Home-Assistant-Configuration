@@ -307,7 +307,10 @@ automation ui: !include automations.yaml # Cannot change location or filename as
 script ui: !include scripts.yaml
 
 # Merge List
-# automation old: !include_dir_merge_list includes/automation
+# Merges all YAML files into a single list (-)
+# Used when each file contains a list (- item) instead of a dictionary (key: value).
+# Best for automations, scripts, and other list-based configurations.
+automation old: !include_dir_merge_list includes/automations
 sensor: !include_dir_merge_list includes/sensors
 light: !include_dir_merge_list includes/lights
 binary_sensor: !include_dir_merge_list includes/binary_sensors
@@ -315,10 +318,14 @@ switch: !include_dir_merge_list includes/switch
 cover: !include_dir_merge_list includes/cover
 # camera: !include_dir_merge_list includes/cameras
 template: !include_dir_merge_list includes/template
+input_boolean: !include_dir_merge_list includes/input_boolean
+
 
 # Merge named dir
+# Merges YAML files into a dictionary (key: value).
+# Used when each file contains a dictionary (key: value) instead of a list (- item).
+# Best for packages, sensors, input_ helpers, and configurations that use key-value pairs*.
 # script manual: !include_dir_merge_named includes/scripts #https://www.home-assistant.io/docs/configuration/splitting_configuration/#example-combine-include_dir_merge_list-with-automationsyaml
-input_boolean: !include_dir_merge_named includes/input_boolean
 input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
 rest_command: !include_dir_merge_named includes/rest_commands

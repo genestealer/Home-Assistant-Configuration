@@ -74,16 +74,17 @@ substitutions:
   status_led: D0  # GPIO16 - NodeMCU onboard LED
   status_led_inverted: "true"
 
-  # 🛠 Debug Logging Level
-  log_level: DEBUG
-
   # 📦 Project Metadata
   project_name: "genestealer.IKEA-Fornuftig-air-purifier"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/office-IKEA-Fornuftig-air-purifier.yaml"
 
+  # 🛠 Debug Logging Level
+  log_level: DEBUG
+
   # 📊 Sensor Update Interval
-  sensor_update_interval: 60s 
+  sensor_update_interval: 5min
+  wifi_sensor_update_interval: 10min
 
 ##############################################################
 # 🚀 ESP8266 Board Configuration
@@ -159,7 +160,7 @@ sensor:
   # Create a Utility Meter in Home Assistant and ensure periodic resetting is enabled
   # This value resets on ESP reboot and at midnight.
   - platform: total_daily_energy
-    name: 'Air Purifier Energy Today'
+    name: 'Energy Today'
     id: sensor_total_daily_energy
     power_id: power_usage
     unit_of_measurement: 'kWh'

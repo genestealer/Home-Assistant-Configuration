@@ -1,14 +1,3 @@
-- id: '1529366648322'
-  alias: Open Chicken Door At Morning
-  description: Open at Dawn
-  trigger:
-  - platform: time
-    at: 08:00:00
-  condition: []
-  action:
-  - entity_id: cover.chicken_coop_door
-    service: cover.open_cover
-  mode: single
 - id: '1541895123592'
   alias: 'Notify: if CCTV Goes Offline'
   description: Notify if CCTV goes off for more than a specific length of time, originally
@@ -242,20 +231,6 @@
     service: switch.turn_off
   - entity_id: switch.back_garden_lawn_2_irrigation_valve
     service: switch.turn_off
-- id: '1564245956941'
-  alias: Kitchen Fan Script Off to Switch Off
-  description: Not sure why I wrote this?
-  trigger:
-  - entity_id: script.kitchen_extractor_timer
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: switch.kitchen_extractor_fan
-    service: switch.turn_off
-  mode: single
 - id: '1572464632861'
   alias: Smoke Machine Automation - Smoke
   description: 'Don''t need to turn on and off, as RF Link signal_repetitions: xx
@@ -485,41 +460,6 @@
   - data:
       message: Nest forced back to heat mode while you are at home.
     service: notify.google_cloud_notify
-- id: '1576603673930'
-  alias: Close Chicken Door In The Evening Via Notification (action button has been
-    clicked)
-  description: Notification HTML5 push notification action button clicked
-  trigger:
-  - event_data:
-      action: close_door
-    event_type: html5_notification.clicked
-    platform: event
-  condition: []
-  action:
-  - entity_id: cover.chicken_coop_door
-    service: cover.close_cover
-  mode: single
-- id: '1576603849046'
-  alias: Close Chicken Door In The Evening Via Notification
-  description: ''
-  trigger:
-  - event: sunset
-    platform: sun
-    offset: 01:30:00
-  condition:
-  - condition: state
-    entity_id: binary_sensor.chicken_coop_status
-    state: 'on'
-  action:
-  - service: notify.google_cloud_notify
-    data:
-      title: Chicken Bed-Time? [Home Assistant]
-      message: It's dark, close chicken coop door?
-      data:
-        actions:
-        - action: close_door
-          title: "\U0001F6AACLOSE DOOR \U0001F414"
-  mode: single
 - id: '1581770041173'
   alias: 'Notify: Electricity supply voltage is LOW/HIGH'
   description: Send Notification when Electricity Voltage is Low or High
@@ -1209,22 +1149,6 @@
       entity_id: 9dc6d48cc35cec309bb214c849c5c7df
       domain: switch
   mode: restart
-- id: '1621109022540'
-  alias: Close Chicken Door  Notification (App)
-  description: ''
-  trigger:
-  - event: sunset
-    platform: sun
-    offset: 01:30:00
-  condition:
-  - type: is_connected
-    condition: device
-    device_id: 40e46b6c7835f9e576bf8c7d148b90ea
-    entity_id: binary_sensor.chicken_house_sensor_status
-    domain: binary_sensor
-  action:
-  - service: notify.mobile_app_pixel_4_app
-  mode: single
 - id: '1626459943924'
   alias: Water on off
   description: ''
@@ -1727,40 +1651,6 @@
           media_content_id: media-source://camera
       action: media_player.play_media
     enabled: false
-  mode: single
-- id: '1659697088299'
-  alias: Garden Watering Remote Control Ikea Blind Open
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 81786cb2bdf60505bef7710dd57270ae
-    type: action
-    subtype: open
-    discovery_id: 0x000d6ffffea20000 action_open
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.back_garden_irrigation_valve
-  mode: single
-- id: '1659697287602'
-  alias: Garden Watering Remote Control Ikea Blind Close
-  description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 81786cb2bdf60505bef7710dd57270ae
-    type: action
-    subtype: close
-    discovery_id: 0x000d6ffffea20000 action_close
-  condition: []
-  action:
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.back_garden_irrigation_valve
   mode: single
 - id: '1661547535107'
   alias: Kitchen Motion Occupancy (Rev 1) (With Christmas Tree)
@@ -2395,6 +2285,7 @@
         target:
           entity_id:
           - switch.tv_speakers
+          - switch.smart_plug_1
         action: switch.turn_on
     - conditions:
       - condition: device
@@ -2407,6 +2298,7 @@
         target:
           entity_id:
           - switch.tv_speakers
+          - switch.smart_plug_1
         action: switch.turn_off
     enabled: true
   mode: restart
@@ -3530,4 +3422,79 @@
           retain: false
           topic: energenie/boiler/state
           payload: 'off'
+  mode: single
+- id: '1738459474372'
+  alias: Freezer Temperature Alert
+  description: ''
+  triggers:
+  - type: problem
+    device_id: bdcf9bf48a8313dd733a57efca54d05f
+    entity_id: 0435e8b85aac152e274b0fe369dc7a23
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    id: high
+  - type: not_connected
+    device_id: bdcf9bf48a8313dd733a57efca54d05f
+    entity_id: 8e8427f8efa3902d88b52401f34f1695
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+    id: offline
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - high
+      sequence:
+      - data:
+          data:
+            color: white
+            channel: Freezer
+            vibrationPattern: 100,500,100,500,100,500,100,500
+            importance: high
+            visibility: public
+            notification_icon: mdi:snowflake-alert
+            ttl: 0
+            priority: high
+            sticky: 'true'
+          message: 'Top Temperature: {{ states(''sensor.chest_freezer_monitor_top_temperature'')}}
+            °C. Bottom: {{ states(''sensor.chest_freezer_monitor_bottom_temperature'')
+            }} °C\n Sent: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+            '
+          title: Chest Freezer High Temperature Alert
+        action: notify.mobile_app_rich_mob_app
+    - conditions:
+      - condition: trigger
+        id:
+        - offline
+      sequence:
+      - data:
+          data:
+            color: white
+            channel: Freezer
+            vibrationPattern: 100,500,100,500,100,500,100,500
+            importance: high
+            visibility: public
+            notification_icon: mdi:snowflake-alert
+            ttl: 0
+            priority: high
+            sticky: 'true'
+          message: 'Chest Freezer Monitor is Offline\n Last know Top Temperature:
+            {{ states(''sensor.chest_freezer_monitor_top_temperature'')}} °C. Bottom:
+            {{ states(''sensor.chest_freezer_monitor_bottom_temperature'') }} °C\n
+            Sent: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+            '
+          title: Chest Freezer Offline
+        action: notify.mobile_app_rich_mob_app
   mode: single

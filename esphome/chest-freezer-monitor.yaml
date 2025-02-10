@@ -1,0 +1,141 @@
+##############################################################
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Chest Freezer Temperature Monitor
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration monitors freezer temperatures using 
+# multiple DS18B20 digital temperature sensors to ensure food safety.
+# It integrates with Home Assistant and provides alerts if temperatures 
+# exceed the defined thresholds.
+#
+# 🔧 Features:
+# - ✅ Multiple DS18B20 sensors for freezer monitoring.
+# - ✅ High-temperature alert if freezer goes above -18°C.
+# - ✅ Wi-Fi connectivity for real-time reporting to Home Assistant.
+# - ✅ OTA firmware updates for easy maintenance.
+#
+# 🔩 Hardware:
+# - Adafruit Feather HUZZAH ESP8266 (Wi-Fi Microcontroller)
+# - DS18B20 Temperature Sensors (1-Wire Digital Thermometers)
+#
+##############################################################
+
+# 🔄 Substitutions - Easily Configurable Parameters
+substitutions:
+  # 📛 Naming & Identification
+  name: chest-freezer-monitor
+  friendly_name: "Freezer Monitor"
+  ui_comment: "Multiple DS18B20 temperature sensors to monitor chest freezer"
+
+  # 🌐 Network Configuration (Static IP)
+  ip: 192.168.2.43
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # 🔴 Status LED Configuration
+  status_led: LED_RED
+  status_led_inverted: "true"
+
+  # 📦 Metadata & Versioning
+  project_name: "genestealer.chest-freezer-monitor"
+  project_version: "1.0.0"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chest-freezer-monitor.yaml"
+
+  # 🛠 Debug Logging
+  log_level: DEBUG
+
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 5min
+  wifi_sensor_update_interval: 10min
+  
+##############################################################
+# 🚀 ESP Platform Configuration
+##############################################################
+esp8266:
+  board: huzzah
+
+##############################################################
+# 🔗 Shared Code & Package Imports
+##############################################################
+packages:
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+  # Uncomment below to remove the status LED from this device:
+  # status_led: !remove
+
+# 🌍 Dashboard Import Settings
+dashboard_import:
+  package_import_url: ${package_import_url}
+  import_full_config: false  # Import only necessary sections
+
+##############################################################
+# 🆘 High-Temperature Alert Binary Sensor
+##############################################################
+binary_sensor:
+  - platform: template
+    name: "Freezer High Temp Alert"
+    id: freezer_high_temp_alert
+    device_class: problem
+    icon: "mdi:alert"
+    lambda: |-
+      return (id(temperaturebottom).state > -18) || (id(temperaturetop).state > -18);
+
+##############################################################
+# 🌡️ DS18B20 Temperature Sensors (1-Wire)
+##############################################################
+
+# ✅ The DS18B20 uses the 1-Wire protocol for temperature readings.
+# ✅ Each sensor has a unique address, listed below.
+
+one_wire:
+  - platform: gpio
+    pin: GPIO14  # I2C SDA (Adafruit Feather HUZZAH ESP8266)
+
+sensor:
+  # 🔹 Bottom Freezer Temperature
+  - platform: dallas_temp
+    address: 0x333C01F09571DC28
+    name: "Bottom Temperature"
+    id: temperaturebottom
+    accuracy_decimals: 3
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
+    update_interval: ${sensor_update_interval}
+
+  # 🔹 Top Freezer Temperature
+  - platform: dallas_temp
+    address: 0xE43C01F095DFBB28
+    name: "Top Temperature"
+    id: temperaturetop
+    accuracy_decimals: 3
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_class: "temperature"
+    state_class: "measurement"
+    update_interval: ${sensor_update_interval}
+
+  # Uncomment below to enable additional temperature zones:
+  # - platform: dallas_temp
+  #   address: 0xD23C01F095BF2228
+  #   name: "Freezer Temperature Zone 1"
+  #   id: temperature_zone1
+  #   accuracy_decimals: 3
+  #   unit_of_measurement: "°C"
+  #   icon: "mdi:thermometer"
+  #   device_class: "temperature"
+  #   state_class: "measurement"
+  #   update_interval: ${sensor_update_interval}
+
+  # - platform: dallas_temp
+  #   address: 0x4B3C01F09541F128
+  #   name: "Freezer Temperature Zone 2"
+  #   id: temperature_zone2
+  #   accuracy_decimals: 3
+  #   unit_of_measurement: "°C"
+  #   icon: "mdi:thermometer"
+  #   device_class: "temperature"
+  #   state_class: "measurement"
+  #   update_interval: ${sensor_update_interval}

@@ -1,3 +1,9 @@
+############################################################
+#
+# Home Assistant MQTT Lights
+#
+############################################################
+
 #########################################################################################
 # Energenie MiHome https://energenie4u.co.uk/
 # A MQTT node.js module to control the Energenie line of products via the ENER314-RT add-on board for the Raspberry Pi.

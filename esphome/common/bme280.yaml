@@ -1,26 +1,29 @@
-# Configuration for the BME280 temperature, humidity and pressure sensor
-# https://esphome.io/components/sensor/bme280.html
-# https://esphome.io/cookbook/bme280_environment.html
+##############################################################
+# 🏠 BME280 Sensor Configuration
+# 📌 Monitors Temperature, Humidity & Pressure
+# 📂 https://esphome.io/components/sensor/bme280.html
+# 📂 https://esphome.io/cookbook/bme280_environment.html
 #
-# Used substitutions:
-#
+# 📌 Used Substitutions:
 # - i2c_pin_sda: SDA pin of the I²C bus for this sensor
 # - i2c_pin_scl: SCL pin of the I²C bus for this sensor
-# - bme280_i2c_address: I³c address of the sensor
-# - bme280_update_interval: update interval of the sensor
-# - bme280_offset_temperature: offset of the temperature, e.g. "-1" vs setting the Oversampling to x 1
+# - i2c_scan: Whether to scan the I²C bus
+# - i2c_frequency: Frequency of the I²C bus
+# - bme280_i2c_address: I²C address of the sensor
+# - bme280_update_interval: Update interval of the sensor
+# - bme280_offset_temperature: Temperature offset (e.g., "-1" instead of oversampling)
+##############################################################
 
 i2c:
   sda: ${i2c_pin_sda}
   scl: ${i2c_pin_scl}
   scan: ${i2c_scan}
-  # id: bus_a
-  frequency: ${i2c_frequency} 
+  frequency: ${i2c_frequency}
 
 sensor:
   - platform: bme280_i2c
     update_interval: ${bme280_update_interval}
-    address: 0x76
+    address: ${bme280_i2c_address}
 
     temperature:
       name: "Temperature"
@@ -29,6 +32,7 @@ sensor:
       oversampling: 2x
       filters:
         - offset: ${bme280_offset_temperature}
+
     pressure:
       name: "Pressure"
       id: bme280_pressure
@@ -40,28 +44,31 @@ sensor:
       id: bme280_humidity
       oversampling: 2x
       accuracy_decimals: 2
-    
+
+  # 🏔️ Altitude Calculation (based on pressure readings)
   - platform: template
     name: "Altitude"
     lambda: |-
-      const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; //in hPa, see note
+      const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; // in hPa
       return ((id(bme280_temperature).state + 273.15) / 0.0065) *
-        (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1); // in meter
-    update_interval: 15s
+        (powf((STANDARD_SEA_LEVEL_PRESSURE / id(bme280_pressure).state), 0.190234) - 1);
+    update_interval: ${bme280_update_interval}
     icon: 'mdi:signal'
     unit_of_measurement: 'm'
 
+  # 🌫️ Absolute Humidity Calculation
   - platform: absolute_humidity
     name: "Absolute Humidity"
     temperature: bme280_temperature
     humidity: bme280_humidity
-    
+
+  # 🌡️ Dew Point Calculation (for condensation risk monitoring)
   - platform: template
     name: "Dew Point"
     lambda: |-
-      return (243.5*(log(id(bme280_humidity).state/100)+((17.67*id(bme280_temperature).state)/
-      (243.5+id(bme280_temperature).state)))/(17.67-log(id(bme280_humidity).state/100)-
-      ((17.67*id(bme280_temperature).state)/(243.5+id(bme280_temperature).state))));
-    unit_of_measurement: °C
+      return (243.5 * (log(id(bme280_humidity).state / 100) + 
+      ((17.67 * id(bme280_temperature).state) / (243.5 + id(bme280_temperature).state))) /
+      (17.67 - log(id(bme280_humidity).state / 100) - 
+      ((17.67 * id(bme280_temperature).state) / (243.5 + id(bme280_temperature).state))));
+    unit_of_measurement: "°C"
     icon: 'mdi:thermometer-alert'
-

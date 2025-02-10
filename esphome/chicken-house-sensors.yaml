@@ -1,137 +1,142 @@
 ##############################################################
-#   Chicken Coop Sensors
-#   Richard Huish 2023
-#   Primarily for getting a notification when their food or water has run out.
-#   Can also track food and water consumption.
-#   -------
-#   Github: https://github.com/genestealer/Home-Assistant-Configuration/tree/master/esphome
-#   ----------
-#   GUI: Locally hosted home assistant on network https://www.home-assistant.io/
-#   API: Locally hosted native API component https://esphome.io/components/api.html
-#   OTA updates: https://esphome.io/components/ota.html
-#   ----------
-#   The circuit:
-#     Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
-#   Inputs:
-#     1 x DHT11 Temperature and Humidity Sensor https://www.adafruit.com/product/386
-#     2 x 10KG Adafruit 4 Wire Strain Gauge Load Cell https://www.adafruit.com/product/4542
-#     2 x HX711 Dual 24 bit ADC Serial Weighing Module https://www.ebay.co.uk/itm/251742358458
-#     1 x Adafruit Feather HUZZAH with ESP8266 https://www.adafruit.com/product/2821
-#   Outputs:
-#     Home Assistant
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Chicken Coop Sensors
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration monitors chicken coop food and water levels 
+# using load cells with HX711 amplifiers. It also tracks temperature 
+# and humidity using a DHT11 sensor to ensure optimal conditions.
+#
+# 🔧 Features:
+# - ✅ Tracks food and water consumption using load cells (HX711).
+# - ✅ Monitors temperature & humidity inside the chicken coop (DHT11).
+# - ✅ Sends alerts when food or water runs low.
+# - ✅ Integrates with Home Assistant for real-time monitoring.
+#
+# 🔩 Hardware:
+# - Adafruit Feather HUZZAH ESP8266 (Wi-Fi Microcontroller)
+# - DHT11 Sensor (Temperature & Humidity)
+# - 2 x 10KG Load Cells (Food & Water Monitoring)
+# - 2 x HX711 Amplifier Modules (Analog-to-Digital Converters)
 #
 ##############################################################
-# Config Header for Device
-##############################################################
+
+# 🔄 Substitutions - Easily Configurable Parameters
 substitutions:
-  # Names
+  # 📛 Naming & Identification
   name: chicken-house
   friendly_name: "Chicken House Sensors"
-  ui_comment: "Chicken House Sensors" # Only shows in UI.
-  
-  # Wifi Settings
+  ui_comment: "Chicken House Sensors - Food, Water, Temperature, Humidity"
+
+  # 🌐 Network Configuration (Static IP)
   ip: 192.168.2.25
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: LED_RED #GPIO0 https://github.com/esphome/esphome/blob/2b39988707a655c7745899f75d3946775f0de6a8/esphome/components/esp8266/boards.py
-  status_led_inverted: "false"
-  
-  # Debug Component
-  log_level: DEBUG 
+  # 🔴 Status LED Configuration
+  status_led: LED_RED  # GPIO0 (ESP8266)
+  status_led_inverted: "true"
 
-  # Project 
+  # 📦 Metadata & Versioning
   project_name: "genestealer.chicken-house"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chicken-house-sensors.yaml"
 
+  # 🛠 Debug Logging
+  log_level: DEBUG
+
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 5min
+  wifi_sensor_update_interval: 10min
+
 ##############################################################
-# Platform
+# 🚀 ESP Platform Configuration
 ##############################################################
 esp8266:
   board: huzzah
 
 ##############################################################
-# Import shared code
+# 🔗 Shared Code & Package Imports
 ##############################################################
-
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-# To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+  # Uncomment below to remove the status LED from this device:
+  # status_led: !remove
 
-esphome:
-
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
+  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# Main Code
+# 🌡️ Air Temperature and Humidity Sensor (DHT11)
 ##############################################################
 
 sensor:
-# Air Temperature and Humidity Sensor
   - platform: dht
-    pin: LED_BLUE # LED Blue
+    pin: LED_BLUE  # GPIO for DHT11 Sensor
     temperature:
-      name: Temperature
+      name: "Coop Temperature"
       state_class: measurement
       device_class: temperature
     humidity:
-      name: Humidity
+      name: "Coop Humidity"
       state_class: measurement
       device_class: humidity
-    update_interval: 300s
+    update_interval: ${sensor_update_interval}
     model: DHT11
 
-# Channel selection is made by passing the appropriate gain.
-#   With a gain factor of 64 or 128, channel A is selected
-#   With a gain factor of 32, channel B is selected
-#   I tried to use one hx711 with two channels, as the value for
-#    channel B was sometimes returned at channel A, or vice versa, so changed to two seprate hx711's
+##############################################################
+# 🏋️ Chicken Food & Water Load Cells (HX711)
+##############################################################
+
+# ✅ The HX711 is a 24-bit ADC used to read the load cells.
+# ✅ Each load cell is calibrated to measure accurate weights.
+# ✅ The system filters out noise and spikes for better accuracy.
+# ✅ Sends alerts when food or water runs low.
+
+  # 🔹 Chicken Food Load Cell
   - platform: hx711
-    name: "Chicken Food" #Channel A
-    dout_pin: D4
-    clk_pin: D5
-    gain: 128
-    update_interval: 30s
+    name: "Chicken Food Level"
+    dout_pin: D4  # Data out
+    clk_pin: D5   # Clock pin
+    gain: 128  # Set gain for Channel A
+    update_interval: ${sensor_update_interval}
     filters:
       - calibrate_linear:
-        # - 118168 -> 0 # tare without feeder attached
-        # - 538159 -> 1.98
-        - 220840 -> 0 # tare with empty feeder (0.32KG feeder)
-        - 762762 -> 2.96 # full feeder
-      - filter_out: 0
-      - median: # moving median will filter out spikes, sliding_window_moving_average would not as it takes all data points into account  https://i.stack.imgur.com/c0o9S.png
+          # - 118168 -> 0  # Tare weight (without feeder)
+          # - 538159 -> 1.98 kg (full)
+          - 220840 -> 0  # Tare weight (empty feeder, 0.32 kg)
+          - 762762 -> 2.96  # Full feeder weight
+      - filter_out: 0  # Remove invalid readings
+      - median:  # Noise filtering using a moving median
           window_size: 6
           send_every: 4
           send_first_at: 3
-    unit_of_measurement: kg
+    unit_of_measurement: "kg"
     state_class: measurement
     accuracy_decimals: 3
 
-    
+  # 🔹 Chicken Water Load Cell
   - platform: hx711
-    name: "Chicken Water" #Channel B
-    dout_pin: D12
-    clk_pin: D14
-    gain: 128
-    update_interval: 30s
+    name: "Chicken Water Level"
+    dout_pin: D12  # Data out
+    clk_pin: D14   # Clock pin
+    gain: 128  # Set gain for Channel A
+    update_interval: ${sensor_update_interval}
     filters:
       - calibrate_linear:
-        # - 67268 -> 0 # tare without water attached
-        # - 625719 -> 2.76
-        - 146499 -> 0 # tare with empty water (0.20KG water)
-        - 702880 -> 2.8 # full water
-      - filter_out: 0
-      - median: # moving median will filter out spikes, sliding_window_moving_average would not as it takes all data points into account  https://i.stack.imgur.com/c0o9S.png
+          # - 67268 -> 0  # Tare weight (without water container)
+          # - 625719 -> 2.76 kg (full)
+          - 146499 -> 0  # Tare weight (empty water container, 0.20 kg)
+          - 702880 -> 2.8  # Full water weight
+      - filter_out: 0  # Remove invalid readings
+      - median:  # Noise filtering using a moving median
           window_size: 6
           send_every: 4
           send_first_at: 3
-    unit_of_measurement: kg
+    unit_of_measurement: "kg"
     state_class: measurement
     accuracy_decimals: 3

@@ -1,118 +1,110 @@
-#############################################################
-# Richard Huish 2023
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Doorbell controller & electricity meter monitor
-# See https://github.com/klaasnicolaas/home-assistant-glow
-# For automations for local Google Home/Nest notifications and push notifications, see automations.yaml code:
-#   id: '1694727006658' House Doorbell - External Notify
-#   id: '1652210144322' House Doorbell - Local Notify
 ##############################################################
-# Config Header for Device
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Doorbell Controller & Electricity Monitor
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration controls a smart doorbell system and 
+# monitors household electricity consumption using a pulse meter.
+# It integrates with Home Assistant for real-time monitoring, 
+# notifications, and automation.
+#
+# 🔧 Features:
+# - ✅ Smart doorbell control with an illuminated button.
+# - ✅ Neopixel LED effects for button lighting.
+# - ✅ Electricity monitoring using a phototransistor-based pulse meter.
+# - ✅ Integrates with Home Assistant for notifications & automation.
+# - ✅ Quiet hours mode to silence the bell at night.
+# - ✅ Automatic energy reset at midnight.
+#
+# 🔩 Hardware:
+# - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
+# - Neopixel RGB LED (2 LEDs) for Doorbell Button
+# - Relay Module for activating the doorbell chime.
+# - Phototransistor Sensor (SFH 314-2/3 Osram Opto) for electricity monitoring
+#
+# 🛠 Wiring for Electricity Meter Sensor:
+# - Phototransistor Model: SFH 314-2/3 Osram Opto (80° Visible Light NPN)
+# - RS Stock No. 654-8851
+# - Power: 3.3V connected to Collector.
+# - Data Output: Emitter wired to D7 (GPIO13).
+# - Pull-down Resistor: 10KΩ to GND.
+# - Pulse Logic:
+#   - When light is detected: D7 is HIGH.
+#   - When light is absent: D7 is LOW.
+# - Conversion: 1000 pulses = 1 kWh.
+#
 ##############################################################
+
+# 🔄 Substitutions - Easily Configurable Parameters
 substitutions:
-  # Names
+  # 📛 Naming & Identification
   name: doorbell-and-elect-monitor
   friendly_name: "Doorbell and Electricity Monitor"
-  ui_comment: "Doorbell Controller and Electricity Monitor" # Only shows in UI.
-  
-  # Wifi Settings
+  ui_comment: "Doorbell Controller and Electricity Monitor"
+
+  # 🌐 Network Configuration (Static IP)
   ip: 192.168.2.36
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
-  status_led_inverted: "false"
+  # 🔴 Status LED Configuration
+  status_led: D0  # GPIO16 - NodeMCU onboard LED
+  status_led_inverted: "true"
 
-  # Debug Component
-  log_level: DEBUG 
-
-  # Project 
+  # 📦 Metadata & Versioning
   project_name: "genestealer.doorbell-controller"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/doorbell-controller.yaml"
+
+  # 🛠 Debug Logging
+  log_level: DEBUG
   
-  # imp/kWh rate ⬇ #
+  # ⚡ Electricity Meter Pulse Rate (imp/kWh)
   pulse_rate: '1000'
 
-  pass: hxN#^fPPv5ZRy%7l
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 30s
+  wifi_sensor_update_interval: 10min
 
 ##############################################################
-# Platform
+# 🚀 ESP Platform Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# Import shared code
+# 🔗 Shared Code & Package Imports
 ##############################################################
-  
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-# To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+  # Uncomment below to remove the status LED from this device:
+  # status_led: !remove
 
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
-
+  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# Main Code
+# 🌙 Quiet Hours Configuration for Doorbell
 ##############################################################
-
 globals:
-  # Quiet time for doorbell ringer - start
- - id: nighttime_start
-   type: int
-   restore_value: no
-   initial_value: '21'
-  # Quiet time for doorbell ringer - finish
- - id: nighttime_stop
-   type: int
-   restore_value: no
-   initial_value: '6'
+  - id: nighttime_start
+    type: int
+    restore_value: no
+    initial_value: '21'  # Quiet hours start at 9 PM
+  - id: nighttime_stop
+    type: int
+    restore_value: no
+    initial_value: '6'  # Quiet hours end at 6 AM
 
-
-
-api: # Enable Home Assistant API
-
-          
-
-
+##############################################################
+# ⚡ Electricity Monitoring (Pulse Meter)
+##############################################################
 
 sensor:
-    ####################################################
-    # Non-Invasive Power Meter for House Electricity
-    # Uses SFH 314-2/3 Osram Opto, 80 ° Visible
-    # Light NPN Phototransistor RS Stock No. 654-8851
-    ###
-    # 3.3V wired to phototransistor Collector.
-    # Phototransistor Emmitter wired to D7.
-    # D7 is pulled to GND via 10K resistor.
-    # When light phototransistor D7 becomes high.
-    # When dark phototransistor D7 becomes low.
-    ####################################################
-    # 1000 pulses from the LED should equal 1kWh
-    ####################################################
-    
-    ####################################################
-    ## Updated Nov 2021 to match: https://github.com/klaasnicolaas/home-assistant-glow/blob/main/home_assistant_glow.yaml
-    ## As linked in https://www.home-assistant.io/docs/energy/electricity-grid/
-    ####################################################
-  # - platform: pulse_counter
-  #   pin:
-  #   number: D7 # GPIO13
-  #   # inverted: True
-  #   mode: INPUT
-  #   unit_of_measurement: 'kW'
-  #   name: 'House Power Meter'
-  #   update_interval: 60s
-  #   filters:
-  #     - multiply: 0.06
-
   - platform: pulse_meter
     name: "House Power Consumption"
     id: energy_pulse_meter
@@ -123,80 +115,46 @@ sensor:
     accuracy_decimals: 2
     internal_filter: 100ms
     pin:
-     number: D7 # GPIO13
-     mode: INPUT
-     # inverted: True
+      number: D7  # GPIO13 - Phototransistor input
+      mode: INPUT
     filters:
-      # multiply value = (60 / imp value) * 1000
-      # - multiply: 60
-      - lambda: return x * ((60.0 / ${pulse_rate}) * 1000.0);
+      - lambda: return x * ((60.0 / ${pulse_rate}) * 1000.0); # Multiplication factor of meter = (60 / imp value) * 1000
+      - throttle_average: ${sensor_update_interval} # Reduce amount of data and updates with an average
 
-      # Update the sensor with an average every 10th second. See
-      # https://github.com/klaasnicolaas/home-assistant-glow/#reduce-the-amount-of-data-the-sensors-produce / https://glow-energy.io/docs/faq/reduce_sensor_data
-      # for more information.
-      - throttle_average: 10s
-      - filter_out: NaN
+  # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
+  - platform: total_daily_energy
+    name: 'Daily Energy Import'
+    id: sensor_total_daily_energy_import
+    power_id: energy_pulse_meter
+    unit_of_measurement: 'kWh'
+    icon: mdi:circle-slice-3
+    state_class: total_increasing
+    device_class: energy
+    accuracy_decimals: 4
+    filters:
+      - throttle: ${sensor_update_interval}  # Limit updates to this interval
+      - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
+      - delta: 0.01  # Only send updates if consumption changes by 0.01 kW (10W)
+      - heartbeat: ${sensor_update_interval}  # Ensure an update is sent at least once per interval
 
-  #   # I dont know why we have this, it resets when the ESP is updated and seems pointless. 
-  #   # Instead: Create a Integral helper and Utility Meter helper in home assistant instead. 
-  #   total:
-  #     name: "House Total Energy Import"
-  #     id: sensor_total_energy_import
-  #     unit_of_measurement: "kWh"
-  #     icon: mdi:circle-slice-3
-  #     state_class: total_increasing
-  #     device_class: energy
-  #     accuracy_decimals: 4
-  #     filters:
-  #       # multiply value = 1 / imp value
-  #       # - multiply: 0.001
-  #       - lambda: return x * (1.0 / ${pulse_rate});
-  #       # Update the sensor once per 0.1 kWh consumed, or every 10 seconds, whichever happens sooner.
-  #       # https://github.com/klaasnicolaas/home-assistant-glow/#reduce-the-amount-of-data-the-sensors-produce / https://glow-energy.io/docs/faq/reduce_sensor_data
-  #       # for more information.
-  #       - delta: 0.01
-  #       - heartbeat: 10s
-
-  # # I dont know why we have this, it resets when the ESP is updated and seems pointless. 
-  # # Instead: Create a Integral helper and Utility Meter helper in home assistant instead. 
-  # # Total day usage
-  # - platform: total_daily_energy
-  #   name: 'Daily Energy Import'
-  #   id: sensor_total_daily_energy_import
-  #   power_id: energy_pulse_meter
-  #   unit_of_measurement: 'kWh'
-  #   icon: mdi:circle-slice-3
-  #   state_class: total_increasing
-  #   device_class: energy
-  #   accuracy_decimals: 4
-  #   filters:
-  #     # Multiplication factor from W to kW is 0.001
-  #     - multiply: 0.001
-  #     # Update the sensor once per 0.1 kWh consumed, or every 10 seconds, whichever happens sooner.
-  #     # https://github.com/klaasnicolaas/home-assistant-glow/#reduce-the-amount-of-data-the-sensors-produce / https://glow-energy.io/docs/faq/reduce_sensor_data
-  #     # for more information.
-  #     - delta: 0.01
-  #     - heartbeat: 10s
-
-
-
-
-# Enable time component for ringer time
-# https://esphome.io/components/time/homeassistant.html
+##############################################################
+# ⏳ Time Component (For Midnight Reset & Quiet Hours)
+##############################################################
 time:
   - platform: homeassistant
     id: homeassistant_time
 
-####################################################
-# Doorbell button with LEDs and relay output to bell
-####################################################
-# Neopixel Doorbell Button Lights
+##############################################################
+# 💡 Neopixel LED for Doorbell Button
+##############################################################
+
 light:
   - platform: neopixelbus
     method: ESP8266_UART1
     id: doorbell_light
     type: GRB
-    pin: D4 # GPIO2
+    pin: D4  # GPIO2 - Neopixel Button Light
     num_leds: 2
     name: "Doorbell Button Lights"
     restore_mode: ALWAYS_ON
@@ -225,73 +183,23 @@ light:
           add_led_interval: 300ms
           reverse: False
 
+##############################################################
+# 🔘 Doorbell Button Configuration
+##############################################################
 
-switch:
-  # Doorbell relay output, pull low (to GND) to switch relay on.
-  # Not exposed to home assistant.
-  - platform: gpio
-    pin: 
-      number: D1 # GPIO05
-      mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
-      inverted: true
-    id: bellRelay
-    on_turn_on:
-      then:
-        - if:
-            condition:
-              lambda: 'return id(homeassistant_time).now().hour > id(nighttime_start) || id(homeassistant_time).now().hour < id(nighttime_stop);'
-            then:
-              - logger.log: "Doorbell pushed at nighttime"
-              - delay: 400ms
-              - switch.turn_off: bellRelay
-            else:
-              - logger.log: "Doorbell pushed at daytime"
-              - delay: 1500ms
-              - switch.turn_off: bellRelay
-                
-    # on_turn_on:
-    # - delay: 500ms
-    # - switch.turn_off: bellRelay
-  
-   
-#Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
-button:
-  - platform: template
-    name: "Doorbell Ringer"
-    icon: "mdi:alarm-bell"
-    on_press:
-      - switch.turn_on: bellRelay
-      
-  # - platform: gpio
-  #   pin:
-  #     number: D5  # GPIO12
-  #     mode: OUTPUT_OPEN_DRAIN
-  #     # inverted: true
-  #   name: "Action to CCTV"
-
-    
 binary_sensor:
-  #   # Trying output to CCTV GPIO 
-  # - platform: gpio
-  #   pin:
-  #     number: D6  # GPIO14
-  #     mode: INPUT_PULLUP
-  #     inverted: true
-  #   name: "Action by CCTV"
-  
-  # Doorbell button sensor and actions to make the doorbell sounder activate.
   - platform: gpio
     pin:
-      number: D2 # GPIO04
+      number: D2  # GPIO04 - Doorbell button input
       mode: INPUT_PULLUP
       inverted: true
     name: "Doorbell Button"
-    icon: "mdi:door"
+    icon: "mdi:doorbell"
     filters:
       - delayed_off: 100ms
     on_press:
       then:
-        - logger.log: "Button pressed"
+        - logger.log: "Doorbell Button Pressed"
         - light.turn_off:
             id: doorbell_light
         - light.turn_on:
@@ -313,6 +221,7 @@ binary_sensor:
         - light.turn_on:
             id: doorbell_light
             effect: "Slow Rainbow Effect With Custom Values"
+
 
     # on_release:
     #   then:
@@ -359,5 +268,44 @@ binary_sensor:
     #     - switch.turn_on: bellRelay
     #     - delay: 1000ms
     #     - switch.turn_off: bellRelay
+    
+##############################################################
+# 🔔 Doorbell Relay (Controls the Chime)
+##############################################################
 
+switch:
+  # Doorbell relay output, pull low (to GND) to switch relay on.
+  # Not exposed to home assistant.
+  - platform: gpio
+    pin:
+      number: D1  # GPIO05 - Relay control
+      mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
+      inverted: true
+    id: bellRelay
+    on_turn_on:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(homeassistant_time).now().hour > id(nighttime_start) || id(homeassistant_time).now().hour < id(nighttime_stop);'
+            then:
+              - logger.log: "Doorbell pushed at nighttime"
+              - delay: 400ms
+              - switch.turn_off: bellRelay
+            else:
+              - logger.log: "Doorbell pushed at daytime"
+              - delay: 1500ms
+              - switch.turn_off: bellRelay
+                
+    # on_turn_on:
+    # - delay: 500ms
+    # - switch.turn_off: bellRelay
+  
 
+#Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
+button:
+  - platform: template
+    name: "Ring Doorbell"
+    icon: "mdi:alarm-bell"
+    on_press:
+      - switch.turn_on: bellRelay
+      

@@ -1,281 +1,230 @@
 ##############################################################
-# Richard Huish 2023
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Indoor Air Quality Sensor #1
-# 
-# To save the longevity of the air quality sensor, we turn it 
-# off and make only occasional reads.
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Office Blind Controller
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration allows automated control of office blinds 
+# using a WeMos D1 Mini (ESP8266). It supports:
+# - Open, Close, and Stop actions
+# - Tilt Open & Tilt Close adjustments
+# - Reset function for calibration
+# - Manual control via Home Assistant
+#
+# 🔩 Hardware:
+# - ESP8266 (WeMos D1 Mini)
+# - Relays or Transistors for Motor Control
+#
+# 🛠 Wiring:
+# - Blind Control Outputs
+#   - Open → GPIO12 (D6)  
+#   - Close → GPIO14 (D5)  
+#   - Reset → GPIO13 (D7)  
+# - Status LED
+#   - GPIO2 (D4) → LED Indicator  
+#
 ##############################################################
-# Config Header for Device
-##############################################################
+
+# 🔄 Substitutions for Easy Configuration
 substitutions:
-  # Names
+  # 📛 Naming & Identification
   name: office-blind-controller
   friendly_name: "Office Blind Controller"
-  ui_comment: "Office Blind Controller" # Only shows in UI.
-  
-  # Wifi Settings
+  ui_comment: "Office Blind Controller" # Shown only in UI
+
+  # 🌐 Network Configuration (Static IP)
   ip: 192.168.2.52
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: D4
-  status_led_inverted: "false"
+  # 🔴 Status LED Configuration
+  status_led: D4  # GPIO2 - Onboard LED
+  status_led_inverted: "true"
 
-  # Debug Component
-  log_level: DEBUG 
-
-  # Project 
+  # 📦 Project Metadata
   project_name: "genestealer.office-blind-controller"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/office-blind-controller.yaml"
-  
+
+  # 🛠 Debug Logging Level
+  log_level: DEBUG
+
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 5min
+  wifi_sensor_update_interval: 10min
 
 ##############################################################
-# Platform
+# 🚀 ESP8266 Board Configuration
 ##############################################################
 esp8266:
   board: d1_mini
 
 ##############################################################
-# Import shared code
+# 🔗 Import Shared Code (Common Components)
 ##############################################################
-
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-# To remove status_led for a specific device, uncomment the line below:
-# status_led: !remove
+  # Uncomment below to remove the status LED:
+  # status_led: !remove
 
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
-
+  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# Main Code
+# ⚡ Output Configuration (Motor Control Pins)
 ##############################################################
-
 output:
-  # Not exposed to home assistant.
   - platform: gpio
-    id: gpio_d5
-    pin:
-      number: D5
-      inverted: true
-      mode: OUTPUT_OPEN_DRAIN # As we want to sink current
-
-  - platform: gpio
-    id: gpio_d6
+    id: open_motor
     pin:
       number: D6
       inverted: true
-      mode: OUTPUT_OPEN_DRAIN # As we want to sink current
+      mode: OUTPUT_OPEN_DRAIN  # Sink current for relay/transistor control
+
   - platform: gpio
-    id: gpio_d7
+    id: close_motor
+    pin:
+      number: D5
+      inverted: true
+      mode: OUTPUT_OPEN_DRAIN  # Sink current for relay/transistor control
+
+  - platform: gpio
+    id: reset_motor
     pin:
       number: D7
       inverted: true
-      mode: OUTPUT_OPEN_DRAIN # As we want to sink current
+      mode: OUTPUT_OPEN_DRAIN  # Sink current for relay/transistor control
 
-
+##############################################################
+# 🎛️ Button Actions for Manual Control
+##############################################################
 button:
   - platform: template
-    name: Open
+    name: "Open Blinds"
     id: open_button
     on_press:
-      - logger.log: "Open"
-      - output.turn_on: gpio_d6
+      - logger.log: "Opening Blinds"
+      - output.turn_on: open_motor
       - delay: 110ms
-      - output.turn_off: gpio_d6
+      - output.turn_off: open_motor
 
   - platform: template
-    name: Close
-    id: Close_button
+    name: "Close Blinds"
+    id: close_button
     on_press:
-      - logger.log: "Close"
-      - output.turn_on: gpio_d5
+      - logger.log: "Closing Blinds"
+      - output.turn_on: close_motor
       - delay: 110ms
-      - output.turn_off: gpio_d5
+      - output.turn_off: close_motor
 
   - platform: template
-    name: Reset
-    id: reset_blinds_button
-    device_class: Restart
-    entity_category: DIAGNOSTIC 
+    name: "Reset Blinds"
+    id: reset_button
+    device_class: restart
+    entity_category: diagnostic
     on_press:
-      - logger.log: "Reset"
-      - output.turn_on: gpio_d7
+      - logger.log: "Resetting Blinds"
+      - output.turn_on: reset_motor
       - delay: 5000ms
-      - output.turn_off: gpio_d7
-
+      - output.turn_off: reset_motor
 
   - platform: template
-    name: Tilt Open
+    name: "Tilt Open"
     id: tilt_open
     on_press:
-      - logger.log: "Tilt Open"
-      - output.turn_on: gpio_d6
+      - logger.log: "Tilting Open"
+      - output.turn_on: open_motor
       - delay: 110ms
-      - output.turn_off: gpio_d6
+      - output.turn_off: open_motor
       - delay: 110ms
-      - output.turn_on: gpio_d6
+      - output.turn_on: open_motor
       - delay: 110ms
-      - output.turn_off: gpio_d6
+      - output.turn_off: open_motor
 
   - platform: template
-    name: Tilt Close
+    name: "Tilt Close"
     id: tilt_closed
     on_press:
-      - logger.log: "Tilt Closed"
-      - output.turn_on: gpio_d5
+      - logger.log: "Tilting Closed"
+      - output.turn_on: close_motor
       - delay: 110ms
-      - output.turn_off: gpio_d5
+      - output.turn_off: close_motor
       - delay: 110ms
-      - output.turn_on: gpio_d5
+      - output.turn_on: close_motor
       - delay: 110ms
-      - output.turn_off: gpio_d5
+      - output.turn_off: close_motor
 
-
+##############################################################
+# 🌐 Global Variables for Blind State Tracking
+##############################################################
 globals:
-  - id: cover_moving #This is for the HW buttons to determine if a press should stop the blind or start moving it (this could probably be done without this var by reading id(time_cover).current_operation)
+  - id: cover_opening
     type: bool
-    initial_value: "0"
-  - id: cover_opening 
-    type: bool
-    initial_value: "0"
-  - id: cover_closing 
-    type: bool
-    initial_value: "0"
+    initial_value: "false"
 
+  - id: cover_closing
+    type: bool
+    initial_value: "false"
+
+##############################################################
+# 🏠 Cover Control for Automated Blind Movement
+##############################################################
 cover:
   - platform: template
-    name: "Blinds"
+    name: "Office Blinds"
     id: blinds
     device_class: blind
     optimistic: true
-    # has_position: true
-    assumed_state: True
-    
+    assumed_state: true
+
     open_action:
-      - logger.log: "Open"
+      - logger.log: "Opening Blinds"
       - globals.set:
           id: cover_opening
-          value: "true"     
-      - output.turn_on: gpio_d6
+          value: "true"
+      - output.turn_on: open_motor
       - delay: 110ms
-      - output.turn_off: gpio_d6
+      - output.turn_off: open_motor
       - delay: 5000ms
       - globals.set:
           id: cover_opening
-          value: "false"     
+          value: "false"
 
     close_action:
-      - logger.log: "Closing"
+      - logger.log: "Closing Blinds"
       - globals.set:
           id: cover_closing
           value: "true"
-      - output.turn_on: gpio_d5
+      - output.turn_on: close_motor
       - delay: 110ms
-      - output.turn_off: gpio_d5
+      - output.turn_off: close_motor
       - delay: 5000ms
       - globals.set:
           id: cover_closing
-          value: "false"     
+          value: "false"
 
     stop_action:
-        - if:
-            condition:
-              lambda: 'return id(cover_opening);'
-            then:
-              - output.turn_on: gpio_d6
-              - delay: 110ms
-              - output.turn_off: gpio_d6
-              - globals.set:
-                  id: cover_opening
-                  value: "false"  
-                  
-        - if:
-            condition:
-              lambda: 'return id(cover_closing);'
-            then:
-              - output.turn_on: gpio_d5
-              - delay: 110ms
-              - output.turn_off: gpio_d5
-              - globals.set:
-                  id: cover_closing
-                  value: "false"  
-    # tilt_action:
-    #   - logger.log:
-    #       format: "Tilting to: %.2f"
-    #       args: ["tilt"]
+      - if:
+          condition:
+            lambda: 'return id(cover_opening);'
+          then:
+            - output.turn_on: open_motor
+            - delay: 110ms
+            - output.turn_off: open_motor
+            - globals.set:
+                id: cover_opening
+                value: "false"
 
-    # position_action:
-    #   - cover.control:
-    #       id: time_cover
-    #       position: !lambda |-
-    #         return pos;
-
-
-# cover:
-#   - platform: template
-#     device_class: curtain
-#     name: Blinds
-#     on_closed:
-#       then:
-#         - logger.log: "Cover is Closed!"
-#     on_open:
-#       then:
-#         - logger.log: "Cover is Open!"
-#   # 
-
-# cover:
-#   - platform: template
-#       device_class: curtain
-#         # on_closed:
-#         #   then:
-#         #     - logger.log: "Cover is Closed!"
-#         # on_open:
-#         #   then:
-#         #     - logger.log: "Cover is Open!"
-#         # on_stop:
-#         #   then:
-#         #     - logger.log: "Cover is Stopping!"
-# https://gist.github.com/InToSSH/6f7eb0bd448d2060ca8f410d7a599b33
-
-# switch:
-#   - platform: homeassistant
-#     name: ${device_name} - HA UP
-#     entity_id: input_boolean.momentary_up
-#     on_press:
-#       then:
-#         - if:
-#             condition:
-#               lambda: 'return !id(cover_moving);'
-#             then:
-#               - cover.open: template_cover
-
-#     on_click:
-#       - min_length: 1ms
-#         max_length: 999ms
-#         then:
-#           - cover.stop: template_cover
-    
-#   - platform: homeassistant
-#     name: ${device_name} - HA DOWN
-#     entity_id: input_boolean.momentary_down
-#     on_press:
-#       then:
-#         - if:
-#             condition:
-#               lambda: 'return !id(cover_moving);'
-#             then:
-#               - cover.close: template_cover
-              
-#     on_click:
-#       - min_length: 1ms
-#         max_length: 999ms
-#         then:
-#           - cover.stop: template_cover
+      - if:
+          condition:
+            lambda: 'return id(cover_closing);'
+          then:
+            - output.turn_on: close_motor
+            - delay: 110ms
+            - output.turn_off: close_motor
+            - globals.set:
+                id: cover_closing
+                value: "false"

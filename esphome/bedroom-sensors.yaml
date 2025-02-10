@@ -1,93 +1,99 @@
 ##############################################################
-# Richard Huish 2023
-# https://github.com/genestealer/Home-Assistant-Configuration
-# Bedroom Sensors
-# 
-# To save the longevity of the air quality sensor, we turn it 
-# off and make only occasional reads.
+# 🏠 Richard Huish 2025
+# 📌 ESPHome Configuration - Bedroom Air Quality & Environment Sensors
+# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# 📝 Description:
+# This ESPHome configuration is for a bedroom environment sensor, 
+# monitoring temperature, humidity, air pressure, and air quality 
+# using a BME280 and a PMS5003T sensor.
+#
+# 🔧 Features:
+# - ✅ Monitors air quality (PM1.0, PM2.5, PM10).
+# - ✅ Tracks temperature, humidity, and pressure via BME280.
+# - ✅ Preserves PMS5003T lifespan by turning the fan off between readings.
+# - ✅ Integrates with Home Assistant for real-time data analysis.
+#
+# 🔩 Hardware:
+# - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
+# - BME280 Sensor (Temperature, Humidity, Pressure)
+# - PMS5003T Sensor (Particulate Matter, Temperature, Humidity)
+#
 ##############################################################
-# Config Header for Device
-##############################################################
+
+# 🔧 **Substitutions for Easy Configuration**
 substitutions:
-  # Names
+  # 📛 Naming & Identification
   name: bedroom-sensor
   friendly_name: "Bedroom Sensors"
-  ui_comment: "Bedroom Sensors" # Only shows in UI.
-  
-  # Wifi Settings
+  ui_comment: "Bedroom Environmental & Air Quality Monitoring"
+
+  # 🌐 Network Configuration (Static IP)
   ip: 192.168.2.38
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # Board Settings
-  status_led: D0 # GPIO16 - NodeMCU on-board LED
+  # 🔴 Status LED (ESP8266 Onboard LED)
+  status_led: D0  # GPIO16 - NodeMCU onboard LED
   status_led_inverted: "true"
-  
-  # Debug Component
-  log_level: DEBUG 
 
-  # Project 
+  # 📦 **Project Metadata**
   project_name: "genestealer.bedroom-sensors"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/bedroom-sensors.yaml"
-  
-# These are the DAQI threshold values and messages. Adapt to your needs.
-  daqi_pm2_5_avg_24h_max_good: "35"
-  daqi_pm2_5_avg_24h_max_acceptable: "53" 
-  daqi_pm2_5_avg_24h_max_bad: "70"  
-  daqi_pm10_avg_24h_max_good: "50"
-  daqi_pm10_avg_24h_max_acceptable: "75"  
-  daqi_pm10_avg_24h_max_bad: "100" 
-  daqi_message_good: "Good"
-  daqi_message_acceptable: "Acceptable"
-  daqi_message_bad: "Bad"
-  daqi_message_verybad: "Very Bad"
 
+  # 🛠 Debug Logging
+  log_level: DEBUG
 
-  # bme280
+  # 📊 Sensor Update Interval
+  sensor_update_interval: 1min
+  wifi_sensor_update_interval: 10min
+
+  # 📟 BME280 Sensor Configuration
   i2c_pin_scl: D1
   i2c_pin_sda: D2
   i2c_scan: "true"
   i2c_frequency: 400kHz
   bme280_i2c_address: "0x76"
-  bme280_update_interval: 60s 
-  bme280_offset_temperature: "-1"  # - bme280_offset_temperature: offset of the temperature, e.g. "-1" vs setting the Oversampling to x 1
+  bme280_update_interval: 1min
+  bme280_offset_temperature: "-1"  # Adjusts for minor temperature bias
 
-  # PMSX003 Air Sensor Settings
-  # If > 30 seconds, and tx_pin is set in the UART configuration, the fan will be spun down between measurements.
-  pmsx003_update_interval: 240s
-  pmsx003_pin_rx: D6 #GPIO 12 on nodemcuv2
-  pmsx003_pin_tx: D5 #GPIO 14 on nodemcuv2
+  # 🌫️ PMSX003 Particulate Matter Sensor Configuration
+  pmsx003_update_interval: 5min  # Reduces reads to extend sensor life
+  pmsx003_pin_rx: D6  # GPIO12 on NodeMCU
+  pmsx003_pin_tx: D5  # GPIO14 on NodeMCU
   pmsx003_baud_rate: "9600"
-  pmsx003_reset_pin_num: D7 # GPIO13 on nodemcuv2
-  pmsx003_type: PMS5003T
+  pmsx003_reset_pin_num: D7  # GPIO13 on NodeMCU
+  pmsx003_type: PMS5003T  # Sensor model
 
 ##############################################################
-# Platform
+# 🚀 ESP Platform Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# Import shared code
+# 🔗 **Import Shared Code (Common Components)**
 ##############################################################
-
-# Packages 
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-  # # To remove status_led for a specific device:
+  # Uncomment below to remove the status LED from this device:
   # status_led: !remove
   bme280: !include common/bme280.yaml
   pms5003t: !include common/pms5003t.yaml
-  daqi: !include common/daqi.yaml
+  daqi: !include common/daqi.yaml  # UK Daily Air Quality Index (DAQI)
 
-
+# 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}
-  import_full_config: false # or true
+  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# Main Code
+# 🌡️ Sensor Configuration (Temperature, Humidity, Air Quality)
 ##############################################################
+
+# ✅ Uses shared configurations from `bme280.yaml` and `pms5003t.yaml`.
+# ✅ Automatically calculates air quality index (DAQI) based on UK standards.
+# ✅ Limits PMS5003T usage to extend lifespan while providing accurate data.
 

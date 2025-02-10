@@ -1,4 +1,8 @@
 ############################################################
+# packages
+############################################################
+
+############################################################
 #
 # Chicken Coop Automation and Sensors
 #
@@ -11,14 +15,14 @@
 binary_sensor:
   - platform: threshold
     name: Chicken Low Food Sensor
-    entity_id: sensor.chicken_house_sensors_chicken_food #From EspHome Sensor
+    entity_id: sensor.chicken_house_chicken_food #From EspHome Sensor
     lower: 0.6
     device_class: problem
     hysteresis: 0.1
 
   - platform: threshold
     name: Chicken Low Water Sensor
-    entity_id: sensor.chicken_house_sensors_chicken_water #From EspHome Sensor
+    entity_id: sensor.chicken_house_chicken_water #From EspHome Sensor
     lower: 0.6
     device_class: problem
     hysteresis: 0.1
@@ -46,7 +50,7 @@ alert:
   chicken_food_low_alert:
     name: Chicken food low warning alert
     done_message: Chickens Food Refilled
-    message: "Chicken Food Low Warning! {{ states('sensor.chicken_house_sensors_chicken_food') }}kg"
+    message: "Chicken Food Low Warning! {{ states('sensor.chicken_house_chicken_food') }}kg"
     entity_id: binary_sensor.chicken_low_food_sensor
     state: "on"
     repeat:
@@ -68,7 +72,7 @@ alert:
   chicken_water_low_alert:
     name: Chicken water low warning alert
     done_message: Chickens Water Refilled
-    message: "Chicken Water Low Warning! {{ states('sensor.chicken_house_sensors_chicken_water') }}kg"
+    message: "Chicken Water Low Warning! {{ states('sensor.chicken_house_chicken_water') }}kg"
     entity_id: binary_sensor.chicken_low_water_sensor
     state: "on"
     repeat:

@@ -39,6 +39,11 @@ substitutions:
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-con-current-clamp.yaml"
 
+  # Sensor update interval
+  sensor_update_interval: 60s
+
+  ct_clamp_sample_duration: 500ms
+
 ##############################################################
 # Platform
 ##############################################################
@@ -86,7 +91,7 @@ sensor:
     id: adc_sensor
     multiplexer: 'A0_GND' # between Pin 0 and GND
     gain: 1.024 # measures up to 1.024V
-    update_interval: 30s
+    update_interval: ${sensor_update_interval}
     accuracy_decimals: 4
 
 
@@ -95,8 +100,8 @@ sensor:
     name: "Measured Current"
     id: ct_clamp_sensor
     accuracy_decimals: 4
-    sample_duration: 200ms
-    update_interval: 30s
+    sample_duration: ${ct_clamp_sample_duration}
+    update_interval: ${sensor_update_interval}
     filters:
       - calibrate_linear:
           # Measured value of 0 Volt to 0A
@@ -126,7 +131,7 @@ sensor:
     id: my_power1
     name: "Power"
     lambda: return (id(ct_clamp_sensor).state * id(known_volts).state);
-    update_interval: 30s
+    update_interval: ${sensor_update_interval}
     accuracy_decimals: 2
     unit_of_measurement: 'W'
     state_class: measurement
@@ -142,6 +147,7 @@ sensor:
     state_class: total_increasing
     device_class: energy
     accuracy_decimals: 4
+    update_interval: ${sensor_update_interval}
     filters:
       # Multiplication factor from W to kW is 0.001
       - multiply: 0.001
@@ -149,7 +155,7 @@ sensor:
       # https://github.com/klaasnicolaas/home-assistant-glow/#reduce-the-amount-of-data-the-sensors-produce / https://glow-energy.io/docs/faq/reduce_sensor_data
       # for more information.
       - delta: 0.01
-      - heartbeat: 30s
+      - heartbeat: ${sensor_update_interval}
 
 # Enable time component to reset energy at midnight
 # https://esphome.io/components/time/homeassistant.html

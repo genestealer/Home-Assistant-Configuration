@@ -1,94 +1,71 @@
 ##############################################################
-# ESPHome Device Base
-#
-# Wifi
-#
+# 📡 ESPHome Device Base - Wi-Fi Configuration
+# 📌 Shared Wi-Fi settings for all ESPHome devices
+# 🔗 Repository: https://github.com/genestealer/Home-Assistant-Configuration
 ##############################################################
 
-# Wifi Details
 wifi:
+  reboot_timeout: 5min  # Restart ESP if Wi-Fi fails to connect
   networks:
     - ssid: !secret IoT_VLAN_SSID
       password: !secret IoT_VLAN_SSID_Key
-      # bssid: "1A:49:BC:5C:80:16"
       manual_ip:
-        static_ip: $ip
-        gateway: $gateway
-        subnet: $subnet
+        static_ip: ${ip}
+        gateway: ${gateway}
+        subnet: ${subnet}
 
-    - ssid: !secret IoT_VLAN_SSID
-      password: !secret IoT_VLAN_SSID_Key
-      # bssid: "1A:49:BC:44:9B:90"
-      manual_ip:
-        static_ip: $ip
-        gateway: $gateway
-        subnet: $subnet
+  # Uncomment and add a secondary Wi-Fi network as a backup
+  # - ssid: !secret IoT_VLAN_SSID_2
+  #   password: !secret IoT_VLAN_SSID_Key_2
+  #   manual_ip:
+  #     static_ip: ${ip}
+  #     gateway: ${gateway}
+  #     subnet: ${subnet}
 
 ##################################
-# Binary Sensors
+# 🔄 Device Availability
 ##################################
 binary_sensor:
-  # Device avaliablity
   - platform: status
-    name: Status
+    name: "Status"
     device_class: connectivity
 
 ##################################
-# Text Sensors
+# 🌐 Wi-Fi Info
 ##################################
 text_sensor:
-  # Wifi Data
   - platform: wifi_info
     ip_address:
-      name: IP
+      name: "IP"
       icon: "mdi:ip-network-outline"
     mac_address:
-      name: MAC
+      name: "MAC"
       icon: "mdi:access-point-network"
     ssid:
-      name: SSID
-      icon: "mdi:help-network-outline"
+      name: "SSID"
+      icon: "mdi:wifi"
     bssid:
-      name: BSSID
+      name: "BSSID"
       icon: "mdi:access-point-network"
 
 ##################################
-# Sensors
+# 📶 Wi-Fi Signal Strength
 ##################################
 sensor:
-  # Wifi signal strength
   - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
-    name: RSSI
+    name: "RSSI"
     id: wifi_signal_db
-    update_interval: 300s
+    update_interval: ${wifi_sensor_update_interval}
     device_class: signal_strength
     state_class: measurement
     entity_category: "diagnostic"
 
   - platform: copy # Reports the WiFi signal strength in %
+    name: "Wi-Fi Signal"
     source_id: wifi_signal_db
-    name: "WiFi Signal"
+    id: wifi_signal_strength
     filters:
       - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
     unit_of_measurement: "%"
     entity_category: "diagnostic"
-    device_class: ""
-    icon: "mdi:signal-variant"
-
-  # filters:  
-  #   - median:  
-  #  window_size: 7  
-  #  send_every: 4  
-  #  send_first_at: 3
-
-
-# sensor:
-#   - <<: !include common/sensor/uptime.config.yaml
-#   - <<: !include common/sensor/wifi_signal.config.yaml
-# binary_sensor:
-#   - <<: !include common/binary_sensor/connection_status.config.yaml
-
-# switch:
-#   - <<: !include common/switch/restart_switch.config.yaml
-
-
+    icon: "mdi:wifi-strength-4"
