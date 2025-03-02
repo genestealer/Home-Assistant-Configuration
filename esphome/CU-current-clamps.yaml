@@ -1,3 +1,4 @@
+
 ##############################################################
 # 🏠 Richard Huish 2025
 # 📌 ESPHome Configuration - Consumer Unit Energy Monitoring
@@ -8,6 +9,7 @@
 # using a current transformer (SCT-013-000) and ADS1115 ADC.
 # The system integrates with Home Assistant for tracking power usage
 # and calculating daily energy consumption.
+# https://docs.openenergymonitor.org/electricity-monitoring/ct-sensors/interface-with-arduino.html
 #
 # 🔧 Features:
 # - ✅ Measures AC current using a CT clamp (SCT-013-000).
@@ -19,6 +21,22 @@
 # - Adafruit Feather HUZZAH ESP8266 (Wi-Fi Microcontroller)
 # - YHDC SCT-013-000 (60A/1V Current Transformer)
 # - ADS1115 ADC (4-Channel 16-Bit A/D Converter)
+# - 10μF Multilayer Ceramic Capacitor MLCC, 50V dc V RS Stock No 811-8367
+# - 2 x 10K Ohm resistor volatge devider. 3.3V DC and GND 
+# 
+# 🔌 WIRING:
+# The current transformer (CT) is connected to GND and one side of a 10µF capacitor.
+# The other side of the capacitor is connected to the mid-point of a voltage divider, 
+# which consists of two 10KΩ resistors in series between 3.3V DC and GND. 
+# This voltage divider creates a bias voltage of 1.64V DC at its mid-point.
+#
+# - The analog input (ADS1115 A0) is connected to this mid-point (1.64V DC).
+# - The capacitor allows the AC signal from the CT sensor to pass while blocking the DC bias, 
+#   ensuring only the burden voltage is superimposed on the 1.64V reference.
+# - As a result, the ADS1115 reads the burden voltage oscillating above and below the 1.64V bias.
+#
+# This setup ensures the AC signal is correctly referenced for accurate current measurement.
+# 
 #
 ##############################################################
 
@@ -36,7 +54,7 @@ substitutions:
 
   # 🔴 Status LED Configuration
   status_led: LED_RED 
-  status_led_inverted: "true"
+  status_led_inverted: "false"
 
   # 📦 Metadata & Versioning
   project_name: "genestealer.cu-current-clamp"
@@ -48,7 +66,8 @@ substitutions:
 
   # 📊 Sensor Update Intervals
   sensor_update_interval: 1min  # General sensor update interval
-  ct_sensor_update_interval: 1min  # CT clamp update interval
+  wifi_sensor_update_interval: 10min
+  ct_sensor_update_interval: 60s  # CT clamp update interval
   
   # 🔄 Current Clamp Sampling Duration
   ct_clamp_sample_duration: 400ms  # Captures 20 full cycles (for 50Hz AC systems)
@@ -92,88 +111,57 @@ ads1115:
 # 📊 Sensor Configuration
 ##############################################################
 
-sensor:
-  # 📡 ADS1115 Sensor Input (Raw Analog Voltage from CT Clamp)
-  - platform: ads1115
-    name: "CT 0"
-    id: adc_sensor
-    # internal: true  # Hide from Home Assistant UI
-    multiplexer: 'A0_GND'  # Measuring between A0 and GND
-    gain: 1.024  # Allows reading up to 1.024V (fits CT clamp output)
-    update_interval: ${sensor_update_interval}
-    accuracy_decimals: 5  # High precision
-    filters:
-      - median:
-          window_size: 5  # Reduces noise by averaging 5 readings
-          send_every: 2  # Sends updated value every 2 measurements
 
+sensor:
   # 📡 ADS1115 Sensor Input (Raw Analog Voltage from CT Clamp)
   - platform: ads1115
     name: "CT 1"
     id: adc_sensor
-    # internal: true  # Hide from Home Assistant UI
-    multiplexer: 'A1_GND'  # Measuring between A1 and GND
-    gain: 1.024  # Allows reading up to 1.024V (fits CT clamp output)
-    update_interval: ${sensor_update_interval}
-    accuracy_decimals: 5  # High precision
+    multiplexer: 'A0_GND'  # Measuring between A1 and GND
+    gain: 4.096   # Allows reading up to 4.096V (1.65V DC offset + 1V DC CT Clamp range)
+    internal: true
+    update_interval: 3s # Short update interval which is then filtered out
+    accuracy_decimals: 3  # High precision
     filters:
-      - median:
-          window_size: 5  # Reduces noise by averaging 5 readings
-          send_every: 2  # Sends updated value every 2 measurements
+      - offset: -1.642 # 10k/10k voltage divider between 3.3V and GND (1.640 V midpoint measured with DMM for A0_GND) Set lower to ensure we cut off any noise
 
-          
+      - median:
+          window_size: 10  # Reduces noise by averaging 5 readings
+          send_every: 3  # Sends updated value every 2 measurements
+          # send_first_at: 3
+      - clamp:
+          min_value: 0 # Ignore negative and noise
+          # max_value: 1.2
+      
+      - or:
+        - heartbeat: ${ct_sensor_update_interval} # Ensure updates happen at least every ${ct_sensor_update_interval} seconds 
+        - delta: 0.001 # Immediate update if value changes significantly
+
   # 🔌 Current Transformer (CT Clamp) - Measures AC Current
   - platform: ct_clamp
     sensor: adc_sensor
     name: "Oven Measured Current"
     id: ct_clamp_sensor
     accuracy_decimals: 2
-    internal: true  # Hide from UI (used for power calculations)
     sample_duration: ${ct_clamp_sample_duration}  # Defines sampling period
-    update_interval: ${ct_sensor_update_interval}
+    update_interval: 3s # Short update interval which is then filtered out
     filters:
-      - calibrate_linear:  # Maps voltage to real current values
-          - -0.00022 -> 0   # Adjusted zero calibration (removes offsets)
-          - 0.10653 -> 7.7  # Based on calibration data
+      - calibrate_linear:
+         method: least_squares
+         datapoints:
+          - 0.001 -> 0   # Adjusted zero calibration (removes offsets)
           - 1.0 -> 60       # 1V = 60A (standard for SCT-013-000)
-      - lambda: |-
-          if (x > -0.03 && x < 0.03) {
-            return 0;  // Ignore small noise fluctuations
-          }
-          return x;
-
-  # ⚡ Power Calculation (Watts) Based on Measured Current
-  - platform: template
-    id: my_power1
-    name: "Oven Power"
-    update_interval: ${ct_sensor_update_interval}
-    accuracy_decimals: 0
-    unit_of_measurement: 'W'
-    state_class: measurement
-    device_class: power
-    filters:
-      - throttle_average: ${sensor_update_interval}  # Smooth updates
-      - lambda: |-
-          float voltage = id(known_volts).state > 0 ? id(known_volts).state : 230.0;  
-          float power = id(ct_clamp_sensor).state * voltage;
-          return power < 50 ? 0 : power;  // Ignore small loads below 50W
-
-  # 🔋 Total Daily Energy Consumption (Resets at Midnight)
-  # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
-  - platform: total_daily_energy
-    name: 'Oven Energy Today'
-    id: sensor_total_daily_energy
-    power_id: my_power1
-    unit_of_measurement: 'kWh'
-    icon: mdi:circle-slice-3
-    state_class: total_increasing
-    device_class: energy
-    accuracy_decimals: 3
-    filters:
-      - throttle: ${sensor_update_interval}  # Limit update rate
-      - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
-      - delta: 0.01  # Only update if energy changes by 0.01 kWh (10W)
-      - heartbeat: ${sensor_update_interval}  # Ensure at least one update per interval
+      - median:
+          window_size: 5  # Reduces noise by averaging 5 readings
+          send_every: 2  # Sends updated value every 2 measurements
+          # send_first_at: 3
+      - clamp:
+          min_value: 0 # Ignore negative
+          max_value: 60
+      - or:
+        - heartbeat: ${ct_sensor_update_interval} # Ensure updates happen at least every ${ct_sensor_update_interval} seconds 
+        - delta: 0.1 # Immediate update if value changes significantly
+        
 
   # 🔌 Read Known Voltage from Home Assistant
   - platform: homeassistant
@@ -181,6 +169,66 @@ sensor:
     entity_id: sensor.myups_input_voltage
     id: known_volts
     accuracy_decimals: 3  # Ensures high precision for power calculation
+
+
+  # ⚡ Power Calculation (Watts) Based on Measured Current
+  - platform: template
+    id: my_power1
+    name: "Oven Power"
+    update_interval: 3s # Short update interval which is then filtered out
+    unit_of_measurement: "W"
+    state_class: measurement
+    device_class: power
+    lambda: return (id(ct_clamp_sensor).state * id(known_volts).state);
+    # lambda: |-
+    #       float current = id(ct_clamp_sensor).state;
+    #       if (current <= 0.03) return 0;
+    #       float voltage = isnan(id(known_volts).state) ? 230.0 : id(known_volts).state;
+    #       float power = current * voltage;
+    #       ESP_LOGD("Power Calculation", "Voltage: %.1fV, Current: %.2fA, Power: %.1fW", voltage, current, power);
+    #       return power;
+    filters:
+      - clamp:
+          min_value: 0 # Ignore negative
+      - or:
+        - heartbeat: ${ct_sensor_update_interval} # Ensure updates happen at least every ${ct_sensor_update_interval} seconds 
+        - delta: 50 # Immediate update if value changes significantly
+
+      
+
+
+  # # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
+  # - platform: total_daily_energy
+  #   name: 'Oven Energy Today'
+  #   id: sensor_total_daily_energy
+  #   power_id: my_power1
+  #   unit_of_measurement: 'kWh'
+  #   icon: mdi:circle-slice-3
+  #   state_class: total_increasing
+  #   device_class: energy
+  #   accuracy_decimals: 3
+  #   filters:
+  #     - throttle: ${sensor_update_interval}  # Limit update rate
+  #     - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
+  #     - delta: 0.01  # Only update if energy changes by 0.01 kWh (10W)
+  #     - heartbeat: ${sensor_update_interval}  # Ensure at least one update per interval
+
+
+binary_sensor:
+
+  # Surge Protection Device monitoring pins. Pin is fitted with extrenal 10K pull-up resistor
+  - platform: gpio
+    pin:
+      number: 12
+      mode: INPUT
+      inverted: true
+    name: "SPD Expired"
+    device_class: problem
+    icon: "mdi:electric-switch"
+    filters:
+      - delayed_on: 1000ms
+      - delayed_off: 1000ms
 
 ##############################################################
 # ⏳ Time Component (Used for Resetting Energy Meter at Midnight)
