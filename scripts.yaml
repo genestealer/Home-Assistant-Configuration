@@ -404,12 +404,6 @@ energenie_etrv_set_reporting_interval:
     entity_id: 5d3fe98b3fe9a2d3448ec34131620091
     type: set_value
     value: 300
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: number
-    entity_id: 08469c03165893efaa9b5a297374484f
-    type: set_value
-    value: 300
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: number
     entity_id: 7cb4e59be67a4f8f1661a93858a3a851
@@ -443,6 +437,7 @@ energenie_etrv_set_low_power_mode_off:
     entity_id: 62b634275f68a5e6e82986ad6fe56f13
     type: set_preset_mode
     preset_mode: Low Power Mode ON
+    enabled: true
   - device_id: 55d26468639a4f1005742215878de937
     domain: climate
     entity_id: 168ee9f59e0b15f8719800c92f16f8c9
@@ -458,17 +453,12 @@ energenie_etrv_set_low_power_mode_off:
     entity_id: f175045657712af0731ec9edf74b1479
     type: set_preset_mode
     preset_mode: Low Power Mode ON
+    enabled: false
   - device_id: d87bf9712abd725b400a815405c374ac
     domain: climate
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Low Power Mode ON
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Low Power Mode ON
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
@@ -618,12 +608,6 @@ energenie_etrv_set_low_power_mode_on:
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Low Power Mode OFF
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Low Power Mode OFF
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
@@ -640,58 +624,54 @@ energenie_etrv_set_low_power_mode_on:
 
     '
 energenie_etrv_set_reporting_interval_3600:
-  alias: 'Energenie eTRV: Set Reporting Interval = 3600 (Summer Use)'
+  alias: 'Energenie eTRV: Set Reporting Interval = 600 (Summer Use)'
   sequence:
   - device_id: 061f81b04836d8e074d7e2542b21767c
     domain: number
     entity_id: 259300e10fbba9cb42d5e9655cd6d747
     type: set_value
-    value: 3600
+    value: 600
   - device_id: a46ff2f2479fd7381a267a77a12734ae
     domain: number
     entity_id: 6b60505ff3f1c1cc78d487b66f56c94b
     type: set_value
-    value: 3600
+    value: 600
   - device_id: e79922e5a787ed8db81ee253715ea823
     domain: number
     entity_id: 7925ab4b821bb876bcc45a7431822d26
     type: set_value
-    value: 3600
+    value: 600
   - device_id: 55d26468639a4f1005742215878de937
     domain: number
     entity_id: 7b5c6e97f3a71d9c2090b3c281164be6
     type: set_value
-    value: 3600
+    value: 600
   - device_id: f694a04cab17376f9ccbb97b67b6365d
     domain: number
     entity_id: 70f7b778cca89fa3a8465970c92ac92c
     type: set_value
-    value: 3600
+    value: 600
   - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
     domain: number
     entity_id: eabecc3a2d282f57ec79bd0e5d9dfa6f
     type: set_value
-    value: 3600
+    value: 600
+    enabled: false
   - device_id: d87bf9712abd725b400a815405c374ac
     domain: number
     entity_id: 5d3fe98b3fe9a2d3448ec34131620091
     type: set_value
-    value: 3600
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: number
-    entity_id: 08469c03165893efaa9b5a297374484f
-    type: set_value
-    value: 3600
+    value: 600
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: number
     entity_id: 7cb4e59be67a4f8f1661a93858a3a851
     type: set_value
-    value: 3600
+    value: 600
   - device_id: a9d1acaaf374a3234065ce3dca7d9f04
     domain: number
     entity_id: 7f775e0fd1949553bc8c28923b13626e
     type: set_value
-    value: 3600
+    value: 600
   mode: single
   icon: mdi:clock-end
   description: Set Reporting Interval to 1 hour for summer use
@@ -733,12 +713,6 @@ energenie_etrv_set_valve_auto:
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Valve Auto
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Valve Auto
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
@@ -790,17 +764,12 @@ energenie_etrv_set_valve_closed:
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Valve Closed
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Valve Closed
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
     type: set_preset_mode
     preset_mode: Valve Closed
+    enabled: false
   - device_id: a9d1acaaf374a3234065ce3dca7d9f04
     domain: climate
     entity_id: c56d5518b41049387e082722202d573b
@@ -847,12 +816,6 @@ energenie_etrv_set_valve_open:
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Valve Open
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Valve Open
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
@@ -874,16 +837,19 @@ energenie_etrv_set_to_summer_mode:
     data: {}
     target:
       entity_id: script.energenie_etrv_set_low_power_mode_off
+    enabled: false
   - delay:
       hours: 3
       minutes: 0
       seconds: 0
       milliseconds: 0
+    enabled: true
   - action: script.turn_on
     metadata: {}
     data: {}
     target:
       entity_id: script.energenie_etrv_set_valve_closed
+    enabled: true
   - delay:
       hours: 3
       minutes: 0
@@ -982,11 +948,6 @@ energenie_etrv_set_valve_heat:
   - device_id: d87bf9712abd725b400a815405c374ac
     domain: climate
     entity_id: e46f27494a4d65b24c09f340418a9438
-    type: set_hvac_mode
-    hvac_mode: heat
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
     type: set_hvac_mode
     hvac_mode: heat
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
@@ -1333,5 +1294,116 @@ bedtime_heating_mode:
       minutes: 0
       seconds: 1
   alias: Bedtime Heating Mode
+  description: 'Cannot use scenes as they send mode and other data not just target
+    temperature '
+night_heating_mode:
+  sequence:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - f694a04cab17376f9ccbb97b67b6365d
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a9d1acaaf374a3234065ce3dca7d9f04
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - a46ff2f2479fd7381a267a77a12734ae
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - 55d26468639a4f1005742215878de937
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 30
+    target:
+      device_id: 71e963eadf1071d0f777742a6fbb5cf9
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - d87bf9712abd725b400a815405c374ac
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id:
+      - e79922e5a787ed8db81ee253715ea823
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 3b3c00f965b2afd59841bcb492ec5a5f
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      device_id: 061f81b04836d8e074d7e2542b21767c
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  alias: Night Heating Mode
   description: 'Cannot use scenes as they send mode and other data not just target
     temperature '
