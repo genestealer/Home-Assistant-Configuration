@@ -102,8 +102,7 @@ packages:
   device_base: !include common/device_base.yaml
   status_led: !include common/status_led.yaml
   wifi: !include common/device_base_wifi.yaml
-# # To remove status_led for a specific device:
-status_led: !remove
+
 
 dashboard_import:
   package_import_url: ${package_import_url}
