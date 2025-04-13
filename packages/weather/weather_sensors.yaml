@@ -34,7 +34,7 @@ template:
   #  Track if an irrigation Controllers goes offline. Used in the alert and kloggy/HA-Irrigation-Version2
   - binary_sensor:
       # https://github.com/kloggy/HA-Irrigation-Version2
-      - name: Irrigation Controllers Online
+      - name: All Irrigation Controllers Online
         state: "{{ is_state('binary_sensor.ic_back_status', 'on') and is_state('binary_sensor.ic_front_status', 'on') }}"
 
   # https://github.com/kloggy/HA-Irrigation-Version2
@@ -246,7 +246,7 @@ utility_meter:
 # https://www.home-assistant.io/integrations/alert/
 alert:
   irrigation_controller_alert:
-    name: Irrigation Contollers Alert
+    name: Irrigation Controllers Alert
     done_message: Irrigation contollers are back online
     message: >
       {% if not is_state('binary_sensor.ic_back_status', 'on') -%}
