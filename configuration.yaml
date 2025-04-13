@@ -236,35 +236,39 @@ input_text:
 
 #################################################
 # Google Assistant integration.
-# Every now and again have to visit this link and click TEST: https://console.actions.google.com/project/hassio-214617/accountlinking/
 google_assistant:
-  project_id: hassio-214617
-  # secure_devices_pin: !secret google_assistant_secure_devices_pin
-  service_account: !include private/google_assistant_report_state_hassio_214617.json #Orginal
-  # service_account: !include private/hassio-214617-7641f87252da.json # new
-  # service_account: !include SERVICE_ACCOUNT2.JSON # test
+  project_id: google-assistant-hass
+  service_account: !include private/huishhass-15113e9b368f.json
   report_state: true
-  # expose_by_default: false # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
-  entity_config: !include_dir_named includes/google_assistant_entity_config.yaml
-  exposed_domains: # This has no effect if expose_by_default is set to false.
-    - switch
-    - fan
-    - light
-    - lock
-    - cover
-    - camera
-    - script
-    - scene
-    - sensor
-    - climate
+  # secure_devices_pin: !secret google_assistant_secure_devices_pin
 
-# - alarm_control_panel
-# - group
-# - input_boolean
-# - input_select
-# - humidifier
-# - vacuum
-# - media_player
+  entity_config: !include_dir_named includes/google_assistant_entity_config.yaml
+  # expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
+  # exposed_domains has no effect if expose_by_default is set to false.
+  exposed_domains:
+    - alarm_control_panel
+    - button
+    - camera
+    - climate
+    - cover
+    - event
+    - fan
+    - group
+    - humidifier
+    # - input_boolean
+    # - input_button
+    # - input_select
+    - light
+    # - lock
+    # - media_player
+    - scene
+    - script
+    # - select
+    - sensor
+    - switch
+    # - vacuum
+    # - valve
+    # - water_heater
 
 #################################################
 # Proxy video live streams through Home Assistant
@@ -319,7 +323,6 @@ cover: !include_dir_merge_list includes/cover
 # camera: !include_dir_merge_list includes/cameras
 template: !include_dir_merge_list includes/template
 input_boolean: !include_dir_merge_list includes/input_boolean
-
 
 # Merge named dir
 # Merges YAML files into a dictionary (key: value).
@@ -381,27 +384,3 @@ scene: !include scenes.yaml
 #   scan_interval: 00:01:00 #Each minute
 #   power_sensor_naming: "{} Powersensor"
 #   create_energy_sensors: false
-
-#   #################################################
-#   # Google Assistant integration.
-#   # Fallback for re-linking hass ass
-# google_assistant:
-#   project_id: home-ass-40452
-#   service_account: !include SERVICE_ACCOUNT.JSON
-#   report_state: true
-#   expose_by_default: false
-#   entity_config:
-#     light.guest_bedroom_lamp_left:
-#       expose: true
-
-# #################################################
-# # Google Assistant integration.
-# # Fallback for re-linking
-# google_assistant:
-#   project_id: hassio-214617
-#   service_account: !include private/google_assistant_report_state_hassio_214617.json
-#   report_state: true
-#   expose_by_default: false
-#   entity_config:
-#     light.guest_bedroom_lamp_left:
-#       expose: true
