@@ -46,14 +46,6 @@ safe_mode:
   num_attempts: 5
 
 ##################################
-# 🔴 Status LED (Connection Indicator)
-##################################
-status_led:
-  pin:
-    number: ${status_led}
-    inverted: ${status_led_inverted}
-
-##################################
 # 🔄 Restart Button
 ##################################
 button:

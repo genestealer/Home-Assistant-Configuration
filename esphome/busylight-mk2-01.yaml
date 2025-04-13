@@ -61,9 +61,6 @@ packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
   
-# Uncomment below to remove the status LED from this device:
-status_led: !remove
-
 # 🌍 Dashboard Import Settings
 dashboard_import:
   package_import_url: ${package_import_url}

@@ -46,6 +46,7 @@ esp32:
 # Packages 
 packages:
   device_base: !include common/device_base.yaml
+  status_led: !include common/status_led.yaml
   wifi: !include common/device_base_wifi.yaml
 # To remove status_led for a specific device, uncomment the line below:
 status_led: !remove

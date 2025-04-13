@@ -1,0 +1,11 @@
+# This configuration has been moved to its own file.
+# Instead of importing the entire `device_base.yaml` file and using "status_led: !remove" to remove the status_led configuration from it, we simply avoid importing it altogether.
+# This approach prevents the incorrect warning message about "unknown tag <!remove>" which is valid but not recognized correctly by VSCode.
+# For more details, refer to: https://esphome.io/components/packages.html#remove
+##################################
+# 🔴 Status LED (Connection Indicator)
+##################################
+status_led:
+  pin:
+    number: ${status_led}
+    inverted: ${status_led_inverted}
