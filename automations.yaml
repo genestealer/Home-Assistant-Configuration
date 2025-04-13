@@ -1424,13 +1424,13 @@
     in the media_content_id. Note, during testing you need to turn off the media_player
     device after each test, else is will not show the video again. (local media-source
     is 30 seconds behind!)
-  trigger:
+  triggers:
   - type: turned_on
-    platform: device
     device_id: b03ab12c707340e8849888171a79caed
     entity_id: 7c6911b35b21b35fae0f55d88984a7d9
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: or
     conditions:
     - condition: zone
@@ -1439,7 +1439,10 @@
     - condition: zone
       entity_id: person.lucy
       zone: zone.home
-  action:
+  actions:
+  - data:
+      message: Front door
+    action: notify.google_assistant_sdk
   - data: {}
     target:
       entity_id:
@@ -1457,9 +1460,6 @@
       - guest_bedroom
       - bedroom
     enabled: false
-    action: notify.google_assistant_sdk
-  - data:
-      message: Front door
     action: notify.google_assistant_sdk
   - target:
       entity_id: media_player.office_display
@@ -1742,7 +1742,7 @@
       enabled: false
     - delay:
         hours: 0
-        minutes: 15
+        minutes: 10
         seconds: 0
         milliseconds: 0
     - choose:
@@ -1921,12 +1921,6 @@
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Exercise Valve
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
@@ -1977,27 +1971,26 @@
   description: Take photo first, rather than using camera_proxy, as camera_proxy only
     takes the image when the notification is delivered, which may be later if signal
     is poor.
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: 2aadd916ad46270ecda5ab407a461e6c
     entity_id: binary_sensor.parcel_box_contact
     domain: binary_sensor
     enabled: false
-  - platform: state
-    entity_id:
+    trigger: device
+  - entity_id:
     - binary_sensor.parcel_box_contact
     from: 'off'
     to: 'on'
-  condition: []
-  action:
-  - service: camera.snapshot
-    data:
+    trigger: state
+  conditions: []
+  actions:
+  - data:
       filename: /media/garage.jpg
     target:
       entity_id: camera.garage_13
-  - service: notify.mobile_app_rich_mob_app
-    data:
+    action: camera.snapshot
+  - data:
       title: Parcel Box
       message: Parcel Box Opened
       data:
@@ -2009,8 +2002,8 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:package-variant-closed
-  - service: notify.mobile_app_lucy_mob_app
-    data:
+    action: notify.mobile_app_rich_mob_app
+  - data:
       title: Parcel Box
       message: Parcel Box Opened
       data:
@@ -2022,14 +2015,14 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:package-variant-closed
-  - service: camera.snapshot
-    data:
+    action: notify.mobile_app_lucy_mob_app
+  - data:
       filename: /media/garage2.jpg
     target:
       entity_id:
       - camera.drive_higher_21
-  - service: notify.mobile_app_rich_mob_app
-    data:
+    action: camera.snapshot
+  - data:
       title: Parcel Box
       message: Parcel Box Opened Photo 2
       data:
@@ -2041,8 +2034,8 @@
         visibility: public
         notification_icon: mdi:package-variant-closed
         sticky: 'true'
-  - service: notify.mobile_app_lucy_mob_app
-    data:
+    action: notify.mobile_app_rich_mob_app
+  - data:
       title: Parcel Box
       message: Parcel Box Opened Photo 2
       data:
@@ -2054,107 +2047,108 @@
         visibility: public
         notification_icon: mdi:package-variant-closed
         sticky: 'true'
+    action: notify.mobile_app_lucy_mob_app
+  - data:
+      message: Parcel Box Opened
+      target:
+      - office
+    enabled: true
+    action: notify.google_assistant_sdk
   mode: single
 - id: '1694727006658'
   alias: House Doorbell - External Notify
   description: Take photo first, rather than using camera_proxy, as camera_proxy only
     takes the image when the notification is delivered, which may be later if signal
     is poor.
-  trigger:
+  triggers:
   - type: turned_on
-    platform: device
     device_id: b03ab12c707340e8849888171a79caed
     entity_id: 7c6911b35b21b35fae0f55d88984a7d9
     domain: binary_sensor
-  condition: []
-  action:
-  - if:
-    - condition: state
-      entity_id: sensor.rich_mob_app_ringer_mode
-      state: normal
-    - condition: state
-      entity_id: sensor.rich_mob_app_do_not_disturb_sensor
-      state: 'off'
-    - condition: state
-      entity_id: sensor.rich_mob_app_audio_mode
-      state: normal
-    - condition: state
-      entity_id: binary_sensor.rich_mob_app_music_active
-      state: 'off'
-      enabled: false
-    then:
-    - service: notify.mobile_app_rich_mob_app
-      data:
+    trigger: device
+  conditions: []
+  actions:
+  - parallel:
+    - if:
+      - condition: state
+        entity_id: sensor.rich_mob_app_ringer_mode
+        state: normal
+      - condition: state
+        entity_id: sensor.rich_mob_app_do_not_disturb_sensor
+        state: 'off'
+      - condition: state
+        entity_id: sensor.rich_mob_app_phone_state
+        state: idle
+      then:
+      - data:
+          data:
+            channel: DoorbellTTS2
+            importance: high
+            visibility: public
+            tts_text: Ding Dong Doorbell
+            media_stream: alarm_stream_max
+            ttl: 0
+            priority: high
+          message: TTS
+        action: notify.mobile_app_rich_mob_app
+    - if:
+      - condition: state
+        entity_id: sensor.lucy_mob_app_ringer_mode
+        state: normal
+      - condition: state
+        entity_id: sensor.lucy_mob_app_do_not_disturb_sensor
+        state: 'off'
+      - condition: state
+        entity_id: sensor.lucy_mob_app_phone_state
+        state: idle
+      then:
+      - data:
+          data:
+            channel: DoorbellTTS2
+            importance: high
+            visibility: public
+            tts_text: Ding Dong Doorbell
+            media_stream: alarm_stream_max
+            ttl: 0
+            priority: high
+          message: TTS
+        action: notify.mobile_app_lucy_mob_app
+    - data:
+        filename: /media/frontdoor.jpg
+      target:
+        entity_id: camera.front_door_11
+      action: camera.snapshot
+  - parallel:
+    - data:
         data:
-          channel: DoorbellTTS2
+          image: /media/local/frontdoor.jpg
+          color: red
+          channel: DoorbellImage2
+          vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
           importance: high
+          timeout: 86400
           visibility: public
-          tts_text: Ding Dong Doorbell
-          media_stream: alarm_stream_max
+          notification_icon: mdi:door
           ttl: 0
           priority: high
-        message: TTS
-  - if:
-    - condition: state
-      entity_id: sensor.lucy_mob_app_ringer_mode
-      state: normal
-    - condition: state
-      entity_id: sensor.lucy_mob_app_do_not_disturb_sensor
-      state: 'off'
-    - condition: state
-      entity_id: sensor.lucy_mob_app_audio_mode
-      state: normal
-    - condition: state
-      entity_id: binary_sensor.lucy_mob_app_music_active
-      state: 'off'
-      enabled: false
-    then:
-    - service: notify.mobile_app_lucy_mob_app
-      data:
+          sticky: 'true'
+        message: ' '
+      action: notify.mobile_app_rich_mob_app
+    - data:
         data:
-          channel: DoorbellTTS2
+          image: /media/local/frontdoor.jpg
+          color: red
+          channel: DoorbellImage2
+          vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
           importance: high
+          timeout: 86400
           visibility: public
-          tts_text: Ding Dong Doorbell
-          media_stream: alarm_stream_max
+          notification_icon: mdi:door
           ttl: 0
           priority: high
-        message: TTS
-  - service: camera.snapshot
-    data:
-      filename: /media/frontdoor.jpg
-    target:
-      entity_id: camera.front_door_11
-  - service: notify.mobile_app_rich_mob_app
-    data:
-      data:
-        image: /media/local/frontdoor.jpg
-        color: red
-        channel: DoorbellImage2
-        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
-        importance: high
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:door
-        ttl: 0
-        priority: high
-        sticky: 'true'
-      message: ' '
-  - service: notify.mobile_app_lucy_mob_app
-    data:
-      data:
-        image: /media/local/frontdoor.jpg
-        color: red
-        channel: DoorbellImage2
-        vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
-        importance: high
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:door
-        ttl: 0
-        priority: high
-        sticky: 'true'
-      message: ' '
+          sticky: 'true'
+        message: ' '
+      action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1694790204906'
   alias: Front door opened with no one home
@@ -2284,8 +2278,7 @@
       - data: {}
         target:
           entity_id:
-          - switch.tv_speakers
-          - switch.smart_plug_1
+          - switch.smart_plug_1_tv_speakers
         action: switch.turn_on
     - conditions:
       - condition: device
@@ -2297,8 +2290,7 @@
       - data: {}
         target:
           entity_id:
-          - switch.tv_speakers
-          - switch.smart_plug_1
+          - switch.smart_plug_1_tv_speakers
         action: switch.turn_off
     enabled: true
   mode: restart
@@ -2480,11 +2472,6 @@
     domain: binary_sensor
     trigger: device
   - type: problem
-    device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    entity_id: 2a0116895e15059336a19e2ee00a5b31
-    domain: binary_sensor
-    trigger: device
-  - type: problem
     device_id: 71e963eadf1071d0f777742a6fbb5cf9
     entity_id: fc32779959e9512a07e24e50efad3521
     domain: binary_sensor
@@ -2625,7 +2612,7 @@
   - event: sunset
     id: close
     trigger: sun
-    offset: +01:00:00
+    offset: +00:30:00
   - domain: mqtt
     device_id: ca61296154562d84a7271001aba10aa5
     type: action
@@ -2988,14 +2975,15 @@
 - id: '1720117742034'
   alias: Tea Brewing Timer
   description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
+  triggers:
+  - domain: mqtt
     device_id: 71d5510f501b15c01210dff88a9c5e31
     type: action
     subtype: 'on'
-  condition: []
-  action:
+    trigger: device
+    alias: Kitchen Ikea Zigbee Button Pressed
+  conditions: []
+  actions:
   - data:
       message: 3 and a half minute tea timer started
     enabled: false
@@ -3012,10 +3000,28 @@
       minutes: 3
       seconds: 30
       milliseconds: 0
-  - data:
-      message: Tea timer is up, your lovely cup of tea is ready. Enjoy!
-    enabled: true
-    action: notify.google_assistant_sdk
+  - alias: 'Send to targets separately, to avoid queuing delay '
+    parallel:
+    - data:
+        message: Tea timer, beep! beep!
+        target: dining room
+      enabled: true
+      action: notify.google_assistant_sdk
+    - data:
+        message: Tea timer, beep! beep! beep!
+        target: kitchen
+      enabled: true
+      action: notify.google_assistant_sdk
+    - data:
+        message: Tea timer!
+        target: office
+      enabled: true
+      action: notify.google_assistant_sdk
+    - data:
+        message: Tea timer, bing bong. Lucy, you are loved!
+        target: living room
+      enabled: true
+      action: notify.google_assistant_sdk
   mode: restart
 - id: '1720118905430'
   alias: Broadcast dinner almost ready
@@ -3356,12 +3362,6 @@
     entity_id: e46f27494a4d65b24c09f340418a9438
     type: set_preset_mode
     preset_mode: Request Diagnostics
-  - device_id: b1e80b075b7aff30c3ef1b6e6b022e25
-    domain: climate
-    entity_id: 7e3ee21dcf0862c988f881530cc3ef3b
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-    enabled: false
   - device_id: 71e963eadf1071d0f777742a6fbb5cf9
     domain: climate
     entity_id: b8a6f7260b91a515810a154c4bb51486
@@ -3428,7 +3428,7 @@
   description: ''
   triggers:
   - type: problem
-    device_id: bdcf9bf48a8313dd733a57efca54d05f
+    device_id: 158ed9873a6957601df8faf23e43a98d
     entity_id: 0435e8b85aac152e274b0fe369dc7a23
     domain: binary_sensor
     trigger: device
@@ -3438,7 +3438,7 @@
       seconds: 0
     id: high
   - type: not_connected
-    device_id: bdcf9bf48a8313dd733a57efca54d05f
+    device_id: 158ed9873a6957601df8faf23e43a98d
     entity_id: 8e8427f8efa3902d88b52401f34f1695
     domain: binary_sensor
     trigger: device
@@ -3473,6 +3473,24 @@
             '
           title: Chest Freezer High Temperature Alert
         action: notify.mobile_app_rich_mob_app
+      - data:
+          data:
+            color: white
+            channel: Freezer
+            vibrationPattern: 100,500,100,500,100,500,100,500
+            importance: high
+            visibility: public
+            notification_icon: mdi:snowflake-alert
+            ttl: 0
+            priority: high
+            sticky: 'true'
+          message: 'Top Temperature: {{ states(''sensor.chest_freezer_monitor_top_temperature'')}}
+            °C. Bottom: {{ states(''sensor.chest_freezer_monitor_bottom_temperature'')
+            }} °C\n Sent: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}
+
+            '
+          title: Chest Freezer High Temperature Alert
+        action: notify.mobile_app_lucy_mob_app
     - conditions:
       - condition: trigger
         id:
@@ -3497,4 +3515,101 @@
             '
           title: Chest Freezer Offline
         action: notify.mobile_app_rich_mob_app
+  mode: single
+- id: '1740623037208'
+  alias: Lucy Insulin Pump Sensor Watcher
+  description: ''
+  triggers:
+  - type: value
+    device_id: c3baec3b4ba49f11d45ef9e1ef28a26b
+    entity_id: 562e7d0d1fd3dc62fe7f48f94555d0b1
+    domain: sensor
+    trigger: device
+    below: 10
+    enabled: false
+  - trigger: time
+    at: '23:45:00'
+  conditions:
+  - type: is_value
+    condition: device
+    device_id: c3baec3b4ba49f11d45ef9e1ef28a26b
+    entity_id: 562e7d0d1fd3dc62fe7f48f94555d0b1
+    domain: sensor
+    below: 10
+  actions:
+  - data:
+      message: '"Pump sensor will not last the night: {{ states(''sensor.sensor_duration_hours'')
+        }} hourls left."
+
+        '
+      data:
+        color: black
+        channel: Pump1
+        vibrationPattern: 500,500,500,500,500,500,500,500,500,500,500,500,
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:pump
+        ttl: 0
+        priority: high
+        sticky: 'true'
+      title: ' Pump will not last the night'
+    action: notify.mobile_app_lucy_mob_app
+  mode: single
+- id: '1741741446182'
+  alias: Lucy Insulin Pump Resuwar Watcher
+  description: ''
+  triggers: []
+  conditions: []
+  actions: []
+  mode: single
+- id: '1742671428912'
+  alias: Notify Fridge Door Left Open
+  description: ''
+  triggers:
+  - type: opened
+    device_id: d0b18b2ae1cd529c02498c3649a0a83b
+    entity_id: 41e75657d30f7f7021a46bc435b5979a
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions: []
+  actions:
+  - data:
+      data:
+        color: white
+        channel: Fridge
+        vibrationPattern: 100,100,100,100,100,100,100,100
+        importance: high
+        visibility: public
+        notification_icon: mdi:alert-decagram-outline
+        ttl: 0
+        priority: high
+        sticky: 'true'
+      message: 'Fridge door left open for 5 mins Sent: {{now().strftime(''%Y-%m-%d
+        %I:%M %p'')}}
+
+        '
+      title: Fridge Door Left Open
+    action: notify.mobile_app_rich_mob_app
+  - data:
+      data:
+        color: white
+        channel: Fridge
+        vibrationPattern: 100,100,100,100,100,100,100,100
+        importance: high
+        visibility: public
+        notification_icon: mdi:alert-decagram-outline
+        ttl: 0
+        priority: high
+        sticky: 'true'
+      message: 'Fridge door left open for 5 mins Sent: {{now().strftime(''%Y-%m-%d
+        %I:%M %p'')}}
+
+        '
+      title: Fridge Door Left Open
+    action: notify.mobile_app_lucy_mob_app
   mode: single
