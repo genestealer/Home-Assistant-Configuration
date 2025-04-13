@@ -8,6 +8,8 @@
 # It tracks temperature, humidity, absolute humidity, and dew point using a
 # BME280 sensor connected via I2C.
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔩 Hardware:
 # - ESP8266 (NodeMCU v2)
 # - BME280 Sensor (Temperature, Humidity, Pressure)

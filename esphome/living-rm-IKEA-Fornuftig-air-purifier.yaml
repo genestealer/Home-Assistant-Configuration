@@ -7,15 +7,16 @@
 # This ESPHome configuration allows control of an IKEA FORNÜFTIG Air Purifier 
 # using an ESP8266 (NodeMCU v2) while retaining the original PCB.
 #
+# Includes shared configurations from the 'common' directory
+#
+# 🔧 Features:
 # ✅ Fan speed control (OFF, Low, Medium, High)
 # ✅ Monitoring filter status via LED detection (ADC input)
 # ✅ Measuring power consumption per fan speed
 # ✅ Integration with Home Assistant for remote control
 # ✅ Can be powered from the purifier’s 24V DC supply via a DC-DC step-down module
 #
-##############################################################
-# 🔩 HARDWARE
-##############################################################
+# 🔩 HARDWARE:
 # Main Components:
 # - ESP8266 (NodeMCU v2) - Wi-Fi microcontroller
 # - IKEA FORNÜFTIG Air Purifier (Factory PCB retained)
@@ -25,9 +26,8 @@
 # - Analog-to-Digital Converter (ADC) for filter LED monitoring
 # - GPIO-based fan control using relays or direct switching
 #
-##############################################################
 # 🛠 WIRING & PCB MODIFICATIONS
-##############################################################
+#
 # Powering the ESP8266:
 # - The IKEA FORNÜFTIG air purifier operates at 24V DC.
 # - Use a DC-DC converter to step down 24V to 3.3V (or 5V for VIN pin on the ESP8266).

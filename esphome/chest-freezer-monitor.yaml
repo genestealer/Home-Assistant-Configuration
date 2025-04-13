@@ -9,6 +9,8 @@
 # It integrates with Home Assistant and provides alerts if temperatures 
 # exceed the defined thresholds.
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔧 Features:
 # - ✅ Multiple DS18B20 sensors for freezer monitoring.
 # - ✅ High-temperature alert if freezer goes above -18°C.
@@ -74,7 +76,7 @@ dashboard_import:
 ##############################################################
 binary_sensor:
   - platform: template
-    name: "Freezer High Temp Alert"
+    name: "High Temp Alert"
     id: freezer_high_temp_alert
     device_class: problem
     icon: "mdi:alert"

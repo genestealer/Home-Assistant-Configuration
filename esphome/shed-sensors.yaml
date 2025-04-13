@@ -1,11 +1,11 @@
 ##############################################################
 # 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Loft Sensors
+# 📌 ESPHome Configuration - Shed Sensors
 # 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
 # 📝 Description:
 # This ESPHome configuration monitors the temperature and humidity
-# in the loft using a DHT22 sensor. It sends real-time data to 
+# in the shed using a DHT22 sensor. It sends real-time data to 
 # Home Assistant via Wi-Fi.
 #
 # Includes shared configurations from the 'common' directory
@@ -16,7 +16,7 @@
 #
 # 🛠 Wiring:
 # - DHT22 Sensor
-#   - Data (OUT) → GPIO4 (D4)  
+#   - Data (OUT) → GPIO4 (D2)  
 #   - VCC (3.3V/5V) → 3.3V  
 #   - GND → GND  
 # - Status LED
@@ -27,12 +27,12 @@
 # 🔄 Substitutions for Easy Configuration
 substitutions:
   # 📛 Naming & Identification
-  name: loft-sensor
-  friendly_name: "Loft Sensors"
-  ui_comment: "Loft Sensors"
+  name: shed-sensor
+  friendly_name: "Shed Sensors"
+  ui_comment: "Shed Sensors"
 
   # 🌐 Network Configuration (Static IP)
-  ip: 192.168.2.20
+  ip: 192.168.2.58
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
@@ -41,9 +41,9 @@ substitutions:
   status_led_inverted: "true"
 
   # 📦 Project Metadata
-  project_name: "genestealer.loft-sensors"
+  project_name: "genestealer.shed-sensors"
   project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/loft-sensors.yaml"
+  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/shed-sensors.yaml"
 
   # 🛠 Debug Logging Level
   log_level: DEBUG
@@ -51,7 +51,7 @@ substitutions:
   # 📊 Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
-
+  
 ##############################################################
 # 🚀 ESP8266 Board Configuration
 ##############################################################
@@ -73,14 +73,14 @@ dashboard_import:
   import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# 🌡️ Loft Sensor Configuration (DHT22)
+# 🌡️ Shed Sensor Configuration (DHT22)
 ##############################################################
 sensor:
   # ----------------------
   # 📌 Temperature & Humidity Sensor
   # ----------------------
   - platform: dht
-    pin: D4  # GPIO4
+    pin: D1  # GPIO 5 GPIO pin 5 (NodeMCU Pin D1)
     temperature:
       name: "Temperature"
       state_class: measurement

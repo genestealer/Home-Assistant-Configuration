@@ -135,7 +135,7 @@ sensor:
     id: power_calculation
     name: "Power Usage"
     update_interval: ${specific_sensor_update_interval}
-    accuracy_decimals: 0
+    accuracy_decimals: 1
     unit_of_measurement: 'W'
     state_class: measurement
     device_class: power

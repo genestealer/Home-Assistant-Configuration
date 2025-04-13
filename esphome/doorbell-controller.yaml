@@ -1,4 +1,3 @@
-##############################################################
 # 🏠 Richard Huish 2025
 # 📌 ESPHome Configuration - Doorbell Controller & Electricity Monitor
 # 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
@@ -8,6 +7,8 @@
 # monitors household electricity consumption using a pulse meter.
 # It integrates with Home Assistant for real-time monitoring, 
 # notifications, and automation.
+#
+# Includes shared configurations from the 'common' directory
 #
 # 🔧 Features:
 # - ✅ Smart doorbell control with an illuminated button.
@@ -192,11 +193,12 @@ binary_sensor:
     pin:
       number: D2  # GPIO04 - Doorbell button input
       mode: INPUT_PULLUP
-      inverted: true
+      inverted: true # Active LOW
     name: "Doorbell Button"
     icon: "mdi:doorbell"
     filters:
-      - delayed_off: 100ms
+      - delayed_on: 100ms # Prevent false triggers
+      - delayed_off: 100ms # Prevent false resets
     on_press:
       then:
         - logger.log: "Doorbell Button Pressed"

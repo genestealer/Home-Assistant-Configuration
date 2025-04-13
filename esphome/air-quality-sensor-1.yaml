@@ -8,6 +8,8 @@
 # measuring temperature, humidity, air pressure, and particulate 
 # matter (PM2.5, PM10) using a BME280 and a PMS5003T sensor.
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔧 Features:
 # - ✅ Monitors air quality using particulate matter (PM) sensors.
 # - ✅ Tracks temperature, humidity, and pressure via BME280.

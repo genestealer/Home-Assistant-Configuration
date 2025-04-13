@@ -11,6 +11,8 @@
 # and calculating daily energy consumption.
 # https://docs.openenergymonitor.org/electricity-monitoring/ct-sensors/interface-with-arduino.html
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔧 Features:
 # - ✅ Measures AC current using a CT clamp (SCT-013-000).
 # - ✅ Calculates power usage (Watts) and energy (kWh).
@@ -151,10 +153,10 @@ sensor:
          datapoints:
           - 0.001 -> 0   # Adjusted zero calibration (removes offsets)
           - 1.0 -> 60       # 1V = 60A (standard for SCT-013-000)
-      - median:
-          window_size: 5  # Reduces noise by averaging 5 readings
-          send_every: 2  # Sends updated value every 2 measurements
-          # send_first_at: 3
+      # - median:
+      #     window_size: 5  # Reduces noise by averaging 5 readings
+      #     send_every: 2  # Sends updated value every 2 measurements
+      #     # send_first_at: 3
       - clamp:
           min_value: 0 # Ignore negative
           max_value: 60
@@ -197,22 +199,22 @@ sensor:
       
 
 
-  # # 🔋 Total Daily Energy Consumption (Resets at Midnight)
-  # # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
-  # - platform: total_daily_energy
-  #   name: 'Oven Energy Today'
-  #   id: sensor_total_daily_energy
-  #   power_id: my_power1
-  #   unit_of_measurement: 'kWh'
-  #   icon: mdi:circle-slice-3
-  #   state_class: total_increasing
-  #   device_class: energy
-  #   accuracy_decimals: 3
-  #   filters:
-  #     - throttle: ${sensor_update_interval}  # Limit update rate
-  #     - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
-  #     - delta: 0.01  # Only update if energy changes by 0.01 kWh (10W)
-  #     - heartbeat: ${sensor_update_interval}  # Ensure at least one update per interval
+  # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
+  - platform: total_daily_energy
+    name: 'Oven Energy Today'
+    id: sensor_total_daily_energy
+    power_id: my_power1
+    unit_of_measurement: 'kWh'
+    icon: mdi:circle-slice-3
+    state_class: total_increasing
+    device_class: energy
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${sensor_update_interval}  # Limit update rate
+      - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
+      - delta: 0.01  # Only update if energy changes by 0.01 kWh (10W)
+      - heartbeat: ${sensor_update_interval}  # Ensure at least one update per interval
 
 
 binary_sensor:

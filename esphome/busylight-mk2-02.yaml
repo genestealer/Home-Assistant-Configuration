@@ -9,6 +9,8 @@
 # The system integrates with Home Assistant and allows remote control
 # of a Logitech Z-5500 speaker system.
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔧 Features:
 # - ✅ Neopixel LED Busy Light for presence indication.
 # - ✅ Infrared remote transmitter for controlling Logitech Z-5500.

@@ -8,6 +8,8 @@
 # using load cells with HX711 amplifiers. It also tracks temperature 
 # and humidity using a DHT11 sensor to ensure optimal conditions.
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔧 Features:
 # - ✅ Tracks food and water consumption using load cells (HX711).
 # - ✅ Monitors temperature & humidity inside the chicken coop (DHT11).
@@ -78,11 +80,11 @@ sensor:
   - platform: dht
     pin: LED_BLUE  # GPIO for DHT11 Sensor
     temperature:
-      name: "Coop Temperature"
+      name: "Temperature"
       state_class: measurement
       device_class: temperature
     humidity:
-      name: "Coop Humidity"
+      name: "Humidity"
       state_class: measurement
       device_class: humidity
     update_interval: ${sensor_update_interval}
@@ -99,7 +101,7 @@ sensor:
 
   # 🔹 Chicken Food Load Cell
   - platform: hx711
-    name: "Chicken Food Level"
+    name: "Food Level"
     dout_pin: D4  # Data out
     clk_pin: D5   # Clock pin
     gain: 128  # Set gain for Channel A
@@ -121,7 +123,7 @@ sensor:
 
   # 🔹 Chicken Water Load Cell
   - platform: hx711
-    name: "Chicken Water Level"
+    name: "Water Level"
     dout_pin: D12  # Data out
     clk_pin: D14   # Clock pin
     gain: 128  # Set gain for Channel A

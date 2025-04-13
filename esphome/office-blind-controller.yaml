@@ -11,6 +11,8 @@
 # - Reset function for calibration
 # - Manual control via Home Assistant
 #
+# Includes shared configurations from the 'common' directory
+#
 # 🔩 Hardware:
 # - ESP8266 (WeMos D1 Mini)
 # - Relays or Transistors for Motor Control
