@@ -5,4 +5,4 @@
 ############################################################
 
 # Has issues https://community.home-assistant.io/t/implement-rflink-ping/127033/3
-rflink_ping: 'echo "10;PING;" | nc 192.168.2.22 23' #This works!
+rflink_ping: 'echo "10;PING;" | nc 192.168.2.22 23' # This works!

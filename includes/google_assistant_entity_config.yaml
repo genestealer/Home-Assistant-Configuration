@@ -1024,3 +1024,244 @@ sensor.irrigation_cycle3_zone9_actual_duration_in_seconds:
   expose: false
 binary_sensor.irrigation_cycle_start_clash:
   expose: false
+sensor.bathroom_radiator_room_temperature:
+  expose: false
+sensor.bedroom_radiator_room_temperature:
+  expose: false
+sensor.dining_room_radiator_room_temperature:
+  expose: false
+sensor.downstairs_bathroom_radiator_room_temperature:
+  expose: false
+sensor.guest_bedroom_radiator_room_temperature:
+  expose: false
+sensor.hall_radiator_room_temperature:
+  expose: false
+sensor.kitchen_radiator_room_temperature:
+  expose: false
+sensor.library_radiator_room_temperature:
+  expose: false
+sensor.living_room_radiator_room_temperature:
+  expose: false
+sensor.old_office_radiator_room_temperature:
+  expose: false
+
+
+#####
+switch.adaptive_lighting_adapt_brightness_bedroom:
+  expose: false
+switch.adaptive_lighting_adapt_brightness_dining_room:
+  expose: false
+switch.adaptive_lighting_adapt_brightness_guest_bedroom:
+  expose: false
+switch.adaptive_lighting_adapt_brightness_office:
+  expose: false
+switch.adaptive_lighting_adapt_color_bedroom:
+  expose: false
+switch.adaptive_lighting_adapt_color_dining_room:
+  expose: false
+switch.adaptive_lighting_adapt_color_guest_bedroom:
+  expose: false
+switch.adaptive_lighting_adapt_color_office:
+  expose: false
+switch.adaptive_lighting_bedroom:
+  expose: false
+switch.adaptive_lighting_dining_room:
+  expose: false
+switch.adaptive_lighting_guest_bedroom:
+  expose: false
+switch.adaptive_lighting_office:
+  expose: false
+switch.adaptive_lighting_sleep_mode_bedroom:
+  expose: false
+switch.adaptive_lighting_sleep_mode_dining_room:
+  expose: false
+switch.adaptive_lighting_sleep_mode_guest_bedroom:
+  expose: false
+switch.adaptive_lighting_sleep_mode_office:
+  expose: false
+binary_sensor.garage_13_vmd4_camera1profile1:
+  expose: false
+binary_sensor.garage_13_vmd4_camera1profile3:
+  expose: false
+binary_sensor.garage_13_vmd4_camera1profileany:
+  expose: false
+binary_sensor.garden_18_daynight_1:
+  expose: false
+binary_sensor.garden_18_input:
+  expose: false
+binary_sensor.garden_18_input_1:
+  expose: false
+binary_sensor.garden_18_sound_1:
+  expose: false
+binary_sensor.garden_18_vmd3_0:
+  expose: false
+binary_sensor.garden_18_vmd4_camera1profileany:
+  expose: false
+binary_sensor.garden_18_vmd4_profile_1:
+  expose: false
+binary_sensor.p3224_lv_0_vmd4_camera1profile2:
+  expose: false
+binary_sensor.p3224_v_mk_ii_0_vmd3_0:
+  expose: false
+binary_sensor.p3224_v_mk_ii_0_vmd4_camera1profile1:
+  expose: false
+binary_sensor.p3224_v_mk_ii_0_vmd4_camera1profile2:
+  expose: false
+binary_sensor.p3224_v_mk_ii_0_vmd4_camera1profileany:
+  expose: false
+binary_sensor.p3364_0_daynight_1:
+  expose: false
+binary_sensor.p3364_0_sound_1:
+  expose: false
+binary_sensor.p3364_l_1_daynight_1:
+  expose: false
+binary_sensor.p3364_l_1_input_0:
+  expose: false
+binary_sensor.p3364_l_1_sound_1:
+  expose: false
+switch.bunny_23_output_1:
+  expose: false
+sensor.inverter_122012112781:
+  expose: false
+sensor.inverter_122012112781_last_reported:
+  expose: false
+sensor.inverter_122012126477:
+  expose: false
+sensor.inverter_122012126477_last_reported:
+  expose: false
+sensor.inverter_122013002164:
+  expose: false
+sensor.inverter_122013002164_last_reported:
+  expose: false
+sensor.solar_panels_balanced_net_power_consumption:
+  expose: false
+sensor.solar_panels_current_net_power_consumption:
+  expose: false
+sensor.solar_panels_current_power_consumption:
+  expose: false
+sensor.solar_panels_current_power_production:
+  expose: false
+sensor.solar_panels_energy_consumption_last_seven_days:
+  expose: false
+sensor.solar_panels_energy_consumption_today:
+  expose: false
+sensor.solar_panels_energy_production_last_seven_days:
+  expose: false
+sensor.solar_panels_energy_production_today:
+  expose: false
+sensor.solar_panels_frequency_net_consumption_ct:
+  expose: false
+sensor.solar_panels_frequency_production_ct:
+  expose: false
+sensor.solar_panels_lifetime_balanced_net_energy_consumption:
+  expose: false
+sensor.solar_panels_lifetime_energy_consumption:
+  expose: false
+sensor.solar_panels_lifetime_energy_production:
+  expose: false
+sensor.solar_panels_lifetime_net_energy_consumption:
+  expose: false
+sensor.solar_panels_lifetime_net_energy_production:
+  expose: false
+sensor.solar_panels_meter_status_flags_active_net_consumption_ct:
+  expose: false
+sensor.solar_panels_meter_status_flags_active_production_ct:
+  expose: false
+sensor.solar_panels_metering_status_net_consumption_ct:
+  expose: false
+sensor.solar_panels_metering_status_production_ct:
+  expose: false
+sensor.solar_panels_net_consumption_ct_current:
+  expose: false
+sensor.solar_panels_powerfactor_net_consumption_ct:
+  expose: false
+sensor.solar_panels_powerfactor_production_ct:
+  expose: false
+sensor.solar_panels_production_ct_current:
+  expose: false
+sensor.solar_panels_voltage_net_consumption_ct:
+  expose: false
+sensor.solar_panels_voltage_production_ct:
+  expose: false
+
+
+
+
+sensor.bathroom_radiator_temperature_delta:
+  expose: false
+sensor.bathroom_radiator_temperature_set_point:
+  expose: false
+sensor.bedroom_radiator_temperature_delta:
+  expose: false
+sensor.bedroom_radiator_temperature_set_point:
+  expose: false
+sensor.dining_room_radiator_temperature_delta:
+  expose: false
+sensor.dining_room_radiator_temperature_set_point:
+  expose: false
+sensor.downstairs_bathroom_radiator_temperature_delta:
+  expose: false
+sensor.downstairs_bathroom_radiator_temperature_set_point:
+  expose: false
+sensor.guest_bedroom_radiator_temperature_delta:
+  expose: false
+sensor.guest_bedroom_radiator_temperature_set_point:
+  expose: false
+sensor.hall_radiator_temperature_delta:
+  expose: false
+sensor.hall_radiator_temperature_set_point:
+  expose: false
+sensor.kitchen_radiator_temperature_delta:
+  expose: false
+sensor.kitchen_radiator_temperature_set_point:
+  expose: false
+sensor.library_radiator_temperature_delta:
+  expose: false
+sensor.library_radiator_temperature_set_point:
+  expose: false
+sensor.living_room_radiator_temperature_delta:
+  expose: false
+sensor.living_room_radiator_temperature_set_point:
+  expose: false
+sensor.old_office_radiator_temperature_delta:
+  expose: false
+sensor.old_office_radiator_temperature_set_point:
+  expose: false
+
+
+
+
+light.socket_1_off:
+  expose: false
+light.socket_1_on:
+  expose: false
+light.socket_2_off:
+  expose: false
+light.socket_2_on:
+  expose: false
+light.socket_3_off:
+  expose: false
+light.socket_3_on:
+  expose: false
+light.socket_4_off_raw:
+  expose: false
+light.socket_4_on_raw:
+  expose: false
+
+
+light.doorbell_000fffff_1:
+  expose: false
+light.doorbell_002b_1:
+  expose: false
+light.doorbell_002c_1:
+  expose: false
+light.doorbell_00fa_1:
+  expose: false
+light.doorbell_012c_1:
+  expose: false
+light.doorbell_5230_1:
+  expose: false
+light.doorbell_a918_1:
+  expose: false
+light.doorbell_fc79_1:
+  expose: false

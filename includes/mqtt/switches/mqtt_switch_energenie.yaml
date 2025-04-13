@@ -17,23 +17,23 @@
 
 # Ref: handheld remote control energenie/ook/697441/3/command : 20;C6;Eurodomest;ID=055b9e;SWITCH=02;CMD=OFF;
 
-############################################################
-#
-# Living Room TV Speakers
-#
-############################################################
-- name: null
-  unique_id: MIHO002_socket1_697441_2
-  command_topic: "energenie/ook/697441/2/command"
-  optimistic: true
-  state_topic: energenie/ook/697441/2/state
-  availability_topic: energenie/availability/state
-  device:
-    name: "TV Speakers"
-    identifiers: "miho002_socket1"
-    model: "Smart Plug (MIHO002) [697441/2] (Button 2)"
-    manufacturer: "Energenie [Manual]"
-    via_device: "mqtt-energenie-ener314rt"
+# ############################################################
+# #
+# # Living Room TV Speakers
+# #
+# ############################################################
+# - name: null
+#   unique_id: MIHO002_socket1_697441_2
+#   command_topic: "energenie/ook/697441/2/command"
+#   optimistic: true
+#   state_topic: energenie/ook/697441/2/state
+#   availability_topic: energenie/availability/state
+#   device:
+#     name: "TV Speakers"
+#     identifiers: "miho002_socket1"
+#     model: "Smart Plug (MIHO002) [697441/2] (Button 2)"
+#     manufacturer: "Energenie [Manual]"
+#     via_device: "mqtt-energenie-ener314rt"
 
 ############################################################
 #
