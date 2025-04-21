@@ -50,6 +50,10 @@ substitutions:
   # 📊 Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
+
+  # 🌡️ High Temperature Thresholds
+  high_temp_threshold_bottom: "-18"
+  high_temp_threshold_top: "-15"
   
 ##############################################################
 # 🚀 ESP Platform Configuration
@@ -82,7 +86,7 @@ binary_sensor:
     device_class: problem
     icon: "mdi:alert"
     lambda: |-
-      return (id(temperaturebottom).state > -18) || (id(temperaturetop).state > -18);
+      return (id(temperaturebottom).state > ${high_temp_threshold_bottom}) || (id(temperaturetop).state > ${high_temp_threshold_top});
 
 ##############################################################
 # 🌡️ DS18B20 Temperature Sensors (1-Wire)
@@ -101,7 +105,7 @@ sensor:
     address: 0x333C01F09571DC28
     name: "Bottom Temperature"
     id: temperaturebottom
-    accuracy_decimals: 3
+    accuracy_decimals: 2
     unit_of_measurement: "°C"
     icon: "mdi:thermometer"
     device_class: "temperature"
@@ -113,7 +117,7 @@ sensor:
     address: 0xE43C01F095DFBB28
     name: "Top Temperature"
     id: temperaturetop
-    accuracy_decimals: 3
+    accuracy_decimals: 2
     unit_of_measurement: "°C"
     icon: "mdi:thermometer"
     device_class: "temperature"

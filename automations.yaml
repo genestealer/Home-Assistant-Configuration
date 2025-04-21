@@ -2927,16 +2927,32 @@
 - id: '1710954157058'
   alias: Pull Water meter data every hour
   description: Warning this will kill the battery if overused
-  trigger:
-  - platform: time_pattern
-    minutes: '10'
-  condition: []
-  action:
-  - service: button.press
-    metadata: {}
+  triggers:
+  - minutes: '10'
+    trigger: time_pattern
+  conditions: []
+  actions:
+  - metadata: {}
     data: {}
     target:
       entity_id: button.water_meter_request
+    action: button.press
+  - repeat:
+      count: 3
+      sequence:
+      - metadata: {}
+        data: {}
+        target:
+          entity_id: button.water_meter_request
+        action: button.press
+      - wait_for_trigger:
+        - type: not_running
+          device_id: 7e66c8ead1ec91a4eb0011534f720f8e
+          entity_id: 587930524e77140f4fffabeaf43a7b1b
+          domain: binary_sensor
+          trigger: device
+        continue_on_timeout: false
+    enabled: false
   mode: single
 - id: '1714268450987'
   alias: Run off UPS
@@ -3429,14 +3445,14 @@
   triggers:
   - type: problem
     device_id: 158ed9873a6957601df8faf23e43a98d
-    entity_id: 0435e8b85aac152e274b0fe369dc7a23
+    entity_id: e5380eda90a5140965ad71108984ccde
     domain: binary_sensor
     trigger: device
+    id: high
     for:
       hours: 0
-      minutes: 1
+      minutes: 5
       seconds: 0
-    id: high
   - type: not_connected
     device_id: 158ed9873a6957601df8faf23e43a98d
     entity_id: 8e8427f8efa3902d88b52401f34f1695
