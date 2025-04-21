@@ -12,10 +12,10 @@
 # Includes shared configurations from the 'common' directory
 #
 # 🔧 Features:
-# - ✅ Neopixel LED Busy Light for presence indication.
-# - ✅ Infrared remote transmitter for controlling Logitech Z-5500.
-# - ✅ Optimized ESP32 setup with GPIO voltage compensation.
-# - ✅ Wi-Fi connectivity for Home Assistant integration.
+# - Neopixel LED Busy Light for presence indication.
+# - Infrared remote transmitter for controlling Logitech Z-5500.
+# - Optimized ESP32 setup with GPIO voltage compensation.
+# - Wi-Fi connectivity for Home Assistant integration.
 #
 # 🔩 Hardware:
 # - M5Stack Atom ESP32 (Wi-Fi Microcontroller)
@@ -70,7 +70,7 @@ dashboard_import:
 # 🔧 Hardware Configuration
 ##############################################################
 
-# ✅ Countermeasure for CH552 GPIO0 Overvoltage Issue
+# Countermeasure for CH552 GPIO0 Overvoltage Issue
 # The CH552 applies 4V to GPIO0, which reduces Wi-Fi sensitivity.
 # This fix applies a bias of 3.3V to suppress overvoltage and 
 # maintain Wi-Fi performance.

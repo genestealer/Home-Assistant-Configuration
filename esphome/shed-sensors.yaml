@@ -8,20 +8,21 @@
 # in the shed using a DHT22 sensor. It sends real-time data to 
 # Home Assistant via Wi-Fi.
 #
-# Includes shared configurations from the 'common' directory
+# 🔧 Features:
+# - Monitors temperature and humidity using a DHT22 sensor.
+# - Sends real-time data to Home Assistant.
 #
 # 🔩 Hardware:
 # - ESP8266 (NodeMCU v2)
 # - DHT22 Sensor (Temperature & Humidity)
 #
 # 🛠 Wiring:
-# - DHT22 Sensor
-#   - Data (OUT) → GPIO4 (D2)  
-#   - VCC (3.3V/5V) → 3.3V  
-#   - GND → GND  
-# - Status LED
-#   - GPIO16 (D0) → LED Indicator  
-#
+# - DHT22 Sensor:
+#   - Data (OUT) → GPIO4 (D2)
+#   - VCC (3.3V/5V) → 3.3V
+#   - GND → GND
+# - Status LED:
+#   - GPIO16 (D0) → LED Indicator
 ##############################################################
 
 # 🔄 Substitutions for Easy Configuration

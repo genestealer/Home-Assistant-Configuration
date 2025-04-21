@@ -1,6 +1,6 @@
 ##############################################################
 # 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - IKEA FORNÜFTIG Air Purifier Control
+# 📌 ESPHome Configuration - Office IKEA FORNÜFTIG Air Purifier
 # 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
 # 📝 Description:
@@ -8,24 +8,14 @@
 # using an ESP8266 (NodeMCU v2) while retaining the original PCB.
 #
 # 🔧 Features:
-# - ✅ Fan speed control (OFF, Low, Medium, High)
-# - ✅ Monitoring filter status via LED detection (ADC input)
-# - ✅ Measuring power consumption per fan speed
-# - ✅ Integration with Home Assistant for remote control
-# - ✅ Can be powered from the purifier’s 24V DC supply via a DC-DC step-down module
-#
-# Includes shared configurations from the 'common' directory
+# - Fan speed control (OFF, Low, Medium, High).
+# - Monitoring filter status via LED detection (ADC input).
+# - Integration with Home Assistant for remote control.
 #
 # 🔩 Hardware:
-# Main Components:
-# - ESP8266 (NodeMCU v2) - Wi-Fi microcontroller
+# - ESP8266 (NodeMCU v2)
 # - IKEA FORNÜFTIG Air Purifier (Factory PCB retained)
 # - DC-DC Step-Down Converter (e.g., LM2596 / Mini-360)
-#   - Steps down the IKEA purifier’s 24V DC to 3.3V (or 5V for VIN pin)
-#   - Connects to the ESP8266 for power supply
-# - Analog-to-Digital Converter (ADC) for filter LED monitoring
-# - GPIO-based fan control using relays or direct switching
-#
 #
 # 🛠 WIRING & PCB MODIFICATIONS
 #

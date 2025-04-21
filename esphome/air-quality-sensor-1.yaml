@@ -11,10 +11,10 @@
 # Includes shared configurations from the 'common' directory
 #
 # 🔧 Features:
-# - ✅ Monitors air quality using particulate matter (PM) sensors.
-# - ✅ Tracks temperature, humidity, and pressure via BME280.
-# - ✅ Optimized for sensor longevity by cycling the PMS5003T fan.
-# - ✅ Sends real-time data to Home Assistant via Wi-Fi.
+# - Monitors air quality using particulate matter (PM) sensors.
+# - Tracks temperature, humidity, and pressure via BME280.
+# - Optimized for sensor longevity by cycling the PMS5003T fan.
+# - Sends real-time data to Home Assistant via Wi-Fi.
 #
 # 🔩 Hardware:
 # - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
@@ -96,6 +96,6 @@ dashboard_import:
 # 🌡️ Sensor Configuration (Temperature, Humidity, Air Quality)
 ##############################################################
 
-# ✅ Uses common configurations from the included `bme280.yaml` and `pms5003t.yaml`.
-# ✅ Automatically calculates air quality index (DAQI) based on UK standards.
-# ✅ Reduces sensor wear by limiting PMS5003T operation.
+# Uses common configurations from the included `bme280.yaml` and `pms5003t.yaml`.
+# Automatically calculates air quality index (DAQI) based on UK standards.
+# Reduces sensor wear by limiting PMS5003T operation.

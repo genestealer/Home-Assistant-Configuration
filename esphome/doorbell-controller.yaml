@@ -11,12 +11,12 @@
 # Includes shared configurations from the 'common' directory
 #
 # 🔧 Features:
-# - ✅ Smart doorbell control with an illuminated button.
-# - ✅ Neopixel LED effects for button lighting.
-# - ✅ Electricity monitoring using a phototransistor-based pulse meter.
-# - ✅ Integrates with Home Assistant for notifications & automation.
-# - ✅ Quiet hours mode to silence the bell at night.
-# - ✅ Automatic energy reset at midnight.
+# - Smart doorbell control with an illuminated button.
+# - Neopixel LED effects for button lighting.
+# - Electricity monitoring using a phototransistor-based pulse meter.
+# - Integrates with Home Assistant for notifications & automation.
+# - Quiet hours mode to silence the bell at night.
+# - Automatic energy reset at midnight.
 #
 # 🔩 Hardware:
 # - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)

@@ -1,6 +1,6 @@
 ##############################################################
 # 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Bedroom Air Quality & Environment Sensors
+# 📌 ESPHome Configuration - Indoor Bunny House Sensors
 # 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
 # 📝 Description:
@@ -8,7 +8,9 @@
 # It tracks temperature, humidity, absolute humidity, and dew point using a
 # BME280 sensor connected via I2C.
 #
-# Includes shared configurations from the 'common' directory
+# 🔧 Features:
+# - Monitors temperature, humidity, and pressure using a BME280 sensor.
+# - Sends real-time data to Home Assistant.
 #
 # 🔩 Hardware:
 # - ESP8266 (NodeMCU v2)
@@ -16,8 +18,8 @@
 #
 # 🛠 Wiring:
 # - I2C (BME280):
-#   - SDA (Data Line) → D2  
-#   - SCL (Clock Line) → D1  
+#   - SDA (Data Line) → D2
+#   - SCL (Clock Line) → D1
 ##############################################################
 
 # 🔧 Substitutions for Easy Configuration

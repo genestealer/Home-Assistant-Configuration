@@ -6,21 +6,15 @@
 # 📝 Description:
 # This ESPHome configuration monitors freezer temperatures using 
 # multiple DS18B20 digital temperature sensors to ensure food safety.
-# It integrates with Home Assistant and provides alerts if temperatures 
-# exceed the defined thresholds.
-#
-# Includes shared configurations from the 'common' directory
 #
 # 🔧 Features:
-# - ✅ Multiple DS18B20 sensors for freezer monitoring.
-# - ✅ High-temperature alert if freezer goes above -18°C.
-# - ✅ Wi-Fi connectivity for real-time reporting to Home Assistant.
-# - ✅ OTA firmware updates for easy maintenance.
+# - Monitors freezer temperature using DS18B20 sensors.
+# - Sends alerts if temperatures exceed defined thresholds.
+# - Integrates with Home Assistant for real-time monitoring.
 #
 # 🔩 Hardware:
-# - Adafruit Feather HUZZAH ESP8266 (Wi-Fi Microcontroller)
-# - DS18B20 Temperature Sensors (1-Wire Digital Thermometers)
-#
+# - Adafruit Feather HUZZAH ESP8266
+# - DS18B20 Temperature Sensors
 ##############################################################
 
 # 🔄 Substitutions - Easily Configurable Parameters
@@ -53,7 +47,7 @@ substitutions:
 
   # 🌡️ High Temperature Thresholds
   high_temp_threshold_bottom: "-18"
-  high_temp_threshold_top: "-15"
+  high_temp_threshold_top: "-10"
   
 ##############################################################
 # 🚀 ESP Platform Configuration

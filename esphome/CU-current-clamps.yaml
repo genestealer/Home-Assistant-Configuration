@@ -7,24 +7,16 @@
 # 📝 Description:
 # This ESPHome configuration monitors real-time energy consumption
 # using a current transformer (SCT-013-000) and ADS1115 ADC.
-# The system integrates with Home Assistant for tracking power usage
-# and calculating daily energy consumption.
-# https://docs.openenergymonitor.org/electricity-monitoring/ct-sensors/interface-with-arduino.html
-#
-# Includes shared configurations from the 'common' directory
 #
 # 🔧 Features:
-# - ✅ Measures AC current using a CT clamp (SCT-013-000).
-# - ✅ Calculates power usage (Watts) and energy (kWh).
-# - ✅ Utilizes ADS1115 for 16-bit precision in readings.
-# - ✅ Integrates with Home Assistant for live monitoring & automation.
+# - Measures AC current using a CT clamp (SCT-013-000).
+# - Calculates power usage (Watts) and energy (kWh).
+# - Integrates with Home Assistant for live monitoring.
 #
 # 🔩 Hardware:
-# - Adafruit Feather HUZZAH ESP8266 (Wi-Fi Microcontroller)
-# - YHDC SCT-013-000 (60A/1V Current Transformer)
+# - Adafruit Feather HUZZAH ESP8266
+# - SCT-013-000 Current Transformer
 # - ADS1115 ADC (4-Channel 16-Bit A/D Converter)
-# - 10μF Multilayer Ceramic Capacitor MLCC, 50V dc V RS Stock No 811-8367
-# - 2 x 10K Ohm resistor volatge devider. 3.3V DC and GND 
 # 
 # 🔌 WIRING:
 # The current transformer (CT) is connected to GND and one side of a 10µF capacitor.

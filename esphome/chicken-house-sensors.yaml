@@ -6,22 +6,18 @@
 # 📝 Description:
 # This ESPHome configuration monitors chicken coop food and water levels 
 # using load cells with HX711 amplifiers. It also tracks temperature 
-# and humidity using a DHT11 sensor to ensure optimal conditions.
-#
-# Includes shared configurations from the 'common' directory
+# and humidity using a DHT11 sensor.
 #
 # 🔧 Features:
-# - ✅ Tracks food and water consumption using load cells (HX711).
-# - ✅ Monitors temperature & humidity inside the chicken coop (DHT11).
-# - ✅ Sends alerts when food or water runs low.
-# - ✅ Integrates with Home Assistant for real-time monitoring.
+# - Tracks food and water consumption using load cells (HX711).
+# - Monitors temperature and humidity inside the chicken coop.
+# - Sends alerts when food or water runs low.
 #
 # 🔩 Hardware:
-# - Adafruit Feather HUZZAH ESP8266 (Wi-Fi Microcontroller)
+# - Adafruit Feather HUZZAH ESP8266
 # - DHT11 Sensor (Temperature & Humidity)
-# - 2 x 10KG Load Cells (Food & Water Monitoring)
-# - 2 x HX711 Amplifier Modules (Analog-to-Digital Converters)
-#
+# - 2 x 10KG Load Cells
+# - 2 x HX711 Amplifier Modules
 ##############################################################
 
 # 🔄 Substitutions - Easily Configurable Parameters

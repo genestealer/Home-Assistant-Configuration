@@ -1045,7 +1045,7 @@ sensor.living_room_radiator_room_temperature:
 sensor.old_office_radiator_room_temperature:
   expose: false
 
-
+ 
 #####
 switch.adaptive_lighting_adapt_brightness_bedroom:
   expose: false
