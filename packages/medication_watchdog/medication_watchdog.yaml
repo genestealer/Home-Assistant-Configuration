@@ -3,13 +3,23 @@
 #
 # Purpose:
 # This package helps prevent accidental double dosing of ADHD medication by tracking 
-# the last dose within an 8-hour window. It uses a timer and binary sensor to monitor 
+# the last dose within a 6-hour window. It uses a timer and binary sensor to monitor 
 # medication intake and provides optional reminders.
+#
+# Usage Notes:
+# - This file is designed to be used as a Home Assistant package.
+# - If you have not enabled packages, add the following to your configuration.yaml:
+#
+#     homeassistant:
+#       packages: !include_dir_named packages
+#
+# - Then place this file inside your /config/packages/ directory.
 #
 # Instructions:
 # - Replace `binary_sensor.medication_bottle_contact` with your Zigbee door sensor entity ID.
 # - Adjust the timer duration or reminder settings as needed.
 # - Use the optional badge configuration for visual feedback in your Home Assistant dashboard.
+
 #
 ###############################################################################
 # Optional Badge Configuration for Home Assistant Dashboard
