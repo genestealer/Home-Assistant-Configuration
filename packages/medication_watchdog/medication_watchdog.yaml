@@ -1,0 +1,81 @@
+# ADHD Medication Watchdog Package
+# Author: Richard Huish - June 2025
+#
+# Purpose:
+# This package helps prevent accidental double dosing of ADHD medication by tracking 
+# the last dose within an 8-hour window. It uses a timer and binary sensor to monitor 
+# medication intake and provides optional reminders.
+#
+# Instructions:
+# - Replace `binary_sensor.medication_bottle_contact` with your Zigbee door sensor entity ID.
+# - Adjust the timer duration or reminder settings as needed.
+# - Use the optional badge configuration for visual feedback in your Home Assistant dashboard.
+#
+###############################################################################
+# Optional Badge Configuration for Home Assistant Dashboard
+# Requires the `mushroom-template-badge` custom card (install via HACS or manually).
+#
+# type: custom:mushroom-template-badge
+# entity: binary_sensor.medication_watchdog
+# icon: mdi:pill
+# content: |
+#   {% if is_state(entity, 'on') %}
+#     ✅ Meds Taken
+#   {% else %}
+#     ❌ Not Taken
+#   {% endif %}
+# color: |
+#   {% if is_state(entity, 'on') %}
+#     green
+#   {% else %}
+#     red
+#   {% endif %}
+# label: "Last dose: {{ states[entity].last_changed | relative_time }} ago"
+###############################################################################
+
+homeassistant:
+    # Customize the binary sensor for better visibility in Home Assistant
+    customize:
+        binary_sensor.medication_watchdog:
+            friendly_name: "ADHD Meds Taken (Last 6 Hours)"
+            icon: mdi:pill
+
+# Timer Configuration
+timer:
+    medication_watchdog:
+        duration: "06:00:00"  # 6-hour window after taking meds
+
+# Template Binary Sensor
+template:
+    - binary_sensor:
+            - name: "Medication Watchdog"
+              unique_id: medication_watchdog
+              state: "{{ states('timer.medication_watchdog') == 'active' }}"  # Sensor is 'on' while timer is active
+
+# Automations
+automation:
+    # Automation to start/reset the timer when the medication bottle is opened
+      - alias: "Start Medication Watchdog Timer"
+        description: "Start/reset timer when ADHD meds contact sensor is opened"
+        trigger:
+            - platform: state
+              entity_id: binary_sensor.medication_bottle_contact  # Replace with your Zigbee door sensor entity ID
+              from: "off"
+              to: "on"
+        action:
+            - service: timer.start
+              entity_id: timer.medication_watchdog
+
+    # OPTIONAL: Reminder notification if medication hasn't been taken for 9 hours
+    # Uncomment this section if you want reminders
+    # - alias: "Medication Reminder Notification"
+    #   description: "Notify if ADHD medication not taken in last 9 hours"
+    #   trigger:
+    #     - platform: state
+    #       entity_id: binary_sensor.medication_watchdog
+    #       to: "off"
+    #       for: "01:00:00"  # 1 hour after timer expiry
+    #   action:
+    #     - service: notify.mobile_app_yourdevice  # Replace with your notification service
+    #       data:
+    #         message: "You haven't taken your ADHD meds for over 9 hours. Check if you're due."
