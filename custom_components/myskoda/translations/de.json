@@ -1,0 +1,372 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Das Gerät ist bereits konfiguriert"
+        },
+        "error": {
+            "cannot_connect": "Fehler beim Verbinden",
+            "invalid_auth": "Ungültige Anmeldung",
+            "unknown": "Ein unerwarteter Fehler ist aufgetreten. Bitte überprüfe die Logdateien von HomeAssistant."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "email": "E-Mail",
+                    "password": "Passwort"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Motorhaube",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "charger_connected": {
+                "name": "Ladekabel",
+                "state": {
+                    "off": "Ausgesteckt",
+                    "on": "Eingesteckt"
+                }
+            },
+            "charger_locked": {
+                "name": "Ladekabelverriegelung",
+                "state": {
+                    "off": "Verriegelt",
+                    "on": "Entriegelt"
+                }
+            },
+            "doors_locked": {
+                "name": "Türen geschlossen",
+                "state": {
+                    "off": "Verriegelt",
+                    "on": "Entriegelt"
+                }
+            },
+            "doors_open": {
+                "name": "Türen offen",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "locked": {
+                "name": "Fahrzeug verriegelt",
+                "state": {
+                    "off": "Verriegelt",
+                    "on": "Entriegelt"
+                }
+            },
+            "parkinglights_on": {
+                "name": "Parklicht",
+                "state": {
+                    "off": "Aus",
+                    "on": "An"
+                }
+            },
+            "sunroof_open": {
+                "name": "Schiebedach",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "trunk_open": {
+                "name": "Kofferraum",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "windows_open": {
+                "name": "Fenster",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "door_open_front_left": {
+                "name": "Türe vorne links",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "door_open_front_right": {
+                "name": "Türe vorne rechts",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "door_open_rear_left": {
+                "name": "Türe hinten links",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "door_open_rear_right": {
+                "name": "Türe hinten rechts",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "window_open_front_left": {
+                "name": "Fenster vorne links",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "window_open_front_right": {
+                "name": "Fenster vorne rechts",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "window_open_rear_left": {
+                "name": "Fenster hinten links",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            },
+            "window_open_rear_right": {
+                "name": "Fenster hinten rechts",
+                "state": {
+                    "off": "Geschlossen",
+                    "on": "Geöffnet"
+                }
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Klimaanlage"
+            },
+            "auxiliary_heater": {
+                "name": "Zuheizer"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Standort",
+                "state": {
+                    "home": "Zuhause",
+                    "not_home": "Abwesend",
+                    "vehicle_in_motion": "Bewegung erkannt"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Lichtansicht des Fahrzeugs"
+            },
+            "render_vehicle_main": {
+                "name": "Hauptansicht des Fahrzeugs"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Türschloss"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Ladelimit"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Heizungsdauer"
+            }
+        },
+        "sensor": {
+            "battery_percentage": {
+                "name": "Batteriestand"
+            },
+            "car_captured": {
+                "name": "Letzte Aktualisierung"
+            },
+            "charge_type": {
+                "name": "Ladeverfahren",
+                "state": {
+                    "ac": "Wechselstrom",
+                    "dc": "Gleichstrom",
+                    "off": "Aus"
+                }
+            },
+            "charging_power": {
+                "name": "Ladeleistung"
+            },
+            "charging_rate": {
+                "name": "Laderate"
+            },
+            "charging_state": {
+                "name": "Ladestatus",
+                "state": {
+                    "charging": "Laden",
+                    "connect_cable": "Kein Strom",
+                    "conserving": "Ladestand halten",
+                    "ready_for_charging": "Bereit zum Laden"
+                }
+            },
+            "inspection": {
+                "name": "Nächste Inspektion"
+            },
+            "inspection_in_km": {
+                "name": "Nächste Inspektion"
+            },
+            "mileage": {
+                "name": "Kilometerstand"
+            },
+            "oil_service_in_days": {
+                "name": "Öl-Service"
+            },
+            "oil_service_in_km": {
+                "name": "Öl-Service"
+            },
+            "range": {
+                "name": "Reichweite"
+            },
+            "remaining_charging_time": {
+                "name": "Verbleibende Ladezeit"
+            },
+            "operation": {
+                "name": "Letzter Vorgang",
+                "state": {
+                    "in_progress": "Im Gange",
+                    "completed_success": "Erfolgreich abgeschlossen",
+                    "completed_warning": "Mit Warnungen abgeschlossen",
+                    "error": "Fehler"
+                }
+            },
+            "service_event": {
+                "name": "Letztes Service Ereignis"
+            },
+            "software_version": {
+                "name": "Software-Version"
+            },
+            "target_battery_percentage": {
+                "name": "Ladegrenze in Prozent"
+            },
+            "fuel_level": {
+                "name": "Füllstand Tank"
+            },
+            "adblue_range": {
+                "name": "AdBlue Reichweite"
+            },
+            "gas_level": {
+                "name": "Füllstand Gas"
+            },
+            "gas_range": {
+                "name": "Gas Reichweite"
+            },
+            "combustion_range": {
+                "name": "Fossile Reichweite"
+            },
+            "electric_range": {
+                "name": "Elektrische Reichweite"
+            },
+            "outside_temperature": {
+                "name": "Außentemperatur"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Battery Care-Modus"
+            },
+            "charging": {
+                "name": "Laden"
+            },
+            "charging_switch": {
+                "name": "Laden"
+            },
+            "reduced_current": {
+                "name": "Ladestrombegrenzung"
+            },
+            "auto_unlock_plug": {
+                "name": "Nach Ladevorgang entsperren"
+            },
+            "window_heating": {
+                "name": "Scheiben beheizen"
+            },
+            "ac_at_unlock": {
+                "name": "AC, wenn entsperrt"
+            },
+            "ac_without_external_power": {
+                "name": "AC ohne externe Stromversorgung"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Linke Sitzheizung mit AC"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Rechte Sitzheizung mit AC"
+            },
+            "ac_window_heating": {
+                "name": "Fensterheizung mit AC"
+            },
+            "departure_timer_1": {
+                "name": "Abfahrtszeit 1"
+            },
+            "departure_timer_2": {
+                "name": "Abfahrtszeit 2"
+            },
+            "departure_timer_3": {
+                "name": "Abfahrtszeit 3"
+            },
+            "ac_timer_1": {
+                "name": "Klimaanlagen Timer 1"
+            },
+            "ac_timer_2": {
+                "name": "Klimaanlagen Timer 2"
+            },
+            "ac_timer_3": {
+                "name": "Klimaanlagen Timer 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Hupen und blinken"
+            },
+            "flash": {
+                "name": "Blinken"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Neue Nutzungsbedingungen für MySkoda ansehen",
+            "description": "Login-Fehler aufgrund fehlender Zustimmung zu den Nutzungsbedingungen.\n\nSkoda hat möglicherweise neue Nutzungsbedingungen ausgestellt.\n\nBitte melden Sie sich ab und wieder in der MySkoda App ab, um sie zu überprüfen.\nDiese Integration kann nicht ohne akzeptierte Nutzungsbedingungen fortgesetzt werden."
+        },
+        "spin_error": {
+            "title": "Ungültiger S-PIN erkannt",
+            "description": "Wir haben einen Fehler bei der Angabe von ihrer S-PIN erhalten.\n\nBitte geben Sie die korrekte S-PIN in den Integrationseinstellungen ein."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Ungültiges Abfrageintervall angegeben. Bitte wählen Sie zwischen 1 und 1440 Minuten",
+            "invalid_spin_format": "Ungültiges Format der S-PIN"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "API response tracing. Erfordert die Aktivierung der Debug-Protokollierung in der configuration.yaml.",
+                    "poll_interval_in_minutes": "Abfrageintervall in Minuten, wenn das Auto untätig ist.",
+                    "s-pin": "Sicherheitscode (PIN)",
+                    "readonly": "Schreibgeschützter Modus"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Geben Sie ein Abfrageintervall zwischen 1 und 1440 Minuten an. (Standardwert 30)",
+                    "s-pin": "Bitte Sicherheitscode (PIN) angeben. Achtung: Dies ermöglicht öffnen/schliessen aus der Ferne",
+                    "readonly": "Sie können keine Änderungen am Auto vornehmen, nur Daten lesen"
+                }
+            }
+        }
+    }
+}

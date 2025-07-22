@@ -1,0 +1,394 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Naprava (vozilo) je že konfigurirana(o)",
+            "reauth_successful": "Ponovna avtentikacija je uspela.",
+            "no_entry": "Konfiguracije MySkoda ni bilo mogoče najti. Preverite svoje dnevnike in prijavite težavo na GitHubu."
+        },
+        "error": {
+            "cannot_connect": "Povezava ni uspela",
+            "invalid_auth": "Neveljavna prijava",
+            "relogin_in_app": "Med prijavo je bila zaznana napaka. Morda se boste morali znova prijaviti v aplikacijo MySkoda.",
+            "unknown": "Prišlo je do nepričakovane napake. Preverite dnevnike v HomeAssistant.",
+            "no_spin": "V konfiguraciji manjka S-PIN. Ponovno nastavite integracijo in poskusite znova."
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "email": "E-poštni naslov",
+                    "password": "Geslo"
+                },
+                "description": "Avtentikacija v MySkoda ni uspela. Ponovno vnesite prijavne podatke iz aplikacije MySkoda.",
+                "title": "Ponovna prijava v MySKoda"
+            },
+            "user": {
+                "data": {
+                    "email": "E–poštni naslov",
+                    "password": "Geslo"
+                },
+                "description": "Vnesite prijavne podatke iz aplikacije MySkoda."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Pokrov motorja",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "charger_connected": {
+                "name": "Polnilnik",
+                "state": {
+                    "off": "Odklopljen",
+                    "on": "Priklopljen"
+                }
+            },
+            "charger_locked": {
+                "name": "Zaklep polnjenja",
+                "state": {
+                    "off": "Zaklenjeno",
+                    "on": "Odklenjeno"
+                }
+            },
+            "doors_locked": {
+                "name": "Vrata zaklep",
+                "state": {
+                    "off": "Zaklenjeno",
+                    "on": "Odklenjeno"
+                }
+            },
+            "doors_open": {
+                "name": "Vrata",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "locked": {
+                "name": "Vozilo zaklep",
+                "state": {
+                    "off": "Zaklenjeno",
+                    "on": "Odklenjeno"
+                }
+            },
+            "parkinglights_on": {
+                "name": "Parkirne luči",
+                "state": {
+                    "off": "Vklopljeno",
+                    "on": "Izklopljeno"
+                }
+            },
+            "sunroof_open": {
+                "name": "Strešno okno",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "trunk_open": {
+                "name": "Prtljažnik",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "windows_open": {
+                "name": "Okno",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "door_open_front_left": {
+                "name": "Vrata spredaj levo",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "door_open_front_right": {
+                "name": "Vrata spredaj desno",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "door_open_rear_left": {
+                "name": "Vrata zadaj levo",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "door_open_rear_right": {
+                "name": "Vrata zadaj desno",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "window_open_front_left": {
+                "name": "Okno spredaj levo",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "window_open_front_right": {
+                "name": "Okno spredaj desno",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "window_open_rear_left": {
+                "name": "Okno zadaj levo",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            },
+            "window_open_rear_right": {
+                "name": "Okno zadaj desno",
+                "state": {
+                    "off": "Zaprto",
+                    "on": "Odprto"
+                }
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Klima"
+            },
+            "auxiliary_heater": {
+                "name": "Ogrevanje na mestu"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Položaj",
+                "state": {
+                    "home": "Doma",
+                    "not_home": "Odsoten",
+                    "vehicle_in_motion": "Zaznano premikanje"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Slika vozila – svetila"
+            },
+            "render_vehicle_main": {
+                "name": "Slika vozila – glavna"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Ključavnica vrata"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Omejitev polnjenja"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Trajanje ogrevanja"
+            }
+        },
+        "sensor": {
+            "aux_estimated_time_left_to_reach_target_temperature": {
+                "name": "Potreben čas ogrevanje za doseg nastavljene temperature"
+            },
+            "battery_percentage": {
+                "name": "Baterija – odstotek"
+            },
+            "car_captured": {
+                "name": "Nazadnje povezan"
+            },
+            "charge_type": {
+                "name": "Vrsta polnjenja",
+                "state": {
+                    "ac": "AC – enosmerni tok",
+                    "dc": "DC – izmenični tok",
+                    "off": "Izključeno"
+                }
+            },
+            "charging_power": {
+                "name": "Polnilna moč"
+            },
+            "charging_rate": {
+                "name": "Stopnja polnjenja"
+            },
+            "charging_state": {
+                "name": "Status polnjenje",
+                "state": {
+                    "charging": "Polnjenja",
+                    "connect_cable": "Ni elektrike",
+                    "conserving": "Ohranjanje",
+                    "ready_for_charging": "Pripravljen na polnjenje"
+                }
+            },
+            "estimated_time_left_to_reach_target_temperature": {
+                "name": "Potreben čas hlajenja za doseg nastavljene temperature"
+            },
+            "inspection": {
+                "name": "Naslednji servis"
+            },
+            "inspection_in_km": {
+                "name": "Naslednji servis"
+            },
+            "mileage": {
+                "name": "Prevoženi kilometri"
+            },
+            "oil_service_in_days": {
+                "name": "Menjava olja"
+            },
+            "oil_service_in_km": {
+                "name": "Menjava olja"
+            },
+            "range": {
+                "name": "Doseg"
+            },
+            "remaining_charging_time": {
+                "name": "Preostali čas polnjenja"
+            },
+            "operation": {
+                "name": "Zadnja dejavnost",
+                "state": {
+                    "in_progress": "V teku",
+                    "completed_success": "Uspešno končano",
+                    "completed_warning": "Končano z opozorilom",
+                    "error": "Napaka"
+                }
+            },
+            "service_event": {
+                "name": "Zadnji servis"
+            },
+            "software_version": {
+                "name": "Različica programske opreme"
+            },
+            "target_battery_percentage": {
+                "name": "Polnjenje baterije do"
+            },
+            "fuel_level": {
+                "name": "Gorivo"
+            },
+            "adblue_range": {
+                "name": "Doseg AdBlue"
+            },
+            "gas_level": {
+                "name": "Plin"
+            },
+            "gas_range": {
+                "name": "Doseg plin"
+            },
+            "combustion_range": {
+                "name": "Skupni doseg"
+            },
+            "electric_range": {
+                "name": "Doseg z elektriko"
+            },
+            "outside_temperature": {
+                "name": "Zunanja temperatura"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Vzdrževanje baterije"
+            },
+            "charging": {
+                "name": "Polnjenje"
+            },
+            "charging_switch": {
+                "name": "Polnjenje"
+            },
+            "reduced_current": {
+                "name": "Zmanjšan tok"
+            },
+            "auto_unlock_plug": {
+                "name": "Odkleni napajalni vtič, ko je vozilo napolnjeno"
+            },
+            "window_heating": {
+                "name": "Ogrevanje vetrobrana"
+            },
+            "ac_at_unlock": {
+                "name": "AC ko je odklenjeno"
+            },
+            "ac_without_external_power": {
+                "name": "AC brez zunanjega vira"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Ogrevanje levega sedeža z AC"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Ogrevanje desnega sedeža z AC"
+            },
+            "ac_window_heating": {
+                "name": "Ogrevanje vetrobranskega stekla z AC"
+            },
+            "departure_timer_1": {
+                "name": "Odhod – načrt 1"
+            },
+            "departure_timer_2": {
+                "name": "Odhod – načrt 2"
+            },
+            "departure_timer_3": {
+                "name": "Odhod – načrt 3"
+            },
+            "ac_timer_1": {
+                "name": "Časovnik klime – 1"
+            },
+            "ac_timer_2": {
+                "name": "Časovnik klime – 2"
+            },
+            "ac_timer_3": {
+                "name": "Časovnik klime – 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Hupanje in utripanje"
+            },
+            "flash": {
+                "name": "Utripanje"
+            },
+            "wakeup": {
+                "name": "Zbudi vozilo"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Preglejte in potrdite nova določila in pogoje uporabe aplikacije MySkoda",
+            "description": "Zaznana napaka pri prijavi zaradi nesprejetja določil in pogojev.\n\nŠkoda je morda izdala nova določila in pogoje uporabe.\n\nProsimo, da se odjavite in znova prijavite v aplikacijo MySkoda, da jih pregledate in potrdite.\nTe integracije ni mogoče nadaljevati brez sprejetih določil in pogojev."
+        },
+        "spin_error": {
+            "title": "Nepravilen S-PIN",
+            "description": "Prejeli smo obvestilo, da je S-PIN nepravilen.\n\nProsim vnesite pravilen S-PIN v nastavitvah integracije."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Neveljaven interval poizvedb. Izberite med 1 in 1440 minutami",
+            "invalid_spin_format": "Neveljaven format za S-PIN"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "API debug logging (dnevniško beleženje). Omogočeno mora biti tudi v configiration.yaml.",
+                    "poll_interval_in_minutes": "Interval poizvedb v minutah, ko vozilo miruje.",
+                    "s-pin": "S-PIN",
+                    "readonly": "Način samo za branje"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Določite interval poizvedovanja med 1 in 1440 minutami. (privzeto 30)",
+                    "s-pin": "Nastavite S-PIN. OPOZORILO: To bo omogočilo zaklep/odklep na daljavo",
+                    "readonly": "Ne morete upravljati vozila, lahko samo vidite podatke"
+                }
+            }
+        }
+    }
+}

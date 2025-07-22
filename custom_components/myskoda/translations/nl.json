@@ -1,0 +1,331 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Apparaat is al geconfigureerd",
+            "reauth_successful": "Herauthenticatie geslaagd.",
+            "no_entry": "Kan de MySkoda configuratie niet vinden. Controleer uw logbestanden en open een probleem op GitHub."
+        },
+        "error": {
+            "cannot_connect": "Kan geen verbinding maken",
+            "invalid_auth": "Ongeldige authenticatie",
+            "relogin_in_app": "Er is een fout opgetreden tijdens het inloggen door HomeAssistant. Het kan nodig zijn om opnieuw in te loggen in uw MySkoda app.",
+            "unknown": "Er is een onverwachte fout opgetreden. Controleer de HomeAssistant logbestanden.",
+            "no_spin": "De S-PIN ontbreekt. Herconfigureer de integratie en probeer het opnieuw."
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "email": "E-mail adres",
+                    "password": "Wachtwoord"
+                },
+                "description": "Authenticatie bij MySkoda is mislukt. Voer de gegevens uit de MySkoda app opnieuw in.",
+                "title": "Authenticeer MySkoda opnieuw"
+            },
+            "user": {
+                "data": {
+                    "email": "E-mail",
+                    "password": "Wachtwoord"
+                },
+                "description": "Voer de inloggegevens in van uw MySkoda app."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Motorkap"
+            },
+            "charger_connected": {
+                "name": "Laadkabel"
+            },
+            "charger_locked": {
+                "name": "Laadkabelvergrendeling"
+            },
+            "doors_locked": {
+                "name": "Deurvergrendeling"
+            },
+            "doors_open": {
+                "name": "Deuren"
+            },
+            "locked": {
+                "name": "Voertuigvergrendeling"
+            },
+            "parkinglights_on": {
+                "name": "Parkeerlichten"
+            },
+            "sunroof_open": {
+                "name": "Zonnedak Open"
+            },
+            "trunk_open": {
+                "name": "Kofferbak"
+            },
+            "windows_open": {
+                "name": "Ramen"
+            },
+            "door_open_front_left": {
+                "name": "Deur linksvoor"
+            },
+            "door_open_front_right": {
+                "name": "Deur rechtsvoor"
+            },
+            "door_open_rear_left": {
+                "name": "Deur linksachter"
+            },
+            "door_open_rear_right": {
+                "name": "Deur rechtsachter"
+            },
+            "vehicle_battery_protection": {
+                "name": "Batterijbescherming"
+            },
+            "vehicle_reachable": {
+                "name": "Verbonden"
+            },
+            "vehicle_in_motion": {
+                "name": "In beweging"
+            },
+            "window_open_front_left": {
+                "name": "Raam linksvoor"
+            },
+            "window_open_front_right": {
+                "name": "Raam rechtsvoor"
+            },
+            "window_open_rear_left": {
+                "name": "Raam linksachter"
+            },
+            "window_open_rear_right": {
+                "name": "Raam rechtsachter"
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Luchtbehandeling"
+            },
+            "auxiliary_heater": {
+                "name": "Standverwarming"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Positie",
+                "state": {
+                    "home": "Thuis",
+                    "not_home": "Afwezig",
+                    "vehicle_in_motion": "In beweging"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Voertuigstatus"
+            },
+            "render_vehicle_main": {
+                "name": "Hoofdafbeelding"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Deurvergrendeling"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Laadlimiet"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Duur verwarming"
+            }
+        },
+        "sensor": {
+            "aux_estimated_time_left_to_reach_target_temperature": {
+                "name": "Tijd om de gewenste temperatuur te bereiken"
+            },
+            "battery_percentage": {
+                "name": "Accupercentage"
+            },
+            "car_captured": {
+                "name": "Laatst bijgewerkt"
+            },
+            "charge_type": {
+                "name": "Laadmethode",
+                "state": {
+                    "ac": "AC",
+                    "dc": "DC",
+                    "off": "Uit"
+                }
+            },
+            "charging_power": {
+                "name": "Laadvermogen"
+            },
+            "charging_rate": {
+                "name": "Laadsnelheid"
+            },
+            "charging_state": {
+                "name": "Laadstatus",
+                "state": {
+                    "charging": "Opladen",
+                    "connect_cable": "Geen stroom",
+                    "conserving": "Lading bewaren",
+                    "ready_for_charging": "Klaar om op te laden"
+                }
+            },
+            "estimated_time_left_to_reach_target_temperature": {
+                "name": "Tijd om de gewenste temperatuur te bereiken"
+            },
+            "inspection": {
+                "name": "Volgend onderhoud"
+            },
+            "inspection_in_km": {
+                "name": "Volgend onderhoud"
+            },
+            "mileage": {
+                "name": "Kilometerstand"
+            },
+            "oil_service_in_days": {
+                "name": "Olie onderhoud"
+            },
+            "oil_service_in_km": {
+                "name": "Olie onderhoud"
+            },
+            "range": {
+                "name": "Actieradius"
+            },
+            "remaining_charging_time": {
+                "name": "Laadtijd resterend"
+            },
+            "operation": {
+                "name": "Laatste actie",
+                "state": {
+                    "in_progress": "Actief",
+                    "completed_success": "Succesvol afgerond",
+                    "completed_warning": "Met waarschuwing afgerond",
+                    "error": "Fout"
+                }
+            },
+            "service_event": {
+                "name": "Recente gebeurtenis"
+            },
+            "software_version": {
+                "name": "Software versie"
+            },
+            "target_battery_percentage": {
+                "name": "Laadlimiet in procenten"
+            },
+            "fuel_level": {
+                "name": "Brandstof niveau"
+            },
+            "adblue_range": {
+                "name": "AdBlue bereik"
+            },
+            "gas_level": {
+                "name": "Gas Niveau"
+            },
+            "gas_range": {
+                "name": "Gas Bereik"
+            },
+            "combustion_range": {
+                "name": "Bereik motor"
+            },
+            "electric_range": {
+                "name": "Bereik accu"
+            },
+            "outside_temperature": {
+                "name": "Buitentemperatuur"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Accu onderhoudsmodus"
+            },
+            "charging": {
+                "name": "Opladen"
+            },
+            "charging_switch": {
+                "name": "Opladen"
+            },
+            "reduced_current": {
+                "name": "Stroombegrenzing"
+            },
+            "auto_unlock_plug": {
+                "name": "Ontgrendel stekker wanneer opgeladen"
+            },
+            "window_heating": {
+                "name": "Verwarming raam"
+            },
+            "ac_at_unlock": {
+                "name": "Luchtbehandeling bij ontgrendelen"
+            },
+            "ac_without_external_power": {
+                "name": "Luchtbehandeling zonder externe stroom"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Stoelverwarming linksvoor"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Stoelverwarming rechtsvoor"
+            },
+            "ac_window_heating": {
+                "name": "Raam verwarmen bij luchtbehandeling"
+            },
+            "departure_timer_1": {
+                "name": "Vertrek Timer 1"
+            },
+            "departure_timer_2": {
+                "name": "Vertrek Timer 2"
+            },
+            "departure_timer_3": {
+                "name": "Vertrek Timer 3"
+            },
+            "ac_timer_1": {
+                "name": "Airconditioning Timer 1"
+            },
+            "ac_timer_2": {
+                "name": "Airconditioning Timer 2"
+            },
+            "ac_timer_3": {
+                "name": "Airconditioning Timer 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Claxon en alarm lichten"
+            },
+            "flash": {
+                "name": "Knipper alarm lichten"
+            },
+            "wakeup": {
+                "name": "Activeer auto"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Bekijk nieuwe voorwaarden voor MySkoda",
+            "description": "Inlogfout vanwege niet geaccepteerde algemene voorwaarden.\n\nŠkoda heeft misschien nieuwe voorwaarden bekendgemaakt.\n\nLog uit en weer in de MyŠkoda app om ze te bekijken, of druk op \"Meer informatie\" hieronder\nDeze integratie kan niet doorgaan zonder acceptatie."
+        },
+        "spin_error": {
+            "title": "Onjuiste S-PIN gedetecteerd",
+            "description": "We hebben een fout ontvangen die aangeeft dat je S-PIN onjuist is.\n\nVoer de juiste S-PIN in de integratie-instelling."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Ongeldige waarde opgegeven. Kies tussen 1 en 1440 minuten",
+            "invalid_spin_format": "Ongeldig formaat voor S-PIN"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "API respons traceren. Debug logging ingeschakeld in configuration.yaml.",
+                    "poll_interval_in_minutes": "Verversinterval in minuten wanneer de auto inactief is.",
+                    "s-pin": "Beveiligings PIN",
+                    "readonly": "Alleen-lezen modus"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Geef een waarde tussen 1 en 1440 minuten. (standaard 30)",
+                    "s-pin": "Geef de beveiligings-PIN. WAARSCHUWING: Hiermee kunt u op afstand vergrendelen/ontgrendelen",
+                    "readonly": "Je kunt geen wijzigingen aanbrengen in de auto, alleen gegevens lezen"
+                }
+            }
+        }
+    }
+}

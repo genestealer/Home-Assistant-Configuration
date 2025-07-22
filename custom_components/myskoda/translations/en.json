@@ -1,0 +1,331 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Device is already configured",
+            "reauth_successful": "Reauthentication has succeeded.",
+            "no_entry": "Could not find MySkoda configuration. Please check your logs and open an issue on GitHub."
+        },
+        "error": {
+            "cannot_connect": "Failed to connect. MySkoda may be down or unreachable.",
+            "invalid_auth": "Invalid authentication. Please check your credentials.",
+            "relogin_in_app": "Terms or marketing consent missing. Log out and back in with official MySkoda app, or https://skodaid.vwgroup.io, to accept the new conditions.",
+            "unknown": "An unexpected error occurred. Please check the HomeAssistant logfiles and report an issue to the developers.",
+            "no_spin": "The S-PIN is missing from configuration. Please reconfigure the integration and try again."
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "email": "E-mail address",
+                    "password": "Password"
+                },
+                "description": "Authentication to MySkoda has failed. Please re-enter the credentials from your MySkoda app.",
+                "title": "Re-authenticate MySkoda"
+            },
+            "user": {
+                "data": {
+                    "email": "E-mail",
+                    "password": "Password"
+                },
+                "description": "Enter the credentials from your MySkoda app."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Bonnet"
+            },
+            "charger_connected": {
+                "name": "Charger Connected"
+            },
+            "charger_locked": {
+                "name": "Charge Lock"
+            },
+            "doors_locked": {
+                "name": "Doors Locked"
+            },
+            "doors_open": {
+                "name": "Doors Open"
+            },
+            "locked": {
+                "name": "Vehicle Locked"
+            },
+            "parkinglights_on": {
+                "name": "Parking Lights"
+            },
+            "sunroof_open": {
+                "name": "Sunroof"
+            },
+            "trunk_open": {
+                "name": "Trunk"
+            },
+            "windows_open": {
+                "name": "Windows"
+            },
+            "door_open_front_left": {
+                "name": "Door Front Left"
+            },
+            "door_open_front_right": {
+                "name": "Door Front Right"
+            },
+            "door_open_rear_left": {
+                "name": "Door Rear Left"
+            },
+            "door_open_rear_right": {
+                "name": "Door Rear Right"
+            },
+            "vehicle_battery_protection": {
+                "name": "Battery Protection"
+            },
+            "vehicle_reachable": {
+                "name": "Connected"
+            },
+            "vehicle_in_motion": {
+                "name": "In motion"
+            },
+            "window_open_front_left": {
+                "name": "Window Front Left"
+            },
+            "window_open_front_right": {
+                "name": "Window Front Right"
+            },
+            "window_open_rear_left": {
+                "name": "Window Rear Left"
+            },
+            "window_open_rear_right": {
+                "name": "Window Rear Right"
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Air Conditioning"
+            },
+            "auxiliary_heater": {
+                "name": "Auxiliary Heater"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Position",
+                "state": {
+                    "home": "Home",
+                    "not_home": "Away",
+                    "vehicle_in_motion": "Motion detected"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Light Status Render of Vehicle"
+            },
+            "render_vehicle_main": {
+                "name": "Main Render of Vehicle"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Door Lock"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Charge Limit"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Heater Duration"
+            }
+        },
+        "sensor": {
+            "aux_estimated_time_left_to_reach_target_temperature": {
+                "name": "Heater Time to reach target temperature"
+            },
+            "battery_percentage": {
+                "name": "Battery Percentage"
+            },
+            "car_captured": {
+                "name": "Last Updated"
+            },
+            "charge_type": {
+                "name": "Charge Type",
+                "state": {
+                    "ac": "AC",
+                    "dc": "DC",
+                    "off": "OFF"
+                }
+            },
+            "charging_power": {
+                "name": "Charging Power"
+            },
+            "charging_rate": {
+                "name": "Charging Rate"
+            },
+            "charging_state": {
+                "name": "Charging State",
+                "state": {
+                    "charging": "Charging",
+                    "connect_cable": "No Power",
+                    "conserving": "Conserving Charge",
+                    "ready_for_charging": "Ready for Charging"
+                }
+            },
+            "estimated_time_left_to_reach_target_temperature": {
+                "name": "AC Time to reach target temperature"
+            },
+            "inspection": {
+                "name": "Next Inspection"
+            },
+            "inspection_in_km": {
+                "name": "Next Inspection"
+            },
+            "mileage": {
+                "name": "Mileage"
+            },
+            "oil_service_in_days": {
+                "name": "Oil Service"
+            },
+            "oil_service_in_km": {
+                "name": "Oil Service"
+            },
+            "range": {
+                "name": "Range"
+            },
+            "remaining_charging_time": {
+                "name": "Remaining Charging Time"
+            },
+            "operation": {
+                "name": "Last Operation",
+                "state": {
+                    "in_progress": "In Progress",
+                    "completed_success": "Completed succesfully",
+                    "completed_warning": "Completed with warning",
+                    "error": "Error"
+                }
+            },
+            "service_event": {
+                "name": "Last Service Event"
+            },
+            "software_version": {
+                "name": "Software Version"
+            },
+            "target_battery_percentage": {
+                "name": "Target Battery Percentage"
+            },
+            "fuel_level": {
+                "name": "Fuel Level"
+            },
+            "adblue_range": {
+                "name": "AdBlue Range"
+            },
+            "gas_level": {
+                "name": "Gas Level"
+            },
+            "gas_range": {
+                "name": "Gas Range"
+            },
+            "combustion_range": {
+                "name": "Combustion Range"
+            },
+            "electric_range": {
+                "name": "Electric Range"
+            },
+            "outside_temperature": {
+                "name": "Outside Temperature"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Battery Care"
+            },
+            "charging": {
+                "name": "Charging"
+            },
+            "charging_switch": {
+                "name": "Charging"
+            },
+            "reduced_current": {
+                "name": "Reduced Current"
+            },
+            "auto_unlock_plug": {
+                "name": "Unlock Plug when Charged"
+            },
+            "window_heating": {
+                "name": "Window Heating"
+            },
+            "ac_at_unlock": {
+                "name": "AC when Unlocked"
+            },
+            "ac_without_external_power": {
+                "name": "AC without External Power"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Left Seat Heating with AC"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Right Seat Heating with AC"
+            },
+            "ac_window_heating": {
+                "name": "Window Heating with AC"
+            },
+            "departure_timer_1": {
+                "name": "Departure Timer 1"
+            },
+            "departure_timer_2": {
+                "name": "Departure Timer 2"
+            },
+            "departure_timer_3": {
+                "name": "Departure Timer 3"
+            },
+            "ac_timer_1": {
+                "name": "Air-conditioning Timer 1"
+            },
+            "ac_timer_2": {
+                "name": "Air-conditioning Timer 2"
+            },
+            "ac_timer_3": {
+                "name": "Air-conditioning Timer 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Honk and Flash"
+            },
+            "flash": {
+                "name": "Flash"
+            },
+            "wakeup": {
+                "name": "Wake Up Car"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Review new consents and T/C for MySkoda",
+            "description": "Detected login failure due to missing acceptance of Terms and Conditions or consents.\n\nSkoda may have issued new Terms and Conditions or requires new consents.\n\nPlease log out and back in of the MySkoda app to review them.\nThis integration cannot continue right now."
+        },
+        "spin_error": {
+            "title": "Incorrect S-PIN detected",
+            "description": "We received an error indicating your S-PIN is incorrect.\n\nPlease enter the correct S-PIN in the integration settings."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Invalid polling interval specified. Please choose between 1 and 1440 minutes",
+            "invalid_spin_format": "Invalid format for S-PIN"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "API response tracing. Requires debug logging enabled in configuration.yaml.",
+                    "poll_interval_in_minutes": "Polling interval in minutes when car is idle.",
+                    "s-pin": "Security PIN",
+                    "readonly": "Read-only mode"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Specify a polling interval between 1 and 1440 minutes. (default 30)",
+                    "s-pin": "Specify the Security PIN. WARNING: This enables remote lock/unlock",
+                    "readonly": "You cannot make any changes to the car, only read data"
+                }
+            }
+        }
+    }
+}

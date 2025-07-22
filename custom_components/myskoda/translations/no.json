@@ -1,0 +1,331 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Enheten er allerede konfigurert",
+            "reauth_successful": "Reautentisering har lykkes.",
+            "no_entry": "Kunne ikke finne MySkoda konfigurasjonen. Vennligst sjekk dine logger og åpne et problem på GitHub."
+        },
+        "error": {
+            "cannot_connect": "Klarte ikke å koble til",
+            "invalid_auth": "Ugyldig autentisering",
+            "relogin_in_app": "En feil har blitt oppdaget under innlogging. Det kan være nødvendig å logge inn på nytt i MySkoda appen.",
+            "unknown": "En uventet feil oppstod. Vennligst sjekk HomeAssistant loggfiler.",
+            "no_spin": "S-PIN-koden mangler i konfigurasjonen. Vennligst rekonfigurer integrasjonen og prøv på nytt."
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "email": "E-postadresse",
+                    "password": "Passord"
+                },
+                "description": "Autentisering til MySkoda mislyktes. Prøv på nytt fra din MySkoda app.",
+                "title": "Re-autentiser MySkoda"
+            },
+            "user": {
+                "data": {
+                    "email": "E-post",
+                    "password": "Passord"
+                },
+                "description": "Skriv inn opplysningene fra din MySkoda-app."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Panser"
+            },
+            "charger_connected": {
+                "name": "Lader tilkoblet"
+            },
+            "charger_locked": {
+                "name": "Lader Lås"
+            },
+            "doors_locked": {
+                "name": "Dører låst"
+            },
+            "doors_open": {
+                "name": "Dører åpne"
+            },
+            "locked": {
+                "name": "Bil låst"
+            },
+            "parkinglights_on": {
+                "name": "Parkeringslys"
+            },
+            "sunroof_open": {
+                "name": "Soltak"
+            },
+            "trunk_open": {
+                "name": "Bagasjerom"
+            },
+            "windows_open": {
+                "name": "Vinduer"
+            },
+            "door_open_front_left": {
+                "name": "Fremre venstre dør åpen"
+            },
+            "door_open_front_right": {
+                "name": "Fremre høyre dør åpen"
+            },
+            "door_open_rear_left": {
+                "name": "Bakre venstre dør åpen"
+            },
+            "door_open_rear_right": {
+                "name": "Bakre høyre dør åpen"
+            },
+            "vehicle_battery_protection": {
+                "name": "Batteribeskyttelse"
+            },
+            "vehicle_reachable": {
+                "name": "Tilkoblet"
+            },
+            "vehicle_in_motion": {
+                "name": "I bevegelse"
+            },
+            "window_open_front_left": {
+                "name": "Fremre venstre vindu åpent"
+            },
+            "window_open_front_right": {
+                "name": "Fremre høyre vindu åpent"
+            },
+            "window_open_rear_left": {
+                "name": "Bakre venstre vindu åpent"
+            },
+            "window_open_rear_right": {
+                "name": "Bakre høyre vindu åpent"
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Air Condition"
+            },
+            "auxiliary_heater": {
+                "name": "Tilleggsvarmer"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Posisjon",
+                "state": {
+                    "home": "Hjemme",
+                    "not_home": "Borte",
+                    "vehicle_in_motion": "Bevegelse oppdaget"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Lysstatus i visning av kjøretøyet"
+            },
+            "render_vehicle_main": {
+                "name": "Hovedvisning av kjøretøyet"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Dørlås"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Ladegrense"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Varighet for varmeapparat"
+            }
+        },
+        "sensor": {
+            "aux_estimated_time_left_to_reach_target_temperature": {
+                "name": "Kupévarmers tid for å nå måltemperaturen"
+            },
+            "battery_percentage": {
+                "name": "Batteriprosent"
+            },
+            "car_captured": {
+                "name": "Sist Oppdatert"
+            },
+            "charge_type": {
+                "name": "Ladetype",
+                "state": {
+                    "ac": "Vekselstrøm",
+                    "dc": "Likestrøm",
+                    "off": "AV"
+                }
+            },
+            "charging_power": {
+                "name": "Ladeeffekt"
+            },
+            "charging_rate": {
+                "name": "Ladehastighet"
+            },
+            "charging_state": {
+                "name": "Ladestatus",
+                "state": {
+                    "charging": "Lader",
+                    "connect_cable": "Ingen strøm",
+                    "conserving": "Konserverer lading",
+                    "ready_for_charging": "Klar for lading"
+                }
+            },
+            "estimated_time_left_to_reach_target_temperature": {
+                "name": "Tid for å nå måltemperaturen"
+            },
+            "inspection": {
+                "name": "Neste inspeksjon"
+            },
+            "inspection_in_km": {
+                "name": "Neste inspeksjon"
+            },
+            "mileage": {
+                "name": "Kilometerstand"
+            },
+            "oil_service_in_days": {
+                "name": "Oljeservice"
+            },
+            "oil_service_in_km": {
+                "name": "Oljeservice"
+            },
+            "range": {
+                "name": "Rekkevidde"
+            },
+            "remaining_charging_time": {
+                "name": "Gjenstående ladetid"
+            },
+            "operation": {
+                "name": "Siste aksjon",
+                "state": {
+                    "in_progress": "Pågår",
+                    "completed_success": "Fullført",
+                    "completed_warning": "Fullført med advarsel",
+                    "error": "Feil"
+                }
+            },
+            "service_event": {
+                "name": "Siste tjenestehendelse"
+            },
+            "software_version": {
+                "name": "Programvareversjon"
+            },
+            "target_battery_percentage": {
+                "name": "Ønsket batteriprosent"
+            },
+            "fuel_level": {
+                "name": "Drivstoffnivå"
+            },
+            "adblue_range": {
+                "name": "AdBlue-rekkevidde"
+            },
+            "gas_level": {
+                "name": "Drivstoffnivå"
+            },
+            "gas_range": {
+                "name": "Drivstoffrekkevidde"
+            },
+            "combustion_range": {
+                "name": "Drivstoff rekkevidde"
+            },
+            "electric_range": {
+                "name": "Elektrisk rekkevidde"
+            },
+            "outside_temperature": {
+                "name": "Utvendig temperatur"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Batteripleie"
+            },
+            "charging": {
+                "name": "Lader"
+            },
+            "charging_switch": {
+                "name": "Lader"
+            },
+            "reduced_current": {
+                "name": "Redusert effekt"
+            },
+            "auto_unlock_plug": {
+                "name": "Lås opp plugg når lading er ferdig"
+            },
+            "window_heating": {
+                "name": "Vindusvarme"
+            },
+            "ac_at_unlock": {
+                "name": "Klimaanlegg når ulåst"
+            },
+            "ac_without_external_power": {
+                "name": "Klimaanlegg uten ekstern strømtilførsel"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Setevarme venstre side med klimaanlegg"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Setevarme høyre side med klimaanlegg"
+            },
+            "ac_window_heating": {
+                "name": "Vindusvarme med klimaanlegg"
+            },
+            "departure_timer_1": {
+                "name": "Avreisetimer 1"
+            },
+            "departure_timer_2": {
+                "name": "Avreisetimer 2"
+            },
+            "departure_timer_3": {
+                "name": "Avreisetimer 3"
+            },
+            "ac_timer_1": {
+                "name": "Klimaanleggtimer 1"
+            },
+            "ac_timer_2": {
+                "name": "Klimaanleggtimer 2"
+            },
+            "ac_timer_3": {
+                "name": "Klimaanleggtimer 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Fløyt og blink"
+            },
+            "flash": {
+                "name": "Blink"
+            },
+            "wakeup": {
+                "name": "Vekk Bil"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Gjennomgå nye vilkår og betingelser for MySkoda",
+            "description": "Det ser ut til at du har opplevd en innloggingsfeil på grunn av manglende aksept av Škodas nye vilkår og betingelser. \n\nFor å løse dette, vennligst logg ut av MyŠkoda-appen og logg deretter inn igjen for å gjennomgå og godta de oppdaterte vilkårene. Denne integrasjonen kan ikke fortsette uten at vilkårene er akseptert."
+        },
+        "spin_error": {
+            "title": "Feil S-PIN oppdaget",
+            "description": "Vi mottok en feil som indikerer at din S-PIN er feil.\n\nSkriv inn riktig S-PIN i integrasjonsinnstillingene."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Ugyldig polling-intervall angitt. Vennligst velg et intervall mellom 1 og 1440 minutter",
+            "invalid_spin_format": "Ugyldig format for S-PIN-kode"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "Sporing av API-respons. Krever at feilsøkingslogging er aktivert i configuration.yaml.",
+                    "poll_interval_in_minutes": "Polling-intervall i minutter når bilen er inaktiv.",
+                    "s-pin": "Sikkerhets PIN-kode",
+                    "readonly": "Lesemodus"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Angi et polling-intervall mellom 1 og 1440 minutter. (standard er 30)",
+                    "s-pin": "Angi sikkerhets PIN-koden. ADVARSEL: Dette gjør det mulig å låse opp/låse eksternt",
+                    "readonly": "Du kan ikke gjøre noen endringer med bilen, bare lese data"
+                }
+            }
+        }
+    }
+}

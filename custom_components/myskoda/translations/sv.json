@@ -1,0 +1,372 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Enheten är redan konfigurerad"
+        },
+        "error": {
+            "cannot_connect": "Misslyckades att ansluta",
+            "invalid_auth": "Ogiltig autentisering",
+            "unknown": "Ett oväntat fel inträffade. Kontrollera loggfilerna för HomeAssistant."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "email": "E-post",
+                    "password": "Lösenord"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Motorhuv",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "charger_connected": {
+                "name": "Laddare ansluten",
+                "state": {
+                    "off": "Ej ansluten",
+                    "on": "Inkopplad"
+                }
+            },
+            "charger_locked": {
+                "name": "Laddningslås",
+                "state": {
+                    "off": "Låst",
+                    "on": "Olåst"
+                }
+            },
+            "doors_locked": {
+                "name": "Dörrarna låsta",
+                "state": {
+                    "off": "Låsta",
+                    "on": "Olåsta"
+                }
+            },
+            "doors_open": {
+                "name": "Dörrarna öppna",
+                "state": {
+                    "off": "Stängda",
+                    "on": "Öppna"
+                }
+            },
+            "locked": {
+                "name": "Fordonet låst",
+                "state": {
+                    "off": "Låst",
+                    "on": "Olåst"
+                }
+            },
+            "parkinglights_on": {
+                "name": "Parkeringsljus",
+                "state": {
+                    "off": "Av",
+                    "on": "På"
+                }
+            },
+            "sunroof_open": {
+                "name": "Soltak",
+                "state": {
+                    "off": "Stängt",
+                    "on": "Öppet"
+                }
+            },
+            "trunk_open": {
+                "name": "Bagageutrymme",
+                "state": {
+                    "off": "Stängt",
+                    "on": "Öppen"
+                }
+            },
+            "windows_open": {
+                "name": "Fönster",
+                "state": {
+                    "off": "Stängda",
+                    "on": "Öppna"
+                }
+            },
+            "door_open_front_left": {
+                "name": "Dörr öppen vänster fram",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "door_open_front_right": {
+                "name": "Dörr öppen höger fram",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "door_open_rear_left": {
+                "name": "Dörr öppen vänster bak",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "door_open_rear_right": {
+                "name": "Dörr öppen höger bak",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "window_open_front_left": {
+                "name": "Fönster öppen vänster fram",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "window_open_front_right": {
+                "name": "Fönster öppen höger fram",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "window_open_rear_left": {
+                "name": "Fönster öppen vänster bak",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            },
+            "window_open_rear_right": {
+                "name": "Fönster öppen höger bak",
+                "state": {
+                    "off": "Stängd",
+                    "on": "Öppen"
+                }
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Luftkonditionering"
+            },
+            "auxiliary_heater": {
+                "name": "Tillsatsvärmare"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Position",
+                "state": {
+                    "home": "Hemma",
+                    "not_home": "Borta",
+                    "vehicle_in_motion": "Rörelse upptäckt"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Ljusstatus för fordonet"
+            },
+            "render_vehicle_main": {
+                "name": "Huvudrendering av fordon"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Dörrlås"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Laddningsgräns"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Värmarens varaktighet"
+            }
+        },
+        "sensor": {
+            "battery_percentage": {
+                "name": "Batteriprocent"
+            },
+            "car_captured": {
+                "name": "Senast uppdaterad"
+            },
+            "charge_type": {
+                "name": "Laddningstyp",
+                "state": {
+                    "ac": "AC",
+                    "dc": "DC",
+                    "off": "Från"
+                }
+            },
+            "charging_power": {
+                "name": "Laddningseffekt"
+            },
+            "charging_rate": {
+                "name": "Laddningshastighet"
+            },
+            "charging_state": {
+                "name": "Laddningstillstånd",
+                "state": {
+                    "charging": "Laddar",
+                    "connect_cable": "Ingen kraft",
+                    "conserving": "Bevara laddning",
+                    "ready_for_charging": "Redo för laddning"
+                }
+            },
+            "inspection": {
+                "name": "Nästa inspektion"
+            },
+            "inspection_in_km": {
+                "name": "Nästa inspektion"
+            },
+            "mileage": {
+                "name": "Mätarställning"
+            },
+            "oil_service_in_days": {
+                "name": "Service oljebyte"
+            },
+            "oil_service_in_km": {
+                "name": "Service oljebyte"
+            },
+            "range": {
+                "name": "Räckvidd"
+            },
+            "remaining_charging_time": {
+                "name": "Återstående laddningstid"
+            },
+            "operation": {
+                "name": "Senaste åtgärd",
+                "state": {
+                    "in_progress": "Pågående",
+                    "completed_success": "Slutförd utan fel",
+                    "completed_warning": "Slutförd med varning",
+                    "error": "Fel"
+                }
+            },
+            "service_event": {
+                "name": "Senaste Service Händelse"
+            },
+            "software_version": {
+                "name": "Programvaruversion"
+            },
+            "target_battery_percentage": {
+                "name": "Mål batteriprocent"
+            },
+            "fuel_level": {
+                "name": "Bränslenivå"
+            },
+            "adblue_range": {
+                "name": "AdBlue räckvidd"
+            },
+            "gas_level": {
+                "name": "Bränsle nivå"
+            },
+            "gas_range": {
+                "name": "Bränsle räckvidd"
+            },
+            "combustion_range": {
+                "name": "Räckvidd förbränningsbränsle"
+            },
+            "electric_range": {
+                "name": "Räckvidd el"
+            },
+            "outside_temperature": {
+                "name": "Utomhustemperatur"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Batterivård"
+            },
+            "charging": {
+                "name": "Laddning"
+            },
+            "charging_switch": {
+                "name": "Laddar"
+            },
+            "reduced_current": {
+                "name": "Reducerad ström"
+            },
+            "auto_unlock_plug": {
+                "name": "Lås upp kabel när laddad"
+            },
+            "window_heating": {
+                "name": "Fönstervärme"
+            },
+            "ac_at_unlock": {
+                "name": "AC vid upplåsning"
+            },
+            "ac_without_external_power": {
+                "name": "AC utan extern ström"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Vänster sätesvärmning med AC"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Höger sätesvärmning med AC"
+            },
+            "ac_window_heating": {
+                "name": "Fönstervärmning med AC"
+            },
+            "departure_timer_1": {
+                "name": "Avgångstimer 1"
+            },
+            "departure_timer_2": {
+                "name": "Avgångstimer 2"
+            },
+            "departure_timer_3": {
+                "name": "Avgångstimer 3"
+            },
+            "ac_timer_1": {
+                "name": "Luftkonditionering Timer 1"
+            },
+            "ac_timer_2": {
+                "name": "Luftkonditionering Timer 2"
+            },
+            "ac_timer_3": {
+                "name": "Luftkonditionering Timer 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Tuta och blinka"
+            },
+            "flash": {
+                "name": "Blinka"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Granska de nya villkoren för MySkoda",
+            "description": "Misslyckades med att logga in på grund av att användarvillkoren inte accepterades.\n\nSkoda kan ha utfärdat nya villkor.\n\nLogga ut och in igen i appen MySkoda för att granska dem.\nDenna integration kan inte fortsätta utan accepterade villkor."
+        },
+        "spin_error": {
+            "title": "Felaktig S-PIN upptäckt",
+            "description": "Vi fick en fel indikering gällande att din S-PIN är felaktig.\n\nAnge rätt S-PIN i integreringsinställningarna."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Ogiltigt intervall för polling. Vänligen välj mellan 1 och 1440 minuter",
+            "invalid_spin_format": "Ogiltigt format för S-pinkod"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "Spårning av API-svar. Kräver att felsökningsloggning är aktiverad i configuration.yaml.",
+                    "poll_interval_in_minutes": "Pollning intervall i minuter när bilen är inaktiv.",
+                    "s-pin": "PIN-kod för säkerhet",
+                    "readonly": "Skrivskyddad läge"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Ange pollinering intervall mellan 1 och 1440 minuter. (standard 30)",
+                    "s-pin": "Ange säkerhets-PIN-kod. VARNING: Detta aktiverar fjärrlås/fjärrlåsning",
+                    "readonly": "Du kan inte göra några ändringar av bilen, bara läsa data"
+                }
+            }
+        }
+    }
+}

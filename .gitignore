@@ -58,7 +58,6 @@ configuration - Copy.yaml
 __pycache__/
 /image/
 ip_bans.yaml
-/custom_components
 SERVICE_ACCOUNT*.JSON
 coordinator_backup.json
 coordinator_backup_old.json

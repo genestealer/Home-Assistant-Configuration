@@ -1,0 +1,394 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Zařízení je již nakonfigurováno",
+            "reauth_successful": "Opětovné ověření se podařilo.",
+            "no_entry": "Nepodařilo se najít konfiguraci MySkoda. Zkontrolujte prosím logy a otevřete problém na GitHubu."
+        },
+        "error": {
+            "cannot_connect": "Připojení se nezdařilo",
+            "invalid_auth": "Neplatné ověření",
+            "relogin_in_app": "Při přihlašování byla zjištěna chyba. Může být nutné se znovu přihlásit do aplikace MySkoda.",
+            "unknown": "Došlo k neočekávané chybě. Zkontrolujte logy aplikace HomeAssistant.",
+            "no_spin": "V konfiguraci chybí S-PIN. Změňte prosím konfiguraci integrace a zkuste to znovu."
+        },
+        "step": {
+            "reauth_confirm": {
+                "data": {
+                    "email": "E-mailová adresa",
+                    "password": "Heslo"
+                },
+                "description": "Ověření do MySkoda se nezdařilo. Zadejte prosím znovu přihlašovací údaje z aplikace MySkoda.",
+                "title": "Znovu ověřit MySkoda"
+            },
+            "user": {
+                "data": {
+                    "email": "E-mailová adresa",
+                    "password": "Heslo"
+                },
+                "description": "Zadejte přihlašovací údaje z aplikace MySkoda."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Kapota",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "charger_connected": {
+                "name": "Nabíječka připojena",
+                "state": {
+                    "off": "Odpojeno",
+                    "on": "Připojeno"
+                }
+            },
+            "charger_locked": {
+                "name": "Zámek nabíjení",
+                "state": {
+                    "off": "Uzamčeno",
+                    "on": "Odemčeno"
+                }
+            },
+            "doors_locked": {
+                "name": "Dveře uzamčené",
+                "state": {
+                    "off": "Uzamčeno",
+                    "on": "Odemčeno"
+                }
+            },
+            "doors_open": {
+                "name": "Dveře otevřené",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "locked": {
+                "name": "Vozidlo uzamčeno",
+                "state": {
+                    "off": "Uzamčeno",
+                    "on": "Odemčeno"
+                }
+            },
+            "parkinglights_on": {
+                "name": "Parkovací světla",
+                "state": {
+                    "off": "Vyp.",
+                    "on": "Zap."
+                }
+            },
+            "sunroof_open": {
+                "name": "Střecha",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "trunk_open": {
+                "name": "Kufr",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "windows_open": {
+                "name": "Okna",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "door_open_front_left": {
+                "name": "Levé přední dveře",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "door_open_front_right": {
+                "name": "Pravé přední dveře",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "door_open_rear_left": {
+                "name": "Levé zadní dveře",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "door_open_rear_right": {
+                "name": "Pravé zadní dveře",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "window_open_front_left": {
+                "name": "Levé přední okno",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "window_open_front_right": {
+                "name": "Pravé přední okno",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "window_open_rear_left": {
+                "name": "Levé zadní okno",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            },
+            "window_open_rear_right": {
+                "name": "Pravé zadní okno",
+                "state": {
+                    "off": "Zavřeno",
+                    "on": "Otevřeno"
+                }
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Klimatizace"
+            },
+            "auxiliary_heater": {
+                "name": "Nezávislé topení"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Poloha",
+                "state": {
+                    "home": "Doma",
+                    "not_home": "Pryč",
+                    "vehicle_in_motion": "Zjištěn pohyb"
+                }
+            }
+        },
+        "image": {
+            "render_light_3x": {
+                "name": "Znázornění stavu vozidla"
+            },
+            "render_vehicle_main": {
+                "name": "Hlavní render vozidla"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Zamknout dveře"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Limit nabíjení"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Doba trvání ohřevu"
+            }
+        },
+        "sensor": {
+            "aux_estimated_time_left_to_reach_target_temperature": {
+                "name": "Doba topení pro dosažení cílové teploty"
+            },
+            "battery_percentage": {
+                "name": "Stav baterie v %"
+            },
+            "car_captured": {
+                "name": "Naposledy aktualizováno"
+            },
+            "charge_type": {
+                "name": "Typ nabíjení",
+                "state": {
+                    "ac": "Střídavý proud",
+                    "dc": "Stejnosměrný proud",
+                    "off": "Vypnuto"
+                }
+            },
+            "charging_power": {
+                "name": "Nabíjecí výkon"
+            },
+            "charging_rate": {
+                "name": "Rychlost nabíjení"
+            },
+            "charging_state": {
+                "name": "Stav nabíjení",
+                "state": {
+                    "charging": "Nabíjení",
+                    "connect_cable": "Připojte kabel",
+                    "conserving": "Uchovávání nabití",
+                    "ready_for_charging": "Připraveno k nabíjení"
+                }
+            },
+            "estimated_time_left_to_reach_target_temperature": {
+                "name": "Doba klimatizace pro dosažení cílové teploty"
+            },
+            "inspection": {
+                "name": "Další prohlídka"
+            },
+            "inspection_in_km": {
+                "name": "Další prohlídka"
+            },
+            "mileage": {
+                "name": "Najeto"
+            },
+            "oil_service_in_days": {
+                "name": "Výměna oleje"
+            },
+            "oil_service_in_km": {
+                "name": "Výměna oleje"
+            },
+            "range": {
+                "name": "Dojezd"
+            },
+            "remaining_charging_time": {
+                "name": "Zbývající čas nabíjení"
+            },
+            "operation": {
+                "name": "Poslední operace",
+                "state": {
+                    "in_progress": "Probíhá",
+                    "completed_success": "Úspěšně dokončeno",
+                    "completed_warning": "Dokončeno s varováním",
+                    "error": "Chyba"
+                }
+            },
+            "service_event": {
+                "name": "Poslední událost služby"
+            },
+            "software_version": {
+                "name": "Verze softwaru"
+            },
+            "target_battery_percentage": {
+                "name": "Cílové nabití baterie"
+            },
+            "fuel_level": {
+                "name": "Hladina paliva"
+            },
+            "adblue_range": {
+                "name": "Dojezd na AdBlue"
+            },
+            "gas_level": {
+                "name": "Hladina plynu"
+            },
+            "gas_range": {
+                "name": "Dojezd na plyn"
+            },
+            "combustion_range": {
+                "name": "Dojezd"
+            },
+            "electric_range": {
+                "name": "Dojezd na elektřinu"
+            },
+            "outside_temperature": {
+                "name": "Venkovní teplota"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Péče o baterii"
+            },
+            "charging": {
+                "name": "Nabíjení"
+            },
+            "charging_switch": {
+                "name": "Nabíjení"
+            },
+            "reduced_current": {
+                "name": "Snížený proud"
+            },
+            "auto_unlock_plug": {
+                "name": "Odemknout nabíjecí kabel po nabíjení"
+            },
+            "window_heating": {
+                "name": "Vyhřívání okna"
+            },
+            "ac_at_unlock": {
+                "name": "Klimatizace při odemknutí"
+            },
+            "ac_without_external_power": {
+                "name": "Klimatizace bez externího napájení"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Vyhřívání levého sedadla pri spuštení klimatizace"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Vyhřívání pravého sedadla pri spuštení klimatizace"
+            },
+            "ac_window_heating": {
+                "name": "Vyhřívání oken pri spuštení klimatizace"
+            },
+            "departure_timer_1": {
+                "name": "Časovač odjezdu 1"
+            },
+            "departure_timer_2": {
+                "name": "Časovač odjezdu 2"
+            },
+            "departure_timer_3": {
+                "name": "Časovač odjezdu 3"
+            },
+            "ac_timer_1": {
+                "name": "Časovač klimatizace 1"
+            },
+            "ac_timer_2": {
+                "name": "Časovač klimatizace 2"
+            },
+            "ac_timer_3": {
+                "name": "Časovač klimatizace 3"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Troubit a blikat"
+            },
+            "flash": {
+                "name": "Blikat"
+            },
+            "wakeup": {
+                "name": "Probudit auto"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Zkontrolujte nové obchodní podmínky pro MySkoda",
+            "description": "Zjištěno selhání přihlášení kvůli chybějícímu přijetí obchodních podmínek.\n\nŠkoda mohla publikovat nové obchodní podmínky.\n\nOdhlaste se z aplikace MySkoda a znovu se přihlašte pro zkontrolování.\nTato integrace nemůže pokračovat bez přijetí obchodních podmínek."
+        },
+        "spin_error": {
+            "title": "Byl zjištěn nesprávný S-PIN",
+            "description": "Obdrželi jsme chybu indikující, že váš S-PIN není správný. Prosím zadejte správný S-PIN v nastavení integrace."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Zadán neplatný interval dotazování. Zvolte prosím hodnotu 1 až 1440 minut",
+            "invalid_spin_format": "Neplatný formát pro S-PIN"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "Zjišťování odezvy API. Vyžaduje povolený debug logging v konfiguraci configuration.yaml.",
+                    "poll_interval_in_minutes": "Interval dotazování v minutách při nečinnosti vozidla.",
+                    "s-pin": "Bezpečnostní PIN",
+                    "readonly": "Režim pouze pro čtení"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Zadejte interval dotazování mezi 1 a 1440 minutami. (výchozí 30)",
+                    "s-pin": "Zadejte bezpečnostní kód PIN. VAROVÁNÍ: Toto povolí zamknutí/odemknutí na dálku",
+                    "readonly": "Ve vozidle nelze provádět žádné změny, pouze číst data"
+                }
+            }
+        }
+    }
+}

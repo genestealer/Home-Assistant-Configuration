@@ -1,0 +1,280 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "L'appareil est déjà configuré"
+        },
+        "error": {
+            "cannot_connect": "Échec de la connexion",
+            "invalid_auth": "Authentification incorrecte",
+            "unknown": "Une erreur inattendue s'est produite. Veuillez vérifier les journaux HomeAssistant."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "email": "Courriel",
+                    "password": "Mot de passe"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "bonnet_open": {
+                "name": "Trappe",
+                "state": {
+                    "off": "Fermée",
+                    "on": "Ouverte"
+                }
+            },
+            "charger_connected": {
+                "name": "Chargeur connecté",
+                "state": {
+                    "off": "Débranché",
+                    "on": "Branché"
+                }
+            },
+            "charger_locked": {
+                "name": "Verrou de charge",
+                "state": {
+                    "off": "Verrouillé",
+                    "on": "Déverrouillé"
+                }
+            },
+            "doors_locked": {
+                "name": "Portes verrouillées",
+                "state": {
+                    "off": "Verrouillé",
+                    "on": "Déverrouillé"
+                }
+            },
+            "doors_open": {
+                "name": "Portes Ouvertes",
+                "state": {
+                    "off": "Portes Fermées",
+                    "on": "Ouverte"
+                }
+            },
+            "locked": {
+                "name": "Véhicule verrouillé",
+                "state": {
+                    "off": "Verrouillé",
+                    "on": "Déverrouillé"
+                }
+            },
+            "parkinglights_on": {
+                "name": "Feux de stationnement",
+                "state": {
+                    "off": "Éteintes",
+                    "on": "Allumées"
+                }
+            },
+            "sunroof_open": {
+                "name": "Toit vitré",
+                "state": {
+                    "off": "Fermé",
+                    "on": "Ouvert"
+                }
+            },
+            "trunk_open": {
+                "name": "Coffre",
+                "state": {
+                    "off": "Fermé",
+                    "on": "Ouvert"
+                }
+            },
+            "windows_open": {
+                "name": "Fenêtres",
+                "state": {
+                    "off": "Fermées",
+                    "on": "Ouvertes"
+                }
+            }
+        },
+        "climate": {
+            "climate": {
+                "name": "Air conditionné"
+            },
+            "auxiliary_heater": {
+                "name": "Chauffage auxiliaire"
+            }
+        },
+        "device_tracker": {
+            "device_tracker": {
+                "name": "Position",
+                "state": {
+                    "home": "Maison",
+                    "not_home": "Absent",
+                    "vehicle_in_motion": "Mouvement détecté"
+                }
+            }
+        },
+        "image": {
+            "render_vehicle_main": {
+                "name": "Illustration du véhicule"
+            }
+        },
+        "lock": {
+            "door_lock": {
+                "name": "Verrouillage des portes"
+            }
+        },
+        "number": {
+            "charge_limit": {
+                "name": "Limite de charge"
+            },
+            "auxiliary_heater_duration": {
+                "name": "Durée du chauffage"
+            }
+        },
+        "sensor": {
+            "battery_percentage": {
+                "name": "Pourcentage de la batterie"
+            },
+            "car_captured": {
+                "name": "Dernière mise à jour"
+            },
+            "charge_type": {
+                "name": "Type de charge",
+                "state": {
+                    "ac": "AC",
+                    "dc": "DC",
+                    "off": "Désactivé"
+                }
+            },
+            "charging_power": {
+                "name": "Puissance de recharge"
+            },
+            "charging_rate": {
+                "name": "Taux de charge"
+            },
+            "charging_state": {
+                "name": "Etat de la charge",
+                "state": {
+                    "charging": "En charge",
+                    "connect_cable": "Aucune charge",
+                    "conserving": "Conservation de la charge",
+                    "ready_for_charging": "Prêt pour la charge"
+                }
+            },
+            "inspection": {
+                "name": "Prochaine révision"
+            },
+            "inspection_in_km": {
+                "name": "Prochaine révision"
+            },
+            "mileage": {
+                "name": "Kilométrage"
+            },
+            "oil_service_in_days": {
+                "name": "Vidange"
+            },
+            "oil_service_in_km": {
+                "name": "Vidange"
+            },
+            "range": {
+                "name": "Autonomie"
+            },
+            "remaining_charging_time": {
+                "name": "Temps de recharge restant"
+            },
+            "operation": {
+                "name": "Dernière opération",
+                "state": {
+                    "in_progress": "En cours",
+                    "completed_success": "Terminé avec succès",
+                    "completed_warning": "Terminé avec un avertissement",
+                    "error": "Erreur"
+                }
+            },
+            "software_version": {
+                "name": "Version du logiciel"
+            },
+            "target_battery_percentage": {
+                "name": "Pourcentage de batterie cible"
+            },
+            "fuel_level": {
+                "name": "Niveau de carburant"
+            },
+            "combustion_range": {
+                "name": "Autonomie du carburant"
+            },
+            "electric_range": {
+                "name": "Autonomie en électrique"
+            },
+            "outside_temperature": {
+                "name": "Température extérieure"
+            }
+        },
+        "switch": {
+            "battery_care_mode": {
+                "name": "Entretien de la batterie"
+            },
+            "charging": {
+                "name": "Recharger"
+            },
+            "charging_switch": {
+                "name": "En charge"
+            },
+            "reduced_current": {
+                "name": "Limiter le courant de charge"
+            },
+            "window_heating": {
+                "name": "Chauffage des fenêtres"
+            },
+            "ac_at_unlock": {
+                "name": "AC quand déverrouillé"
+            },
+            "ac_without_external_power": {
+                "name": "AC sans alimentation externe"
+            },
+            "ac_seat_heating_front_left": {
+                "name": "Chauffage siège gauche"
+            },
+            "ac_seat_heating_front_right": {
+                "name": "Chauffage siège droit"
+            },
+            "ac_window_heating": {
+                "name": "Chauffage des fenêtres avec AC"
+            }
+        },
+        "button": {
+            "honk_flash": {
+                "name": "Klaxonner et appels de phares"
+            },
+            "flash": {
+                "name": "Appels de phares"
+            }
+        }
+    },
+    "issues": {
+        "new_tandc": {
+            "title": "Revoir les nouvelles conditions générales pour MySkoda",
+            "description": "Échec de connexion détecté en raison de l'acceptation manquante des Conditions Générales.\n\nSkoda peut avoir publié de nouvelles Conditions Générales.\n\nVeuillez vous déconnecter et revenir dans l'application MySkoda pour les examiner.\nCette intégration ne peut pas continuer sans les conditions acceptées."
+        },
+        "spin_error": {
+            "title": "Le S-PIN est incorrect",
+            "description": "Nous avons reçu une erreur indiquant que votre S-PIN est incorrect.\n\nVeuillez entrer le S-PIN correct dans les paramètres d'intégration."
+        }
+    },
+    "options": {
+        "error": {
+            "invalid_polling_interval": "Intervalle de requêtes non valide. Veuillez choisir entre 1 et 1440 minutes",
+            "invalid_spin_format": "Format non valide du S-PIN"
+        },
+        "step": {
+            "init": {
+                "data": {
+                    "tracing": "Suivi des réponses de l'API. Nécessite d'activer le mode débogage dans configuration.yaml.",
+                    "poll_interval_in_minutes": "Intervalle de requêtes, en minutes, lorsque la voiture est inactive.",
+                    "s-pin": "Code de sécurité",
+                    "readonly": "Mode lecture seule"
+                },
+                "data_description": {
+                    "poll_interval_in_minutes": "Spécifiez un intervalle de requêtes entre 1 et 1440 minutes. (par défaut 30)",
+                    "s-pin": "Spécifiez le code PIN de sécurité. AVERTISSEMENT : Cela active le verrouillage à distance / déverrouillage",
+                    "readonly": "Vous ne pouvez pas apporter de modifications à la voiture, seulement lire les données"
+                }
+            }
+        }
+    }
+}
