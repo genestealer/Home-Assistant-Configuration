@@ -1,12 +1,17 @@
 import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.reload import async_reload_integration_platforms
+from homeassistant.const import SERVICE_RELOAD
+import voluptuous as vol
 
 from .api import EatonBatteryAPI
 from .coordinator import EatonXstorageHomeCoordinator
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+
+PLATFORMS = ["sensor", "binary_sensor"]
 
 async def async_setup(hass: HomeAssistant, config: dict):
     return True  # Not used for config flow-based setup
@@ -30,7 +35,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     hass.data[DOMAIN]["coordinator"] = coordinator
 
     hass.async_create_task(
-        hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+        hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    )
+
+    async def reload_service_handler(call):
+        await async_reload_integration_platforms(hass, DOMAIN, PLATFORMS)
+
+    hass.services.async_register(
+        DOMAIN, SERVICE_RELOAD, reload_service_handler, schema=vol.Schema({})
     )
 
     return True
