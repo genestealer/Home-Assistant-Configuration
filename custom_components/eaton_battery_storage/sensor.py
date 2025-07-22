@@ -2,39 +2,54 @@ import logging
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import PERCENTAGE, UnitOfPower
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.helpers.entity import EntityCategory
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
 SENSOR_TYPES = {
-    "currentMode.command": {"name": "Current Mode Command", "unit": None, "device_class": None},
-    "energyFlow.acPvRole": {"name": "AC PV Role", "unit": None, "device_class": None},
-    "energyFlow.acPvValue": {"name": "AC PV Value", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.batteryBackupLevel": {"name": "Battery Backup Level", "unit": PERCENTAGE, "device_class": "battery"},
-    "energyFlow.batteryStatus": {"name": "Battery Status", "unit": None, "device_class": None},
-    "energyFlow.batteryEnergyFlow": {"name": "Battery Power", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.criticalLoadRole": {"name": "Critical Load Role", "unit": None, "device_class": None},
-    "energyFlow.criticalLoadValue": {"name": "Critical Load Value", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.dcPvRole": {"name": "DC PV Role", "unit": None, "device_class": None},
-    "energyFlow.dcPvValue": {"name": "DC PV Value", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.gridRole": {"name": "Grid Role", "unit": None, "device_class": None},
-    "energyFlow.gridValue": {"name": "Grid Power", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.nonCriticalLoadRole": {"name": "Non-Critical Load Role", "unit": None, "device_class": None},
-    "energyFlow.nonCriticalLoadValue": {"name": "Non-Critical Load Value", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.operationMode": {"name": "Operation Mode", "unit": None, "device_class": None},
-    "energyFlow.selfConsumption": {"name": "Self Consumption", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "energyFlow.selfSufficiency": {"name": "Self Sufficiency", "unit": PERCENTAGE, "device_class": None},
-    "energyFlow.stateOfCharge": {"name": "Battery State of Charge", "unit": PERCENTAGE, "device_class": "battery"},
-    "energyFlow.energySavingModeEnabled": {"name": "Energy Saving Mode Enabled", "unit": None, "device_class": None},
-    "energyFlow.energySavingModeActivated": {"name": "Energy Saving Mode Activated", "unit": None, "device_class": None},
-    "last30daysEnergyFlow.gridConsumption": {"name": "30 Days Grid Consumption", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "last30daysEnergyFlow.photovoltaicProduction": {"name": "30 Days PV Production", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "last30daysEnergyFlow.selfConsumption": {"name": "30 Days Self Consumption", "unit": PERCENTAGE, "device_class": None},
-    "last30daysEnergyFlow.selfSufficiency": {"name": "30 Days Self Sufficiency", "unit": PERCENTAGE, "device_class": None},
-    "today.gridConsumption": {"name": "Today's Grid Consumption", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "today.photovoltaicProduction": {"name": "Today's PV Production", "unit": UnitOfPower.WATT, "device_class": "power"},
-    "today.selfConsumption": {"name": "Today's Self Consumption", "unit": PERCENTAGE, "device_class": None},
-    "today.selfSufficiency": {"name": "Today's Self Sufficiency", "unit": PERCENTAGE, "device_class": None},
+    # status endpoint
+    "status.currentMode.command": {"name": "Current Mode Command", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.duration": {"name": "Current Mode Duration", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.startTime": {"name": "Current Mode Start Time", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.endTime": {"name": "Current Mode End Time", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.recurrence": {"name": "Current Mode Recurrence", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.type": {"name": "Current Mode Type", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.parameters.action": {"name": "Current Mode Action", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.parameters.power": {"name": "Current Mode Power", "unit": None, "device_class": None, "entity_category": None},
+    "status.currentMode.parameters.soc": {"name": "Current Mode SOC", "unit": PERCENTAGE, "device_class": "battery", "entity_category": None},
+    "status.energyFlow.acPvRole": {"name": "AC PV Role", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.acPvValue": {"name": "AC PV Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.batteryBackupLevel": {"name": "Battery Backup Level", "unit": PERCENTAGE, "device_class": "battery", "entity_category": None},
+    "status.energyFlow.batteryStatus": {"name": "Battery Status", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.batteryEnergyFlow": {"name": "Battery Power", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.criticalLoadRole": {"name": "Critical Load Role", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.criticalLoadValue": {"name": "Critical Load Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.dcPvRole": {"name": "DC PV Role", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.dcPvValue": {"name": "DC PV Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.gridRole": {"name": "Grid Role", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.gridValue": {"name": "Grid Power", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.nonCriticalLoadRole": {"name": "Non-Critical Load Role", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.nonCriticalLoadValue": {"name": "Non-Critical Load Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.operationMode": {"name": "Operation Mode", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.selfConsumption": {"name": "Self Consumption", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.energyFlow.selfSufficiency": {"name": "Self Sufficiency", "unit": PERCENTAGE, "device_class": None, "entity_category": None},
+    "status.energyFlow.stateOfCharge": {"name": "Battery State of Charge", "unit": PERCENTAGE, "device_class": "battery", "entity_category": None},
+    "status.energyFlow.energySavingModeEnabled": {"name": "Energy Saving Mode Enabled", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.energySavingModeActivated": {"name": "Energy Saving Mode Activated", "unit": None, "device_class": None, "entity_category": None},
+    "status.last30daysEnergyFlow.gridConsumption": {"name": "30 Days Grid Consumption", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.last30daysEnergyFlow.photovoltaicProduction": {"name": "30 Days PV Production", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.last30daysEnergyFlow.selfConsumption": {"name": "30 Days Self Consumption", "unit": PERCENTAGE, "device_class": None, "entity_category": None},
+    "status.last30daysEnergyFlow.selfSufficiency": {"name": "30 Days Self Sufficiency", "unit": PERCENTAGE, "device_class": None, "entity_category": None},
+    "status.today.gridConsumption": {"name": "Today's Grid Consumption", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.today.photovoltaicProduction": {"name": "Today's PV Production", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
+    "status.today.selfConsumption": {"name": "Today's Self Consumption", "unit": PERCENTAGE, "device_class": None, "entity_category": None},
+    "status.today.selfSufficiency": {"name": "Today's Self Sufficiency", "unit": PERCENTAGE, "device_class": None, "entity_category": None},
+    # device endpoint
+    "device.firmwareVersion": {"name": "Firmware Version", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
+    "device.inverterFirmwareVersion": {"name": "Inverter Firmware Version", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
+    "device.bmsFirmwareVersion": {"name": "BMS Firmware Version", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
+
 }
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -50,6 +65,10 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
         self._name = description["name"]
         self._unit = description["unit"]
         self._device_class = description["device_class"]
+        self._entity_category = description["entity_category"]
+    @property
+    def entity_category(self):
+        return self._entity_category
 
     @property
     def name(self):
@@ -69,7 +88,10 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
                     value = value.get(k, {})
                 else:
                     value = {}
-            return value if value != {} else None
+            # If value is still a dict, return None
+            if isinstance(value, dict):
+                return None
+            return value
         except Exception as e:
             _LOGGER.error(f"Error retrieving state for {self._key}: {e}")
             return None

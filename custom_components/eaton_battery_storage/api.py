@@ -96,3 +96,27 @@ class EatonBatteryAPI:
 
     async def get_status(self):
         return await self.make_request("GET", "/api/device/status")
+
+    async def get_device(self):
+        return await self.make_request("GET", "/api/device")
+
+    async def get_config_state(self):
+        return await self.make_request("GET", "/api/config/state")
+
+    async def get_settings(self):
+        return await self.make_request("GET", "/api/settings")
+
+    async def get_metrics(self):
+        return await self.make_request("GET", "/api/metrics")
+
+    async def get_metrics_daily(self):
+        return await self.make_request("GET", "/api/metrics/daily")
+
+    async def get_schedule(self):
+        return await self.make_request("GET", "/api/schedule/")
+
+    async def get_technical_status(self):
+        return await self.make_request("GET", "/api/technical/status")
+
+    async def get_maintenance_diagnostics(self):
+        return await self.make_request("GET", "/api/device/maintenance/diagnostics")
