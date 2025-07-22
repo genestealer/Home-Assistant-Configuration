@@ -1,3 +1,4 @@
+# pyright: ignore[reportMissingImports]
 import logging
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import PERCENTAGE, UnitOfPower
@@ -91,6 +92,19 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
             # If value is still a dict, return None
             if isinstance(value, dict):
                 return None
+            # Format startTime and endTime to 12-hour format if applicable
+            if self._key.endswith("startTime") or self._key.endswith("endTime"):
+                if isinstance(value, int) or (isinstance(value, str) and value.isdigit()):
+                    # Accept both int and string representations
+                    time_val = int(value)
+                    hour = time_val // 100
+                    minute = time_val % 100
+                    if 0 <= hour < 24 and 0 <= minute < 60:
+                        suffix = "am" if hour < 12 or hour == 24 else "pm"
+                        hour12 = hour % 12
+                        if hour12 == 0:
+                            hour12 = 12
+                        return f"{hour12}:{minute:02d}{suffix}"
             return value
         except Exception as e:
             _LOGGER.error(f"Error retrieving state for {self._key}: {e}")
