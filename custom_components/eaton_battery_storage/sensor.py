@@ -21,7 +21,7 @@ SENSOR_TYPES = {
     "status.energyFlow.acPvRole": {"name": "AC PV Role", "unit": None, "device_class": None, "entity_category": None},
     "status.energyFlow.acPvValue": {"name": "AC PV Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
     "status.energyFlow.batteryBackupLevel": {"name": "Battery Backup Level", "unit": PERCENTAGE, "device_class": "battery", "entity_category": None},
-    "status.energyFlow.batteryStatus": {"name": "Battery Status", "unit": None, "device_class": None, "entity_category": None},
+    "status.energyFlow.batteryStatus": {"name": "Battery Status", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
     "status.energyFlow.batteryEnergyFlow": {"name": "Battery Power", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
     "status.energyFlow.criticalLoadRole": {"name": "Critical Load Role", "unit": None, "device_class": None, "entity_category": None},
     "status.energyFlow.criticalLoadValue": {"name": "Critical Load Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},

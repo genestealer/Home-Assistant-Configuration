@@ -48,5 +48,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     return True
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
-    await hass.config_entries.async_forward_entry_unload(entry, "sensor")
-    return True
+    results = [
+        await hass.config_entries.async_forward_entry_unload(entry, platform)
+        for platform in PLATFORMS
+    ]
+    return all(results)

@@ -19,7 +19,7 @@ BINARY_SENSOR_TYPES = {
     },
     "status.energyFlow.batteryStatus_discharging": {
         "name": "Battery Discharging",
-        "device_class": BinarySensorDeviceClass.BATTERY,
+        "device_class": BinarySensorDeviceClass.POWER,
         "entity_category": None,
     },
 }
