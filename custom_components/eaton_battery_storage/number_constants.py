@@ -13,7 +13,7 @@ DISCHARGE_DURATION = "discharge_duration"
 NUMBER_ENTITIES = [
     {
         "key": CHARGE_END_SOC,
-        "name": "Charge End SOC",
+        "name": "Chg SOC",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -22,7 +22,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": CHARGE_POWER,
-        "name": "Charge Power (%)",
+        "name": "Chg Pwr (%)",
         "min": 5,
         "max": 100,
         "step": 1,
@@ -31,7 +31,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": CHARGE_POWER_WATT,
-        "name": "Charge Power (W)",
+        "name": "Chg Pwr (W)",
         "min": 180,
         "max": 3600,
         "step": 1,
@@ -40,7 +40,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": CHARGE_DURATION,
-        "name": "Charge Duration",
+        "name": "Chg Dur",
         "min": 1,
         "max": 12,
         "step": 1,
@@ -49,7 +49,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": DISCHARGE_END_SOC,
-        "name": "Discharge End SOC",
+        "name": "Dischg SOC",
         "min": 0,
         "max": 100,
         "step": 1,
@@ -58,7 +58,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": DISCHARGE_POWER,
-        "name": "Discharge Power (%)",
+        "name": "Dischg Pwr (%)",
         "min": 5,
         "max": 100,
         "step": 1,
@@ -67,7 +67,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": DISCHARGE_POWER_WATT,
-        "name": "Discharge Power (W)",
+        "name": "Dischg Pwr (W)",
         "min": 180,
         "max": 3600,
         "step": 1,
@@ -76,7 +76,7 @@ NUMBER_ENTITIES = [
     },
     {
         "key": DISCHARGE_DURATION,
-        "name": "Discharge Duration",
+        "name": "Dischg Dur",
         "min": 1,
         "max": 12,
         "step": 1,

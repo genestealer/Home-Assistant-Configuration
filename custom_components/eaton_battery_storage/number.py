@@ -99,22 +99,30 @@ class EatonBatteryNumberEntity(CoordinatorEntity, NumberEntity):
     async def async_set_native_value(self, value: float) -> None:
         # Store the value and sync the linked value if needed
         self.hass.data[DOMAIN]["number_values"][self._key] = value
-        # Sync percent <-> watt for charge/discharge power
+        linked_key = None
         if self._key == "charge_power":
             watts = int(round((value / 100) * 3600))
             self.hass.data[DOMAIN]["number_values"]["charge_power_watt"] = watts
+            linked_key = "charge_power_watt"
         elif self._key == "charge_power_watt":
             percent = int(round((value / 3600) * 100))
             self.hass.data[DOMAIN]["number_values"]["charge_power"] = percent
+            linked_key = "charge_power"
         elif self._key == "discharge_power":
             watts = int(round((value / 100) * 3600))
             self.hass.data[DOMAIN]["number_values"]["discharge_power_watt"] = watts
+            linked_key = "discharge_power_watt"
         elif self._key == "discharge_power_watt":
             percent = int(round((value / 3600) * 100))
             self.hass.data[DOMAIN]["number_values"]["discharge_power"] = percent
+            linked_key = "discharge_power"
         # Save to persistent storage
         await self.hass.data[DOMAIN]["number_store"].async_save(self.hass.data[DOMAIN]["number_values"])
         # Instantly update all number entities
+        if linked_key and self._all_entities:
+            for entity in self._all_entities:
+                if entity._key == linked_key:
+                    entity.async_write_ha_state()
         async_dispatcher_send(self.hass, f"{DOMAIN}_number_update")
         self.async_write_ha_state()
 
