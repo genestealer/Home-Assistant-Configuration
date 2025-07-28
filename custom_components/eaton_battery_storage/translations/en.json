@@ -2,13 +2,17 @@
   "config": {
     "step": {
       "user": {
-        "description": "Configure your Eaton xStorage Home system with technician credentials.",
+        "description": "Configure your Eaton xStorage Home system with technician credentials. Enable PV sensors only if you have solar panels connected to your system.",
         "data": {
           "host": "Device IP Address or Hostname",
           "username": "Technician Username",
           "password": "Technician Password",
           "inverter_sn": "Inverter Serial Number",
-          "email": "Email Address"
+          "email": "Email Address",
+          "has_pv": "Enable PV Solar Panel Sensors (only if you have solar panels)"
+        },
+        "data_description": {
+          "has_pv": "Check this box only if you have solar panels connected to your Eaton xStorage system. This will create additional sensors for PV monitoring (voltage, current, production). Leave unchecked if you only have battery storage without solar panels."
         }
       }
     },
@@ -18,6 +22,28 @@
     },
     "abort": {
       "single_instance_allowed": "Only a single instance is allowed."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "description": "Update your Eaton xStorage Home configuration. Changes require technician credentials verification. Enable PV sensors only if you have solar panels connected to your system.",
+        "data": {
+          "host": "Device IP Address or Hostname",
+          "username": "Technician Username", 
+          "password": "Technician Password",
+          "inverter_sn": "Inverter Serial Number",
+          "email": "Email Address",
+          "has_pv": "Enable PV Solar Panel Sensors (only if you have solar panels)"
+        },
+        "data_description": {
+          "has_pv": "Check this box only if you have solar panels connected to your Eaton xStorage system. This will create additional sensors for PV monitoring (voltage, current, production). Leave unchecked if you only have battery storage without solar panels."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the device. Please check your network connection and device settings.",
+      "auth": "Authentication failed. Please check your technician credentials."
     }
   }
 }
