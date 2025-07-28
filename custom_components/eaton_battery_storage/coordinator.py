@@ -1,6 +1,8 @@
 import logging
 from datetime import timedelta
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.entity import DeviceInfo
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -13,6 +15,50 @@ class EatonXstorageHomeCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(minutes=1),
         )
         self.api = api
+
+    @property
+    def battery_level(self):
+        """Return the current battery level as a percentage."""
+        try:
+            return self.data.get("status", {}).get("energyFlow", {}).get("stateOfCharge")
+        except Exception:
+            return None
+
+    @property
+    def device_info(self):
+        """Return device information for this coordinator."""
+        device_data = self.data.get("device", {}) if self.data else {}
+        
+        device_info = {
+            "identifiers": {(DOMAIN, self.api.host)},
+            "name": "Eaton xStorage Home",
+            "manufacturer": "Eaton",
+            "model": "xStorage Home",
+            "entry_type": "service",
+            "configuration_url": f"https://{self.api.host}",
+        }
+        
+        # Add detailed device information if available
+        if device_data:
+            # Add firmware version (software version)
+            if "firmwareVersion" in device_data:
+                device_info["sw_version"] = device_data["firmwareVersion"]
+            
+            # Add more specific model name if available
+            if "inverterModelName" in device_data:
+                device_info["model"] = f"xStorage Home ({device_data['inverterModelName']})"
+            
+            # Add serial number if available (inverter serial as primary identifier)
+            if "inverterSerialNumber" in device_data:
+                device_info["serial_number"] = device_data["inverterSerialNumber"]
+                # Also add as an additional identifier
+                device_info["identifiers"].add((DOMAIN, device_data["inverterSerialNumber"]))
+            
+            # Add hardware version (BMS firmware version)
+            if "bmsFirmwareVersion" in device_data:
+                device_info["hw_version"] = device_data["bmsFirmwareVersion"]
+        
+        return device_info
 
     async def _async_update_data(self):
         try:

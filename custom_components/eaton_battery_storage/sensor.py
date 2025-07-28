@@ -21,7 +21,7 @@ SENSOR_TYPES = {
     "status.currentMode.parameters.soc": {"name": "Current Mode SOC", "unit": PERCENTAGE, "device_class": "battery", "entity_category": None},
     "status.energyFlow.acPvRole": {"name": "AC PV Role", "unit": None, "device_class": None, "entity_category": None, "pv_related": True},
     "status.energyFlow.acPvValue": {"name": "AC PV Value", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None, "pv_related": True},
-    "status.energyFlow.batteryBackupLevel": {"name": "Battery Backup Level", "unit": PERCENTAGE, "device_class": "battery", "entity_category": None},
+    "status.energyFlow.batteryBackupLevel": {"name": "Battery Backup Level", "unit": PERCENTAGE, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
     "status.energyFlow.batteryStatus": {"name": "Battery Status", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
     "status.energyFlow.batteryEnergyFlow": {"name": "Battery Power", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": None},
     "status.energyFlow.criticalLoadRole": {"name": "Critical Load Role", "unit": None, "device_class": None, "entity_category": None},
@@ -133,6 +133,17 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
         return self._entity_category
 
     @property
+    def entity_registry_enabled_default(self):
+        """Return if the entity should be enabled when first added.
+        
+        This only applies when first added to the entity registry.
+        """
+        # Disable TIDA Protocol Version by default as it's rarely useful
+        if self._key == "technical_status.tidaProtocolVersion":
+            return False
+        return True
+
+    @property
     def name(self):
         return self._name
 
@@ -206,15 +217,7 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def device_info(self):
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.api.host)},
-            "name": "Eaton xStorage Home",
-            "manufacturer": "Eaton",
-            "model": "xStorage Home",
-            "entry_type": "service",
-            "configuration_url": f"https://{self.coordinator.api.host}",
-        }
-
+        return self.coordinator.device_info
     @property
     def should_poll(self):
         return False

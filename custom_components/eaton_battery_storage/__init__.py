@@ -27,6 +27,9 @@ PV_SENSOR_KEYS = [
     "technical_status.pv1Current",
     "technical_status.pv2Voltage",
     "technical_status.pv2Current",
+    "technical_status.dcCurrentInjectionR",
+    "technical_status.dcCurrentInjectionS",
+    "technical_status.dcCurrentInjectionT",
 ]
 
 

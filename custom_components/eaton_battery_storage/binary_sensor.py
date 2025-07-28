@@ -81,14 +81,7 @@ class EatonXStorageBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     @property
     def device_info(self):
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.api.host)},
-            "name": "Eaton xStorage Home",
-            "manufacturer": "Eaton",
-            "model": "xStorage Home",
-            "entry_type": "service",
-            "configuration_url": f"https://{self.coordinator.api.host}",
-        }
+        return self.coordinator.device_info
 
     @property
     def should_poll(self):
