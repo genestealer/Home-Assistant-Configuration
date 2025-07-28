@@ -18,12 +18,16 @@ class EatonXStorageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             host = user_input["host"]
             username = user_input["username"]
             password = user_input["password"]
+            inverter_sn = user_input["inverter_sn"]
+            email = user_input["email"]
 
             api = EatonBatteryAPI(
                 hass=self.hass,
                 host=host,
                 username=username,
                 password=password,
+                inverter_sn=inverter_sn,
+                email=email,
                 app_id="com.eaton.xstoragehome",
                 name="Eaton xStorage Home",
                 manufacturer="Eaton"
@@ -45,6 +49,8 @@ class EatonXStorageConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required("host"): str,
                 vol.Required("username"): str,
                 vol.Required("password"): str,
+                vol.Required("inverter_sn"): str,
+                vol.Required("email"): str,
             }),
             errors=errors,
         )

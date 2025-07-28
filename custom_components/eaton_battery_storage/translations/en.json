@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Configure your Eaton xStorage Home system with technician credentials.",
+        "data": {
+          "host": "Device IP Address or Hostname",
+          "username": "Technician Username",
+          "password": "Technician Password",
+          "inverter_sn": "Inverter Serial Number",
+          "email": "Email Address"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the device. Please check your network connection and device settings.",
+      "auth": "Authentication failed. Please check your technician credentials."
+    },
+    "abort": {
+      "single_instance_allowed": "Only a single instance is allowed."
+    }
+  }
+}

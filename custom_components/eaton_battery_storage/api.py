@@ -6,11 +6,13 @@ from homeassistant.helpers.storage import Store
 _LOGGER = logging.getLogger(__name__)
 
 class EatonBatteryAPI:
-    def __init__(self, hass, host, username, password, app_id, name, manufacturer):
+    def __init__(self, hass, host, username, password, inverter_sn, email, app_id, name, manufacturer):
         self.hass = hass
         self.host = host
         self.username = username
         self.password = password
+        self.inverter_sn = inverter_sn
+        self.email = email
         self.app_id = app_id
         self.name = name
         self.manufacturer = manufacturer
@@ -23,7 +25,9 @@ class EatonBatteryAPI:
         payload = {
             "username": self.username,
             "pwd": self.password,
-            "userType": "customer"
+            "inverterSn": self.inverter_sn,
+            "email": self.email,
+            "userType": "tech"
         }
 
         async with aiohttp.ClientSession() as session:

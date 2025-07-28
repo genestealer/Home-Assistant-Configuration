@@ -23,6 +23,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     api = EatonBatteryAPI(
         username=entry.data["username"],
         password=entry.data["password"],
+        inverter_sn=entry.data["inverter_sn"],
+        email=entry.data["email"],
         hass=hass,
         host=entry.data["host"],
         app_id="com.eaton.xstoragehome",
