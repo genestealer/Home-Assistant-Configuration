@@ -50,6 +50,7 @@ SENSOR_TYPES = {
     "device.firmwareVersion": {"name": "Firmware Version", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
     "device.inverterFirmwareVersion": {"name": "Inverter Firmware Version", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
     "device.bmsFirmwareVersion": {"name": "BMS Firmware Version", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
+    "device.energySavingMode.houseConsumptionThreshold": {"name": "House Consumption Threshold", "unit": UnitOfPower.WATT, "device_class": "power", "entity_category": EntityCategory.DIAGNOSTIC},
 
 }
 
