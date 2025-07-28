@@ -22,6 +22,11 @@ BINARY_SENSOR_TYPES = {
         "device_class": BinarySensorDeviceClass.POWER,
         "entity_category": None,
     },
+    "device.powerState": {
+        "name": "Inverter Power State",
+        "device_class": BinarySensorDeviceClass.POWER,
+        "entity_category": EntityCategory.DIAGNOSTIC,
+    },
 }
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -52,11 +57,15 @@ class EatonXStorageBinarySensor(CoordinatorEntity, BinarySensorEntity):
     @property
     def is_on(self):
         try:
-            value = self.coordinator.data.get("status", {}).get("energyFlow", {}).get("batteryStatus", None)
             if self._key == "status.energyFlow.batteryStatus_charging":
+                value = self.coordinator.data.get("status", {}).get("energyFlow", {}).get("batteryStatus", None)
                 return value == "BAT_CHARGING"
             elif self._key == "status.energyFlow.batteryStatus_discharging":
+                value = self.coordinator.data.get("status", {}).get("energyFlow", {}).get("batteryStatus", None)
                 return value == "BAT_DISCHARGING"
+            elif self._key == "device.powerState":
+                value = self.coordinator.data.get("device", {}).get("powerState", None)
+                return bool(value)
             return False
         except Exception as e:
             _LOGGER.error(f"Error retrieving binary state for {self._key}: {e}")
