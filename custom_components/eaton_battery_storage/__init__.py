@@ -12,7 +12,7 @@ from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = ["sensor", "binary_sensor", "number"]
+PLATFORMS = ["sensor", "binary_sensor", "number", "button", "switch"]
 
 # List of PV-related sensor keys that should be disabled when has_pv=False
 PV_SENSOR_KEYS = [

@@ -27,6 +27,11 @@ BINARY_SENSOR_TYPES = {
         "device_class": BinarySensorDeviceClass.POWER,
         "entity_category": EntityCategory.DIAGNOSTIC,
     },
+    "notifications.has_unread": {
+        "name": "Has Unread Notifications",
+        "device_class": None,
+        "entity_category": None,
+    },
 }
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -66,6 +71,9 @@ class EatonXStorageBinarySensor(CoordinatorEntity, BinarySensorEntity):
             elif self._key == "device.powerState":
                 value = self.coordinator.data.get("device", {}).get("powerState", None)
                 return bool(value)
+            elif self._key == "notifications.has_unread":
+                unread_count = self.coordinator.data.get("unread_notifications_count", {}).get("total", 0)
+                return unread_count > 0
             return False
         except Exception as e:
             _LOGGER.error(f"Error retrieving binary state for {self._key}: {e}")

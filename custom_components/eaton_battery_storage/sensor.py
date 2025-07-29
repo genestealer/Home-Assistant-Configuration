@@ -102,6 +102,10 @@ SENSOR_TYPES = {
     "maintenance_diagnostics.ramUsage.used": {"name": "System RAM Used", "unit": "MB", "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
     "maintenance_diagnostics.cpuUsage.used": {"name": "System CPU Usage", "unit": PERCENTAGE, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
 
+    # notification endpoints
+    "unread_notifications_count.total": {"name": "Unread Notifications Count", "unit": None, "device_class": None, "entity_category": None},
+    "notifications.total": {"name": "Total Notifications Count", "unit": None, "device_class": None, "entity_category": EntityCategory.DIAGNOSTIC},
+
 }
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -115,6 +119,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         if description.get("pv_related", False) and not has_pv:
             continue
         entities.append(EatonXStorageSensor(coordinator, key, description, has_pv))
+    
+    # Add the notifications array sensor
+    entities.append(EatonXStorageNotificationsSensor(coordinator))
     
     async_add_entities(entities)
 
@@ -161,6 +168,14 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
                     highest = tech_status.get("bmsHighestCellVoltage")
                     lowest = tech_status.get("bmsLowestCellVoltage")
                     
+                    # Filter out values below 1000mV before calculation
+                    if highest is not None and highest < 1000:
+                        _LOGGER.error(f"BMS highest cell voltage below 1000mV threshold: {highest}mV - delta calculation not possible")
+                        return None
+                    if lowest is not None and lowest < 1000:
+                        _LOGGER.error(f"BMS lowest cell voltage below 1000mV threshold: {lowest}mV - delta calculation not possible")
+                        return None
+                    
                     if highest is not None and lowest is not None:
                         delta = float(highest) - float(lowest)
                         result = round(delta, 1)
@@ -183,6 +198,17 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
             # If value is still a dict, return None
             if isinstance(value, dict):
                 return None
+            
+            # Filter out values below 1000mV for BMS cell voltage sensors
+            if self._key in ["technical_status.bmsHighestCellVoltage", "technical_status.bmsLowestCellVoltage"]:
+                if isinstance(value, (int, float)) and value < 1000:
+                    _LOGGER.error(f"BMS cell voltage {self._key} below 1000mV threshold: {value}mV - treating as error")
+                    return None
+            
+            # Round temperature values to 1 decimal place
+            if self._device_class == "temperature" and isinstance(value, (int, float)):
+                return round(value, 1)
+            
             # Format startTime and endTime to 12-hour format if applicable
             if self._key.endswith("startTime") or self._key.endswith("endTime"):
                 if isinstance(value, int) or (isinstance(value, str) and value.isdigit()):
@@ -218,6 +244,75 @@ class EatonXStorageSensor(CoordinatorEntity, SensorEntity):
     @property
     def device_info(self):
         return self.coordinator.device_info
+    @property
+    def should_poll(self):
+        return False
+
+
+class EatonXStorageNotificationsSensor(CoordinatorEntity, SensorEntity):
+    """Sensor for displaying notifications array."""
+    
+    def __init__(self, coordinator):
+        super().__init__(coordinator)
+        self.coordinator = coordinator
+    
+    @property
+    def entity_category(self):
+        return EntityCategory.DIAGNOSTIC
+
+    @property
+    def name(self):
+        return "Notifications"
+
+    @property
+    def unique_id(self):
+        return "eaton_xstorage_notifications"
+
+    @property
+    def state(self):
+        """Return the number of notifications as the state."""
+        try:
+            notifications_data = self.coordinator.data.get("notifications", {})
+            results = notifications_data.get("results", [])
+            return len(results)
+        except Exception as e:
+            _LOGGER.error(f"Error retrieving notifications state: {e}")
+            return 0
+
+    @property
+    def extra_state_attributes(self):
+        """Return notifications as attributes."""
+        try:
+            notifications_data = self.coordinator.data.get("notifications", {})
+            results = notifications_data.get("results", [])
+            
+            # Format notifications for better readability
+            formatted_notifications = []
+            for notification in results:
+                formatted_notifications.append({
+                    "alert_id": notification.get("alertId"),
+                    "level": notification.get("level"),
+                    "type": notification.get("type"),
+                    "sub_type": notification.get("subType"),
+                    "status": notification.get("status"),
+                    "created_at": notification.get("createdAt"),
+                    "updated_at": notification.get("updatedAt"),
+                })
+            
+            return {
+                "notifications": formatted_notifications,
+                "total": notifications_data.get("total", 0),
+                "start": notifications_data.get("start", 0),
+                "size": notifications_data.get("size", 0),
+            }
+        except Exception as e:
+            _LOGGER.error(f"Error retrieving notifications attributes: {e}")
+            return {}
+
+    @property
+    def device_info(self):
+        return self.coordinator.device_info
+
     @property
     def should_poll(self):
         return False

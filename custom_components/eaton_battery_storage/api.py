@@ -74,7 +74,7 @@ class EatonBatteryAPI:
             _LOGGER.info("Token missing or expired. Re-authenticating...")
             await self.refresh_token()
 
-    async def make_request(self, method, endpoint, **kwargs):
+    async def make_request(self, method, endpoint, params=None, **kwargs):
         await self.ensure_token_valid()
 
         url = f"https://{self.host}{endpoint}"
@@ -82,6 +82,10 @@ class EatonBatteryAPI:
         headers["Authorization"] = f"Bearer {self.access_token}"
         kwargs["headers"] = headers
         kwargs["ssl"] = False
+        
+        # Add query parameters if provided
+        if params:
+            kwargs["params"] = params
 
         async with aiohttp.ClientSession() as session:
             try:
@@ -124,3 +128,32 @@ class EatonBatteryAPI:
 
     async def get_maintenance_diagnostics(self):
         return await self.make_request("GET", "/api/device/maintenance/diagnostics")
+
+    async def get_notifications(self, status=None, size=None, offset=None):
+        """Get notifications with optional filtering."""
+        params = {}
+        if status:
+            params["status"] = status
+        if size:
+            params["size"] = size
+        if offset:
+            params["offset"] = offset
+        
+        return await self.make_request("GET", "/api/notifications/", params=params)
+
+    async def get_unread_notifications_count(self):
+        """Get count of unread notifications."""
+        return await self.make_request("GET", "/api/notifications/unread")
+
+    async def mark_all_notifications_read(self):
+        """Mark all notifications as read."""
+        return await self.make_request("POST", "/api/notifications/read/all")
+
+    async def set_device_power(self, state: bool):
+        """Control the power state of the device (on/off)."""
+        payload = {
+            "parameters": {
+                "state": state
+            }
+        }
+        return await self.make_request("POST", "/api/device/power", json=payload)

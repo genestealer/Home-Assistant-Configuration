@@ -91,6 +91,17 @@ class EatonXstorageHomeCoordinator(DataUpdateCoordinator):
             results["technical_status"] = technical_status.get("result", {}) if technical_status else {}
             results["maintenance_diagnostics"] = maintenance_diagnostics.get("result", {}) if maintenance_diagnostics else {}
 
+            # Fetch notification data
+            try:
+                notifications = await self.api.get_notifications()
+                unread_count = await self.api.get_unread_notifications_count()
+            except Exception:
+                notifications = None
+                unread_count = None
+            
+            results["notifications"] = notifications.get("result", {}) if notifications else {}
+            results["unread_notifications_count"] = unread_count.get("result", {}) if unread_count else {}
+
             return results
         except Exception as err:
             raise UpdateFailed(f"Error fetching data: {err}")
