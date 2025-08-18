@@ -58,26 +58,9 @@ button:
 ##################################
 binary_sensor:
   - platform: status
-    name: "Status"
+    name: "${name} Status"
     device_class: connectivity
 
-##################################
-# 🌍 Wi-Fi Information
-##################################
-text_sensor:
-  - platform: wifi_info
-    ip_address:
-      name: "IP"
-      icon: "mdi:ip-network-outline"
-    mac_address:
-      name: "MAC"
-      icon: "mdi:access-point-network"
-    ssid:
-      name: "SSID"
-      icon: "mdi:wifi"
-    bssid:
-      name: "BSSID"
-      icon: "mdi:access-point-network"
 
 ##################################
 # ⏳ System Metrics (Uptime)
