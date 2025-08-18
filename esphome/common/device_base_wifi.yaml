@@ -22,13 +22,6 @@ wifi:
   #     gateway: ${gateway}
   #     subnet: ${subnet}
 
-##################################
-# 🔄 Device Availability
-##################################
-binary_sensor:
-  - platform: status
-    name: "Status"
-    device_class: connectivity
 
 ##################################
 # 🌐 Wi-Fi Info
@@ -36,24 +29,25 @@ binary_sensor:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "IP"
+      name: "${name} IP"
       icon: "mdi:ip-network-outline"
     mac_address:
-      name: "MAC"
+      name: "${name} MAC"
       icon: "mdi:access-point-network"
     ssid:
-      name: "SSID"
+      name: "${name} SSID"
       icon: "mdi:wifi"
     bssid:
-      name: "BSSID"
+      name: "${name} BSSID"
       icon: "mdi:access-point-network"
+
 
 ##################################
 # 📶 Wi-Fi Signal Strength
 ##################################
 sensor:
   - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
-    name: "RSSI"
+    name: "${name} RSSI"
     id: wifi_signal_db
     update_interval: ${wifi_sensor_update_interval}
     device_class: signal_strength
@@ -61,7 +55,7 @@ sensor:
     entity_category: "diagnostic"
 
   - platform: copy # Reports the WiFi signal strength in %
-    name: "Wi-Fi Signal"
+    name: "${name} Wi-Fi Signal"
     source_id: wifi_signal_db
     id: wifi_signal_strength
     filters:

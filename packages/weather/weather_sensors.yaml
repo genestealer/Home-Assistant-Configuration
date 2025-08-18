@@ -58,6 +58,27 @@ template:
         unique_id: yesterdays_local_total_rain
         state: "{{ states('sensor.daily_rain_meter') }}"
 
+  # - trigger:
+  #     - trigger: time_pattern
+  #       hours: /1
+  #   action:
+  #     - action: weather.get_forecasts
+  #       data:
+  #         type: hourly
+  #       target:
+  #         entity_id: weather.home
+  #       response_variable: hourly
+  #   sensor:
+  #     - name: "Irrigation weather outlook"
+  #       unique_id: irrigation_weather_outlook
+  #       state: >
+  #         Weather Outlook:
+  #         High: {{ state_attr('weather.home', 'forecast')[0].temperature }}°C
+  #         Low: {{ state_attr('weather.home', 'forecast')[0].templow }}°C
+  #         Rain today: {{ state_attr('weather.home', 'forecast')[0].precipitation }} mm
+  #         tomorrow: {{ state_attr('weather.home', 'forecast')[1].precipitation }} mm
+
+
 ####################################################
 # rflink 433mhz Weather Station sensors
 ####################################################
@@ -155,6 +176,7 @@ sensor:
           - dkw2012_007d_update_time
           - dkw2012_00d0_update_time
 
+# TODO: This is not working, need to check the template and the attributes.
   # https://github.com/kloggy/HA-Irrigation-Version2
   # https://github.com/kloggy/HA-Irrigation-Version2/issues/44
   - platform: template
@@ -170,6 +192,8 @@ sensor:
           <br>
           Rain today: {{ state_attr('weather.openweathermap', 'forecast')[0].precipitation }} mm
           tomorrow: {{ state_attr('weather.openweathermap', 'forecast')[1].precipitation }} mm
+
+
 
   - platform: statistics
     name: Local Rain 24 Hours Statistics Raw

@@ -69,7 +69,7 @@ automation:
         description: "Start/reset timer when ADHD meds contact sensor is opened"
         trigger:
             - platform: state
-              entity_id: binary_sensor.medication_bottle_contact  # Replace with your Zigbee door sensor entity ID
+              entity_id: binary_sensor.adhd_meds_contact  # Replace with your Zigbee door sensor entity ID
               from: "off"
               to: "on"
         action:
