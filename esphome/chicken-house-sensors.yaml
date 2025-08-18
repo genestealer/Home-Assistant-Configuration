@@ -107,7 +107,8 @@ sensor:
       - calibrate_linear:
           # - 118168 -> 0  # Tare weight (without feeder)
           # - 538159 -> 1.98 kg (full)
-          - 220840 -> 0  # Tare weight (empty feeder, 0.32 kg)
+          # - 220840 -> 0  # Tare weight (empty feeder, 0.32 kg)
+          - 0 -> 0  # Tare weight without container is -96945 but its not accepting negitive
           - 762762 -> 2.96  # Full feeder weight
       - filter_out: 0  # Remove invalid readings
       - median:  # Noise filtering using a moving median
@@ -129,7 +130,8 @@ sensor:
       - calibrate_linear:
           # - 67268 -> 0  # Tare weight (without water container)
           # - 625719 -> 2.76 kg (full)
-          - 146499 -> 0  # Tare weight (empty water container, 0.20 kg)
+          # - 146499 -> 0  # Tare weight (empty water container, 0.20 kg)
+          - 20572 -> 0  # Tare weight without container
           - 702880 -> 2.8  # Full water weight
       - filter_out: 0  # Remove invalid readings
       - median:  # Noise filtering using a moving median
