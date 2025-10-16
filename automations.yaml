@@ -1468,65 +1468,69 @@
   - target:
       entity_id: media_player.office_display
     data:
-      media_content_id: media-source://camera/camera.front_door_11
-      media_content_type: application/vnd.apple.mpegurl
-    metadata:
-      title: Front Door .11
-      thumbnail: /api/camera_proxy/camera.front_door_11
-      media_class: video
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://camera
+      media:
+        media_content_id: media-source://camera/camera.front_door_11
+        media_content_type: application/vnd.apple.mpegurl
+        metadata:
+          title: Front Door .11
+          thumbnail: /api/camera_proxy/camera.front_door_11
+          media_class: video
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://camera
     enabled: false
     action: media_player.play_media
   - target:
       entity_id: media_player.living_room_display
     data:
-      media_content_id: media-source://camera/camera.front_door_11
-      media_content_type: application/vnd.apple.mpegurl
-    metadata:
-      title: Front Door .11
-      thumbnail: /api/camera_proxy/camera.front_door_11
-      media_class: video
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://camera
+      media:
+        media_content_id: media-source://camera/camera.front_door_11
+        media_content_type: application/vnd.apple.mpegurl
+        metadata:
+          title: Front Door .11
+          thumbnail: /api/camera_proxy/camera.front_door_11
+          media_class: video
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://camera
     enabled: false
     action: media_player.play_media
   - target:
       entity_id: media_player.dining_room_display
     data:
-      media_content_id: media-source://camera/camera.drive_high_16
-      media_content_type: application/vnd.apple.mpegurl
-    metadata:
-      title: Drive High .16
-      thumbnail: /api/camera_proxy/camera.drive_high_16
-      media_class: video
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://camera
+      media:
+        media_content_id: media-source://camera/camera.drive_high_16
+        media_content_type: application/vnd.apple.mpegurl
+        metadata:
+          title: Drive High .16
+          thumbnail: /api/camera_proxy/camera.drive_high_16
+          media_class: video
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://camera
     enabled: false
     action: media_player.play_media
   - target:
       entity_id: media_player.kitchen_display
     data:
-      media_content_id: media-source://camera/camera.front_door_11
-      media_content_type: application/vnd.apple.mpegurl
-    metadata:
-      title: Front Door .11
-      thumbnail: /api/camera_proxy/camera.front_door_11
-      media_class: video
-      children_media_class:
-      navigateIds:
-      - {}
-      - media_content_type: app
-        media_content_id: media-source://camera
+      media:
+        media_content_id: media-source://camera/camera.front_door_11
+        media_content_type: application/vnd.apple.mpegurl
+        metadata:
+          title: Front Door .11
+          thumbnail: /api/camera_proxy/camera.front_door_11
+          media_class: video
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: app
+            media_content_id: media-source://camera
     enabled: false
     action: media_player.play_media
   - delay:
@@ -1537,8 +1541,10 @@
     enabled: false
   - parallel:
     - data:
-        media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
-        media_content_type: image/jpg
+        media:
+          media_content_id: http://192.168.4.11/axis-cgi/mjpg/video.cgi
+          media_content_type: image/jpg
+          metadata: {}
       target:
         entity_id:
         - media_player.office_display
@@ -1547,8 +1553,10 @@
       enabled: false
       action: media_player.play_media
     - data:
-        media_content_id: media-source://camera/camera.front_door_11
-        media_content_type: application/vnd.apple.mpegurl
+        media:
+          media_content_id: media-source://camera/camera.front_door_11
+          media_content_type: application/vnd.apple.mpegurl
+          metadata: {}
       target:
         entity_id:
         - media_player.office_display
@@ -1564,13 +1572,12 @@
       enabled: false
       action: camera.play_stream
     - data:
+        media_player: media_player.dining_room_display
         format: hls
-        media_player: media_player.office_display
-      target:
-        entity_id:
-        - camera.front_door_11_mjpg
       enabled: false
       action: camera.play_stream
+      target:
+        device_id: f0e1997868917ad16e3663a3ac05f1e6
     - data:
         format: hls
         media_player: media_player.office_display
@@ -1596,63 +1603,71 @@
     - target:
         entity_id: media_player.living_room_display
       data:
-        media_content_id: media-source://camera/camera.front_door_11_onvif_video
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: Front Door .11 ONVIF profile_1 h264
-        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
+        media:
+          media_content_id: media-source://camera/camera.front_door_11
+          media_content_type: application/vnd.apple.mpegurl
+          metadata:
+            title: Front Door .11
+            thumbnail: /api/camera_proxy/camera.front_door_11
+            media_class: video
+            children_media_class:
+            navigateIds:
+            - {}
+            - media_content_type: app
+              media_content_id: media-source://camera
+            browse_entity_id: media_player.living_room_display
       action: media_player.play_media
     - target:
         entity_id: media_player.dining_room_display
       data:
-        media_content_id: media-source://camera/camera.drive_higher_21_onvif_profile_1_h264
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: Drive Higher .21 ONVIF profile_1 h264
-        thumbnail: /api/camera_proxy/camera.drive_higher_21_onvif_profile_1_h264
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
+        media:
+          media_content_id: media-source://camera/camera.p3225_lve_mk_ii_0
+          media_content_type: application/vnd.apple.mpegurl
+          metadata:
+            title: Front Garden .27
+            thumbnail: /api/camera_proxy/camera.p3225_lve_mk_ii_0
+            media_class: video
+            children_media_class:
+            navigateIds:
+            - {}
+            - media_content_type: app
+              media_content_id: media-source://camera
+            browse_entity_id: media_player.dining_room_display
       action: media_player.play_media
     - target:
         entity_id: media_player.office_display
       data:
-        media_content_id: media-source://camera/camera.front_door_11_onvif_video
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: Front Door .11 ONVIF profile_1 h264
-        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
+        media:
+          media_content_id: media-source://camera/camera.front_door_11
+          media_content_type: application/vnd.apple.mpegurl
+          metadata:
+            title: Front Door .11
+            thumbnail: /api/camera_proxy/camera.front_door_11
+            media_class: video
+            children_media_class:
+            navigateIds:
+            - {}
+            - media_content_type: app
+              media_content_id: media-source://camera
+            browse_entity_id: media_player.office_display
       enabled: true
       action: media_player.play_media
     - target:
         entity_id: media_player.kitchen_display
       data:
-        media_content_id: media-source://camera/camera.front_door_11_onvif_video
-        media_content_type: application/vnd.apple.mpegurl
-      metadata:
-        title: Front Door .11 ONVIF profile_1 h264
-        thumbnail: /api/camera_proxy/camera.front_door_11_onvif_video
-        media_class: video
-        children_media_class:
-        navigateIds:
-        - {}
-        - media_content_type: app
-          media_content_id: media-source://camera
+        media:
+          media_content_id: media-source://camera/camera.front_door_11
+          media_content_type: application/vnd.apple.mpegurl
+          metadata:
+            title: Front Door .11
+            thumbnail: /api/camera_proxy/camera.front_door_11
+            media_class: video
+            children_media_class:
+            navigateIds:
+            - {}
+            - media_content_type: app
+              media_content_id: media-source://camera
+            browse_entity_id: media_player.kitchen_display
       action: media_player.play_media
     enabled: false
   mode: single
@@ -2158,13 +2173,13 @@
 - id: '1694790204906'
   alias: Front door opened with no one home
   description: ''
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: not
     conditions:
     - condition: zone
@@ -2174,14 +2189,13 @@
       entity_id: person.lucy
       zone: zone.home
     enabled: true
-  action:
-  - service: camera.snapshot
-    data:
+  actions:
+  - data:
       filename: /media/frontdoor_sensor.jpg
     target:
       entity_id: camera.front_door_11
-  - service: notify.mobile_app_rich_mob_app
-    data:
+    action: camera.snapshot
+  - data:
       title: Front Door
       message: Door opened, but no one is home!
       data:
@@ -2193,8 +2207,8 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:door
-  - service: notify.mobile_app_lucy_mob_app
-    data:
+    action: notify.mobile_app_rich_mob_app
+  - data:
       title: Front Door
       message: Door opened, but no one is home!
       data:
@@ -2206,17 +2220,18 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:door
+    action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1694795158536'
   alias: Back door opened but no one is home
   description: ''
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: dd6c9ee012d55a6e6f1b0ef375270d86
     entity_id: 3cd6c236c41a010470145e104bd7f36f
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: not
     conditions:
     - condition: zone
@@ -2226,14 +2241,12 @@
       entity_id: person.lucy
       zone: zone.home
     enabled: true
-  action:
-  - service: camera.snapshot
-    data:
+  actions:
+  - data:
       filename: /media/garden.jpg
-    target:
-      entity_id: camera.garden_18
-  - service: notify.mobile_app_rich_mob_app
-    data:
+    action: camera.snapshot
+    enabled: false
+  - data:
       title: Back Door
       message: Back door opened, but no one is home!
       data:
@@ -2245,12 +2258,12 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:door
-  - service: notify.mobile_app_lucy_mob_app
-    data:
+    action: notify.mobile_app_rich_mob_app
+    enabled: false
+  - data:
       title: Back Door
       message: Back door opened, but no one is home!
       data:
-        image: /media/local/garden.jpg
         color: red
         channel: BackDoorOpen
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2258,6 +2271,20 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:door
+    action: notify.mobile_app_rich_mob_app
+    enabled: true
+  - data:
+      title: Back Door
+      message: Back door opened, but no one is home!
+      data:
+        color: red
+        channel: BackDoorOpen
+        vibrationPattern: 100,200,100,200,100,200,100,200
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:door
+    action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1696178796762'
   alias: Living Room TV Speakers Auto On-Off
@@ -2282,8 +2309,7 @@
       sequence:
       - data: {}
         target:
-          entity_id:
-          - switch.smart_plug_1_tv_speakers
+          device_id: 8c3077e0600e4f78a7427ec178ee4e36
         action: switch.turn_on
     - conditions:
       - condition: device
@@ -2292,10 +2318,15 @@
         entity_id: bff78da4f1f7d24e59e81c86729d0ceb
         type: is_off
       sequence:
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
+        alias: Delay to avoid bouncing off and on
       - data: {}
         target:
-          entity_id:
-          - switch.smart_plug_1_tv_speakers
+          device_id: 8c3077e0600e4f78a7427ec178ee4e36
         action: switch.turn_off
     enabled: true
   mode: restart
@@ -2388,13 +2419,13 @@
 - id: '1697311647945'
   alias: Garage door opened but no one is home
   description: ''
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: 6d3f659d3b1cf6534dc09fa4fcca868d
     entity_id: 17edc1d1385c61490d54f583bbb34c2b
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: not
     conditions:
     - condition: zone
@@ -2404,14 +2435,13 @@
       entity_id: person.lucy
       zone: zone.home
     enabled: true
-  action:
-  - service: camera.snapshot
-    data:
+  actions:
+  - data:
       filename: /media/garage_sensor.jpg
+    action: camera.snapshot
     target:
-      entity_id: camera.garage_13
-  - service: notify.mobile_app_rich_mob_app
-    data:
+      device_id: 7b90f64243d21822c3e6bbfc339fad0a
+  - data:
       title: Front Door
       message: Door opened, but no one is home!
       data:
@@ -2423,8 +2453,8 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:door
-  - service: notify.mobile_app_lucy_mob_app
-    data:
+    action: notify.mobile_app_rich_mob_app
+  - data:
       title: Front Door
       message: Door opened, but no one is home!
       data:
@@ -2436,6 +2466,7 @@
         timeout: 86400
         visibility: public
         notification_icon: mdi:door
+    action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1697388186314'
   alias: Energenie eTRV Error Handler
@@ -3022,11 +3053,23 @@
       minutes: 3
       seconds: 30
       milliseconds: 0
+  - repeat:
+      count: 1
+      sequence:
+      - device_id: 061e0dd32d43fd2355543b4f4db149ac
+        domain: light
+        entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
+        type: flash
+  - data:
+      message: Tea timer, beep! beep! beep!
+      target: kitchen
+    enabled: true
+    action: notify.google_assistant_sdk
   - alias: 'Send to targets separately, to avoid queuing delay '
     parallel:
     - data:
         message: Tea timer, beep! beep!
-        target: dining room
+        target: Dining Room
       enabled: true
       action: notify.google_assistant_sdk
     - data:
@@ -3120,18 +3163,24 @@
 - id: '1722123544585'
   alias: Garden Lights Motion
   description: ''
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: dd6c9ee012d55a6e6f1b0ef375270d86
     entity_id: 3cd6c236c41a010470145e104bd7f36f
     domain: binary_sensor
-  condition:
+    trigger: device
+  - type: occupied
+    device_id: fa69bc49d4bfe964b899661c045598c2
+    entity_id: da0967db8c828ae40c9a359bb2e0436d
+    domain: binary_sensor
+    trigger: device
+    enabled: false
+  conditions:
   - condition: sun
     after: sunset
     after_offset: '0'
     before: sunrise
-  action:
+  actions:
   - data:
       kelvin: 2700
       brightness_pct: 100
@@ -3139,11 +3188,19 @@
     target:
       entity_id: light.garden_lights
     action: light.turn_on
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
+  - repeat:
+      until:
+      - type: is_not_occupied
+        condition: device
+        device_id: fa69bc49d4bfe964b899661c045598c2
+        entity_id: da0967db8c828ae40c9a359bb2e0436d
+        domain: binary_sensor
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 5
+          seconds: 0
+          milliseconds: 0
   - data:
       transition: 10
     target:
@@ -3328,9 +3385,7 @@
             notification_icon: mdi:battery-alert-variant-outline
             ttl: 0
             sticky: 'true'
-          message: 'Battery low: {{sensors}}
-
-            '
+          message: 'Joined a new Octopus Energy saving session. '
           title: Battery Levels Low
         action: notify.mobile_app_rich_mob_app
       - data:
@@ -3461,13 +3516,9 @@
       seconds: 0
   - type: not_connected
     device_id: 158ed9873a6957601df8faf23e43a98d
-    entity_id: 8e8427f8efa3902d88b52401f34f1695
+    entity_id: ba603c1fe5e3a310f66d4dfccf98af37
     domain: binary_sensor
     trigger: device
-    for:
-      hours: 0
-      minutes: 15
-      seconds: 0
     id: offline
   conditions: []
   actions:
@@ -3692,172 +3743,80 @@
         action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1753465748550'
-  alias: Send Meter Data to SDM120CT Emulator MQTT + Poll Enphase
-  description: 'Needs Enphase Envoy custom local polling interval.
-
-    This automation publishes real-time house net power data to the inverter with
-    a small positive bias to prevent grid export. It reads the home''s net power from
-    the sensor.solar_panels_current_net_power_consumption_watts sensor, adds 100 W
-    to the value, and inverts the sign because the inverter interprets negative values
-    as export. This ensures the inverter always sees slightly more load than reality,
-    encouraging it to discharge or reduce export.
-
-    The automation includes a 500W maximum output limit to protect battery cell balancing.
-    When the inverter is already outputting 500W or more (from sensor.storage_battery_power_production),
-    the activePower is set to 0 to prevent further discharge. When below 500W, it
-    calculates the additional power needed up to the 500W limit. This prevents excessive
-    discharge rates that could cause cell balancing issues in the battery system.
-
-    The payload also includes current voltage, current, power factor, and frequency
-    values for accurate emulation of the energy meter.Meter Data to SDM120CT Emulator
-    MQTT + Poll Enphase'
+  alias: Publish Meter Data to SDM120CT Emulator via MQTT with Watchdog & Enphase
+    Polling
+  description: "This automation publishes simulated grid meter data to an MQTT topic,
+    emulating a SDM120CT energy meter for inverter integration.\nIt combines data
+    from multiple Home Assistant entities to estimate real-time house demand power.
+    These include:\n  - sensor.solar_panels_current_net_power_consumption_watts\n
+    \ - input_number.inverter_power_offset\n  - input_number.maximum_inverter_power_limit\n
+    \ - sensor.storage_battery_power_production\n\nThe logic:\n  1. Measures the home's
+    net power.\n  2. Applies a configurable offset (input_number.inverter_power_offset)
+    to reduce grid export.\n  3. Subtracts any current inverter output (from battery).\n
+    \ 4. Caps the result to the maximum inverter power limit.\n\nThe result is inverted
+    (multiplied by -1) because the inverter interprets negative power values as import.
+    This helps prioritize battery discharge or minimize grid feed-in.\nThe MQTT payload
+    also includes voltage, current, power factor, and frequency to fully emulate the
+    energy meter.\nA watchdog trigger ensures a fallback value is sent every 10 minutes
+    in case the source sensor goes offline. Additionally, on Home Assistant shutdown,
+    it sends a fallback payload to prevent stale data in the inverter.\n⚠️ The fallback
+    payload uses a small **simulated grid import** (e.g., -100W). In eco mode, the
+    inverter ignores grid imports below 300W — so this prevents the inverter from
+    charging or discharging during failure or shutdown. Sending 0W or a positive value
+    might cause it to stay active or switch to charge."
   triggers:
-  - trigger: state
-    entity_id:
-    - sensor.solar_panels_current_net_power_consumption_watts
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-  - trigger: time_pattern
-    minutes: /1
-  conditions: []
-  actions:
-  - action: mqtt.publish
-    metadata: {}
-    data:
-      evaluate_payload: false
-      qos: '0'
-      retain: false
-      topic: homeassistant/sensor/sdm120ct/meter_data
-      payload: "{\n  \"voltage\": \"{{ states('sensor.solar_panels_voltage_net_consumption_ct')
-        | float }}\",\n  \"current\": \"{{ (states('sensor.solar_panels_net_consumption_ct_current')
-        | float) * -1 }}\",\n  \"activePower\": \"{{ (states('sensor.solar_panels_current_net_power_consumption_watts')
-        | float) * -1 }}\",\n  \"reactivePower\": \"{{ (states('sensor.solar_panels_reactive_power')
-        | float) * -1 }}\",\n  \"powerFactor\": \"{{ states('sensor.solar_panels_powerfactor_net_consumption_ct')
-        | float }}\",\n  \"frequency\": \"{{ states('sensor.solar_panels_frequency_production_ct')
-        | float }}\"\n}\n"
+  - id: loop
+    entity_id: sensor.solar_panels_current_net_power_consumption_watts
+    enabled: true
+    trigger: state
+  - id: watchdog
+    minutes: /10
+    seconds: 0
+    trigger: time_pattern
     enabled: false
-  - action: mqtt.publish
-    metadata: {}
-    data:
-      evaluate_payload: false
-      qos: '0'
-      retain: false
-      topic: homeassistant/sensor/sdm120ct/meter_data
-      payload: "        {\n          \"voltage\": \"{{ states('sensor.solar_panels_voltage_net_consumption_ct')
-        | float }}\",\n          \"current\": \"{{ (states('sensor.solar_panels_net_consumption_ct_current')
-        | float) * -1 }}\",\n          \"activePower\": \"{% if (states('sensor.storage_battery_power_production')
-        | float) >= 500 %}0{% else %}{{ [[((states('sensor.solar_panels_current_net_power_consumption_watts')
-        | float) - 100) * -1, 0] | max, 500 - (states('sensor.storage_battery_power_production')
-        | float)] | min }}{% endif %}\",\n          \"powerFactor\": \"{{ states('sensor.solar_panels_powerfactor_net_consumption_ct')
-        | float }}\",\n          \"frequency\": \"{{ states('sensor.solar_panels_frequency_production_ct')
-        | float }}\"\n        }"
-    enabled: false
-  - action: mqtt.publish
-    metadata: {}
-    data:
-      evaluate_payload: false
-      qos: '0'
-      retain: false
-      topic: homeassistant/sensor/sdm120ct/meter_data
-      payload: "{\n  \"voltage\": \"{{ states('sensor.solar_panels_voltage_net_consumption_ct')
-        | float }}\",\n  \"current\": \"{{ (states('sensor.solar_panels_net_consumption_ct_current')
-        | float) * -1 }}\",\n  \"activePower\": \"{{ (states('sensor.solar_panels_current_net_power_consumption_watts')
-        | float) * -1 }}\",\n  \"reactivePower\": \"{{ (states('sensor.solar_panels_reactive_power')
-        | float) * -1 }}\",\n  \"powerFactor\": \"{{ states('sensor.solar_panels_powerfactor_net_consumption_ct')
-        | float }}\",\n  \"frequency\": \"{{ states('sensor.solar_panels_frequency_production_ct')
-        | float }}\"\n}"
-    enabled: false
-  - action: mqtt.publish
-    metadata: {}
-    data:
-      evaluate_payload: false
-      qos: '0'
-      retain: false
-      topic: homeassistant/sensor/sdm120ct/meter_data
-      payload: "{\n  \"voltage\": \"{{ states('sensor.solar_panels_voltage_net_consumption_ct')
-        | float }}\",\n  \"current\": \"{{ (states('sensor.solar_panels_net_consumption_ct_current')
-        | float) * -1 }}\",\n  \"activePower\": \"{{ ((states('sensor.solar_panels_current_net_power_consumption_watts')
-        | float) * -1) + 100 }}\",\n  \"reactivePower\": \"{{ (states('sensor.solar_panels_reactive_power')
-        | float) * -1 }}\",\n  \"powerFactor\": \"{{ states('sensor.solar_panels_powerfactor_net_consumption_ct')
-        | float }}\",\n  \"frequency\": \"{{ states('sensor.solar_panels_frequency_production_ct')
-        | float }}\"\n}"
-  mode: single
-- id: '1753491122702'
-  alias: Octopus Energy - Auto Set Peak/Off-Peak Tariff
-  description: 'Automatically sets tariff based on night rates and Octopus Intelligent
-    dispatching.
-
-    Night rates take priority over intelligent dispatching during night hours.
-
-    Only responds to Intelligent dispatching when source is ''SMART''.
-
-    '
-  triggers:
-  - type: turned_on
-    device_id: 5b8845a213c9389b39556eaf7abd5b51
-    entity_id: 61d052b89fc85bb3d35d98a2d4e89e8f
-    domain: binary_sensor
-    trigger: device
-    id: Intelligent Dispatching On
-  - type: turned_off
-    device_id: 5b8845a213c9389b39556eaf7abd5b51
-    entity_id: 61d052b89fc85bb3d35d98a2d4e89e8f
-    domain: binary_sensor
-    trigger: device
-    id: Intelligent Dispatching Off
-  - type: turned_on
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
-    id: Night Off Peak Rate
-  - type: turned_off
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
-    id: Day Peak Rate
+  - id: shutdown
+    event: shutdown
+    trigger: homeassistant
   conditions: []
   actions:
   - choose:
     - conditions:
-      - condition: template
-        value_template: "{% if trigger.id == 'Night Off Peak Rate' %}\n  true\n{%
-          elif trigger.id == 'Intelligent Dispatching On' %}\n  {{ state_attr(trigger.entity_id,
-          'source') | lower == 'smart' and states('80aa09f400893520a7232726cae46102')
-          != 'on' }}\n{% else %}\n  false\n{% endif %}"
+      - condition: trigger
+        id: loop
       sequence:
-      - action: select.select_option
-        metadata: {}
+      - action: mqtt.publish
+        alias: 'Publish MQTT to emulated meter. Note: power is inverted (negative
+          = import)'
         data:
-          option: Off-Peak
-        target:
-          device_id: b76ae102907a3f706f8894e0bcc16a1a
-      alias: Set Off-Peak - Night Rate Priority or Intelligent ON (SMART source only)
-    - conditions:
-      - condition: template
-        value_template: "{% if trigger.id == 'Day Peak Rate' %}\n  true\n{% elif trigger.id
-          == 'Intelligent Dispatching Off' %}\n  {{ state_attr(trigger.entity_id,
-          'source') | lower == 'smart' and states('80aa09f400893520a7232726cae46102')
-          != 'on' }}\n{% else %}\n  false\n{% endif %}"
-      sequence:
-      - action: select.select_option
-        metadata: {}
-        data:
-          option: Peak
-        target:
-          device_id: b76ae102907a3f706f8894e0bcc16a1a
-      alias: Set Peak - Day Rate or Intelligent OFF (SMART source only, not during
-        night)
+          topic: homeassistant/sensor/sdm120ct/meter_data
+          payload: "{\n  \"voltage\": \"{{ states('sensor.solar_panels_voltage_net_consumption_ct')
+            | float }}\",\n  \"current\": \"{{ (states('sensor.solar_panels_net_consumption_ct_current')
+            | float) * -1 }}\",\n  \"activePower\": \"{{ (states('sensor.inverter_demand_power')
+            | float) * -1 }}\",\n  \"reactivePower\": \"{{ (states('sensor.solar_panels_reactive_power')
+            | float) * -1 }}\",\n  \"powerFactor\": \"{{ states('sensor.solar_panels_powerfactor_net_consumption_ct')
+            | float }}\",\n  \"frequency\": \"{{ states('sensor.solar_panels_frequency_production_ct')
+            | float }}\"\n}"
+        enabled: false
+    default:
+    - action: button.press
+      alias: Send stop signal direct to inverter
+      target:
+        entity_id: button.stop_current_operation
+    - action: mqtt.publish
+      alias: Send -100W to inverter (simulated import) to prevent charge or discharge
+        in eco mode (below 300W threshold = idle).
+      data:
+        topic: homeassistant/sensor/sdm120ct/meter_data
+        payload: "{\n  \"voltage\": 240,\n  \"current\": -0.42,\n  \"activePower\":
+          -100,\n  \"reactivePower\": 0,\n  \"powerFactor\": 1,\n  \"frequency\":
+          50\n}"
   mode: single
 - id: '1753538167634'
   alias: Enphase Envoy custom local polling interval
   description: ''
   triggers:
   - trigger: time_pattern
-    seconds: /10
+    seconds: /6
   conditions: []
   actions:
   - action: homeassistant.update_entity
@@ -3870,8 +3829,8 @@
       - sensor.solar_panels_powerfactor_net_consumption_ct
       - sensor.solar_panels_frequency_production_ct
   mode: single
-- id: '1755115513103'
-  alias: Home Battery Smart Charging
+- id: '1755724844350'
+  alias: xStorage Home Battery Smart Charging Octopus
   description: 'Intelligently controls Eaton battery charging based on Octopus Energy''s
     Intelligent Go smart dispatching algorithm.
 
@@ -3890,90 +3849,240 @@
     - Returns battery to ''Maximize Auto Consumption'' when the smart dispatch period
     ends
 
-    - Only operates during normal day hours (when off-peak sensor is off) to avoid
-    conflicts with inverter''s night charging
-
-    - Intelligently ignores BOOST/bump charges initiated by user to respect manual
-    overrides
-
-
-    Technical Implementation:
-
-    - Uses device_entities() to dynamically find the Octopus Intelligent dispatching
-    binary sensor
-
-    - Checks ''planned_dispatches'' attribute to verify dispatch source is ''SMART''
-    or ''smart-charge''
-
-    - Validates current time falls within active dispatch window before triggering
-
-    - Ignores BOOST dispatches (user bump charges) and TEST dispatches (system tests)
-
-
-    This provides additional charging opportunities during unexpected cheap daytime
-    periods identified by Octopus''s machine learning algorithm, while your inverter
-    continues to handle regular overnight charging and you retain full manual control
-    when needed.
-
-
-    Reference: https://bottlecapdave.github.io/HomeAssistant-OctopusEnergy/entities/intelligent/
-
     '
   triggers:
-  - type: turned_on
-    device_id: 5b8845a213c9389b39556eaf7abd5b51
-    entity_id: 61d052b89fc85bb3d35d98a2d4e89e8f
-    domain: binary_sensor
-    trigger: device
-    id: Cheap Energy
-    alias: Intelligent Dispatching Active
   - type: turned_off
-    device_id: 5b8845a213c9389b39556eaf7abd5b51
-    entity_id: 61d052b89fc85bb3d35d98a2d4e89e8f
-    domain: binary_sensor
-    trigger: device
-    id: Expensive Energy
-    alias: Intelligent Dispatching Inactive
-  conditions:
-  - alias: Only continue if we are NOT within our tariffs normal off peak period
-    type: is_off
-    condition: device
     device_id: 3912e8bcd9d950c832ebfb154138ce98
     entity_id: 80aa09f400893520a7232726cae46102
     domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - type: turned_on
+    device_id: 3912e8bcd9d950c832ebfb154138ce98
+    entity_id: 80aa09f400893520a7232726cae46102
+    domain: binary_sensor
+    trigger: device
+    enabled: true
+  conditions: []
   actions:
   - choose:
     - conditions:
-      - condition: trigger
-        id:
-        - Cheap Energy
-      - alias: Only trigger for SMART dispatches (not BOOST/bump charges)
-        condition: template
-        value_template: "{% set entity_id = device_entities('5b8845a213c9389b39556eaf7abd5b51')
-          | select('match', 'binary_sensor.*intelligent_dispatching') | first %} {%
-          set dispatches = state_attr(entity_id, 'planned_dispatches') | default([])
-          %} {% set now_time = now() %} {% set found = namespace(value=false) %} {%
-          for dispatch in dispatches %}\n  {% set start_time = dispatch.start | as_datetime
-          %}\n  {% set end_time = dispatch.end | as_datetime %}\n  {% if start_time
-          <= now_time < end_time and dispatch.source in ['SMART', 'smart-charge']
-          %}\n    {% set found.value = true %}\n    {% break %}\n  {% endif %}\n{%
-          endfor %} {{ found.value }}"
+      - type: is_on
+        condition: device
+        device_id: 3912e8bcd9d950c832ebfb154138ce98
+        entity_id: 80aa09f400893520a7232726cae46102
+        domain: binary_sensor
+      - condition: time
+        after: '23:30:00'
+        before: 05:00:00
       sequence:
-      - alias: Switch Eaton battery to Manual Charge mode
-        device_id: 7243064af443eaae599e1a98ef6c25f7
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: 276172e24d9f3a2e2b4e4a1f2ad0cbe9
+        type: set_value
+        value: 1000
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: e7b800d8566a3a708adfb511d30b5344
+        type: set_value
+        value: 97
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: 94221f4692e94c9c394220b9e208ca67
+        type: set_value
+        value: 6
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: select
         entity_id: 13cf6621ba88287ffad6027db25b02ab
         type: select_option
         option: Manual Charge
     - conditions:
-      - condition: trigger
-        id:
-        - Expensive Energy
+      - type: is_on
+        condition: device
+        device_id: 3912e8bcd9d950c832ebfb154138ce98
+        entity_id: 80aa09f400893520a7232726cae46102
+        domain: binary_sensor
       sequence:
-      - alias: Return Eaton battery to Auto Consumption mode
-        device_id: 7243064af443eaae599e1a98ef6c25f7
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: f74d3cb020eaacdeb1fdfe3fbec833bd
+        type: set_value
+        value: 100
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: e7b800d8566a3a708adfb511d30b5344
+        type: set_value
+        value: 95
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: 94221f4692e94c9c394220b9e208ca67
+        type: set_value
+        value: 2
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: select
+        entity_id: 13cf6621ba88287ffad6027db25b02ab
+        type: select_option
+        option: Manual Charge
+    - conditions:
+      - type: is_off
+        condition: device
+        device_id: 3912e8bcd9d950c832ebfb154138ce98
+        entity_id: 80aa09f400893520a7232726cae46102
+        domain: binary_sensor
+      sequence:
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
+        domain: number
+        entity_id: 007c24e6708bab3ee7b727880b5d907a
+        type: set_value
+        value: 12
+      - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: select
         entity_id: 13cf6621ba88287ffad6027db25b02ab
         type: select_option
         option: Maximize Auto Consumption
   mode: single
+- id: '1758208938977'
+  alias: Octopus Energy - Auto Set Peak/Off-Peak Tariff
+  description: 'Automatically sets tariff based on night rates and Octopus Intelligent
+    dispatching.
+
+    '
+  triggers:
+  - type: turned_on
+    device_id: 3912e8bcd9d950c832ebfb154138ce98
+    entity_id: 80aa09f400893520a7232726cae46102
+    domain: binary_sensor
+    trigger: device
+    id: Night Off Peak Rate
+  - type: turned_off
+    device_id: 3912e8bcd9d950c832ebfb154138ce98
+    entity_id: 80aa09f400893520a7232726cae46102
+    domain: binary_sensor
+    trigger: device
+    id: Day Peak Rate
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - type: is_on
+        condition: device
+        device_id: 3912e8bcd9d950c832ebfb154138ce98
+        entity_id: 80aa09f400893520a7232726cae46102
+        domain: binary_sensor
+      sequence:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: Off-Peak
+        target:
+          device_id: b76ae102907a3f706f8894e0bcc16a1a
+        alias: Set Off-Peak Rate
+    - conditions:
+      - type: is_off
+        condition: device
+        device_id: 3912e8bcd9d950c832ebfb154138ce98
+        entity_id: 80aa09f400893520a7232726cae46102
+        domain: binary_sensor
+      sequence:
+      - action: select.select_option
+        metadata: {}
+        data:
+          option: Peak
+        target:
+          device_id: b76ae102907a3f706f8894e0bcc16a1a
+        alias: Set Peak Rate
+  mode: single
+- id: '1759961235381'
+  alias: Update SDM120CT Meter Emulator Values
+  description: 'Publish values to emulated meter via ESPHome. Note: power is inverted
+    (negative = import)
+
+
+    The only value we really need to send to the inverter is ''Active Power''
+
+    '
+  triggers:
+  - entity_id:
+    - sensor.solar_panels_voltage_net_consumption_ct
+    - sensor.solar_panels_net_consumption_ct_current
+    - sensor.inverter_demand_power
+    - sensor.solar_panels_reactive_power
+    - sensor.solar_panels_powerfactor_net_consumption_ct
+    - sensor.solar_panels_frequency_production_ct
+    trigger: state
+  conditions: []
+  actions:
+  - sequence:
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_voltage
+      data:
+        value: '{{ states(''sensor.solar_panels_voltage_net_consumption_ct'') | float(240)
+          }}'
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_frequency
+      data:
+        value: '{{ states(''sensor.solar_panels_frequency_production_ct'') | float(50.0)
+          }}'
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_power_factor
+      data:
+        value: '{{ states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
+          | float(0.97) }}'
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_active_power
+      data:
+        value: '{{ (states(''sensor.inverter_demand_power'') | float(0)) * -1 }}'
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_apparent_power
+      data:
+        value: '{% set active = (states(''sensor.inverter_demand_power'') | float(0))
+          * -1 %} {% set pf = states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
+          | float(0.97) %} {{ (active / pf) | abs if pf != 0 else 0 }}
+
+          '
+      enabled: false
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_current
+      data:
+        value: '{{ (states(''sensor.solar_panels_net_consumption_ct_current'') | float(0))
+          * -1 }}'
+      enabled: false
+    - action: number.set_value
+      target:
+        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_reactive_power
+      data:
+        value: '{{ (states(''sensor.solar_panels_reactive_power'') | float(0)) * -1
+          }}'
+      enabled: false
+  mode: queued
+  max: 5
+- id: '1760397061139'
+  alias: Octopus Energy - Join Saving Session (Custom Actions) [Blueprint]
+  description: ''
+  use_blueprint:
+    path: BottlecapDave/octopus_energy_octoplus_join_saving_session_custom_action.yaml
+    input:
+      saving_session_event_entity: event.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session_events
+      actions:
+      - data:
+          data:
+            color: pink
+            channel: octopus
+            visibility: public
+            notification_icon: mdi:bwind-turbine
+            ttl: 0
+            sticky: 'true'
+          message: 'Joined saving session
+
+            '
+          title: Octopus Energy
+        action: notify.mobile_app_rich_mob_app

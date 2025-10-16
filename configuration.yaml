@@ -24,6 +24,8 @@ homeassistant:
     #   trusted_networks:
     #     - 192.168.10.0/24
     - type: homeassistant
+  auth_mfa_modules:
+    - type: totp
 ############################################################
 #
 # Standard Configuration Elements
@@ -71,7 +73,7 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 10.0.0.200 # Add the IP address of the proxy server - Home Assistant Community Add-on: Nginx Proxy Manager
-    - 172.30.33.0/24 # You may also provide the subnet mask - Home Assistant Community Add-on: Nginx Proxy Manager
+    - 172.30.33.0/24 # docker network
 
   ip_ban_enabled: true
   login_attempts_threshold: 20
@@ -246,28 +248,29 @@ google_assistant:
   # expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
   # exposed_domains has no effect if expose_by_default is set to false.
   exposed_domains:
-    - alarm_control_panel
-    - button
+    # - alarm_control_panel
+    # - button
     - camera
     - climate
     - cover
-    - event
+    # - event
     - fan
-    - group
-    - humidifier
+    # - group
+    # - humidifier
     # - input_boolean
     # - input_button
     # - input_select
     - light
+    # - lawn_mower
     # - lock
     # - media_player
     - scene
-    - script
+    # - script
     # - select
-    - sensor
+    # - sensor
     - switch
     # - vacuum
-    # - valve
+    - valve
     # - water_heater
 
 #################################################
