@@ -44,11 +44,6 @@ substitutions:
   status_led: GPIOXX  # Pin used for status indication
   status_led_inverted: "true"
 
-  # Metadata & Versioning
-  project_name: "genestealer.[device_id]"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/[device_id].yaml"
-
   # Sensor Update Intervals
   sensor_update_interval: 10s  # General update interval
   specific_sensor_update_interval: 10s  # For high-frequency sensors

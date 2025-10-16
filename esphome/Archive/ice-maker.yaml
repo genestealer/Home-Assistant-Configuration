@@ -21,11 +21,6 @@ substitutions:
   # Debug Component
   log_level: DEBUG 
 
-  # Project 
-  project_name: "genestealer.ice-maker"
-  project_version: "1.1.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/ice-maker.yaml"
-  
 ##############################################################
 # Platform
 ##############################################################

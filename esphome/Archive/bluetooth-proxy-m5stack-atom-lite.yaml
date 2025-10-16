@@ -26,11 +26,6 @@ substitutions:
   # Debug Component
   log_level: DEBUG  
 
-  # Project 
-  project_name: "Richard.TBD"
-  project_version: "1.0.0"
-  package_import_url: "TBD"
-
 ##############################################################
 # Platform
 ##############################################################

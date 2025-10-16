@@ -42,11 +42,6 @@ substitutions:
   # Debug Component
   log_level: DEBUG 
 
-  # Project 
-  project_name: "genestealer.busy-light-02"
-  project_version: "1.5.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busy-light-02.yaml"
-
 ##############################################################
 # Platform
 ##############################################################

@@ -34,11 +34,6 @@ substitutions:
   # Debug Component
   log_level: DEBUG 
 
-  # Project 
-  project_name: "genestealer.air-con-current-clamp"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-con-current-clamp.yaml"
-
   # Sensor update interval
   sensor_update_interval: 60s
 

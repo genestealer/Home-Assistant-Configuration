@@ -50,11 +50,6 @@ substitutions:
   status_led: LED_RED 
   status_led_inverted: "false"
 
-  # Metadata & Versioning
-  project_name: "genestealer.cu-current-clamp"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/cu-current-clamp.yaml"
-
   # Debug Logging
   log_level: DEBUG 
 

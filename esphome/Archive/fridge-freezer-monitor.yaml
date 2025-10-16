@@ -46,11 +46,6 @@ substitutions:
   status_led: LED_RED
   status_led_inverted: "true"
 
-  # Project Metadata
-  project_name: "genestealer.fridge-freezer-monitor"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/fridge-freezer-monitor.yaml"
-
   # Debug Logging Level
   log_level: DEBUG 
 

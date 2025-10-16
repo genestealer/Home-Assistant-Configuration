@@ -76,11 +76,6 @@ substitutions:
   # Debug Component
   log_level: DEBUG 
 
-  # Project 
-  project_name: "genestealer.xxx"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-quality-sensor-3.yaml"
-  
   # PMSX003 Air Sensor Settings
   PMSX003_sensor_update_interval: 150000ms # 2.5 mins
   MPU6886_sensor_update_interval: 30000ms
