@@ -1,7 +1,7 @@
 ##############################################################
-# 📡 ESPHome Device Base - Wi-Fi Configuration
-# 📌 Shared Wi-Fi settings for all ESPHome devices
-# 🔗 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# ESPHome Device Base - Wi-Fi Configuration
+# Shared Wi-Fi settings for all ESPHome devices
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 ##############################################################
 
 wifi:
@@ -24,26 +24,32 @@ wifi:
 
 
 ##################################
-# 🌐 Wi-Fi Info
+# Wi-Fi Info
 ##################################
 text_sensor:
   - platform: wifi_info
     ip_address:
       name: "${name} IP"
       icon: "mdi:ip-network-outline"
+      entity_category: "diagnostic"
+      update_interval: ${wifi_sensor_update_interval}
     mac_address:
       name: "${name} MAC"
       icon: "mdi:access-point-network"
+      entity_category: "diagnostic"
     ssid:
       name: "${name} SSID"
       icon: "mdi:wifi"
+      entity_category: "diagnostic"
     bssid:
       name: "${name} BSSID"
       icon: "mdi:access-point-network"
+      entity_category: "diagnostic"
+      update_interval: ${wifi_sensor_update_interval}
 
 
 ##################################
-# 📶 Wi-Fi Signal Strength
+# Wi-Fi Signal Strength
 ##################################
 sensor:
   - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB

@@ -1,8 +1,9 @@
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Doorbell Controller & Electricity Monitor
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+##############################################################
+# Richard Huish 2025
+# ESPHome Configuration - Doorbell Controller & Electricity Monitor
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration controls a smart doorbell system and 
 # monitors household electricity consumption using a pulse meter.
 # It integrates with Home Assistant for real-time monitoring, 
@@ -10,7 +11,7 @@
 #
 # Includes shared configurations from the 'common' directory
 #
-# 🔧 Features:
+# Features:
 # - Smart doorbell control with an illuminated button.
 # - Neopixel LED effects for button lighting.
 # - Electricity monitoring using a phototransistor-based pulse meter.
@@ -18,13 +19,13 @@
 # - Quiet hours mode to silence the bell at night.
 # - Automatic energy reset at midnight.
 #
-# 🔩 Hardware:
+# Hardware:
 # - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
 # - Neopixel RGB LED (2 LEDs) for Doorbell Button
 # - Relay Module for activating the doorbell chime.
 # - Phototransistor Sensor (SFH 314-2/3 Osram Opto) for electricity monitoring
 #
-# 🛠 Wiring for Electricity Meter Sensor:
+# Wiring for Electricity Meter Sensor:
 # - Phototransistor Model: SFH 314-2/3 Osram Opto (80° Visible Light NPN)
 # - RS Stock No. 654-8851
 # - Power: 3.3V connected to Collector.
@@ -37,45 +38,40 @@
 #
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: doorbell-and-elect-monitor
   friendly_name: "Doorbell and Electricity Monitor"
   ui_comment: "Doorbell Controller and Electricity Monitor"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.36
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: D0  # GPIO16 - NodeMCU onboard LED
   status_led_inverted: "true"
 
-  # 📦 Metadata & Versioning
-  project_name: "genestealer.doorbell-controller"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/doorbell-controller.yaml"
-
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG
   
-  # ⚡ Electricity Meter Pulse Rate (imp/kWh)
+  # Electricity Meter Pulse Rate (imp/kWh)
   pulse_rate: '1000'
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 30s
   wifi_sensor_update_interval: 10min
 
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -84,13 +80,8 @@ packages:
   # Uncomment below to remove the status LED from this device:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🌙 Quiet Hours Configuration for Doorbell
+# Quiet Hours Configuration for Doorbell
 ##############################################################
 globals:
   - id: nighttime_start
@@ -103,7 +94,7 @@ globals:
     initial_value: '6'  # Quiet hours end at 6 AM
 
 ##############################################################
-# ⚡ Electricity Monitoring (Pulse Meter)
+# Electricity Monitoring (Pulse Meter)
 ##############################################################
 
 sensor:
@@ -123,7 +114,7 @@ sensor:
       - lambda: return x * ((60.0 / ${pulse_rate}) * 1000.0); # Multiplication factor of meter = (60 / imp value) * 1000
       - throttle_average: ${sensor_update_interval} # Reduce amount of data and updates with an average
 
-  # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # Total Daily Energy Consumption (Resets at Midnight)
   # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
   - platform: total_daily_energy
     name: 'Daily Energy Import'
@@ -141,14 +132,14 @@ sensor:
       - heartbeat: ${sensor_update_interval}  # Ensure an update is sent at least once per interval
 
 ##############################################################
-# ⏳ Time Component (For Midnight Reset & Quiet Hours)
+# Time Component (For Midnight Reset & Quiet Hours)
 ##############################################################
 time:
   - platform: homeassistant
     id: homeassistant_time
 
 ##############################################################
-# 💡 Neopixel LED for Doorbell Button
+# Neopixel LED for Doorbell Button
 ##############################################################
 
 light:
@@ -186,7 +177,7 @@ light:
           reverse: False
 
 ##############################################################
-# 🔘 Doorbell Button Configuration
+# Doorbell Button Configuration
 ##############################################################
 
 binary_sensor:
@@ -273,7 +264,7 @@ binary_sensor:
     #     - switch.turn_off: bellRelay
     
 ##############################################################
-# 🔔 Doorbell Relay (Controls the Chime)
+# Doorbell Relay (Controls the Chime)
 ##############################################################
 
 switch:

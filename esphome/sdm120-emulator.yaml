@@ -1,0 +1,663 @@
+##############################################################
+# Richard Huish 2025
+# ESPHome Configuration - SDM120CT Modbus RTU Emulator
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# Description:
+# Native ESPHome implementation of SDM120CT energy meter Modbus RTU server emulation.
+# This replaces my original C++ Arduino implementation:
+# https://github.com/genestealer/SDM120CT-Modbus-Emulator-ESP32
+#
+# Purpose:
+# Emulates an Eastron SDM120CT Modbus energy meter for integration with
+# Eaton xStorage Home inverter. The inverter polls this device to read
+# grid power consumption data, which is then used for solar battery
+# charge/discharge control and optimization.
+#
+# Original Implementation Reference:
+# The register map and functionality match the original C++ implementation
+# documented at: https://github.com/genestealer/SDM120CT-Modbus-Emulator-ESP32
+#
+# Register Map Source:
+# The SDM120CT register addresses are cross-referenced from:
+# - Eastron SDM120 Modbus Protocol PDF: https://www.eastroneurope.com/images/uploads/products/protocol/SDM120-MODBUS_Protocol.pdf
+# - SDM Energy Meter library (SDM.h): https://github.com/reaper7/SDM_Energy_Meter/blob/master/SDM.h#L103
+# These sources provide the complete register map for SDM120, SDM220, SDM230, and SDM630 meters
+#
+# Includes shared configurations from the 'common' directory
+#
+# Features:
+# - Complete SDM120CT register map (0x0000 to 0x0158)
+# - Modbus RTU server (Function Code 04 - Read Input Registers)
+# - Home Assistant integration for real-time value control
+# - Voltage, Current, Active/Apparent/Reactive Power
+# - Power Factor, Phase Angle, Frequency
+# - Import/Export Energy counters
+# - Total Active/Reactive Energy registers
+#
+# Important note (operation with Eaton inverter):
+# - The only register that materially affects inverter behavior in
+#   "Maximise self-consumption" mode is Active Power (0x000C).
+# - In testing, the other values are not used by the inverter and are
+#   effectively superfluous. We still populate them for completeness.
+#
+# Hardware:
+# - ESP32 DevKit v1 (ESP32-WROOM-32)
+# - SCM TTL to RS-485 Interface Module (automatic flow control)
+#   * GPIO17 (TX) → TXD on RS485 module
+#   * GPIO16 (RX) → RXD on RS485 module
+#   * 5V/GND → VCC/GND on RS485 module
+#   * A/B terminals → Eaton xStorage Modbus interface
+# - 120Ω termination resistor: Not enabled (not required for this setup)
+#   If using a different RS-485 module with DE/RE pins for flow control,
+#   you can easily modify the UART configuration to add flow_control_pin#################
+#
+# Modbus Configuration:
+# - Device Address: 0x01 (default SDM120CT address)
+# - Baud Rate: 9600
+# - Data Bits: 8
+# - Parity: None
+# - Stop Bits: 1
+# - Function Code: 04 (Read Input Registers)
+#
+# Register Map (matching original C++ implementation):
+# Input Registers (FC 04):
+#   0x0000 — Voltage (V)
+#   0x0006 — Current (A)
+#   0x000C — Active Power (W)
+#   0x0012 — Apparent Power (VA)
+#   0x0018 — Reactive Power (VAr)
+#   0x001E — Power Factor
+#   0x0024 — Phase Angle (degrees)
+#   0x0046 — Frequency (Hz)
+#   0x0048 — Import Energy (kWh)
+#   0x004A — Export Energy (kWh)
+#   0x0156 — Total Active Energy (kWh)
+#   0x0158 — Total Reactive Energy (kVArh)
+#
+# Note: The Eaton inverter polls 0x48 (72) registers starting from 0x0000.
+# All gap registers (0x0002, 0x0004, 0x0008, etc.) return 0.0 to maintain
+# protocol compatibility.
+#
+##############################################################
+
+# Substitutions - Easily Configurable Parameters
+substitutions:
+  # Naming & Identification
+  name: sdm120ct-emulator
+  friendly_name: SDM120CT Modbus Emulator
+  ui_comment: "ESP32-based SDM120CT Modbus RTU emulator"
+
+
+  # Network Configuration (Static IP)
+  ip: 192.168.2.59
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Debug Logging
+  log_level: DEBUG
+
+  # Sensor Update Interval
+  sensor_update_interval: 1min
+  wifi_sensor_update_interval: 10min
+
+##############################################################
+# Board Configuration
+##############################################################
+esp32:
+  board: esp32doit-devkit-v1
+  framework:
+    type: arduino
+
+
+# logger:
+#   level: ${log_level}
+#   logs:
+#     # modbus: WARN
+#     modbus_controller: INFO # Stop modbus spamming the logs 
+
+##############################################################
+# Import Shared Code (Common Components)
+##############################################################
+packages:
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+  
+##############################################################
+# Hardware Configuration
+##############################################################
+
+##############################################################
+# Global Variables
+##############################################################
+# These store the simulated SDM120CT meter values that are
+# exposed via Modbus registers. Values can be controlled via
+# Home Assistant template number entities (defined below).
+# Initial values represent typical UK single-phase power:
+globals:
+  - id: voltage_val        # Register 0x0000: Line voltage (V)
+    type: float
+    initial_value: '240.0'
+  - id: current_val        # Register 0x0006: Line current (A)
+    type: float
+    # Negative current denotes export towards grid
+    initial_value: '-1.29'
+  - id: active_power_val   # Register 0x000C: Active power (W)
+    type: float
+    # Negative power denotes export (-300 W safe default)
+    initial_value: '-300.0'
+  - id: apparent_power_val # Register 0x0012: Apparent power (VA)
+    type: float
+    # Magnitude only (VA)
+    initial_value: '310.0'
+  - id: reactive_power_val # Register 0x0018: Reactive power (VAr)
+    type: float
+    initial_value: '0.0'
+  - id: power_factor_val   # Register 0x001E: Power factor (0-1)
+    type: float
+    # Negative PF to reflect export direction
+    initial_value: '-0.97'
+  - id: frequency_val      # Register 0x0046: Frequency (Hz)
+    type: float
+    initial_value: '50.0'
+  - id: import_energy_val  # Register 0x0048: Import active energy (kWh)
+    type: float
+    initial_value: '15.0'
+  - id: export_energy_val  # Register 0x004A: Export active energy (kWh)
+    type: float
+    initial_value: '0.0'
+  - id: setup_mode_val     # Internal flag for configuration mode
+    type: bool
+    initial_value: 'false'
+  - id: phase_angle_val    # Register 0x0024: Phase angle (degrees)
+    type: float
+    initial_value: '-14.0'
+
+##############################################################
+# Safety defaults watchdog
+##############################################################
+# Applies safe "export 300 W" values on boot and whenever Wi‑Fi/API
+# connectivity drops, to prevent the inverter from ramping up export.
+script:
+  - id: apply_safe_defaults
+    mode: queued
+    then:
+      - lambda: |-
+          id(voltage_val) = 240.0;
+          id(current_val) = -1.29;          // A (export)
+          id(active_power_val) = -300.0;    // W (export)
+          id(apparent_power_val) = 310.0;   // VA
+          id(reactive_power_val) = 0.0;     // VAr
+          id(power_factor_val) = -0.97;     // PF (export)
+          id(frequency_val) = 50.0;         // Hz
+          id(import_energy_val) = 15.0;     // kWh
+          id(export_energy_val) = 0.0;      // kWh
+          id(phase_angle_val) = -14.0;      // degrees
+      # Keep HA UI controls in sync (if connected)
+      - number.set:
+          id: voltage_input
+          value: 240.0
+      - number.set:
+          id: current_input
+          value: -1.29
+      - number.set:
+          id: active_power_input
+          value: -300
+      - number.set:
+          id: apparent_power_input
+          value: 310
+      - number.set:
+          id: reactive_power_input
+          value: 0
+      - number.set:
+          id: power_factor_input
+          value: -0.97
+      - number.set:
+          id: frequency_input
+          value: 50.0
+      - number.set:
+          id: import_energy_input
+          value: 15.0
+      - number.set:
+          id: export_energy_input
+          value: 0.0
+      - number.set:
+          id: phase_angle_input
+          value: -14.0
+
+# Run safety defaults early on boot
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - script.execute: apply_safe_defaults
+
+# Also apply safety defaults if Wi‑Fi disconnects
+wifi:
+  on_disconnect:
+    then:
+      - script.execute: apply_safe_defaults
+
+# Also apply safety defaults if Home Assistant API disconnects
+api:
+  on_client_disconnected:
+    then:
+      - script.execute: apply_safe_defaults
+
+##############################################################
+# UART Configuration
+##############################################################
+# RS-485 serial communication using SCM TTL to RS-485 module
+# This module has automatic flow control (no DE/RE pins needed)
+# Hardware connections:
+#   ESP32 GPIO17 (TX) -> Module TXD
+#   ESP32 GPIO16 (RX) -> Module RXD
+#   Module A/B -> Eaton inverter RS-485 terminals
+#
+# Note: If using a different RS-485 module with DE/RE pins, add:
+#   flow_control_pin: GPIOxx  # Connect to DE and RE pins
+uart:
+  id: uart_modbus_server
+  tx_pin: GPIO17      # Connect to TXD on RS485 module
+  rx_pin: GPIO16      # Connect to RXD on RS485 module  
+  baud_rate: 9600     # SDM120CT standard baud rate
+  rx_buffer_size: 512 # Buffer for incoming Modbus frames
+  data_bits: 8        # 8N1 configuration
+  parity: NONE
+  stop_bits: 1
+
+##############################################################
+# Modbus Server Configuration
+##############################################################
+# Configures this ESP32 as a Modbus RTU server (slave)
+# responding to requests from the Eaton inverter (master)
+modbus:
+  id: modbus_server
+  uart_id: uart_modbus_server
+  role: server        # This device acts as Modbus server/slave
+
+##############################################################
+# Modbus Controller - SDM120CT Emulation
+##############################################################
+# Implements SDM120CT single-phase energy meter protocol
+# Address: 0x01 (SDM120CT default)
+# Function Code: 04 (Read Input Registers)
+# The Eaton inverter polls 72 registers (0x00-0x47) every 2-3 seconds
+modbus_controller:
+  - id: sdm120ct_server
+    modbus_id: modbus_server
+    address: 1  # SDM120CT default Modbus address
+    server_registers:
+      ##############################################################
+      # SDM120CT Register Map Implementation
+      ##############################################################
+      # Input Registers (Function Code 04)
+      # All registers are 32-bit floats (FP32) occupying 2 Modbus registers
+      # Complete register map from 0x0000 to 0x0158 matching SDM120CT specification
+      # Gap registers (0x0002, 0x0004, etc.) filled with 0.0 to satisfy
+      # the Eaton inverter which polls all 72 registers (0x00-0x47)
+      
+      # Register 0x0000: Line to neutral volts (V)
+      - address: 0x0000
+        value_type: FP32
+        read_lambda: |-
+          return id(voltage_val);
+      
+      # Gap registers 0x0002-0x0004 (not used by SDM120CT)
+      - address: 0x0002
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0004
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Current (Register 0x0006) - 32-bit float
+      - address: 0x0006
+        value_type: FP32
+        read_lambda: |-
+          return id(current_val);
+      
+      # Registers 0x0008-0x000A (unused - return 0)
+      - address: 0x0008
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x000A
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Active Power (Register 0x000C) - 32-bit float
+      - address: 0x000C
+        value_type: FP32
+        read_lambda: |-
+          return id(active_power_val);
+      
+      # Registers 0x000E-0x0010 (unused - return 0)
+      - address: 0x000E
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0010
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Apparent Power (Register 0x0012) - 32-bit float
+      - address: 0x0012
+        value_type: FP32
+        read_lambda: |-
+          return id(apparent_power_val);
+      
+      # Registers 0x0014-0x0016 (unused - return 0)
+      - address: 0x0014
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0016
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Reactive Power (Register 0x0018) - 32-bit float
+      - address: 0x0018
+        value_type: FP32
+        read_lambda: |-
+          return id(reactive_power_val);
+      
+      # Registers 0x001A-0x001C (unused - return 0)
+      - address: 0x001A
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x001C
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Power Factor (Register 0x001E) - 32-bit float
+      - address: 0x001E
+        value_type: FP32
+        read_lambda: |-
+          return id(power_factor_val);
+      
+      # Fill gap registers 0x0020-0x0022 with zeros
+      - address: 0x0020
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0022
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Phase Angle (Register 0x0024) - 32-bit float
+      - address: 0x0024
+        value_type: FP32
+        read_lambda: |-
+          return id(phase_angle_val);
+      - address: 0x0026
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0028
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x002A
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x002C
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x002E
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0030
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0032
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0034
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0036
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0038
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x003A
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x003C
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x003E
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0040
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0042
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      - address: 0x0044
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+      
+      # Frequency (Register 0x0046) - 32-bit float
+      - address: 0x0046
+        value_type: FP32
+        read_lambda: |-
+          return id(frequency_val);
+      
+      # Import Energy (Register 0x0048) - 32-bit float
+      - address: 0x0048
+        value_type: FP32
+        read_lambda: |-
+          return id(import_energy_val);
+      
+      # Export Energy (Register 0x004A) - 32-bit float
+      - address: 0x004A
+        value_type: FP32
+        read_lambda: |-
+          return id(export_energy_val);
+      
+      # Total Active Energy (Register 0x0156) - 32-bit float
+      # Combined total of import + export
+      - address: 0x0156
+        value_type: FP32
+        read_lambda: |-
+          return id(import_energy_val) + id(export_energy_val);
+      
+      # Total Reactive Energy (Register 0x0158) - 32-bit float
+      # Typically minimal for resistive loads
+      - address: 0x0158
+        value_type: FP32
+        read_lambda: |-
+          return 0.0;
+
+##############################################################
+# Sensors & Controls
+##############################################################
+
+##############################################################
+# Template Numbers - Home Assistant Control Interface
+##############################################################
+# These number entities appear in Home Assistant and allow
+# real-time control of the simulated SDM120CT meter values.
+# Values are stored in global variables and exposed via
+# Modbus registers to the Eaton inverter.
+# Use these to simulate different power scenarios:
+#   - Solar generation (negative current/power)
+#   - Grid import (positive values)
+#   - Different voltage conditions
+#   - Energy metering over time
+number:
+  # Register 0x0000: Line voltage (V)
+  - platform: template
+    name: "${friendly_name} Voltage"
+    id: voltage_input
+    min_value: 0
+    max_value: 300
+    step: 0.1
+    initial_value: 240.0
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(voltage_val) = x;
+
+  # Register 0x0006: Line current (A) - negative for export
+  - platform: template
+    name: "${friendly_name} Current"
+    id: current_input
+    min_value: -50
+    max_value: 50
+    step: 0.01
+    initial_value: -1.29
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(current_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Active Power"
+    id: active_power_input
+    min_value: -5000
+    max_value: 5000
+    step: 1
+    initial_value: -300
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(active_power_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Apparent Power"
+    id: apparent_power_input
+    min_value: 0
+    max_value: 5000
+    step: 1
+    initial_value: 310
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(apparent_power_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Reactive Power"
+    id: reactive_power_input
+    min_value: -5000
+    max_value: 5000
+    step: 1
+    initial_value: 0
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(reactive_power_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Power Factor"
+    id: power_factor_input
+    min_value: -1
+    max_value: 1
+    step: 0.01
+    initial_value: -0.97
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(power_factor_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Frequency"
+    id: frequency_input
+    min_value: 45
+    max_value: 65
+    step: 0.1
+    initial_value: 50.0
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(frequency_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Import Energy"
+    id: import_energy_input
+    min_value: 0
+    max_value: 99999
+    step: 0.1
+    initial_value: 15.0
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(import_energy_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Export Energy"
+    id: export_energy_input
+    min_value: 0
+    max_value: 99999
+    step: 0.1
+    initial_value: 0.0
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(export_energy_val) = x;
+
+  - platform: template
+    name: "${friendly_name} Phase Angle"
+    id: phase_angle_input
+    min_value: -180
+    max_value: 180
+    step: 0.1
+    initial_value: -14.0
+    optimistic: true
+    set_action:
+      then:
+        - lambda: |-
+            id(phase_angle_val) = x;
+
+# Setup mode toggle
+switch:
+  - platform: template
+    name: "${friendly_name} Setup Mode"
+    id: setup_mode_switch
+    optimistic: true
+    turn_on_action:
+      then:
+        - lambda: |-
+            id(setup_mode_val) = true;
+    turn_off_action:
+      then:
+        - lambda: |-
+            id(setup_mode_val) = false;
+
+
+

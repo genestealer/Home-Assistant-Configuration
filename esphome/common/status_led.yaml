@@ -3,7 +3,7 @@
 # This approach prevents the incorrect warning message about "unknown tag <!remove>" which is valid but not recognized correctly by VSCode.
 # For more details, refer to: https://esphome.io/components/packages.html#remove
 ##################################
-# 🔴 Status LED (Connection Indicator)
+# Status LED (Connection Indicator)
 ##################################
 status_led:
   pin:

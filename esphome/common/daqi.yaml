@@ -1,9 +1,9 @@
 ##############################################################
-# 🏠 UK Daily Air Quality Index (DAQI)
-# 📌 Computes an Air Quality Index (DAQI) based on PM2.5 & PM10
-# 📂 https://github.com/koenvervloesem/ESPHome-Air-Quality-Monitor
+# UK Daily Air Quality Index (DAQI)
+# Computes an Air Quality Index (DAQI) based on PM2.5 & PM10
+# https://github.com/koenvervloesem/ESPHome-Air-Quality-Monitor
 #
-# 📌 Used Substitutions:
+# Used Substitutions:
 # - daqi_message_good: Message for good air quality
 # - daqi_message_acceptable: Message for acceptable air quality
 # - daqi_message_bad: Message for bad air quality
@@ -19,11 +19,11 @@
 #
 # - update_daqi: script to update the daqi
 ##############################################################
-# 🏠 UK Daily Air Quality Index (DAQI) Bands
-# 📌 Classification of Air Quality Based on PM2.5 & PM10
+# UK Daily Air Quality Index (DAQI) Bands
+# Classification of Air Quality Based on PM2.5 & PM10
 ##############################################################
 # 
-# 🌫️ DAQI Bands for PM2.5 (µg/m³) - 24-Hour Mean
+# DAQI Bands for PM2.5 (µg/m³) - 24-Hour Mean
 # ┌────────────┬────────┬───────────────────┐
 # │   Band     │ Index  │ PM2.5 Range (µg/m³) │
 # ├────────────┼────────┼───────────────────┤
@@ -39,7 +39,7 @@
 # │ Very High  │ 10     │ 71 or more         │
 # └────────────┴────────┴───────────────────┘
 # 
-# 🌫️ DAQI Bands for PM10 (µg/m³) - 24-Hour Mean
+# DAQI Bands for PM10 (µg/m³) - 24-Hour Mean
 # ┌────────────┬────────┬───────────────────┐
 # │   Band     │ Index  │ PM10 Range (µg/m³) │
 # ├────────────┼────────┼───────────────────┤
@@ -118,7 +118,7 @@ sensor:
     on_value:
       then:
         - script.execute: update_daqi
-# 📊 DAQI Text Representation
+# DAQI Text Representation
   - platform: template
     name: "PM 01.0 rolling 30 minute average"
     id: pm1_0_avg_30m
@@ -184,7 +184,7 @@ text_sensor:
     id: daqi_color
     update_interval: never
 
-# 📜 DAQI Update Script
+# DAQI Update Script
 # This script is called on every update of the relevant sensor values.
 script:
   - id: update_daqi

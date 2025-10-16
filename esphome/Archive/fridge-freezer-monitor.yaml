@@ -1,9 +1,9 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Fridge & Freezer Temperature Monitor
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Fridge & Freezer Temperature Monitor
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration monitors the temperature inside a fridge/freezer 
 # using the built-in NTC thermistors on the fridge PCB.
 # It provides real-time temperature readings and ensures early detection 
@@ -11,14 +11,14 @@
 #
 # Includes shared configurations from the 'common' directory
 #
-# 🔩 Hardware:
+# Hardware:
 # - ESP8266 (Adafruit Feather HUZZAH)
 # - ADS1115 4-Channel 16-bit ADC (for high input impedance)
 # - Three 5KΩ NTC Thermistors (Defrost, Freezer, Refrigerator)
 # - Door Sensor (Analog Voltage Detection)
 # - 10KΩ Pull-up Resistors (built into the fridge PCB)
 #
-# 🛠 Wiring:
+# Wiring:
 # - I2C (ADS1115):  
 #   - SDA (Data Line) → GPIO4  
 #   - SCL (Clock Line) → GPIO5  
@@ -30,42 +30,42 @@
 #
 ##############################################################
 
-# 🔄 Substitutions for Easy Configuration
+# Substitutions for Easy Configuration
 substitutions:
-  # 📛 Naming
+  # Naming
   name: fridge-freezer-monitor
   friendly_name: "Fridge Freezer Monitor"
   ui_comment: "Monitors fridge & freezer temperatures using thermistors"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.56
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: LED_RED
   status_led_inverted: "true"
 
-  # 📦 Project Metadata
+  # Project Metadata
   project_name: "genestealer.fridge-freezer-monitor"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/fridge-freezer-monitor.yaml"
 
-  # 🛠 Debug Logging Level
+  # Debug Logging Level
   log_level: DEBUG 
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
 
 ##############################################################
-# 🚀 ESP8266 Board Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: huzzah
 
 ##############################################################
-# 🔗 Import Shared Code (Common Components)
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -74,13 +74,12 @@ packages:
   # Uncomment below to remove the status LED:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
+# Dashboard Import Settings
 dashboard_import:
-  package_import_url: ${package_import_url}
   import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# 🔄 I2C Bus Configuration (Used for ADS1115)
+# I2C Bus Configuration (Used for ADS1115)
 ##############################################################
 i2c:
   sda: GPIO4
@@ -96,14 +95,14 @@ spi:
 
 
 ##############################################################
-# 📟 ADS1115 - 16-bit Analog-to-Digital Converter
+# ADS1115 - 16-bit Analog-to-Digital Converter
 ##############################################################
 ads1115:
   - address: 0x48
     continuous_mode: false  # Set to true for fast real-time sampling
 
 ##############################################################
-# 🌡️ Temperature Sensor Configuration (NTC Thermistors)
+# Temperature Sensor Configuration (NTC Thermistors)
 ##############################################################
 
 sensor:
@@ -117,7 +116,7 @@ sensor:
 
 
   # # ----------------------
-  # # 📌 Defrost Sensor (A0)
+  # # Defrost Sensor (A0)
   # # ----------------------
   # - platform: ads1115
   #   name: "Defrost Sensor Voltage"
@@ -145,7 +144,7 @@ sensor:
 #       reference_resistance: 5kOhm
 
 #   # ----------------------
-#   # 📌 Freezer Sensor (A1)
+#   # Freezer Sensor (A1)
 #   # ----------------------
 #   - platform: ads1115
 #     name: "Freezer Sensor Voltage"
@@ -173,7 +172,7 @@ sensor:
 #       reference_resistance: 5kOhm
 
 #   # ----------------------
-#   # 📌 Refrigerator Sensor (A2)
+#   # Refrigerator Sensor (A2)
 #   # ----------------------
 #   - platform: ads1115
 #     name: "Refrigerator Sensor Voltage"
@@ -201,7 +200,7 @@ sensor:
 #       reference_resistance: 5kOhm
 
 #   # ----------------------
-#   # 📌 Door Sensor (A3) - Voltage-Based Binary Sensor
+#   # Door Sensor (A3) - Voltage-Based Binary Sensor
 #   # ----------------------
 #   - platform: ads1115
 #     name: "Door Sensor Voltage"
@@ -212,8 +211,8 @@ sensor:
 #     accuracy_decimals: 4
 
 # ##############################################################
-# # 🚪 Convert Door Sensor to Binary Sensor
-# # ✅ Threshold Voltage = 2.5V (Above = Door Open, Below = Door Closed)
+# # Convert Door Sensor to Binary Sensor
+# # Threshold Voltage = 2.5V (Above = Door Open, Below = Door Closed)
 # ##############################################################
 # binary_sensor:
 #   - platform: template

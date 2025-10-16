@@ -52,8 +52,7 @@ packages:
 # esphome:
 
 # dashboard_import:
-#   package_import_url: ${package_import_url}
-#   import_full_config: false # or true
+# #   import_full_config: false # or true
 
 ##############################################################
 # Main Code

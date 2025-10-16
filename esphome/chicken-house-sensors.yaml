@@ -1,61 +1,56 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Chicken Coop Sensors
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Chicken Coop Sensors
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration monitors chicken coop food and water levels 
 # using load cells with HX711 amplifiers. It also tracks temperature 
 # and humidity using a DHT11 sensor.
 #
-# 🔧 Features:
+# Features:
 # - Tracks food and water consumption using load cells (HX711).
 # - Monitors temperature and humidity inside the chicken coop.
 # - Sends alerts when food or water runs low.
 #
-# 🔩 Hardware:
+# Hardware:
 # - Adafruit Feather HUZZAH ESP8266
 # - DHT11 Sensor (Temperature & Humidity)
 # - 2 x 10KG Load Cells
 # - 2 x HX711 Amplifier Modules
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: chicken-house
   friendly_name: "Chicken House Sensors"
   ui_comment: "Chicken House Sensors - Food, Water, Temperature, Humidity"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.25
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: LED_RED  # GPIO0 (ESP8266)
   status_led_inverted: "true"
 
-  # 📦 Metadata & Versioning
-  project_name: "genestealer.chicken-house"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chicken-house-sensors.yaml"
-
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
 
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: huzzah
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -64,13 +59,8 @@ packages:
   # Uncomment below to remove the status LED from this device:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🌡️ Air Temperature and Humidity Sensor (DHT11)
+# Air Temperature and Humidity Sensor (DHT11)
 ##############################################################
 
 sensor:
@@ -88,15 +78,15 @@ sensor:
     model: DHT11
 
 ##############################################################
-# 🏋️ Chicken Food & Water Load Cells (HX711)
+# Chicken Food & Water Load Cells (HX711)
 ##############################################################
 
-# ✅ The HX711 is a 24-bit ADC used to read the load cells.
-# ✅ Each load cell is calibrated to measure accurate weights.
-# ✅ The system filters out noise and spikes for better accuracy.
-# ✅ Sends alerts when food or water runs low.
+# The HX711 is a 24-bit ADC used to read the load cells.
+# Each load cell is calibrated to measure accurate weights.
+# The system filters out noise and spikes for better accuracy.
+# Sends alerts when food or water runs low.
 
-  # 🔹 Chicken Food Load Cell
+  # Chicken Food Load Cell
   - platform: hx711
     name: "Food Level"
     dout_pin: D4  # Data out
@@ -119,7 +109,7 @@ sensor:
     state_class: measurement
     accuracy_decimals: 3
 
-  # 🔹 Chicken Water Load Cell
+  # Chicken Water Load Cell
   - platform: hx711
     name: "Water Level"
     dout_pin: D12  # Data out

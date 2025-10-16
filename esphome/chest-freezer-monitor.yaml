@@ -1,62 +1,57 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Chest Freezer Temperature Monitor
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Chest Freezer Temperature Monitor
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration monitors freezer temperatures using 
 # multiple DS18B20 digital temperature sensors to ensure food safety.
 #
-# 🔧 Features:
+# Features:
 # - Monitors freezer temperature using DS18B20 sensors.
 # - Sends alerts if temperatures exceed defined thresholds.
 # - Integrates with Home Assistant for real-time monitoring.
 #
-# 🔩 Hardware:
+# Hardware:
 # - Adafruit Feather HUZZAH ESP8266
 # - DS18B20 Temperature Sensors
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: chest-freezer-monitor
   friendly_name: "Freezer Monitor"
   ui_comment: "Multiple DS18B20 temperature sensors to monitor chest freezer"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.43
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: LED_RED
   status_led_inverted: "true"
 
-  # 📦 Metadata & Versioning
-  project_name: "genestealer.chest-freezer-monitor"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/chest-freezer-monitor.yaml"
-
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
 
-  # 🌡️ High Temperature Thresholds
+  # High Temperature Thresholds
   high_temp_threshold_bottom: "-18"
   high_temp_threshold_top: "-10"
   
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: huzzah
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -65,13 +60,8 @@ packages:
   # Uncomment below to remove the status LED from this device:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🆘 High-Temperature Alert Binary Sensor
+# High-Temperature Alert Binary Sensor
 ##############################################################
 binary_sensor:
   - platform: template
@@ -83,18 +73,18 @@ binary_sensor:
       return (id(temperaturebottom).state > ${high_temp_threshold_bottom}) || (id(temperaturetop).state > ${high_temp_threshold_top});
 
 ##############################################################
-# 🌡️ DS18B20 Temperature Sensors (1-Wire)
+# DS18B20 Temperature Sensors (1-Wire)
 ##############################################################
 
-# ✅ The DS18B20 uses the 1-Wire protocol for temperature readings.
-# ✅ Each sensor has a unique address, listed below.
+# The DS18B20 uses the 1-Wire protocol for temperature readings.
+# Each sensor has a unique address, listed below.
 
 one_wire:
   - platform: gpio
     pin: GPIO14  # I2C SDA (Adafruit Feather HUZZAH ESP8266)
 
 sensor:
-  # 🔹 Bottom Freezer Temperature
+  # Bottom Freezer Temperature
   - platform: dallas_temp
     address: 0x333C01F09571DC28
     name: "Bottom Temperature"
@@ -106,7 +96,7 @@ sensor:
     state_class: "measurement"
     update_interval: ${sensor_update_interval}
 
-  # 🔹 Top Freezer Temperature
+  # Top Freezer Temperature
   - platform: dallas_temp
     address: 0xE43C01F095DFBB28
     name: "Top Temperature"

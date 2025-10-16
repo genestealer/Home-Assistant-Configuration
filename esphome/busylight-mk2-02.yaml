@@ -1,9 +1,9 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Busy Light 2
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Busy Light 2
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration controls a busy light indicator and 
 # infrared remote functionality using an M5Stack Atom ESP32.
 # The system integrates with Home Assistant and allows remote control
@@ -11,63 +11,53 @@
 #
 # Includes shared configurations from the 'common' directory
 #
-# 🔧 Features:
+# Features:
 # - Neopixel LED Busy Light for presence indication.
 # - Infrared remote transmitter for controlling Logitech Z-5500.
 # - Optimized ESP32 setup with GPIO voltage compensation.
 # - Wi-Fi connectivity for Home Assistant integration.
 #
-# 🔩 Hardware:
+# Hardware:
 # - M5Stack Atom ESP32 (Wi-Fi Microcontroller)
 # - M5Stack Mini Infrared Emitter & Receiver Unit (IR Transmission)
 # - SK6812 Neopixel RGB LED (Presence Indicator)
 #
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: busy-light-mk2-2
   friendly_name: "Busy Light 2 Mk2"
   ui_comment: "Busy Light 2 MK2"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.53
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 📦 Metadata & Versioning
-  project_name: "genestealer.busylight-mk2-02"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busylight-mk2-02.yaml"
-
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
   
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp32:
   board: m5stack-atom
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🔧 Hardware Configuration
+# Hardware Configuration
 ##############################################################
 
 # Countermeasure for CH552 GPIO0 Overvoltage Issue
@@ -79,7 +69,7 @@ output:
     id: wifi_fix_output
     pin: GPIO0
 
-# 🔴 Neopixel RGB LED (Busy Light)
+# Neopixel RGB LED (Busy Light)
 light:
   - platform: neopixelbus
     type: GRB
@@ -89,7 +79,7 @@ light:
     name: "Busy Light"
     id: busy_light
 
-# 🔗 I2C Bus Configuration
+# I2C Bus Configuration
 i2c:
   sda: 25
   scl: 21

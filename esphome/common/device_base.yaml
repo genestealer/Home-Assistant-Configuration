@@ -1,7 +1,7 @@
 ##############################################################
-# 🏠 ESPHome Device Base Configuration
-# 📌 Shared configuration for all ESPHome devices
-# 🔗 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# ESPHome Device Base Configuration
+# Shared configuration for all ESPHome devices
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 ##############################################################
 
 esphome:
@@ -11,19 +11,14 @@ esphome:
   # Device friendly name for Home Assistant
   friendly_name: "${friendly_name}"
 
-  # Project metadata
-  project:
-    name: ${project_name}
-    version: ${project_version}
-
 ##################################
-# 🔍 Logging & Debugging
+# Logging & Debugging
 ##################################
 logger:
   level: ${log_level}
 
 ##################################
-# 🔗 Home Assistant API
+# Home Assistant API
 ##################################
 api:
   encryption:
@@ -31,14 +26,14 @@ api:
   reboot_timeout: 1h
 
 ##################################
-# 📡 OTA Updates
+# OTA Updates
 ##################################
 ota:
   password: !secret esphome_ota_pass
   platform: esphome
 
 ##################################
-# 🛑 Safe Mode (Prevents Boot Loops)
+# Safe Mode (Prevents Boot Loops)
 ##################################
 safe_mode:
   boot_is_good_after: 2min
@@ -46,24 +41,26 @@ safe_mode:
   num_attempts: 5
 
 ##################################
-# 🔄 Restart Button
+# Restart Button
 ##################################
 button:
   - platform: restart
     name: "Restart"
     device_class: restart
+    entity_category: "diagnostic"
 
 ##################################
-# 🌐 Device Availability
+# Device Availability
 ##################################
 binary_sensor:
   - platform: status
     name: "${name} Status"
     device_class: connectivity
+    entity_category: "diagnostic"
 
 
 ##################################
-# ⏳ System Metrics (Uptime)
+# System Metrics (Uptime)
 ##################################
 sensor:
   - platform: uptime  
@@ -76,3 +73,12 @@ sensor:
       - lambda: return x / 3600.0;
     accuracy_decimals: 2
     entity_category: "diagnostic"
+
+# ##################################
+# # ESPHome Version
+# ##################################
+# text_sensor:
+#   - platform: version
+#     name: "ESPHome Version"
+#     entity_category: "diagnostic"
+

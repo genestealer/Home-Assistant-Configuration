@@ -45,7 +45,6 @@ packages:
 # status_led: !remove
 
 dashboard_import:
-  package_import_url: ${package_import_url}
   import_full_config: false # or true
 
 ##############################################################

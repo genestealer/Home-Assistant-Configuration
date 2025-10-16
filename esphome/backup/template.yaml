@@ -1,69 +1,69 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - [DEVICE PURPOSE]
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - [DEVICE PURPOSE]
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration is for a [DEVICE PURPOSE], enabling 
 # real-time monitoring and integration with Home Assistant. 
 # It utilizes [HARDWARE COMPONENTS] to measure and report data 
 # such as [METRICS] for improved automation and analytics.
 #
-# 🔧 Features:
-# - ✅ [Feature 1: e.g., Measures AC current using a CT clamp]
-# - ✅ [Feature 2: e.g., Calculates power usage in watts]
-# - ✅ [Feature 3: e.g., Sends real-time data to Home Assistant]
+# Features:
+# - [Feature 1: e.g., Measures AC current using a CT clamp]
+# - [Feature 2: e.g., Calculates power usage in watts]
+# - [Feature 3: e.g., Sends real-time data to Home Assistant]
 #
-# 🔩 Hardware:
+# Hardware:
 # - [DEVICE NAME]: [MANUFACTURER / MODEL / LINK]
 # - [SENSORS / MODULES]: [MODEL / SPECS / PURPOSE]
 #
-# 🌐 Connectivity:
+# Connectivity:
 # - Wi-Fi enabled for seamless integration with Home Assistant
 # - Static IP configuration for reliable network operation
 #
-# 🛠 Maintenance:
+# Maintenance:
 # - OTA updates supported for remote firmware upgrades
 # - Status LED for device health monitoring
 #
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: [device_id]
   friendly_name: "[Descriptive Friendly Name]"
   ui_comment: "[Short Description for UI]"  # Displayed in ESPHome UI only
 
-  # 🌐 Network Configuration (Static IP Settings)
+  # Network Configuration (Static IP Settings)
   ip: 192.168.X.XX
   gateway: 192.168.X.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED
+  # Status LED
   status_led: GPIOXX  # Pin used for status indication
   status_led_inverted: "true"
 
-  # 📦 Metadata & Versioning
+  # Metadata & Versioning
   project_name: "genestealer.[device_id]"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/[device_id].yaml"
 
-  # 📊 Sensor Update Intervals
+  # Sensor Update Intervals
   sensor_update_interval: 10s  # General update interval
   specific_sensor_update_interval: 10s  # For high-frequency sensors
 
-  # 🔄 Sampling Durations & Thresholds
+  # Sampling Durations & Thresholds
   sample_duration: 400ms  # Capture duration for AC measurement
 
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: [board_model]  # Define ESP board (e.g., huzzah, nodemcu)
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -72,13 +72,12 @@ packages:
 # Uncomment below to disable the status LED for this device:
 # status_led: !remove
 
-# 🌍 Dashboard Import Settings
+# Dashboard Import Settings
 dashboard_import:
-  package_import_url: ${package_import_url}
   import_full_config: false  # Import only essential sections
 
 ##############################################################
-# 🔄 I2C Configuration (For Connected Modules)
+# I2C Configuration (For Connected Modules)
 ##############################################################
 i2c:
   sda: GPIOX  # I2C Data line
@@ -86,18 +85,18 @@ i2c:
   frequency: 800kHz  # Adjusted for faster data communication
 
 ##############################################################
-# 📟 ADC / External Sensor Module (ADS1115, etc.)
+# ADC / External Sensor Module (ADS1115, etc.)
 ##############################################################
 ads1115:
   - address: 0x48
     continuous_mode: true  # Enables high-speed sampling mode
 
 ##############################################################
-# 📊 Sensor Configuration & Data Processing
+# Sensor Configuration & Data Processing
 ##############################################################
 
 sensor:
-  # 📡 ADS1115 Input - Raw Analog Measurement
+  # ADS1115 Input - Raw Analog Measurement
   - platform: ads1115
     name: "CT 0"
     id: adc_sensor
@@ -111,7 +110,7 @@ sensor:
           window_size: 5  # Noise reduction
           send_every: 2  # Less frequent updates
 
-  # 🔌 Current Transformer (CT Clamp) - AC Current Measurement
+  # Current Transformer (CT Clamp) - AC Current Measurement
   - platform: ct_clamp
     sensor: adc_sensor
     name: "Measured Current"
@@ -131,7 +130,7 @@ sensor:
           }
           return x;
 
-  # ⚡ Power Consumption (Wattage) Calculation
+  # Power Consumption (Wattage) Calculation
   - platform: template
     id: power_calculation
     name: "Power Usage"
@@ -147,7 +146,7 @@ sensor:
           float power = id(ct_clamp_sensor).state * voltage;
           return power < 50 ? 0 : power;  // Ignore small loads <50W
 
-  # 🔋 Energy Consumption - Total Daily Usage
+  # Energy Consumption - Total Daily Usage
   - platform: total_daily_energy
     name: 'Energy Used Today'
     id: energy_today
@@ -163,7 +162,7 @@ sensor:
       - delta: 0.01  # Only update when energy changes by 0.01 kWh
       - heartbeat: ${sensor_update_interval}  # Ensure periodic updates
 
-  # 🔌 Retrieve Known Voltage from Home Assistant
+  # Retrieve Known Voltage from Home Assistant
   - platform: homeassistant
     name: "Known Voltage"
     entity_id: sensor.voltage_reference
@@ -171,7 +170,7 @@ sensor:
     accuracy_decimals: 3  # High precision for calculations
 
 ##############################################################
-# ⏳ Time Synchronization & Midnight Reset
+# Time Synchronization & Midnight Reset
 ##############################################################
 time:
   - platform: homeassistant

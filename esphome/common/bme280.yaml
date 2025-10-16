@@ -1,10 +1,10 @@
 ##############################################################
-# 🏠 BME280 Sensor Configuration
-# 📌 Monitors Temperature, Humidity & Pressure
-# 📂 https://esphome.io/components/sensor/bme280.html
-# 📂 https://esphome.io/cookbook/bme280_environment.html
+# BME280 Sensor Configuration
+# Monitors Temperature, Humidity & Pressure
+# https://esphome.io/components/sensor/bme280.html
+# https://esphome.io/cookbook/bme280_environment.html
 #
-# 📌 Used Substitutions:
+# Used Substitutions:
 # - i2c_pin_sda: SDA pin of the I²C bus for this sensor
 # - i2c_pin_scl: SCL pin of the I²C bus for this sensor
 # - i2c_scan: Whether to scan the I²C bus
@@ -30,6 +30,8 @@ sensor:
       id: bme280_temperature
       accuracy_decimals: 2
       oversampling: 2x
+      device_class: temperature
+      state_class: measurement
       filters:
         - offset: ${bme280_offset_temperature}
 
@@ -38,16 +40,23 @@ sensor:
       id: bme280_pressure
       oversampling: 2x
       accuracy_decimals: 2
+      device_class: pressure
+      state_class: measurement
 
     humidity:
       name: "Humidity"
       id: bme280_humidity
       oversampling: 2x
       accuracy_decimals: 2
+      device_class: humidity
+      state_class: measurement
 
   # 🏔️ Altitude Calculation (based on pressure readings)
   - platform: template
     name: "Altitude"
+    device_class: distance
+    state_class: measurement
+    accuracy_decimals: 1
     lambda: |-
       const float STANDARD_SEA_LEVEL_PRESSURE = 1013.25; // in hPa
       return ((id(bme280_temperature).state + 273.15) / 0.0065) *
@@ -55,16 +64,20 @@ sensor:
     update_interval: ${bme280_update_interval}
     icon: 'mdi:signal'
     unit_of_measurement: 'm'
+    entity_category: "diagnostic"
 
-  # 🌫️ Absolute Humidity Calculation
+  # Absolute Humidity Calculation
   - platform: absolute_humidity
     name: "Absolute Humidity"
     temperature: bme280_temperature
     humidity: bme280_humidity
 
-  # 🌡️ Dew Point Calculation (for condensation risk monitoring)
+  # Dew Point Calculation (for condensation risk monitoring)
   - platform: template
     name: "Dew Point"
+    device_class: temperature
+    state_class: measurement
+    accuracy_decimals: 2
     lambda: |-
       return (243.5 * (log(id(bme280_humidity).state / 100) + 
       ((17.67 * id(bme280_temperature).state) / (243.5 + id(bme280_temperature).state))) /

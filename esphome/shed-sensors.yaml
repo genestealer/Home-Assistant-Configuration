@@ -1,22 +1,22 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Shed Sensors
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Shed Sensors
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration monitors the temperature and humidity
 # in the shed using a DHT22 sensor. It sends real-time data to 
 # Home Assistant via Wi-Fi.
 #
-# 🔧 Features:
+# Features:
 # - Monitors temperature and humidity using a DHT22 sensor.
 # - Sends real-time data to Home Assistant.
 #
-# 🔩 Hardware:
+# Hardware:
 # - ESP8266 (NodeMCU v2)
 # - DHT22 Sensor (Temperature & Humidity)
 #
-# 🛠 Wiring:
+# Wiring:
 # - DHT22 Sensor:
 #   - Data (OUT) → GPIO4 (D2)
 #   - VCC (3.3V/5V) → 3.3V
@@ -25,42 +25,37 @@
 #   - GPIO16 (D0) → LED Indicator
 ##############################################################
 
-# 🔄 Substitutions for Easy Configuration
+# Substitutions for Easy Configuration
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: shed-sensor
   friendly_name: "Shed Sensors"
   ui_comment: "Shed Sensors"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.58
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: D0  # GPIO16 - NodeMCU onboard LED
   status_led_inverted: "true"
 
-  # 📦 Project Metadata
-  project_name: "genestealer.shed-sensors"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/shed-sensors.yaml"
-
-  # 🛠 Debug Logging Level
+  # Debug Logging Level
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
   
 ##############################################################
-# 🚀 ESP8266 Board Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# 🔗 Import Shared Code (Common Components)
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -69,17 +64,12 @@ packages:
   # Uncomment below to remove the status LED:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🌡️ Shed Sensor Configuration (DHT22)
+# Shed Sensor Configuration (DHT22)
 ##############################################################
 sensor:
   # ----------------------
-  # 📌 Temperature & Humidity Sensor
+  # Temperature & Humidity Sensor
   # ----------------------
   - platform: dht
     pin: D1  # GPIO 5 GPIO pin 5 (NodeMCU Pin D1)

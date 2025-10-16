@@ -1,23 +1,23 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Living Room IKEA FORNÜFTIG Air Purifier
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Living Room IKEA FORNÜFTIG Air Purifier
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration allows control of an IKEA FORNÜFTIG Air Purifier 
 # using an ESP8266 (NodeMCU v2) while retaining the original PCB.
 #
-# 🔧 Features:
+# Features:
 # - Fan speed control (OFF, Low, Medium, High).
 # - Monitoring filter status via LED detection (ADC input).
 # - Integration with Home Assistant for remote control.
 #
-# 🔩 Hardware:
+# Hardware:
 # - ESP8266 (NodeMCU v2)
 # - IKEA FORNÜFTIG Air Purifier (Factory PCB retained)
 # - DC-DC Step-Down Converter (e.g., LM2596 / Mini-360)
 #
-# 🛠 WIRING & PCB MODIFICATIONS
+# WIRING & PCB MODIFICATIONS
 #
 # Powering the ESP8266:
 # - The IKEA FORNÜFTIG air purifier operates at 24V DC.
@@ -49,42 +49,37 @@
 #
 ##############################################################
 
-# 🔄 Substitutions for Easy Configuration
+# Substitutions for Easy Configuration
 substitutions:
-  # 📛 Naming
+  # Naming
   name: living-room-air-purifier
   friendly_name: "Living Room FORNÜFTIG Air Purifier"
   ui_comment: "IKEA FORNÜFTIG Air Purifier Control"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.48
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: D0  # GPIO16 - NodeMCU onboard LED
   status_led_inverted: "true"
 
-  # 📦 Project Metadata
-  project_name: "genestealer.IKEA-Fornuftig-air-purifier"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/living-rm-IKEA-Fornuftig-air-purifier.yaml"
-
-  # 🛠 Debug Logging Level
+  # Debug Logging Level
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
 
 ##############################################################
-# 🚀 ESP8266 Board Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# 🔗 Import Shared Code (Common Components)
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -93,13 +88,8 @@ packages:
   # Uncomment below to remove the status LED:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🏠 Home Assistant Integration
+# Home Assistant Integration
 ##############################################################
 esphome:
   on_boot:
@@ -113,7 +103,7 @@ esphome:
           id(power_usage).publish_state(power);
 
 ##############################################################
-# 🌡️ Sensor Configuration (Filter Status & Power Usage)
+# Sensor Configuration (Filter Status & Power Usage)
 ##############################################################
 sensor:
   # 🏷️ Filter LED Status (Detects when filter needs changing)
@@ -139,7 +129,7 @@ sensor:
               id: led_sensor
               state: ON
 
-  # ⚡ Power Consumption Based on Fan Speed
+  # Power Consumption Based on Fan Speed
   - platform: template
     name: "Power Usage"
     id: power_usage
@@ -148,7 +138,7 @@ sensor:
     unit_of_measurement: W
     update_interval: ${sensor_update_interval}
 
-  # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # Total Daily Energy Consumption (Resets at Midnight)
   # Create a Utility Meter in Home Assistant and ensure periodic resetting is enabled
   # This value resets on ESP reboot and at midnight.
   - platform: total_daily_energy
@@ -167,23 +157,23 @@ sensor:
       - heartbeat: ${sensor_update_interval}  # Ensure at least one update per interval
 
 ##############################################################
-# ⏳ Time Component (Used for Resetting Energy Meter at Midnight)
+# Time Component (Used for Resetting Energy Meter at Midnight)
 ##############################################################
 time:
   - platform: homeassistant
     id: homeassistant_time  # Sync time with HA for accurate resets
 
 ##############################################################
-# 🚪 Binary Sensors (Filter Status & Fan Speed Buttons)
+# Binary Sensors (Filter Status & Fan Speed Buttons)
 ##############################################################
 binary_sensor:
-  # 🚨 Filter Status LED
+  # Filter Status LED
   - platform: template
     id: led_sensor
     name: "Filter Status"
     device_class: problem
 
-  # 🛠 Fan Control Dial (Reads Physical Rotary Positions)
+  # Fan Control Dial (Reads Physical Rotary Positions)
   - platform: gpio
     internal: true
     id: in_d1
@@ -236,7 +226,7 @@ binary_sensor:
           speed: 3
 
 ##############################################################
-# ⚙️ Fan Speed Control Outputs (ESP Overrides Rotary Switch)
+# Fan Speed Control Outputs (ESP Overrides Rotary Switch)
 ##############################################################
 output:
   - platform: gpio
@@ -282,7 +272,7 @@ output:
           }
 
 ##############################################################
-# 🌬️ Fan Component
+# Fan Component
 ##############################################################
 fan:
   - platform: speed

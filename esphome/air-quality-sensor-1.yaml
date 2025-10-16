@@ -1,57 +1,52 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Indoor Air Quality Sensor #1
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Indoor Air Quality Sensor #1
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration is for an indoor air quality sensor, 
 # measuring temperature, humidity, air pressure, and particulate 
 # matter (PM2.5, PM10) using a BME280 and a PMS5003T sensor.
 #
 # Includes shared configurations from the 'common' directory
 #
-# 🔧 Features:
+# Features:
 # - Monitors air quality using particulate matter (PM) sensors.
 # - Tracks temperature, humidity, and pressure via BME280.
 # - Optimized for sensor longevity by cycling the PMS5003T fan.
 # - Sends real-time data to Home Assistant via Wi-Fi.
 #
-# 🔩 Hardware:
+# Hardware:
 # - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
 # - BME280 Sensor (Temperature, Humidity, Pressure)
 # - PMS5003T Sensor (Particulate Matter, Temperature, Humidity)
 #
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: air-quality-sensor-1
   friendly_name: "Air Quality Sensor 1"
   ui_comment: "Indoor Air Quality Monitoring"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.42
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED (ESP8266 Onboard LED)
+  # Status LED (ESP8266 Onboard LED)
   status_led: D0  # GPIO16 - NodeMCU onboard LED
   status_led_inverted: "true"
 
-  # 📦 Metadata & Versioning
-  project_name: "genestealer.air-quality-sensor"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/air-quality-sensor-1.yaml"
-
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
 
-  # 📟 BME280 Sensor Configuration
+  # BME280 Sensor Configuration
   i2c_pin_scl: D1
   i2c_pin_sda: D2
   i2c_scan: "true"
@@ -60,7 +55,7 @@ substitutions:
   bme280_update_interval: 1min
   bme280_offset_temperature: "-1"  # Temperature offset calibration
 
-  # 🌫️ PMSX003 Particulate Matter Sensor Configuration
+  # PMSX003 Particulate Matter Sensor Configuration
   pmsx003_update_interval: 5min  # Reduce reads to preserve fan lifespan
   pmsx003_pin_rx: D6  # GPIO12 on NodeMCU
   pmsx003_pin_tx: D5  # GPIO14 on NodeMCU
@@ -69,13 +64,13 @@ substitutions:
   pmsx003_type: PMS5003T  # Sensor model
 
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: nodemcuv2
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -87,13 +82,9 @@ packages:
   pms5003t: !include common/pms5003t.yaml
   daqi: !include common/daqi.yaml  # UK Daily Air Quality Index (DAQI)
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# 🌡️ Sensor Configuration (Temperature, Humidity, Air Quality)
+# Sensor Configuration (Temperature, Humidity, Air Quality)
 ##############################################################
 
 # Uses common configurations from the included `bme280.yaml` and `pms5003t.yaml`.

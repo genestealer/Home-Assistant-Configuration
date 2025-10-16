@@ -1,9 +1,9 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Busy Light & Logitech Z-5500 Remote
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Busy Light & Logitech Z-5500 Remote
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration controls a busy light indicator and 
 # infrared remote functionality using an M5Stack Atom ESP32.
 # The system integrates with Home Assistant and allows remote control
@@ -11,63 +11,55 @@
 #
 # Includes shared configurations from the 'common' directory
 #
-# 🔧 Features:
+# Features:
 # - Neopixel LED Busy Light for presence indication.
 # - Infrared remote transmitter for controlling Logitech Z-5500.
 # - Optimized ESP32 setup with GPIO voltage compensation.
 # - Wi-Fi connectivity for Home Assistant integration.
 #
-# 🔩 Hardware:
+# Hardware:
 # - M5Stack Atom ESP32 (Wi-Fi Microcontroller)
 # - M5Stack Mini Infrared Emitter & Receiver Unit (IR Transmission)
 # - SK6812 Neopixel RGB LED (Presence Indicator)
 #
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: busy-light-mk2-1
   friendly_name: "Busy Light 1 Mk2"
   ui_comment: "Busy Light 1 MK2 and Logitech Z-5500 Speaker Remote"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.51
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 📦 Metadata & Versioning
-  project_name: "genestealer.busylight-mk2-01"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/busylight-mk2-01.yaml"
-
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
 
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp32:
   board: m5stack-atom
+  framework:
+    type: esp-idf
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-  
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
 
 ##############################################################
-# 🔧 Hardware Configuration
+# Hardware Configuration
 ##############################################################
 
 # Countermeasure for CH552 GPIO0 Overvoltage Issue
@@ -79,30 +71,31 @@ output:
     id: wifi_fix_output
     pin: GPIO0
 
-# 🔴 Neopixel RGB LED (Busy Light)
+# Neopixel RGB LED (Busy Light)
+# Neopixel RGB LED (Busy Light) - use ESP32 RMT driver (ESP-IDF compatible)
 light:
-  - platform: neopixelbus
-    type: GRB
-    variant: SK6812
+  - platform: esp32_rmt_led_strip
     pin: 27
     num_leds: 1
     name: "Busy Light"
     id: busy_light
+    chipset: SK6812
+    rgb_order: GRB
 
-# 🔗 I2C Bus Configuration
+# I2C Bus Configuration
 i2c:
   sda: 25
   scl: 21
   #scan: true
   #frequency: 200kHz
 
-# 📡 Infrared Transmitter Configuration
+# Infrared Transmitter Configuration
 remote_transmitter:
   pin: 26  # IR transmitter output
   carrier_duty_percent: 50%
 
 ##############################################################
-# 🎛️ Infrared Remote Control for Logitech Z-5500
+# Infrared Remote Control for Logitech Z-5500
 ##############################################################
 
 # https://community.home-assistant.io/t/ir-change-in-nec-what-do-i-need-to-do/365840/26?page=2

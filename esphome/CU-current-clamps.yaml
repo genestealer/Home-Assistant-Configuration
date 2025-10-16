@@ -1,24 +1,24 @@
 
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Consumer Unit Energy Monitoring
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Consumer Unit Energy Monitoring
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration monitors real-time energy consumption
 # using a current transformer (SCT-013-000) and ADS1115 ADC.
 #
-# 🔧 Features:
+# Features:
 # - Measures AC current using a CT clamp (SCT-013-000).
 # - Calculates power usage (Watts) and energy (kWh).
 # - Integrates with Home Assistant for live monitoring.
 #
-# 🔩 Hardware:
+# Hardware:
 # - Adafruit Feather HUZZAH ESP8266
 # - SCT-013-000 Current Transformer
 # - ADS1115 ADC (4-Channel 16-Bit A/D Converter)
 # 
-# 🔌 WIRING:
+# WIRING:
 # The current transformer (CT) is connected to GND and one side of a 10µF capacitor.
 # The other side of the capacitor is connected to the mid-point of a voltage divider, 
 # which consists of two 10KΩ resistors in series between 3.3V DC and GND. 
@@ -34,59 +34,54 @@
 #
 ##############################################################
 
-# 🔄 Substitutions - Easily Configurable Parameters
+# Substitutions - Easily Configurable Parameters
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: cu-current-clamp
   friendly_name: "Consumer Unit Current Clamp"
   ui_comment: "Oven Energy Monitoring"
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.57
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: LED_RED 
   status_led_inverted: "false"
 
-  # 📦 Metadata & Versioning
+  # Metadata & Versioning
   project_name: "genestealer.cu-current-clamp"
   project_version: "1.0.0"
   package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/cu-current-clamp.yaml"
 
-  # 🛠 Debug Logging
+  # Debug Logging
   log_level: DEBUG 
 
-  # 📊 Sensor Update Intervals
-  sensor_update_interval: 1min  # General sensor update interval
+  # Sensor Update Intervals
+  sensor_update_interval: 5min  # General sensor update interval
   wifi_sensor_update_interval: 10min
   ct_sensor_update_interval: 60s  # CT clamp update interval
   
-  # 🔄 Current Clamp Sampling Duration
+  # Current Clamp Sampling Duration
   ct_clamp_sample_duration: 400ms  # Captures 20 full cycles (for 50Hz AC systems)
 
 ##############################################################
-# 🚀 ESP Platform Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: huzzah
 
 ##############################################################
-# 🔗 Shared Code & Package Imports
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
   status_led: !include common/status_led.yaml
   wifi: !include common/device_base_wifi.yaml
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# 🔄 I2C Bus Configuration (Used for ADS1115)
+# I2C Bus Configuration (Used for ADS1115)
 ##############################################################
 i2c:
   sda: GPIO4
@@ -94,14 +89,14 @@ i2c:
   frequency: 800kHz  # Faster communication for ADC
 
 ##############################################################
-# 📟 ADS1115 (Analog-to-Digital Converter)
+# ADS1115 (Analog-to-Digital Converter)
 ##############################################################
 ads1115:
   - address: 0x48
     continuous_mode: true  # Enables fast continuous sampling
 
 ##############################################################
-# 📊 Sensor Configuration
+# Sensor Configuration
 ##############################################################
 
 
@@ -109,7 +104,7 @@ sensor:
 # Commented out as I now have a separate energy meter for the oven and am just using the sensor for the SPD.
 
 
-  # # 📡 ADS1115 Sensor Input (Raw Analog Voltage from CT Clamp)
+  # # ADS1115 Sensor Input (Raw Analog Voltage from CT Clamp)
   # - platform: ads1115
   #   name: "CT 1"
   #   id: adc_sensor
@@ -133,7 +128,7 @@ sensor:
   #       - heartbeat: ${ct_sensor_update_interval} # Ensure updates happen at least every ${ct_sensor_update_interval} seconds 
   #       - delta: 0.001 # Immediate update if value changes significantly
 
-  # # 🔌 Current Transformer (CT Clamp) - Measures AC Current
+  # # Current Transformer (CT Clamp) - Measures AC Current
   # - platform: ct_clamp
   #   sensor: adc_sensor
   #   name: "Oven Measured Current"
@@ -159,7 +154,7 @@ sensor:
   #       - delta: 0.1 # Immediate update if value changes significantly
         
 
-  # # 🔌 Read Known Voltage from Home Assistant
+  # # Read Known Voltage from Home Assistant
   # - platform: homeassistant
   #   name: "Known Voltage"
   #   entity_id: sensor.myups_input_voltage
@@ -167,7 +162,7 @@ sensor:
   #   accuracy_decimals: 3  # Ensures high precision for power calculation
 
 
-  # # ⚡ Power Calculation (Watts) Based on Measured Current
+  # # Power Calculation (Watts) Based on Measured Current
   # - platform: template
   #   id: my_power1
   #   name: "Oven Power"
@@ -193,7 +188,7 @@ sensor:
       
 
 
-  # # 🔋 Total Daily Energy Consumption (Resets at Midnight)
+  # # Total Daily Energy Consumption (Resets at Midnight)
   # # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
   # - platform: total_daily_energy
   #   name: 'Oven Energy Today'
@@ -227,7 +222,7 @@ binary_sensor:
       - delayed_off: 1000ms
 
 ##############################################################
-# ⏳ Time Component (Used for Resetting Energy Meter at Midnight)
+# Time Component (Used for Resetting Energy Meter at Midnight)
 ##############################################################
 time:
   - platform: homeassistant

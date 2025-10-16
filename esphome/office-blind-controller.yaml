@@ -1,9 +1,9 @@
 ##############################################################
-# 🏠 Richard Huish 2025
-# 📌 ESPHome Configuration - Office Blind Controller
-# 📂 Repository: https://github.com/genestealer/Home-Assistant-Configuration
+# Richard Huish 2025
+# ESPHome Configuration - Office Blind Controller
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
-# 📝 Description:
+# Description:
 # This ESPHome configuration allows automated control of office blinds 
 # using a WeMos D1 Mini (ESP8266). It supports:
 # - Open, Close, and Stop actions
@@ -13,11 +13,11 @@
 #
 # Includes shared configurations from the 'common' directory
 #
-# 🔩 Hardware:
+# Hardware:
 # - ESP8266 (WeMos D1 Mini)
 # - Relays or Transistors for Motor Control
 #
-# 🛠 Wiring:
+# Wiring:
 # - Blind Control Outputs
 #   - Open → GPIO12 (D6)  
 #   - Close → GPIO14 (D5)  
@@ -27,42 +27,37 @@
 #
 ##############################################################
 
-# 🔄 Substitutions for Easy Configuration
+# Substitutions for Easy Configuration
 substitutions:
-  # 📛 Naming & Identification
+  # Naming & Identification
   name: office-blind-controller
   friendly_name: "Office Blind Controller"
   ui_comment: "Office Blind Controller" # Shown only in UI
 
-  # 🌐 Network Configuration (Static IP)
+  # Network Configuration (Static IP)
   ip: 192.168.2.52
   gateway: 192.168.2.1
   subnet: 255.255.255.0
 
-  # 🔴 Status LED Configuration
+  # Status LED Configuration
   status_led: D4  # GPIO2 - Onboard LED
   status_led_inverted: "true"
 
-  # 📦 Project Metadata
-  project_name: "genestealer.office-blind-controller"
-  project_version: "1.0.0"
-  package_import_url: "github://genestealer/Home-Assistant-Configuration/esphome/office-blind-controller.yaml"
-
-  # 🛠 Debug Logging Level
+  # Debug Logging Level
   log_level: DEBUG
 
-  # 📊 Sensor Update Interval
+  # Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
 
 ##############################################################
-# 🚀 ESP8266 Board Configuration
+# Board Configuration
 ##############################################################
 esp8266:
   board: d1_mini
 
 ##############################################################
-# 🔗 Import Shared Code (Common Components)
+# Import Shared Code (Common Components)
 ##############################################################
 packages:
   device_base: !include common/device_base.yaml
@@ -71,13 +66,8 @@ packages:
   # Uncomment below to remove the status LED:
   # status_led: !remove
 
-# 🌍 Dashboard Import Settings
-dashboard_import:
-  package_import_url: ${package_import_url}
-  import_full_config: false  # Import only necessary sections
-
 ##############################################################
-# ⚡ Output Configuration (Motor Control Pins)
+# Output Configuration (Motor Control Pins)
 ##############################################################
 output:
   - platform: gpio
@@ -102,7 +92,7 @@ output:
       mode: OUTPUT_OPEN_DRAIN  # Sink current for relay/transistor control
 
 ##############################################################
-# 🎛️ Button Actions for Manual Control
+# Button Actions for Manual Control
 ##############################################################
 button:
   - platform: template
@@ -161,7 +151,7 @@ button:
       - output.turn_off: close_motor
 
 ##############################################################
-# 🌐 Global Variables for Blind State Tracking
+# Global Variables for Blind State Tracking
 ##############################################################
 globals:
   - id: cover_opening
@@ -173,7 +163,7 @@ globals:
     initial_value: "false"
 
 ##############################################################
-# 🏠 Cover Control for Automated Blind Movement
+# Cover Control for Automated Blind Movement
 ##############################################################
 cover:
   - platform: template
