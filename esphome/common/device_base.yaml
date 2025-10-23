@@ -54,7 +54,7 @@ button:
 ##################################
 binary_sensor:
   - platform: status
-    name: "${name} Status"
+    name: "Status"
     device_class: connectivity
     entity_category: "diagnostic"
 

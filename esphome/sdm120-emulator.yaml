@@ -110,11 +110,11 @@ esp32:
     type: arduino
 
 
-# logger:
-#   level: ${log_level}
-#   logs:
-#     # modbus: WARN
-#     modbus_controller: INFO # Stop modbus spamming the logs 
+logger:
+  level: ${log_level}
+  logs:
+    # modbus: WARN
+    modbus_controller: INFO # Stop modbus spamming the logs 
 
 ##############################################################
 # Import Shared Code (Common Components)
@@ -514,7 +514,7 @@ modbus_controller:
 number:
   # Register 0x0000: Line voltage (V)
   - platform: template
-    name: "${friendly_name} Voltage"
+    name: "Voltage"
     id: voltage_input
     min_value: 0
     max_value: 300
@@ -528,7 +528,7 @@ number:
 
   # Register 0x0006: Line current (A) - negative for export
   - platform: template
-    name: "${friendly_name} Current"
+    name: "Current"
     id: current_input
     min_value: -50
     max_value: 50
@@ -541,7 +541,7 @@ number:
             id(current_val) = x;
 
   - platform: template
-    name: "${friendly_name} Active Power"
+    name: "Active Power"
     id: active_power_input
     min_value: -5000
     max_value: 5000
@@ -554,7 +554,7 @@ number:
             id(active_power_val) = x;
 
   - platform: template
-    name: "${friendly_name} Apparent Power"
+    name: "Apparent Power"
     id: apparent_power_input
     min_value: 0
     max_value: 5000
@@ -567,7 +567,7 @@ number:
             id(apparent_power_val) = x;
 
   - platform: template
-    name: "${friendly_name} Reactive Power"
+    name: "Reactive Power"
     id: reactive_power_input
     min_value: -5000
     max_value: 5000
@@ -580,7 +580,7 @@ number:
             id(reactive_power_val) = x;
 
   - platform: template
-    name: "${friendly_name} Power Factor"
+    name: "Power Factor"
     id: power_factor_input
     min_value: -1
     max_value: 1
@@ -593,7 +593,7 @@ number:
             id(power_factor_val) = x;
 
   - platform: template
-    name: "${friendly_name} Frequency"
+    name: "Frequency"
     id: frequency_input
     min_value: 45
     max_value: 65
@@ -606,7 +606,7 @@ number:
             id(frequency_val) = x;
 
   - platform: template
-    name: "${friendly_name} Import Energy"
+    name: "Import Energy"
     id: import_energy_input
     min_value: 0
     max_value: 99999
@@ -619,7 +619,7 @@ number:
             id(import_energy_val) = x;
 
   - platform: template
-    name: "${friendly_name} Export Energy"
+    name: "Export Energy"
     id: export_energy_input
     min_value: 0
     max_value: 99999
@@ -632,7 +632,7 @@ number:
             id(export_energy_val) = x;
 
   - platform: template
-    name: "${friendly_name} Phase Angle"
+    name: "Phase Angle"
     id: phase_angle_input
     min_value: -180
     max_value: 180
@@ -647,7 +647,7 @@ number:
 # Setup mode toggle
 switch:
   - platform: template
-    name: "${friendly_name} Setup Mode"
+    name: "Setup Mode"
     id: setup_mode_switch
     optimistic: true
     turn_on_action:

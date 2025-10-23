@@ -50,7 +50,7 @@ alert:
   chicken_food_low_alert:
     name: Chicken food low warning alert
     done_message: Chickens Food Refilled
-    message: "Chicken Food Low Warning! {{ states('sensor.chicken_house_food_level') }}kg"
+    message: "Chicken Food Low Warning! {{ (states('sensor.chicken_house_food_level') | float | round(3)) }}kg"
     entity_id: binary_sensor.chicken_low_food_sensor
     state: "on"
     repeat:
@@ -72,7 +72,7 @@ alert:
   chicken_water_low_alert:
     name: Chicken water low warning alert
     done_message: Chickens Water Refilled
-    message: "Chicken Water Low Warning! {{ states('sensor.chicken_house_water_level') }}kg"
+    message: "Chicken Water Low Warning! {{ (states('sensor.chicken_house_water_level') | float | round(3)) }}kg"
     entity_id: binary_sensor.chicken_low_water_sensor
     state: "on"
     repeat:

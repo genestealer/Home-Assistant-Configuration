@@ -676,87 +676,6 @@
   - data:
       message: Server is getting HOT!
     service: notify.google_cloud_notify
-- id: '1592486159377'
-  alias: Parcel Box Opened Notify - Rev 1
-  description: ''
-  trigger:
-  - type: opened
-    platform: device
-    device_id: 2aadd916ad46270ecda5ab407a461e6c
-    entity_id: binary_sensor.parcel_box_contact
-    domain: binary_sensor
-  condition: []
-  action:
-  - data:
-      message: Parcel box has just been opened
-      title: Delivery
-    service: notify.pushover_notify
-    enabled: false
-  - data:
-      filename: /config/www/tmp/drive.jpg
-    entity_id: camera.drive_high_16
-    service: camera.snapshot
-    enabled: false
-  - data:
-      data:
-        attachment: /config/www/tmp/drive.jpg
-      message: Delivery person?
-      title: Driveway CCTV Photo
-    service: notify.pushover_notify
-    enabled: false
-  - data:
-      cache: false
-      entity_id: media_player.whole_house
-      message: Parcel box has just been opened
-    service: tts.google_translate_say
-    enabled: false
-  - service: notify.mobile_app_rich_mob_app
-    data:
-      message: Parcel Box Opened
-      data:
-        image: /api/camera_proxy/camera.garage_13
-        color: green
-        channel: ParcelBox1
-        vibrationPattern: 100,200,100,200,100,200,100,200
-        importance: default
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:package-variant-closed
-    enabled: true
-  - service: notify.mobile_app_lucy_mob_app
-    data:
-      message: Front Door Doorbell
-      data:
-        image: /api/camera_proxy/camera.garage_13
-        color: green
-        channel: ParcelBox1
-        vibrationPattern: 100,200,100,200,100,200,100,200
-        importance: default
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:package-variant-closed
-    enabled: true
-  - data:
-      filename: /config/www/tmp/garage.jpg
-    service: camera.snapshot
-    enabled: false
-    target:
-      entity_id:
-      - camera.garage_13
-  - service: notify.mobile_app_rich_mob_app
-    data:
-      message: Parcel Box Opened
-      data:
-        image: /local/tmp/garage.jpg
-        color: green
-        channel: ParcelBox1
-        vibrationPattern: 100,200,100,200,100,200,100,200
-        importance: default
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:package-variant-closed
-    enabled: false
-  mode: single
 - id: '1601037277352'
   alias: Proximity/Perimeter Warning System - Primary and Secondary Zone Failure
   description: ''
@@ -2005,16 +1924,10 @@
   conditions: []
   actions:
   - data:
-      filename: /media/garage.jpg
-    target:
-      entity_id:
-      - camera.garage_32_accc8e9a8378
-    action: camera.snapshot
-  - data:
       title: Parcel Box
       message: Parcel Box Opened
       data:
-        image: /media/local/garage.jpg
+        image: /api/camera_proxy/camera.garage_32_accc8e9a8378
         color: green
         channel: ParcelBox1
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2027,7 +1940,7 @@
       title: Parcel Box
       message: Parcel Box Opened
       data:
-        image: /media/local/garage.jpg
+        image: /api/camera_proxy/camera.garage_32_accc8e9a8378
         color: green
         channel: ParcelBox1
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2037,16 +1950,10 @@
         notification_icon: mdi:package-variant-closed
     action: notify.mobile_app_lucy_mob_app
   - data:
-      filename: /media/garage2.jpg
-    target:
-      entity_id:
-      - camera.bunny_25
-    action: camera.snapshot
-  - data:
       title: Parcel Box
       message: Parcel Box Opened Photo 2
       data:
-        image: /media/local/garage2.jpg
+        image: /api/camera_proxy/camera.p3224_lve_0
         color: green
         channel: ParcelBox2
         importance: default
@@ -2059,7 +1966,7 @@
       title: Parcel Box
       message: Parcel Box Opened Photo 2
       data:
-        image: /media/local/garage2.jpg
+        image: /api/camera_proxy/camera.p3224_lve_0
         color: green
         channel: ParcelBox2
         importance: default
@@ -2070,8 +1977,6 @@
     action: notify.mobile_app_lucy_mob_app
   - data:
       message: Parcel Box Opened
-      target:
-      - office
     enabled: true
     action: notify.google_assistant_sdk
   mode: single
@@ -2138,10 +2043,11 @@
       target:
         entity_id: camera.front_door_11
       action: camera.snapshot
+      enabled: false
   - parallel:
     - data:
         data:
-          image: /media/local/frontdoor.jpg
+          image: /api/camera_proxy/camera.front_door_11
           color: red
           channel: DoorbellImage2
           vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
@@ -2156,7 +2062,7 @@
       action: notify.mobile_app_rich_mob_app
     - data:
         data:
-          image: /media/local/frontdoor.jpg
+          image: /api/camera_proxy/camera.front_door_11
           color: red
           channel: DoorbellImage2
           vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
@@ -2191,15 +2097,10 @@
     enabled: true
   actions:
   - data:
-      filename: /media/frontdoor_sensor.jpg
-    target:
-      entity_id: camera.front_door_11
-    action: camera.snapshot
-  - data:
       title: Front Door
       message: Door opened, but no one is home!
       data:
-        image: /media/local/frontdoor_sensor.jpg
+        image: /api/camera_proxy/camera.front_door_11
         color: red
         channel: DoorOpen1
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2212,7 +2113,7 @@
       title: Front Door
       message: Door opened, but no one is home!
       data:
-        image: /media/local/frontdoor_sensor.jpg
+        image: /api/camera_proxy/camera.front_door_11
         color: red
         channel: DoorOpen1
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2243,27 +2144,10 @@
     enabled: true
   actions:
   - data:
-      filename: /media/garden.jpg
-    action: camera.snapshot
-    enabled: false
-  - data:
       title: Back Door
       message: Back door opened, but no one is home!
       data:
-        image: /media/local/garden.jpg
-        color: red
-        channel: BackDoorOpen
-        vibrationPattern: 100,200,100,200,100,200,100,200
-        importance: high
-        timeout: 86400
-        visibility: public
-        notification_icon: mdi:door
-    action: notify.mobile_app_rich_mob_app
-    enabled: false
-  - data:
-      title: Back Door
-      message: Back door opened, but no one is home!
-      data:
+        image: /api/camera_proxy/camera.p3225_lv_mk_ii_1
         color: red
         channel: BackDoorOpen
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2277,6 +2161,7 @@
       title: Back Door
       message: Back door opened, but no one is home!
       data:
+        image: /api/camera_proxy/camera.p3225_lv_mk_ii_1
         color: red
         channel: BackDoorOpen
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2441,11 +2326,12 @@
     action: camera.snapshot
     target:
       device_id: 7b90f64243d21822c3e6bbfc339fad0a
+    enabled: false
   - data:
-      title: Front Door
-      message: Door opened, but no one is home!
+      title: Garage Door
+      message: Garage Door opened, but no one is home!
       data:
-        image: /media/local/garage_sensor.jpg
+        image: /api/camera_proxy/camera.p3224_lve_0
         color: red
         channel: DoorOpen3
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2455,10 +2341,10 @@
         notification_icon: mdi:door
     action: notify.mobile_app_rich_mob_app
   - data:
-      title: Front Door
-      message: Door opened, but no one is home!
+      title: Garage Door
+      message: Garage Door opened, but no one is home!
       data:
-        image: /media/local/garage_sensor.jpg
+        image: /api/camera_proxy/camera.p3224_lve_0
         color: red
         channel: DoorOpen3
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -3065,8 +2951,17 @@
       target: kitchen
     enabled: true
     action: notify.google_assistant_sdk
+  - data:
+      message: Tea timer, bing bong dong - bang!
+    enabled: true
+    action: notify.google_assistant_sdk
   - alias: 'Send to targets separately, to avoid queuing delay '
     parallel:
+    - data:
+        message: Tea timer, beep! beep!
+        target: Dining Room
+      enabled: true
+      action: notify.google_assistant_sdk
     - data:
         message: Tea timer, beep! beep!
         target: Dining Room
@@ -3082,11 +2977,7 @@
         target: office
       enabled: true
       action: notify.google_assistant_sdk
-    - data:
-        message: Tea timer, bing bong. Lucy, you are loved!
-        target: living room
-      enabled: true
-      action: notify.google_assistant_sdk
+    enabled: false
   mode: restart
 - id: '1720118905430'
   alias: Broadcast dinner almost ready
@@ -3888,7 +3779,7 @@
         domain: number
         entity_id: e7b800d8566a3a708adfb511d30b5344
         type: set_value
-        value: 97
+        value: 95
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: number
         entity_id: 94221f4692e94c9c394220b9e208ca67

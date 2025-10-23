@@ -81,6 +81,14 @@ packages:
   # status_led: !remove
 
 ##############################################################
+# Sub-Devices (group Electricity-related entities)            #
+##############################################################
+esphome:
+  devices:
+    - id: electricity_device
+      name: "Electricity"
+
+##############################################################
 # Quiet Hours Configuration for Doorbell
 ##############################################################
 globals:
@@ -101,6 +109,7 @@ sensor:
   - platform: pulse_meter
     name: "House Power Consumption"
     id: energy_pulse_meter
+    device_id: electricity_device
     unit_of_measurement: 'W'
     state_class: measurement
     device_class: power
@@ -120,6 +129,7 @@ sensor:
     name: 'Daily Energy Import'
     id: sensor_total_daily_energy_import
     power_id: energy_pulse_meter
+    device_id: electricity_device
     unit_of_measurement: 'kWh'
     icon: mdi:circle-slice-3
     state_class: total_increasing

@@ -29,20 +29,20 @@ wifi:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: "${name} IP"
+      name: "IP"
       icon: "mdi:ip-network-outline"
       entity_category: "diagnostic"
       update_interval: ${wifi_sensor_update_interval}
     mac_address:
-      name: "${name} MAC"
+      name: "MAC"
       icon: "mdi:access-point-network"
       entity_category: "diagnostic"
     ssid:
-      name: "${name} SSID"
+      name: "SSID"
       icon: "mdi:wifi"
       entity_category: "diagnostic"
     bssid:
-      name: "${name} BSSID"
+      name: "BSSID"
       icon: "mdi:access-point-network"
       entity_category: "diagnostic"
       update_interval: ${wifi_sensor_update_interval}
@@ -53,7 +53,7 @@ text_sensor:
 ##################################
 sensor:
   - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
-    name: "${name} RSSI"
+    name: "RSSI"
     id: wifi_signal_db
     update_interval: ${wifi_sensor_update_interval}
     device_class: signal_strength
@@ -61,7 +61,7 @@ sensor:
     entity_category: "diagnostic"
 
   - platform: copy # Reports the WiFi signal strength in %
-    name: "${name} Wi-Fi Signal"
+    name: "Wi-Fi Signal"
     source_id: wifi_signal_db
     id: wifi_signal_strength
     filters:

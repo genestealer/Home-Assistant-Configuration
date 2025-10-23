@@ -59,6 +59,17 @@ packages:
   wifi: !include common/device_base_wifi.yaml
 
 ##############################################################
+# Sub-Devices (group IR controls under a separate device)
+##############################################################
+esphome:
+  # Sub-device for Logitech Z-5500 IR remote controls
+  devices:
+    - id: z5500_remote
+      name: "Logitech Z-5500 Remote"
+  # Ensure the config compiles on versions that support sub-devices
+  min_version: "2025.10.0"
+
+##############################################################
 # Hardware Configuration
 ##############################################################
 
@@ -121,6 +132,7 @@ remote_transmitter:
 button:
   - platform: template
     name: "Power"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -130,6 +142,7 @@ button:
 
   - platform: template
     name: "Volume Up"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -139,6 +152,7 @@ button:
 
   - platform: template
     name: "Volume Down"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -148,6 +162,7 @@ button:
 
   - platform: template
     name: "Test"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -157,6 +172,7 @@ button:
 
   - platform: template
     name: "Direct Input"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -166,6 +182,7 @@ button:
 
   - platform: template
     name: "Optical Input"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -175,6 +192,7 @@ button:
 
   - platform: template
     name: "Coax Input"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -184,6 +202,7 @@ button:
 
   - platform: template
     name: "Effects"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -193,6 +212,7 @@ button:
 
   - platform: template
     name: "Settings"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -202,6 +222,7 @@ button:
 
   - platform: template
     name: "Subwoofer Up"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -211,6 +232,7 @@ button:
 
   - platform: template
     name: "Subwoofer Down"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -220,6 +242,7 @@ button:
 
   - platform: template
     name: "Center Up"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -229,6 +252,7 @@ button:
 
   - platform: template
     name: "Center Down"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -238,6 +262,7 @@ button:
 
   - platform: template
     name: "Surround Up"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -247,6 +272,7 @@ button:
 
   - platform: template
     name: "Surround Down"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
@@ -256,6 +282,7 @@ button:
 
   - platform: template
     name: "Mute"
+    device_id: z5500_remote
     on_press:
       - remote_transmitter.transmit_nec:
           address: '0xF708'
