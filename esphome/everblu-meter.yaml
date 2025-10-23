@@ -1,0 +1,284 @@
+##############################################################
+# ESPHome config for Itron EverBlu Cyble Enhanced (RADIAN) via CC1101
+# Uses a custom external component 'everblu' located under components/everblu
+# No MQTT is used; all values are native ESPHome sensors via API.
+# Based on work by myself and others: https://github.com/genestealer/everblu-meters-esp8266-improved
+#
+# Frequency notes:
+#  - The EverBlu Cyble Enhanced datasheet specifies an RF carrier of 433.82 MHz.
+#  - In practice, crystal tolerances and local oscillator drift mean the actual on-air
+#    frequency can be slightly above or below this value. To accommodate that, we scan
+#    either side of 433.820 MHz during discovery.
+#  - This config sets a base frequency of 433.820 MHz and enables discovery.
+#    Both scans use the same scan range, but with different step sizes:
+#      - Normal scan: 0.5 kHz steps
+#      - Deep scan:   0.25 kHz steps (finer)
+#    Adjust the range via scan_start_mhz/scan_end_mhz in the everblu sensor block.
+#
+# Wiring (ESP8266 HUZZAH):
+#  - SPI (hardware): SCK GPIO14, MOSI GPIO13, MISO GPIO12
+#  - CC1101 CSN -> GPIO5 (per your previous Arduino wiring). Alternatives: GPIO15 (common) or GPIO4.
+#  - CC1101 GDO0 -> GPIO4 (per your previous Arduino wiring)
+#  - CC1101 VCC -> 3V3, GND -> GND
+# Notes:
+#  - On ESP8266, GPIO15 must be LOW at boot. HUZZAH has a pulldown, so GPIO15 usually works for CS.
+#    Some CC1101 boards have a CS pull-up; if the board fails to boot, move CS to GPIO4 and update cs_pin below.
+##############################################################
+
+# Sharing notes: how to configure this component (required, optional, schedule)
+#
+# Reading schedule (defaults to Monday-Friday):
+#   Set under the everblu sensor block:
+#     read_schedule: Monday-Friday   # default if omitted
+#     # or
+#     read_schedule: Monday-Saturday
+#     # or
+#     read_schedule: Monday-Sunday
+#   Tip: After a successful read, the meter may report wake/sleep hours
+#   (time_start/time_end). Reads are then gated to that hour window on the
+#   selected days.
+#
+# Required keys in the everblu sensor block:
+#   - cs_pin:         GPIO for CC1101 CS (output)
+#   - gdo0_pin:       GPIO for CC1101 GDO0 (input)
+#   - frequency:      float MHz (e.g., 433.820)
+#   - meter_serial:   uint32 (1–8 digits). Set in YAML only; validated at compile time.
+#   - meter_year:     uint8 (00–99, last two digits). Set in YAML only; validated at compile time.
+#
+# Recommended:
+#   - time_id:        A time source (e.g., Home Assistant time) so weekday
+#                     schedules work and hour gating can be applied.
+#
+# Optional settings (defaults shown where applicable):
+#   - read_schedule:       string; default "Monday-Friday"
+#                          options: Monday-Friday, Monday-Saturday, Monday-Sunday
+#   - read_at_startup:     bool; default true
+#   - error_led_pin:       GPIO; blink LED when radio init fails
+#   - error_led_inverted:  bool; default false
+#   - blink_on_failure:    bool; default true
+#   - scan_start_mhz / scan_end_mhz: floats; provide both to enable discovery over that range
+#       - Normal scan step: 0.5 kHz
+#       - Deep scan step:   0.25 kHz
+#
+# Optional sensors you can expose (add any subset you want):
+#   - liters, battery, reads_counter, rssi, rssi_dbm, lqi,
+#     time_start, time_end, discovered_frequency, radio_connected (binary_sensor)
+#
+# Helper buttons available in this file:
+#   - EverBlu Discover Frequency / Deep Frequency Scan / Force Read
+#   - EverBlu Re-Probe Radio / Dump CC1101 Status / SPI Self-Test / Toggle SPI Trace
+
+substitutions:
+  name: everblu-meter-01
+  friendly_name: "EverBlu Meter"
+  ui_comment: "Itron EverBlu Cyble Enhanced via CC1101"
+
+  ip: 192.168.2.60
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  log_level: DEBUG
+  sensor_update_interval: 30s
+  wifi_sensor_update_interval: 10min
+
+  # CC1101 frequency (adjust after discovery if needed)
+  frequency_mhz: "433.760010"
+  meter_serial: "257750"     # Enter your meter serial (without leading 0)
+  meter_year: "20"            # Production year (last two digits)
+
+  # Pin definitions (SPI bus + CC1101)
+  # SPI pins
+  spi_clk_pin: GPIO14   # SCK (SPI clock)
+  spi_mosi_pin: GPIO13  # MOSI
+  spi_miso_pin: GPIO12  # MISO
+  # CC1101 control pins
+  # Wiring matching your working Arduino code
+  cc1101_cs_pin: GPIO15   # CSN (Chip Select)
+  cc1101_gdo0_pin: GPIO5  # GDO0 (General Digital Output 0)
+  cc1101_gdo2_pin: GPIO4  # GDO2 (General Digital Output 2)
+
+esp8266:
+  board: huzzah
+
+packages:
+  device_base: !include common/device_base.yaml
+  wifi: !include common/device_base_wifi.yaml
+  # status_led: !include common/status_led.yaml
+
+external_components:
+  - source:
+      type: local
+      path: components
+    components: [everblu]
+
+# SPI bus for CC1101 (hardware SPI on ESP8266 HUZZAH)
+spi:
+  clk_pin: ${spi_clk_pin}
+  mosi_pin: ${spi_mosi_pin}
+  miso_pin: ${spi_miso_pin}
+  interface: hardware
+
+# Provide time so the component can honor weekday schedules
+time:
+  - platform: homeassistant
+    id: ha_time
+
+# Home Assistant-configurable parameter (frequency only)
+number:
+  - platform: template
+    id: everblu_frequency
+    name: "Frequency (MHz)"
+    min_value: 433.700
+    max_value: 434.000
+    step: 0.001
+    mode: box
+    unit_of_measurement: "MHz"
+    entity_category: config
+    restore_value: true
+    initial_value: ${frequency_mhz}
+    set_action:
+      then:
+        - lambda: |-
+            if (id(everblu0)) {
+              id(everblu0)->set_frequency(x);
+              ESP_LOGI("everblu", "Frequency set to %.3f MHz via HA", (double) x);
+            }
+
+# Helper button to trigger on-demand frequency discovery
+button:
+  - platform: template
+    name: "Discover Frequency"
+    icon: mdi:radar
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->discover_frequency();
+  - platform: template
+    name: "Deep Frequency Scan"
+    icon: mdi:radar
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->discover_frequency_deep();
+  - platform: template
+    name: "Force Read"
+    icon: mdi:download
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->force_read();
+  - platform: template
+    name: "Re-Probe Radio"
+    icon: mdi:chip
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->reprobe_radio();
+  - platform: template
+    name: "Dump CC1101 Status"
+    icon: mdi:information-outline
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->dump_cc1101_status();
+  - platform: template
+    name: "SPI Self-Test"
+    icon: mdi:vector-square
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->spi_self_test();
+  - platform: template
+    name: "Toggle SPI Trace"
+    icon: mdi:bug-outline
+    on_press:
+      then:
+        - lambda: |-
+            static bool trace = false;
+            trace = !trace;
+            auto *comp = id(everblu0);
+            if (comp) comp->set_spi_trace(trace);
+            ESP_LOGI("everblu", "SPI trace %s", trace ? "ENABLED" : "DISABLED");
+
+# The custom everblu component exposes sensors for liters, battery, counters and radio diagnostics
+sensor:
+  - platform: everblu
+    id: everblu0
+    cs_pin: ${cc1101_cs_pin}
+    gdo0_pin: ${cc1101_gdo0_pin}
+    # Optional: blink the onboard LED when radio init fails (set to your LED GPIO)
+    error_led_pin: GPIO2
+    blink_on_failure: true
+    # Optional scan range for discovery (provide start+end together to enable)
+  # Both normal and deep scans will use this same range; deep uses finer stepping.
+  # Discovery scan range in MHz (normal 0.5 kHz step; deep 0.25 kHz)
+    scan_start_mhz: 433.770
+    scan_end_mhz: 433.870
+    frequency: ${frequency_mhz}
+    meter_serial: ${meter_serial}
+    meter_year: ${meter_year}
+    time_id: ha_time
+    update_interval: 24h     # poll daily; if it fails, next daily cycle will try again
+    read_at_startup: true    # also read once at boot if within allowed days
+    read_schedule: Monday-Friday
+
+    liters:
+      name: "Water Usage (Liters)"
+      device_class: water
+      state_class: total_increasing
+      unit_of_measurement: L
+      icon: mdi:water
+      accuracy_decimals: 0
+
+    battery:
+      name: "Meter Battery (months)"
+      unit_of_measurement: months
+      icon: mdi:battery-clock
+      accuracy_decimals: 0
+
+    reads_counter:
+      name: "Read Attempts"
+      icon: mdi:counter
+      accuracy_decimals: 0
+
+    rssi:
+      name: "Meter RSSI"
+      device_class: signal_strength
+      unit_of_measurement: dB
+      accuracy_decimals: 0
+    rssi_dbm:
+      name: "Meter RSSI (dBm)"
+      device_class: signal_strength
+      unit_of_measurement: dBm
+      accuracy_decimals: 0
+    lqi:
+      name: "Meter LQI (%)"
+      unit_of_measurement: "%"
+      icon: mdi:wifi
+      accuracy_decimals: 0
+    time_start:
+      name: "Meter Wake Start Hour"
+      unit_of_measurement: h
+      icon: mdi:clock-outline
+      accuracy_decimals: 0
+    time_end:
+      name: "Meter Sleep Hour"
+      unit_of_measurement: h
+      icon: mdi:clock-outline
+      accuracy_decimals: 0
+    discovered_frequency:
+      name: "Discovered Frequency"
+      unit_of_measurement: "MHz"
+      device_class: frequency
+      entity_category: diagnostic
+      accuracy_decimals: 3
+    radio_connected:
+      name: "CC1101 Connected"
+      device_class: connectivity
+      entity_category: diagnostic
