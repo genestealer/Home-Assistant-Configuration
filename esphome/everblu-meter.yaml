@@ -82,7 +82,8 @@ substitutions:
   wifi_sensor_update_interval: 10min
 
   # CC1101 frequency (adjust after discovery if needed)
-  frequency_mhz: "433.787018"
+  frequency_mhz: "433.76147"
+  # 433.787018
   meter_serial: !secret everblu_meter_serial      # Enter your meter serial (without leading 0)
   meter_year: !secret everblu_meter_year          # Production year (last two digits)
 

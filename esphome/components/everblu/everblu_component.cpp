@@ -168,9 +168,14 @@ static const char *const TAG = "everblu";
   }
 
   // From original: convert RSSI register to dBm
-  static int8_t rssi_to_dbm(uint8_t rssi_dec) {
-    if (rssi_dec >= 128) return ((int8_t) rssi_dec - 256) / 2 - 74;
-    return ((int8_t) rssi_dec) / 2 - 74;
+  // Convert CC1101 RSSI register (unsigned) to dBm per TI app note.
+  // Use wider integer arithmetic to avoid overflow/wrap issues.
+  static int rssi_to_dbm(uint8_t rssi_dec) {
+    if (rssi_dec >= 128) {
+      // For values >= 128, subtract 256 before halving and offsetting.
+      return ((static_cast<int>(rssi_dec) - 256) / 2) - 74;
+    }
+    return (static_cast<int>(rssi_dec) / 2) - 74;
   }
 
   // Frequency setup assuming 26 MHz crystal
@@ -934,13 +939,30 @@ void EverbluComponent::process_read_state_() {
     case ReadState::Decode: {
       uint8_t decoded[256]; memset(decoded, 0, sizeof(decoded));
       uint8_t dsz = decode_4bitpbit_serial(this->rxRaw_, this->rx_total_, decoded);
+      // Debug: log decoded size and a short prefix of payload for troubleshooting
+      if (dsz > 0) {
+        char buf[128];
+        int n = std::min<int>(dsz, 16);
+        int off = 0;
+        for (int i = 0; i < n && off < (int)sizeof(buf) - 3; i++) {
+          off += snprintf(buf + off, sizeof(buf) - off, "%02X", decoded[i]);
+          if (i != n - 1) buf[off++] = ' ';
+        }
+        buf[std::min(off, (int)sizeof(buf) - 1)] = '\0';
+        ESP_LOGD(TAG, "Decoded frame len=%u head=%s", dsz, buf);
+      } else {
+        ESP_LOGW(TAG, "Decoded frame length is zero; dropping");
+      }
       this->pending_data_ = parse_meter(decoded, dsz);
       // Radio diagnostics
       this->pending_data_.rssi = read_reg(RSSI_ADDR);
       this->pending_data_.rssi_dbm = rssi_to_dbm(read_reg(RSSI_ADDR));
       this->pending_data_.lqi = read_reg(LQI_ADDR);
-      // Basic validity check: require at least some fields to be non-zero
-      bool valid = (dsz >= 48) && (this->pending_data_.reads_counter > 0 || this->pending_data_.battery_left > 0 || this->pending_data_.liters > 0);
+  // Basic validity check: require at least some fields to be non-zero
+  ESP_LOGD(TAG, "Parsed fields: liters=%d battery=%d counter=%d tstart=%d tend=%d",
+       this->pending_data_.liters, this->pending_data_.battery_left, this->pending_data_.reads_counter,
+       this->pending_data_.time_start, this->pending_data_.time_end);
+  bool valid = (dsz >= 48) && (this->pending_data_.reads_counter > 0 || this->pending_data_.battery_left > 0 || this->pending_data_.liters > 0);
       if (!valid) {
         ESP_LOGW(TAG, "Decoded frame invalid or too short (len=%u); dropping", dsz);
         this->read_state_ = ReadState::Fail;
