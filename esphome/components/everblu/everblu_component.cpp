@@ -175,8 +175,9 @@ static const char *const TAG = "everblu";
 
   // Frequency setup assuming 26 MHz crystal
   static void setMHZ(float mhz) {
-    const float f_xosc = 26.0f;
-    uint32_t freq = (uint32_t)((mhz * 65536.0f) / f_xosc);
+    // Use double precision for the math to reduce rounding error before register quantization
+    const double f_xosc = 26.0;
+    uint32_t freq = (uint32_t)((static_cast<double>(mhz) * 65536.0) / f_xosc);
     write_reg(FREQ2, (freq >> 16) & 0xFF);
     write_reg(FREQ1, (freq >> 8) & 0xFF);
     write_reg(FREQ0, freq & 0xFF);
@@ -421,6 +422,14 @@ static const char *const TAG = "everblu";
     return l_total;
   }
 
+  // Heuristic: raw oversampled buffer should contain 0xFF bytes if a RADIAN frame was captured
+  static bool looks_like_radian_raw(const uint8_t *buf, int len) {
+    for (int i = 0; i < len; i++) {
+      if (buf[i] == 0xFF) return true;
+    }
+    return false;
+  }
+
   static MeterData parse_meter(uint8_t *decoded, uint8_t size) {
     MeterData d;
     if (size >= 30) {
@@ -506,7 +515,7 @@ static const char *const TAG = "everblu";
   }
 
 void EverbluComponent::setup() {
-  ESP_LOGI(TAG, "Init CC1101 @ %.3f MHz", this->frequency_);
+  ESP_LOGI(TAG, "Init CC1101 @ %.6f MHz", this->frequency_);
   this->cs_pin_->setup();
   this->cs_pin_->pin_mode(gpio::FLAG_OUTPUT);
   this->cs_pin_->digital_write(true);
@@ -566,6 +575,120 @@ void EverbluComponent::setup() {
   }
 }
 
+void EverbluComponent::process_scan_state_() {
+  uint32_t now = millis();
+  switch (this->scan_state_) {
+    case ScanState::Idle:
+      break;
+    case ScanState::Init: {
+      // Prepare first step
+      this->scan_state_ = ScanState::Settle;
+      // Apply initial frequency and allow small settle time
+      this->frequency_ = this->scan_current_;
+      cc1101_configureRF_0(this->frequency_);
+      this->scan_next_ms_ = now + 25; // settle
+  ESP_LOGD(TAG, "Scan init at %.6f MHz", this->frequency_);
+      break;
+    }
+    case ScanState::Settle: {
+      if (now >= this->scan_next_ms_) {
+        if (this->is_busy()) {
+          // Wait for any read to finish before starting a new one
+          break;
+        }
+        // Start a read attempt without publishing intermediate results
+        this->publish_when_done_ = false;
+        this->start_read();
+        this->scan_state_ = ScanState::WaitRead;
+      }
+      break;
+    }
+    case ScanState::WaitRead: {
+      if (this->read_state_ == ReadState::Idle) {
+        if (this->last_read_success_) {
+          this->scan_found_ = true;
+          this->scan_best_freq_ = this->frequency_;
+          this->scan_data_ = this->pending_data_;
+          this->scan_state_ = ScanState::Done;
+        } else {
+          this->scan_state_ = ScanState::Advance;
+        }
+      }
+      break;
+    }
+    case ScanState::Advance: {
+      // Move to the next frequency in current direction; if done, switch direction once
+      float next = this->scan_current_ + (this->scan_dir_ == 0 ? this->scan_step_ : -this->scan_step_);
+  bool in_range = (next >= this->nb_scan_start_ - 1e-6f && next <= this->nb_scan_end_ + 1e-6f);
+      if (!in_range) {
+        if (this->scan_dir_ == 0) {
+          // Switch to descending
+          this->scan_dir_ = 1;
+          this->scan_current_ = this->nb_scan_end_;
+        } else {
+          // Completed both directions
+          this->scan_state_ = ScanState::Done;
+          break;
+        }
+      } else {
+        this->scan_current_ = next;
+      }
+      // Apply new frequency and settle
+      this->frequency_ = this->scan_current_;
+      cc1101_configureRF_0(this->frequency_);
+      this->scan_next_ms_ = now + 25;
+      this->scan_state_ = ScanState::Settle;
+  ESP_LOGD(TAG, "Scan step at %.6f MHz (dir %d)", this->frequency_, this->scan_dir_);
+      break;
+    }
+    case ScanState::Done: {
+      // If coarse pass found a candidate, automatically refine with a fine scan around it
+      if (this->scan_found_ && this->scan_phase_ == ScanPhase::Coarse) {
+        this->scan_phase_ = ScanPhase::Fine;
+        // Narrow window +/- 0.010 MHz around best and use finer step
+        float center = this->scan_best_freq_;
+        this->nb_scan_start_ = center - 0.010f;
+        this->nb_scan_end_   = center + 0.010f;
+        if (this->nb_scan_start_ > this->nb_scan_end_) std::swap(this->nb_scan_start_, this->nb_scan_end_);
+        this->scan_step_ = 0.00025f; // 0.25 kHz
+        this->scan_current_ = this->nb_scan_start_;
+        this->scan_found_ = false;
+        this->scan_deep_ = true;
+        this->scan_state_ = ScanState::Init;
+        ESP_LOGI(TAG, "Frequency discovery coarse success at %.6f MHz; refining +/-0.010 MHz at 0.25 kHz", center);
+        break;
+      }
+
+      if (this->scan_found_) {
+        ESP_LOGI(TAG, "Frequency discovery %s success: %.6f MHz",
+                 this->scan_deep_ ? "(deep)" : "", this->scan_best_freq_);
+        this->frequency_ = this->scan_best_freq_;
+        cc1101_configureRF_0(this->frequency_);
+        if (this->disc_freq_sensor_) this->disc_freq_sensor_->publish_state(this->frequency_);
+        // Publish the data we captured
+        this->publish_(this->scan_data_);
+      } else {
+        float base = this->scan_best_freq_;
+        float span = 0.050f;
+        ESP_LOGW(TAG, "Frequency discovery %s failed within +/-%.4f MHz of %.6f MHz",
+                 this->scan_deep_ ? "(deep)" : "", span, base);
+      }
+      if (this->scan_bin_sensor_) this->scan_bin_sensor_->publish_state(false);
+      this->scan_state_ = ScanState::Idle;
+      this->scan_phase_ = ScanPhase::Coarse;
+      break;
+    }
+    case ScanState::Cancelled:
+      ESP_LOGI(TAG, "Discovery scan cancelled");
+      if (this->scan_bin_sensor_) this->scan_bin_sensor_->publish_state(false);
+      this->scan_state_ = ScanState::Idle;
+      break;
+    default:
+      this->scan_state_ = ScanState::Idle;
+      break;
+  }
+}
+
 void EverbluComponent::set_spi_trace(bool b) {
   this->spi_trace_ = b;
   g_spi_trace = b;
@@ -576,6 +699,7 @@ void EverbluComponent::start_read() {
   memset(this->txbuf_, 0, sizeof(this->txbuf_));
   this->txlen_ = Make_Radian_Master_req(this->txbuf_, this->meter_year_, this->meter_serial_);
   this->sent_ = 0;
+  this->last_read_success_ = false;
   // Convert preamble duration to number of pacing ticks
   this->wup_remain_ = (this->preamble_ms_ + (this->preamble_pace_ms_ - 1)) / this->preamble_pace_ms_;
   this->rx_total_ = 0;
@@ -587,7 +711,7 @@ void EverbluComponent::start_read() {
   // Ensure RF is configured to current frequency
   cc1101_configureRF_0(this->frequency_);
   this->read_state_ = ReadState::StartPreamble;
-  ESP_LOGI(TAG, "Starting non-blocking meter read at %.3f MHz", this->frequency_);
+  ESP_LOGI(TAG, "Starting non-blocking meter read at %.6f MHz", this->frequency_);
 }
 
 void EverbluComponent::process_read_state_() {
@@ -596,6 +720,8 @@ void EverbluComponent::process_read_state_() {
   switch (this->read_state_) {
     case ReadState::StartPreamble: {
       // Prepare for infinite-length TX with manual preamble feed
+      // Ensure TX FIFO is clean before starting a new TX sequence
+      strobe(SFTX);
       write_reg(MDMCFG2, 0x00);
       write_reg(PKTCTRL0, 0x02);
       uint8_t wupbuf[8]; for (int i=0;i<8;i++) wupbuf[i]=wupbyte;
@@ -609,6 +735,11 @@ void EverbluComponent::process_read_state_() {
       if (now >= this->next_ms_) {
         // Top up TX FIFO with 0x55 while pacing at ~20ms
         uint8_t used = (read_reg(TXBYTES_ADDR) & 0x7F);
+        // If radio slipped out of TX, kick it back
+        uint8_t marc = read_reg(MARCSTATE_ADDR) & 0x1F;
+        if (marc != 0x02) {
+          strobe(STX);
+        }
         if (used <= 56) {
           uint8_t wupbuf[8]; for (int i=0;i<8;i++) wupbuf[i]=wupbyte;
           write_burst(TX_FIFO_ADDR, wupbuf, 8);
@@ -637,8 +768,31 @@ void EverbluComponent::process_read_state_() {
     }
     case ReadState::StreamRequest: {
       // Stream chunks when there is space; do not block
-      uint8_t used = (read_reg(TXBYTES_ADDR) & 0x7F);
+      uint8_t txb = read_reg(TXBYTES_ADDR);
+      bool tx_underflow = (txb & 0x80) != 0; // bit7 indicates underflow for TXBYTES
+      uint8_t used = (txb & 0x7F);
+      // Keep radio in TX; recover from underflow or idle
+      uint8_t marc = read_reg(MARCSTATE_ADDR) & 0x1F;
+      if (tx_underflow || marc == 0x16 /*TXFIFO_UNDERFLOW*/ ) {
+        ESP_LOGW(TAG, "TX underflow detected (MARC=0x%02X), recovering", marc);
+        strobe(SFTX);
+        strobe(STX);
+        // Reset the stage timer to allow streaming to continue
+        this->state_t0_ = now;
+      } else if (marc != 0x02 /*TX*/) {
+        // Not transmitting? Nudge back into TX
+        strobe(STX);
+      }
       uint8_t free_space = (used < 64) ? (uint8_t)(64 - used) : 0;
+      // Ensure a large initial burst like the original implementation (up to 39 bytes)
+      if (this->sent_ == 0 && free_space >= 16) {
+        int initial = std::min<int>(39, this->txlen_);
+        int to_send = std::min<int>(initial, free_space);
+        if (to_send > 0) {
+          write_burst(TX_FIFO_ADDR, &this->txbuf_[0], (uint8_t) to_send);
+          this->sent_ += to_send;
+        }
+      }
       if (free_space > 0 && this->sent_ < this->txlen_) {
         uint8_t chunk = (uint8_t) std::min<int>(free_space, this->txlen_ - this->sent_);
         write_burst(TX_FIFO_ADDR, &this->txbuf_[this->sent_], chunk);
@@ -649,7 +803,11 @@ void EverbluComponent::process_read_state_() {
         this->state_t0_ = now;
         this->read_state_ = ReadState::WaitTxFinish;
       } else if (now - this->state_t0_ > this->tx_stream_timeout_ms_) {
-        ESP_LOGW(TAG, "TX streaming timeout");
+        // Log diagnostics to help debug TX stalls
+        uint8_t marc2 = read_reg(MARCSTATE_ADDR) & 0x1F;
+        uint8_t txb2 = read_reg(TXBYTES_ADDR);
+        ESP_LOGW(TAG, "TX streaming timeout (sent=%d/%d, MARC=0x%02X, TXBYTES=0x%02X used=%u)",
+                 this->sent_, this->txlen_, marc2, txb2, (txb2 & 0x7F));
         this->read_state_ = ReadState::Fail;
       }
       break;
@@ -690,8 +848,8 @@ void EverbluComponent::process_read_state_() {
       if (g_gdo0_global->digital_read()) {
         this->read_state_ = ReadState::DataFetch1;
       } else if (now - this->state_t0_ > this->data_timeout_ms_) {
-        ESP_LOGW(TAG, "Data sync stage1 timed out");
-        this->read_state_ = ReadState::Fail;
+        ESP_LOGW(TAG, "Data sync stage1 timed out; proceeding to main frame");
+        this->read_state_ = ReadState::DataSetupStage2;
       }
       break;
     }
@@ -702,8 +860,8 @@ void EverbluComponent::process_read_state_() {
         // Proceed to stage2 once any bytes received
         this->read_state_ = ReadState::DataSetupStage2;
       } else if (now - this->state_t0_ > this->data_timeout_ms_) {
-        ESP_LOGW(TAG, "Data fetch stage1 timed out");
-        this->read_state_ = ReadState::Fail;
+        ESP_LOGW(TAG, "Data fetch stage1 timed out; proceeding to main frame");
+        this->read_state_ = ReadState::DataSetupStage2;
       }
       break;
     }
@@ -751,6 +909,12 @@ void EverbluComponent::process_read_state_() {
         write_reg(PKTLEN, 38);
         write_reg(SYNC1, 0x55);
         write_reg(SYNC0, 0x00);
+        // Heuristic validity check before decoding
+        if (!looks_like_radian_raw(this->rxRaw_, this->rx_total_)) {
+          ESP_LOGW(TAG, "Frame capture does not look like RADIAN (no 0xFF sentinel in raw %d bytes)", this->rx_total_);
+          this->read_state_ = ReadState::Fail;
+          break;
+        }
         this->read_state_ = ReadState::Decode;
       } else if (now - this->state_t0_ > this->data_timeout_ms_) {
         ESP_LOGW(TAG, "Data fetch stage2 timed out after %d bytes", this->rx_total_);
@@ -775,7 +939,14 @@ void EverbluComponent::process_read_state_() {
       this->pending_data_.rssi = read_reg(RSSI_ADDR);
       this->pending_data_.rssi_dbm = rssi_to_dbm(read_reg(RSSI_ADDR));
       this->pending_data_.lqi = read_reg(LQI_ADDR);
-      this->read_state_ = ReadState::Publish;
+      // Basic validity check: require at least some fields to be non-zero
+      bool valid = (dsz >= 48) && (this->pending_data_.reads_counter > 0 || this->pending_data_.battery_left > 0 || this->pending_data_.liters > 0);
+      if (!valid) {
+        ESP_LOGW(TAG, "Decoded frame invalid or too short (len=%u); dropping", dsz);
+        this->read_state_ = ReadState::Fail;
+      } else {
+        this->read_state_ = ReadState::Publish;
+      }
       break;
     }
     case ReadState::Publish: {
@@ -785,6 +956,7 @@ void EverbluComponent::process_read_state_() {
         this->last_time_start_ = this->pending_data_.time_start;
         this->last_time_end_ = this->pending_data_.time_end;
       }
+      this->last_read_success_ = true;
       ESP_LOGI(TAG, "Read complete");
       this->read_state_ = ReadState::Idle;
       this->publish_when_done_ = false;
@@ -805,6 +977,7 @@ void EverbluComponent::process_read_state_() {
       write_reg(SYNC0, 0x00);
       this->read_state_ = ReadState::Idle;
       this->publish_when_done_ = false;
+      this->last_read_success_ = false;
       break;
     }
     default:
@@ -820,11 +993,35 @@ bool EverbluComponent::should_read_today_() {
     if (!now.is_valid()) return true;
     int w = now.day_of_week; // 1=Mon..7=Sun
     bool weekday_ok = (w >= 1 && w <= 5);
-    if (!weekday_ok) return false;
+    if (!weekday_ok) {
+      ESP_LOGI(TAG, "Schedule gate: not weekday (dow=%d)", w);
+      return false;
+    }
     // If we know meter wake/sleep hours, gate reads to that window
     if (this->last_time_start_ >= 0 && this->last_time_end_ >= 0) {
       int h = now.hour;
-      if (!(h >= this->last_time_start_ && h <= this->last_time_end_)) return false;
+      int s = this->last_time_start_;
+      int e = this->last_time_end_;
+      // Sanity check
+      if (s < 0 || s > 23 || e < 0 || e > 23) {
+        ESP_LOGW(TAG, "Schedule gate: ignoring invalid window %d-%d (hour=%d)", s, e, h);
+      } else if (s == e) {
+        // Interpret equal start/end as 'always allowed' (avoid permanent block)
+        ESP_LOGD(TAG, "Schedule gate: start==end (%d), treating as always-on", s);
+      } else {
+        bool in_window = false;
+        if (s <= e) {
+          // Same-day window (e.g., 08-18)
+          in_window = (h >= s && h <= e);
+        } else {
+          // Wrap-around window across midnight (e.g., 21-06)
+          in_window = (h >= s || h <= e);
+        }
+        if (!in_window) {
+          ESP_LOGI(TAG, "Schedule gate: hour %d outside window %d-%d (wrap%s)", h, s, e, (s>e?"=yes":"=no"));
+          return false;
+        }
+      }
     }
     return true;
   }
@@ -834,10 +1031,25 @@ bool EverbluComponent::should_read_today_() {
     if (!now.is_valid()) return true;
     int w = now.day_of_week;
     bool weekday_ok = (w >= 1 && w <= 6);
-    if (!weekday_ok) return false;
+    if (!weekday_ok) {
+      ESP_LOGI(TAG, "Schedule gate: not Mon-Sat (dow=%d)", w);
+      return false;
+    }
     if (this->last_time_start_ >= 0 && this->last_time_end_ >= 0) {
       int h = now.hour;
-      if (!(h >= this->last_time_start_ && h <= this->last_time_end_)) return false;
+      int s = this->last_time_start_;
+      int e = this->last_time_end_;
+      if (s < 0 || s > 23 || e < 0 || e > 23) {
+        ESP_LOGW(TAG, "Schedule gate: ignoring invalid window %d-%d (hour=%d)", s, e, h);
+      } else if (s == e) {
+        ESP_LOGD(TAG, "Schedule gate: start==end (%d), treating as always-on", s);
+      } else {
+        bool in_window = (s <= e) ? (h >= s && h <= e) : (h >= s || h <= e);
+        if (!in_window) {
+          ESP_LOGI(TAG, "Schedule gate: hour %d outside window %d-%d (wrap%s)", h, s, e, (s>e?"=yes":"=no"));
+          return false;
+        }
+      }
     }
     return true;
   }
@@ -852,6 +1064,10 @@ void EverbluComponent::update() {
     return;
   }
   this->stop_error_blink_();
+  if (this->is_scanning()) {
+    ESP_LOGI(TAG, "Skipping scheduled read: discovery scan in progress");
+    return;
+  }
   if (!this->should_read_today_()) {
     ESP_LOGI(TAG, "Skipping read today per schedule: %s", this->read_schedule_.c_str());
     return;
@@ -910,7 +1126,11 @@ void EverbluComponent::dump_cc1101_status() {
   uint8_t rxbytes = read_reg(RXBYTES_ADDR) & RXBYTES_MASK;
   ESP_LOGI(TAG, "CC1101: PART=0x%02X VER=0x%02X MARC=0x%02X LQI=%u RSSI=%u RXBYTES=%u", pn, ver, marc, lqi, rssi, rxbytes);
   uint8_t f2 = read_reg(FREQ2), f1 = read_reg(FREQ1), f0 = read_reg(FREQ0);
-  ESP_LOGI(TAG, "CC1101 FREQ regs: %02X %02X %02X (%.3f MHz configured)", f2, f1, f0, this->frequency_);
+  ESP_LOGI(TAG, "CC1101 FREQ regs: %02X %02X %02X (%.6f MHz configured)", f2, f1, f0, this->frequency_);
+  // Derive actual LO frequency from registers (assumes 26 MHz crystal)
+  uint32_t freqw = ((uint32_t)f2 << 16) | ((uint32_t)f1 << 8) | (uint32_t)f0;
+  double mhz_actual = (static_cast<double>(freqw) * 26.0) / 65536.0;
+  ESP_LOGI(TAG, "CC1101 LO actual ~ %.6f MHz (quantized)", mhz_actual);
 }
 
 void EverbluComponent::spi_self_test() {
@@ -989,6 +1209,10 @@ void EverbluComponent::loop() {
   if (this->read_state_ != ReadState::Idle) {
     this->process_read_state_();
   }
+  // Advance non-blocking discovery scan if active
+  if (this->scan_state_ != ScanState::Idle) {
+    this->process_scan_state_();
+  }
 }
 
 void EverbluComponent::force_read() {
@@ -999,8 +1223,8 @@ void EverbluComponent::force_read() {
     return;
   }
   this->stop_error_blink_();
-  if (!this->should_read_today_()) {
-    ESP_LOGI(TAG, "Force read requested but skipped due to schedule");
+  if (this->is_scanning()) {
+    ESP_LOGW(TAG, "Force read requested but a discovery scan is in progress; ignoring");
     return;
   }
   if (this->is_busy()) {
@@ -1018,48 +1242,29 @@ void EverbluComponent::discover_frequency() {
     if (this->blink_on_failure_) this->start_error_blink_();
     return;
   }
+  if (this->is_scanning()) {
+    ESP_LOGW(TAG, "Discovery already in progress; ignoring new request");
+    return;
+  }
   this->stop_error_blink_();
-  // Scan +/- 0.050 MHz around the configured frequency in 0.5 kHz steps
+  // Determine range and step
   const float base = this->frequency_;
   const float span = 0.050f;
-  const float step = 0.0005f; // 0.5 kHz
-  float start = has_scan_range_ ? scan_start_ : (base - span);
-  float end   = has_scan_range_ ? scan_end_   : (base + span);
-  if (start > end) std::swap(start, end);
-  ESP_LOGI(TAG, "Starting frequency discovery %s: %.3f to %.3f MHz (step %.3f)",
-           has_scan_range_ ? "(custom)" : "(auto)", start, end, step);
-  MeterData d;
-  float best_freq = base;
-  bool found = false;
-  // Scan ascending, then descending as before but with explicit endpoints
-  for (int dir = 0; dir < 2 && !found; dir++) {
-    for (float f = (dir == 0 ? start : end); (dir == 0 ? f <= end + 1e-6f : f >= start - 1e-6f); f += (dir == 0 ? step : -step)) {
-      ESP_LOGD(TAG, "Discovery scan freq: %.3f MHz", f);
-      cc1101_configureRF_0(f);
-      delay(20);
-  if (get_meter_data(f, this->meter_year_, this->meter_serial_, this->ack_timeout_ms_, this->data_timeout_ms_, d)) {
-        best_freq = f;
-        found = true;
-        break;
-      }
-      // brief idle between attempts
-      strobe(SIDLE);
-      delay(10);
-    }
-  }
-  if (found) {
-    ESP_LOGI(TAG, "Frequency discovery success: %.3f MHz", best_freq);
-    this->frequency_ = best_freq;
-    // Reconfigure radio to the new frequency and publish latest data
-    cc1101_configureRF_0(this->frequency_);
-    if (this->disc_freq_sensor_) this->disc_freq_sensor_->publish_state(this->frequency_);
-    this->publish_(d);
-    // Also try to update the template number if it exists
-    // Note: This requires the YAML 'number:' id to be accessible; we use a runtime lookup by name via logger only.
-    ESP_LOGI(TAG, "Update your HA number entity to %.3f MHz if needed", this->frequency_);
-  } else {
-    ESP_LOGW(TAG, "Frequency discovery failed within +/-%.3f MHz of %.3f MHz", span, base);
-  }
+  this->scan_step_ = 0.0010f; // 1.0 kHz coarse
+    this->nb_scan_start_ = has_scan_range_ ? this->scan_start_ : (base - span);
+  this->nb_scan_end_   = has_scan_range_ ? this->scan_end_   : (base + span);
+  if (this->nb_scan_start_ > this->nb_scan_end_) std::swap(this->nb_scan_start_, this->nb_scan_end_);
+  this->scan_deep_ = false;
+  this->scan_phase_ = ScanPhase::Coarse;
+  this->scan_state_ = ScanState::Init;
+  this->scan_dir_ = 0;
+  this->scan_current_ = this->nb_scan_start_;
+  this->scan_found_ = false;
+  this->scan_best_freq_ = base;
+  this->scan_next_ms_ = millis();
+  if (this->scan_bin_sensor_) this->scan_bin_sensor_->publish_state(true);
+  ESP_LOGI(TAG, "Starting non-blocking frequency discovery %s: %.6f to %.6f MHz (step %.6f)",
+           has_scan_range_ ? "(custom)" : "(auto)", this->nb_scan_start_, this->nb_scan_end_, this->scan_step_);
 }
 
 void EverbluComponent::discover_frequency_deep() {
@@ -1069,45 +1274,28 @@ void EverbluComponent::discover_frequency_deep() {
     if (this->blink_on_failure_) this->start_error_blink_();
     return;
   }
+  if (this->is_scanning()) {
+    ESP_LOGW(TAG, "Discovery already in progress; ignoring new request");
+    return;
+  }
   this->stop_error_blink_();
-  // Scan +/- 0.050 MHz around the configured frequency in 0.25 kHz steps (finer than normal)
   const float base = this->frequency_;
   const float span = 0.050f;
-  const float step = 0.00025f; // 0.25 kHz
-  // If a deep scan range isn't set, fall back to the normal scan range; if that
-  // isn't set either, use +/- span around the base frequency
-  float start = has_deep_scan_range_ ? deep_scan_start_ : (has_scan_range_ ? scan_start_ : (base - span));
-  float end   = has_deep_scan_range_ ? deep_scan_end_   : (has_scan_range_ ? scan_end_   : (base + span));
-  if (start > end) std::swap(start, end);
-  ESP_LOGI(TAG, "Starting deep frequency discovery %s: %.3f to %.3f MHz (step %.3f)",
-           has_deep_scan_range_ ? "(custom)" : "(auto)", start, end, step);
-  MeterData d;
-  float best_freq = base;
-  bool found = false;
-  for (int dir = 0; dir < 2 && !found; dir++) {
-    for (float f = (dir == 0 ? start : end); (dir == 0 ? f <= end + 1e-6f : f >= start - 1e-6f); f += (dir == 0 ? step : -step)) {
-      ESP_LOGD(TAG, "Deep discovery scan freq: %.3f MHz", f);
-      cc1101_configureRF_0(f);
-      delay(30);
-  if (get_meter_data(f, this->meter_year_, this->meter_serial_, this->ack_timeout_ms_, this->data_timeout_ms_, d)) {
-        best_freq = f;
-        found = true;
-        break;
-      }
-      strobe(SIDLE);
-      delay(15);
-    }
-  }
-  if (found) {
-    ESP_LOGI(TAG, "Deep frequency discovery success: %.3f MHz", best_freq);
-    this->frequency_ = best_freq;
-    cc1101_configureRF_0(this->frequency_);
-    if (this->disc_freq_sensor_) this->disc_freq_sensor_->publish_state(this->frequency_);
-    this->publish_(d);
-    ESP_LOGI(TAG, "Update your HA number entity to %.3f MHz if needed", this->frequency_);
-  } else {
-    ESP_LOGW(TAG, "Deep frequency discovery failed within +/-%.3f MHz of %.3f MHz", span, base);
-  }
+  this->scan_step_ = 0.00025f; // 0.25 kHz
+  // Prefer deep scan range; fallback to normal; else +/- span
+  this->nb_scan_start_ = has_deep_scan_range_ ? deep_scan_start_ : (has_scan_range_ ? this->scan_start_ : (base - span));
+  this->nb_scan_end_   = has_deep_scan_range_ ? deep_scan_end_   : (has_scan_range_ ? this->scan_end_   : (base + span));
+  if (this->nb_scan_start_ > this->nb_scan_end_) std::swap(this->nb_scan_start_, this->nb_scan_end_);
+  this->scan_deep_ = true;
+  this->scan_state_ = ScanState::Init;
+  this->scan_dir_ = 0;
+  this->scan_current_ = this->nb_scan_start_;
+  this->scan_found_ = false;
+  this->scan_best_freq_ = base;
+  this->scan_next_ms_ = millis();
+  if (this->scan_bin_sensor_) this->scan_bin_sensor_->publish_state(true);
+  ESP_LOGI(TAG, "Starting non-blocking deep frequency discovery %s: %.6f to %.6f MHz (step %.6f)",
+           (has_deep_scan_range_ || has_scan_range_) ? "(custom)" : "(auto)", this->nb_scan_start_, this->nb_scan_end_, this->scan_step_);
 }
 
 void EverbluComponent::start_error_blink_() {
@@ -1127,6 +1315,14 @@ void EverbluComponent::stop_error_blink_() {
   this->blink_state_ = false;
   bool off = this->error_led_inverted_ ? true : false;
   this->error_led_pin_->digital_write(off);
+}
+
+void EverbluComponent::cancel_discovery() {
+  if (this->scan_state_ == ScanState::Idle) {
+    ESP_LOGW(TAG, "Cancel requested but no discovery scan is in progress");
+    return;
+  }
+  this->scan_state_ = ScanState::Cancelled;
 }
 
 }  // namespace everblu

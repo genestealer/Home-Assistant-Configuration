@@ -41,6 +41,7 @@ CONF_TIME_START = "time_start"
 CONF_TIME_END = "time_end"
 CONF_DISCOVERED_FREQUENCY = "discovered_frequency"
 CONF_RADIO_CONNECTED = "radio_connected"
+CONF_SCAN_IN_PROGRESS = "scan_in_progress"
 
 SENSOR_SCHEMA = cv.Schema({
     cv.Optional(CONF_LITERS): sensor.sensor_schema(),
@@ -53,6 +54,7 @@ SENSOR_SCHEMA = cv.Schema({
     cv.Optional(CONF_TIME_END): sensor.sensor_schema(),
     cv.Optional(CONF_DISCOVERED_FREQUENCY): sensor.sensor_schema(),
     cv.Optional(CONF_RADIO_CONNECTED): bs.binary_sensor_schema(),
+    cv.Optional(CONF_SCAN_IN_PROGRESS): bs.binary_sensor_schema(),
 })
 
 CONFIG_SCHEMA = cv.Schema({
@@ -159,3 +161,6 @@ async def to_code(config):
     if (rb := config.get(CONF_RADIO_CONNECTED)) is not None:
         b = await bs.new_binary_sensor(rb)
         cg.add(var.set_radio_connected_binary_sensor(b))
+    if (sp := config.get(CONF_SCAN_IN_PROGRESS)) is not None:
+        b = await bs.new_binary_sensor(sp)
+        cg.add(var.set_scan_in_progress_binary_sensor(b))

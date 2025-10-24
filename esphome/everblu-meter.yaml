@@ -82,9 +82,9 @@ substitutions:
   wifi_sensor_update_interval: 10min
 
   # CC1101 frequency (adjust after discovery if needed)
-  frequency_mhz: "433.760010"
-  meter_serial: "257750"     # Enter your meter serial (without leading 0)
-  meter_year: "20"            # Production year (last two digits)
+  frequency_mhz: "433.787018"
+  meter_serial: !secret everblu_meter_serial      # Enter your meter serial (without leading 0)
+  meter_year: !secret everblu_meter_year          # Production year (last two digits)
 
   # Pin definitions (SPI bus + CC1101)
   # SPI pins
@@ -130,7 +130,7 @@ number:
     name: "Frequency (MHz)"
     min_value: 433.700
     max_value: 434.000
-    step: 0.001
+    step: 0.000001
     mode: box
     unit_of_measurement: "MHz"
     entity_category: config
@@ -141,7 +141,7 @@ number:
         - lambda: |-
             if (id(everblu0)) {
               id(everblu0)->set_frequency(x);
-              ESP_LOGI("everblu", "Frequency set to %.3f MHz via HA", (double) x);
+              ESP_LOGI("everblu", "Frequency set to %.6f MHz via HA", (double) x);
             }
 
 # Helper button to trigger on-demand frequency discovery
@@ -162,6 +162,14 @@ button:
         - lambda: |-
             auto *comp = id(everblu0);
             if (comp) comp->discover_frequency_deep();
+  - platform: template
+    name: "Cancel Discovery"
+    icon: mdi:close-octagon
+    on_press:
+      then:
+        - lambda: |-
+            auto *comp = id(everblu0);
+            if (comp) comp->cancel_discovery();
   - platform: template
     name: "Force Read"
     icon: mdi:download
@@ -277,8 +285,12 @@ sensor:
       unit_of_measurement: "MHz"
       device_class: frequency
       entity_category: diagnostic
-      accuracy_decimals: 3
+      accuracy_decimals: 6
     radio_connected:
       name: "CC1101 Connected"
       device_class: connectivity
+      entity_category: diagnostic
+    scan_in_progress:
+      name: "Scan In Progress"
+      device_class: running
       entity_category: diagnostic

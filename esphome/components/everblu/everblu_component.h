@@ -48,10 +48,14 @@ class EverbluComponent : public PollingComponent {
   void start_read();
   // Whether a non-blocking read is currently running
   bool is_busy() const { return this->read_state_ != ReadState::Idle; }
+  // Whether a non-blocking discovery scan is in progress
+  bool is_scanning() const { return this->scan_state_ != ScanState::Idle; }
   // Scan around the current frequency to find the meter; updates frequency_ on success
   void discover_frequency();
   // Deep scan with 1 kHz step for more precise discovery
   void discover_frequency_deep();
+  // Cancel an in-progress non-blocking discovery scan
+  void cancel_discovery();
   // Re-probe the CC1101 radio presence and reconfigure if found
   void reprobe_radio();
   // Enable/disable verbose SPI tracing logs
@@ -60,6 +64,8 @@ class EverbluComponent : public PollingComponent {
   void dump_cc1101_status();
   // Run a basic SPI/CC1101 self-test with safe read/write checks
   void spi_self_test();
+  // Optional: binary sensor to indicate scan in progress
+  void set_scan_in_progress_binary_sensor(binary_sensor::BinarySensor *b) { this->scan_bin_sensor_ = b; }
 
   // Timing configuration (milliseconds)
   void set_preamble_ms(uint16_t v) { this->preamble_ms_ = v; }
@@ -124,6 +130,7 @@ class EverbluComponent : public PollingComponent {
     Fail
   };
   void process_read_state_();
+  void process_scan_state_();
 
   ReadState read_state_{ReadState::Idle};
   uint32_t state_t0_{0};
@@ -136,6 +143,7 @@ class EverbluComponent : public PollingComponent {
   int rx_total_{0};
   int rx_target_{0};
   int size_byte_target_{0};
+  bool last_read_success_{false};
   // Tunable timings (defaults chosen from empirical working values)
   uint16_t preamble_ms_{2500};
   uint16_t guard_ms_{200};
@@ -177,13 +185,42 @@ class EverbluComponent : public PollingComponent {
   bool spi_trace_{false};
   bool blink_state_{false};
 
-  // Optional absolute scan ranges
+  // Optional absolute scan ranges (configured via YAML)
   bool has_scan_range_{false};
   float scan_start_{0.0f};
   float scan_end_{0.0f};
   bool has_deep_scan_range_{false};
   float deep_scan_start_{0.0f};
   float deep_scan_end_{0.0f};
+
+  // Non-blocking discovery scan state
+  enum class ScanState {
+    Idle,
+    Init,
+    Settle,
+    StartRead,
+    WaitRead,
+    Advance,
+    Done,
+    Cancelled
+  };
+  enum class ScanPhase {
+    Coarse,
+    Fine
+  };
+  ScanState scan_state_{ScanState::Idle};
+  ScanPhase scan_phase_{ScanPhase::Coarse};
+  bool scan_deep_{false};
+  float nb_scan_start_{0.0f};
+  float nb_scan_end_{0.0f};
+  float scan_step_{0.0f};
+  float scan_current_{0.0f};
+  int scan_dir_{0}; // 0: ascending, 1: descending
+  bool scan_found_{false};
+  float scan_best_freq_{0.0f};
+  MeterData scan_data_{};
+  uint32_t scan_next_ms_{0};
+  binary_sensor::BinarySensor *scan_bin_sensor_{nullptr};
 };
 
 }  // namespace everblu
