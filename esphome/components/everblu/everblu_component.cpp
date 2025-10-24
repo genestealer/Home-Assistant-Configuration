@@ -118,50 +118,50 @@ static const char *const TAG = "everblu";
     delayMicroseconds(5);
   }
   static void write_reg(uint8_t addr, uint8_t val) {
-    spi_begin(g_cs_global);
+  spi_begin(g_cs_global);
     uint8_t a = addr | WRITE_SINGLE_BYTE;
     SPI.transfer(a);
     SPI.transfer(val);
-    spi_end(g_cs_global);
+  spi_end(g_cs_global);
     if (g_spi_trace) {
       ESP_LOGD(TAG, "SPI WR 0x%02X <= 0x%02X", addr, val);
     }
   }
   static uint8_t read_reg(uint8_t addr) {
-    spi_begin(g_cs_global);
+  spi_begin(g_cs_global);
     // For status registers (0x30..0x3D), use READ_BURST (per CC1101 status access rules)
     bool is_status = (addr >= 0x30 && addr <= 0x3D);
     uint8_t a = addr | (is_status ? READ_BURST : READ_SINGLE_BYTE);
     SPI.transfer(a);
     uint8_t v = SPI.transfer(0);
-    spi_end(g_cs_global);
+  spi_end(g_cs_global);
     if (g_spi_trace) {
       ESP_LOGD(TAG, "SPI RD 0x%02X => 0x%02X", addr, v);
     }
     return v;
   }
   static void read_burst(uint8_t addr, uint8_t *buf, uint8_t len) {
-    spi_begin(g_cs_global);
+  spi_begin(g_cs_global);
     SPI.transfer(addr | READ_BURST);
     for (uint8_t i = 0; i < len; i++) buf[i] = SPI.transfer(0);
-    spi_end(g_cs_global);
+  spi_end(g_cs_global);
     if (g_spi_trace) {
       ESP_LOGD(TAG, "SPI RDB 0x%02X len=%u", addr, len);
     }
   }
   static void write_burst(uint8_t addr, const uint8_t *buf, uint8_t len) {
-    spi_begin(g_cs_global);
+  spi_begin(g_cs_global);
     SPI.transfer(addr | WRITE_BURST);
     for (uint8_t i = 0; i < len; i++) SPI.transfer(buf[i]);
-    spi_end(g_cs_global);
+  spi_end(g_cs_global);
     if (g_spi_trace) {
       ESP_LOGD(TAG, "SPI WRB 0x%02X len=%u", addr, len);
     }
   }
   static void strobe(uint8_t cmd) {
-    spi_begin(g_cs_global);
+  spi_begin(g_cs_global);
     SPI.transfer(cmd);
-    spi_end(g_cs_global);
+  spi_end(g_cs_global);
     if (g_spi_trace) {
       ESP_LOGD(TAG, "SPI STR 0x%02X", cmd);
     }
@@ -184,11 +184,11 @@ static const char *const TAG = "everblu";
 
   static void cc1101_reset() {
     // Per datasheet, ensure CS is toggled before issuing SRES
-    g_cs_global->digital_write(true);
+  g_cs_global->digital_write(true);
     delayMicroseconds(30);
-    g_cs_global->digital_write(false);
+  g_cs_global->digital_write(false);
     delayMicroseconds(30);
-    g_cs_global->digital_write(true);
+  g_cs_global->digital_write(true);
     delay(1);
     strobe(SRES);
     delay(1);
@@ -435,7 +435,7 @@ static const char *const TAG = "everblu";
     return d;
   }
 
-  static bool get_meter_data(float freq_mhz, uint8_t year, uint32_t serial, MeterData &out) {
+  static bool get_meter_data(float freq_mhz, uint8_t year, uint32_t serial, uint32_t ack_timeout_ms, uint32_t data_timeout_ms, MeterData &out) {
     // Configure baseline RF (should be done already)
     cc1101_configureRF_0(freq_mhz);
     // Build wake-up buffer and request
@@ -489,10 +489,10 @@ static const char *const TAG = "everblu";
 
   // Receive short ack
     uint8_t rxRaw[1000];
-  int sz = receive_radian_frame(0x12, 500, rxRaw, sizeof(rxRaw));
+  int sz = receive_radian_frame(0x12, ack_timeout_ms, rxRaw, sizeof(rxRaw));
     (void) sz; // optional
   // Receive main data frame
-  int rxSize = receive_radian_frame(0x7C, 2000, rxRaw, sizeof(rxRaw));
+  int rxSize = receive_radian_frame(0x7C, data_timeout_ms, rxRaw, sizeof(rxRaw));
     if (rxSize <= 0) return false;
     // Decode oversampled into bytes
     uint8_t decoded[256]; memset(decoded, 0, sizeof(decoded));
@@ -519,10 +519,9 @@ void EverbluComponent::setup() {
     this->error_led_pin_->digital_write(off);
   }
   SPI.begin();
-  // Use conservative SPI settings for reliable CC1101 comms
 #ifdef ARDUINO
 #if defined(ESP8266)
-  SPI.setFrequency(500000); // 500 kHz for CC1101 reliability
+  SPI.setFrequency(500000);
 #endif
   SPI.setDataMode(SPI_MODE0);
   SPI.setBitOrder(MSBFIRST);
@@ -545,12 +544,12 @@ void EverbluComponent::setup() {
   if (!this->radio_ok_) {
     ESP_LOGE(TAG, "CC1101 not detected on SPI (PART=0x%02X VER=0x%02X). Check wiring, power, and CS/GDO0 pins.", last_pn, last_ver);
 #if defined(ESP8266)
-    // Extra hint: on ESP8266 HW SPI, MISO=GPIO12, MOSI=GPIO13, SCK=GPIO14
-    int miso_lvl = digitalRead(12);
-    int mosi_lvl = digitalRead(13);
-    int sck_lvl  = digitalRead(14);
-    int cs_lvl   = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
-    ESP_LOGD(TAG, "Line levels: MISO(GPIO12)=%d MOSI(GPIO13)=%d SCK(GPIO14)=%d CS=%d", miso_lvl, mosi_lvl, sck_lvl, cs_lvl);
+  // Extra hint: on ESP8266 HW SPI, MISO=GPIO12, MOSI=GPIO13, SCK=GPIO14
+  int miso_lvl = digitalRead(12);
+  int mosi_lvl = digitalRead(13);
+  int sck_lvl  = digitalRead(14);
+  int cs_lvl   = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
+  ESP_LOGD(TAG, "Line levels: MISO(GPIO12)=%d MOSI(GPIO13)=%d SCK(GPIO14)=%d CS=%d", miso_lvl, mosi_lvl, sck_lvl, cs_lvl);
 #endif
     if (this->radio_bin_sensor_ != nullptr) this->radio_bin_sensor_->publish_state(false);
     if (this->blink_on_failure_) this->start_error_blink_();
@@ -577,7 +576,8 @@ void EverbluComponent::start_read() {
   memset(this->txbuf_, 0, sizeof(this->txbuf_));
   this->txlen_ = Make_Radian_Master_req(this->txbuf_, this->meter_year_, this->meter_serial_);
   this->sent_ = 0;
-  this->wup_remain_ = 125; // ~2.5s @ 20ms cadence
+  // Convert preamble duration to number of pacing ticks
+  this->wup_remain_ = (this->preamble_ms_ + (this->preamble_pace_ms_ - 1)) / this->preamble_pace_ms_;
   this->rx_total_ = 0;
   this->rx_target_ = 0;
   this->size_byte_target_ = 0x7C; // expect main data frame
@@ -613,12 +613,12 @@ void EverbluComponent::process_read_state_() {
           uint8_t wupbuf[8]; for (int i=0;i<8;i++) wupbuf[i]=wupbyte;
           write_burst(TX_FIFO_ADDR, wupbuf, 8);
         }
-        this->next_ms_ = now + 20;
+        this->next_ms_ = now + this->preamble_pace_ms_;
         if (this->wup_remain_ > 0) this->wup_remain_--;
       }
       if (this->wup_remain_ == 0) {
         this->state_t0_ = now;
-        this->next_ms_ = now + 200; // guard
+        this->next_ms_ = now + this->guard_ms_; // guard
         this->read_state_ = ReadState::GuardBeforeReq;
       }
       break;
@@ -648,7 +648,7 @@ void EverbluComponent::process_read_state_() {
         // All bytes queued; wait for TX to finish
         this->state_t0_ = now;
         this->read_state_ = ReadState::WaitTxFinish;
-      } else if (now - this->state_t0_ > 2000) {
+      } else if (now - this->state_t0_ > this->tx_stream_timeout_ms_) {
         ESP_LOGW(TAG, "TX streaming timeout");
         this->read_state_ = ReadState::Fail;
       }
@@ -662,7 +662,7 @@ void EverbluComponent::process_read_state_() {
         write_reg(MDMCFG2, 0x02);
         write_reg(PKTCTRL0, 0x00);
         this->read_state_ = ReadState::DataSetupStage1;
-      } else if (now - this->state_t0_ > 700) {
+      } else if (now - this->state_t0_ > this->wait_tx_finish_ms_) {
         ESP_LOGW(TAG, "TX did not finish in time");
         strobe(SFTX);
         write_reg(MDMCFG2, 0x02);
@@ -880,11 +880,11 @@ void EverbluComponent::reprobe_radio() {
   if (!ok) {
     ESP_LOGE(TAG, "CC1101 still not detected (PART=0x%02X VER=0x%02X).", last_pn, last_ver);
 #if defined(ESP8266)
-    int miso_lvl = digitalRead(12);
-    int mosi_lvl = digitalRead(13);
-    int sck_lvl  = digitalRead(14);
-    int cs_lvl   = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
-    ESP_LOGD(TAG, "Line levels: MISO(GPIO12)=%d MOSI(GPIO13)=%d SCK(GPIO14)=%d CS=%d", miso_lvl, mosi_lvl, sck_lvl, cs_lvl);
+  int miso_lvl = digitalRead(12);
+  int mosi_lvl = digitalRead(13);
+  int sck_lvl  = digitalRead(14);
+  int cs_lvl   = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
+  ESP_LOGD(TAG, "Line levels: MISO(GPIO12)=%d MOSI(GPIO13)=%d SCK(GPIO14)=%d CS=%d", miso_lvl, mosi_lvl, sck_lvl, cs_lvl);
 #endif
     if (this->radio_bin_sensor_ != nullptr) this->radio_bin_sensor_->publish_state(false);
     if (this->blink_on_failure_) this->start_error_blink_();
@@ -916,13 +916,14 @@ void EverbluComponent::dump_cc1101_status() {
 void EverbluComponent::spi_self_test() {
   ESP_LOGI(TAG, "Starting CC1101 SPI self-test...");
   // Basic CS line sanity
-  int cs_lvl = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
 #if defined(ESP8266)
   int miso_lvl = digitalRead(12);
   int mosi_lvl = digitalRead(13);
   int sck_lvl  = digitalRead(14);
+  int cs_lvl = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
   ESP_LOGI(TAG, "Line levels: MISO(GPIO12)=%d MOSI(GPIO13)=%d SCK(GPIO14)=%d CS=%d", miso_lvl, mosi_lvl, sck_lvl, cs_lvl);
 #else
+  int cs_lvl = this->cs_pin_ ? (this->cs_pin_->digital_read() ? 1 : 0) : -1;
   ESP_LOGI(TAG, "CS level=%d", cs_lvl);
 #endif
 
@@ -963,7 +964,7 @@ void EverbluComponent::spi_self_test() {
 bool EverbluComponent::perform_read_(MeterData &out) {
   // Deprecated blocking path retained for discovery; normal reads use non-blocking state machine.
   if (!this->radio_ok_) return false;
-  return get_meter_data(this->frequency_, this->meter_year_, this->meter_serial_, out);
+  return get_meter_data(this->frequency_, this->meter_year_, this->meter_serial_, this->ack_timeout_ms_, this->data_timeout_ms_, out);
 }
 
 void EverbluComponent::publish_(const MeterData &d) {
@@ -1036,7 +1037,7 @@ void EverbluComponent::discover_frequency() {
       ESP_LOGD(TAG, "Discovery scan freq: %.3f MHz", f);
       cc1101_configureRF_0(f);
       delay(20);
-      if (get_meter_data(f, this->meter_year_, this->meter_serial_, d)) {
+  if (get_meter_data(f, this->meter_year_, this->meter_serial_, this->ack_timeout_ms_, this->data_timeout_ms_, d)) {
         best_freq = f;
         found = true;
         break;
@@ -1088,7 +1089,7 @@ void EverbluComponent::discover_frequency_deep() {
       ESP_LOGD(TAG, "Deep discovery scan freq: %.3f MHz", f);
       cc1101_configureRF_0(f);
       delay(30);
-      if (get_meter_data(f, this->meter_year_, this->meter_serial_, d)) {
+  if (get_meter_data(f, this->meter_year_, this->meter_serial_, this->ack_timeout_ms_, this->data_timeout_ms_, d)) {
         best_freq = f;
         found = true;
         break;

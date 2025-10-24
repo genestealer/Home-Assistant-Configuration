@@ -61,6 +61,14 @@ class EverbluComponent : public PollingComponent {
   // Run a basic SPI/CC1101 self-test with safe read/write checks
   void spi_self_test();
 
+  // Timing configuration (milliseconds)
+  void set_preamble_ms(uint16_t v) { this->preamble_ms_ = v; }
+  void set_guard_ms(uint16_t v) { this->guard_ms_ = v; }
+  void set_tx_stream_timeout_ms(uint32_t v) { this->tx_stream_timeout_ms_ = v; }
+  void set_wait_tx_finish_ms(uint32_t v) { this->wait_tx_finish_ms_ = v; }
+  void set_ack_timeout_ms(uint32_t v) { this->ack_timeout_ms_ = v; }
+  void set_data_timeout_ms(uint32_t v) { this->data_timeout_ms_ = v; }
+
   // Optional scan ranges; if not set, fall back to +/- span around base frequency
   void set_scan_range(float start_mhz, float end_mhz) {
     this->scan_start_ = start_mhz; this->scan_end_ = end_mhz; this->has_scan_range_ = true;
@@ -128,8 +136,15 @@ class EverbluComponent : public PollingComponent {
   int rx_total_{0};
   int rx_target_{0};
   int size_byte_target_{0};
+  // Tunable timings (defaults chosen from empirical working values)
+  uint16_t preamble_ms_{2500};
+  uint16_t guard_ms_{200};
+  uint32_t tx_stream_timeout_ms_{2000};
+  uint32_t wait_tx_finish_ms_{700};
   uint32_t ack_timeout_ms_{500};
   uint32_t data_timeout_ms_{2000};
+  // Internal cadence for preamble streaming
+  uint16_t preamble_pace_ms_{20};
   bool publish_when_done_{false};
   MeterData pending_data_{};
 

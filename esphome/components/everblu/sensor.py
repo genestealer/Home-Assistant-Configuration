@@ -23,6 +23,14 @@ CONF_SCAN_END = "scan_end_mhz"
 CONF_DEEP_SCAN_START = "deep_scan_start_mhz"
 CONF_DEEP_SCAN_END = "deep_scan_end_mhz"
 
+# Timing knobs (milliseconds)
+CONF_PREAMBLE_MS = "preamble_ms"
+CONF_GUARD_MS = "guard_ms"
+CONF_TX_STREAM_TIMEOUT_MS = "tx_stream_timeout_ms"
+CONF_WAIT_TX_FINISH_MS = "wait_tx_finish_ms"
+CONF_ACK_TIMEOUT_MS = "ack_timeout_ms"
+CONF_DATA_TIMEOUT_MS = "data_timeout_ms"
+
 CONF_LITERS = "liters"
 CONF_BATTERY = "battery"
 CONF_READS_COUNTER = "reads_counter"
@@ -68,6 +76,13 @@ CONFIG_SCHEMA = cv.Schema({
     cv.Optional(CONF_SCAN_END): cv.float_,
     cv.Optional(CONF_DEEP_SCAN_START): cv.float_,
     cv.Optional(CONF_DEEP_SCAN_END): cv.float_,
+    # Optional timing parameters (milliseconds) with safe defaults
+    cv.Optional(CONF_PREAMBLE_MS, default=2500): cv.All(cv.uint32_t, cv.int_range(min=500, max=10000)),
+    cv.Optional(CONF_GUARD_MS, default=200): cv.All(cv.uint32_t, cv.int_range(min=50, max=2000)),
+    cv.Optional(CONF_TX_STREAM_TIMEOUT_MS, default=2000): cv.All(cv.uint32_t, cv.int_range(min=500, max=10000)),
+    cv.Optional(CONF_WAIT_TX_FINISH_MS, default=700): cv.All(cv.uint32_t, cv.int_range(min=100, max=5000)),
+    cv.Optional(CONF_ACK_TIMEOUT_MS, default=500): cv.All(cv.uint32_t, cv.int_range(min=100, max=5000)),
+    cv.Optional(CONF_DATA_TIMEOUT_MS, default=2000): cv.All(cv.uint32_t, cv.int_range(min=500, max=10000)),
 }).extend(SENSOR_SCHEMA).extend(cv.polling_component_schema("24h"))
 
 async def to_code(config):
@@ -104,6 +119,14 @@ async def to_code(config):
         cg.add(var.set_scan_range(config[CONF_SCAN_START], config[CONF_SCAN_END]))
     if has_deep:
         cg.add(var.set_deep_scan_range(config[CONF_DEEP_SCAN_START], config[CONF_DEEP_SCAN_END]))
+
+    # Timing configuration
+    cg.add(var.set_preamble_ms(config[CONF_PREAMBLE_MS]))
+    cg.add(var.set_guard_ms(config[CONF_GUARD_MS]))
+    cg.add(var.set_tx_stream_timeout_ms(config[CONF_TX_STREAM_TIMEOUT_MS]))
+    cg.add(var.set_wait_tx_finish_ms(config[CONF_WAIT_TX_FINISH_MS]))
+    cg.add(var.set_ack_timeout_ms(config[CONF_ACK_TIMEOUT_MS]))
+    cg.add(var.set_data_timeout_ms(config[CONF_DATA_TIMEOUT_MS]))
 
     # Sensors
     if (lit := config.get(CONF_LITERS)) is not None:
