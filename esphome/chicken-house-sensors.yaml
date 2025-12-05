@@ -112,12 +112,12 @@ sensor:
           - -2450559 -> 2.96  # Full feeder weight
       - filter_out: 0  # Drop occasional bogus zero readings
       - median:  # Median knocks out short bumps (pecks/swing)
-            window_size: 9
-            send_every: 5
-            send_first_at: 5
-      - moving_average:  # Further damp residual swing
-            window_size: 8
-            send_every: 4
+          window_size: 9
+          send_every: 5
+          send_first_at: 5
+      - sliding_window_moving_average:  # Further damp residual swing
+          window_size: 8
+          send_every: 4
       - throttle_average: 90s  # Publish one calm value every 90s
     unit_of_measurement: "kg"
     state_class: measurement
@@ -141,12 +141,12 @@ sensor:
           - 702880 -> 2.8  # Full water weight
       - filter_out: 0  # Drop occasional bogus zero readings
       - median:  # Median knocks out short bumps (pecks/swing)
-        window_size: 9
-        send_every: 5
-        send_first_at: 5
-      - moving_average:  # Further damp residual swing
-        window_size: 8
-        send_every: 4
+          window_size: 9
+          send_every: 5
+          send_first_at: 5
+      - sliding_window_moving_average:  # Further damp residual swing
+          window_size: 8
+          send_every: 4
       - throttle_average: 90s  # Publish one calm value every 90s
     unit_of_measurement: "kg"
     state_class: measurement
