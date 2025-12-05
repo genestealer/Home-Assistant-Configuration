@@ -3407,10 +3407,14 @@
       seconds: 0
   - type: not_connected
     device_id: 158ed9873a6957601df8faf23e43a98d
-    entity_id: ba603c1fe5e3a310f66d4dfccf98af37
+    entity_id: 8e8427f8efa3902d88b52401f34f1695
     domain: binary_sensor
     trigger: device
     id: offline
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
   conditions: []
   actions:
   - choose:
@@ -3787,7 +3791,7 @@
         value: 6
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: select
-        entity_id: 13cf6621ba88287ffad6027db25b02ab
+        entity_id: 8cb6de227f4654eeee815f12a7579efa
         type: select_option
         option: Manual Charge
     - conditions:
@@ -3814,7 +3818,7 @@
         value: 2
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: select
-        entity_id: 13cf6621ba88287ffad6027db25b02ab
+        entity_id: 8cb6de227f4654eeee815f12a7579efa
         type: select_option
         option: Manual Charge
     - conditions:
@@ -3831,7 +3835,7 @@
         value: 12
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: select
-        entity_id: 13cf6621ba88287ffad6027db25b02ab
+        entity_id: 8cb6de227f4654eeee815f12a7579efa
         type: select_option
         option: Maximize Auto Consumption
   mode: single
@@ -3909,30 +3913,30 @@
   - sequence:
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_voltage
+        entity_id: number.sdm120ct_emulator_voltage
       data:
         value: '{{ states(''sensor.solar_panels_voltage_net_consumption_ct'') | float(240)
           }}'
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_frequency
+        entity_id: number.sdm120ct_emulator_frequency
       data:
         value: '{{ states(''sensor.solar_panels_frequency_production_ct'') | float(50.0)
           }}'
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_power_factor
+        entity_id: number.sdm120ct_emulator_power_factor
       data:
         value: '{{ states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
           | float(0.97) }}'
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_active_power
+        entity_id: number.sdm120ct_emulator_active_power
       data:
         value: '{{ (states(''sensor.inverter_demand_power'') | float(0)) * -1 }}'
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_apparent_power
+        entity_id: number.sdm120ct_emulator_apparent_power
       data:
         value: '{% set active = (states(''sensor.inverter_demand_power'') | float(0))
           * -1 %} {% set pf = states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
@@ -3942,14 +3946,14 @@
       enabled: false
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_current
+        entity_id: number.sdm120ct_emulator_current
       data:
         value: '{{ (states(''sensor.solar_panels_net_consumption_ct_current'') | float(0))
           * -1 }}'
       enabled: false
     - action: number.set_value
       target:
-        entity_id: number.sdm120ct_emulator_sdm120ct_modbus_emulator_reactive_power
+        entity_id: number.sdm120ct_emulator_reactive_power
       data:
         value: '{{ (states(''sensor.solar_panels_reactive_power'') | float(0)) * -1
           }}'
@@ -3977,3 +3981,40 @@
             '
           title: Octopus Energy
         action: notify.mobile_app_rich_mob_app
+- id: '1762891302927'
+  alias: BOTC Microphone Mute State
+  description: Triggered by browser userscript when the BOTC app is muted or unmuted
+  triggers:
+  - webhook_id: botc_mute_state
+    trigger: webhook
+  actions:
+  - variables:
+      mute_state: '{{ trigger.json.muted }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ mute_state == true }}'
+      sequence:
+      - target:
+          entity_id: light.desk_lamp
+        data:
+          color_name: red
+          brightness: 255
+        action: light.turn_on
+      - target:
+          entity_id: input_boolean.botc_muted
+        action: input_boolean.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ mute_state == false }}'
+      sequence:
+      - target:
+          entity_id: light.desk_lamp
+        data:
+          color_name: green
+          brightness: 255
+        action: light.turn_on
+      - target:
+          entity_id: input_boolean.botc_muted
+        action: input_boolean.turn_off
+  mode: single
