@@ -1,0 +1,315 @@
+##############################################################
+# Richard Huish 2025
+# ESPHome Configuration - Doorbell Controller & Electricity Monitor
+# Repository: https://github.com/genestealer/Home-Assistant-Configuration
+#
+# Description:
+# This ESPHome configuration controls a smart doorbell system and 
+# monitors household electricity consumption using a pulse meter.
+# It integrates with Home Assistant for real-time monitoring, 
+# notifications, and automation.
+#
+# Includes shared configurations from the 'common' directory
+#
+# Features:
+# - Smart doorbell control with an illuminated button.
+# - Neopixel LED effects for button lighting.
+# - Electricity monitoring using a phototransistor-based pulse meter.
+# - Integrates with Home Assistant for notifications & automation.
+# - Quiet hours mode to silence the bell at night.
+# - Automatic energy reset at midnight.
+#
+# Hardware:
+# - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
+# - Neopixel RGB LED (2 LEDs) for Doorbell Button
+# - Relay Module for activating the doorbell chime.
+# - Phototransistor Sensor (SFH 314-2/3 Osram Opto) for electricity monitoring
+#
+# Wiring for Electricity Meter Sensor:
+# - Phototransistor Model: SFH 314-2/3 Osram Opto (80° Visible Light NPN)
+# - RS Stock No. 654-8851
+# - Power: 3.3V connected to Collector.
+# - Data Output: Emitter wired to D7 (GPIO13).
+# - Pull-down Resistor: 10KΩ to GND.
+# - Pulse Logic:
+#   - When light is detected: D7 is HIGH.
+#   - When light is absent: D7 is LOW.
+# - Conversion: 1000 pulses = 1 kWh.
+#
+##############################################################
+
+# Substitutions - Easily Configurable Parameters
+substitutions:
+  # Naming & Identification
+  name: doorbell-and-elect-monitor
+  friendly_name: "Doorbell and Electricity Monitor"
+  ui_comment: "Doorbell Controller and Electricity Monitor"
+
+  # Network Configuration (Static IP)
+  ip: 192.168.2.36
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Status LED Configuration
+  status_led: D0  # GPIO16 - NodeMCU onboard LED
+  status_led_inverted: "true"
+
+  # Debug Logging
+  log_level: DEBUG
+  
+  # Electricity Meter Pulse Rate (imp/kWh)
+  pulse_rate: '1000'
+
+  # Sensor Update Interval
+  sensor_update_interval: 30s
+  wifi_sensor_update_interval: 10min
+
+##############################################################
+# Board Configuration
+##############################################################
+esp8266:
+  board: nodemcuv2
+
+##############################################################
+# Import Shared Code (Common Components)
+##############################################################
+packages:
+  device_base: !include common/device_base.yaml
+  status_led: !include common/status_led.yaml
+  wifi: !include common/device_base_wifi.yaml
+  # Uncomment below to remove the status LED from this device:
+  # status_led: !remove
+
+##############################################################
+# Sub-Devices (group Electricity-related entities)            #
+##############################################################
+esphome:
+  devices:
+    - id: electricity_device
+      name: "Electricity"
+
+##############################################################
+# Quiet Hours Configuration for Doorbell
+##############################################################
+globals:
+  - id: nighttime_start
+    type: int
+    restore_value: no
+    initial_value: '21'  # Quiet hours start at 9 PM
+  - id: nighttime_stop
+    type: int
+    restore_value: no
+    initial_value: '6'  # Quiet hours end at 6 AM
+
+##############################################################
+# Electricity Monitoring (Pulse Meter)
+##############################################################
+
+sensor:
+  - platform: pulse_meter
+    name: "House Power Consumption"
+    id: energy_pulse_meter
+    device_id: electricity_device
+    unit_of_measurement: 'W'
+    state_class: measurement
+    device_class: power
+    icon: mdi:flash-outline
+    accuracy_decimals: 2
+    internal_filter: 100ms
+    pin:
+      number: D7  # GPIO13 - Phototransistor input
+      mode: INPUT
+    filters:
+      - lambda: return x * ((60.0 / ${pulse_rate}) * 1000.0); # Multiplication factor of meter = (60 / imp value) * 1000
+      - throttle_average: ${sensor_update_interval} # Reduce amount of data and updates with an average
+
+  # Total Daily Energy Consumption (Resets at Midnight)
+  # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
+  - platform: total_daily_energy
+    name: 'Daily Energy Import'
+    id: sensor_total_daily_energy_import
+    power_id: energy_pulse_meter
+    device_id: electricity_device
+    unit_of_measurement: 'kWh'
+    icon: mdi:circle-slice-3
+    state_class: total_increasing
+    device_class: energy
+    accuracy_decimals: 4
+    filters:
+      - throttle: ${sensor_update_interval}  # Limit updates to this interval
+      - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
+      - delta: 0.01  # Only send updates if consumption changes by 0.01 kW (10W)
+      - heartbeat: ${sensor_update_interval}  # Ensure an update is sent at least once per interval
+
+##############################################################
+# Time Component (For Midnight Reset & Quiet Hours)
+##############################################################
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+##############################################################
+# Neopixel LED for Doorbell Button
+##############################################################
+
+light:
+  - platform: neopixelbus
+    method: ESP8266_UART1
+    id: doorbell_light
+    type: GRB
+    pin: D4  # GPIO2 - Neopixel Button Light
+    num_leds: 2
+    name: "Doorbell Button Lights"
+    restore_mode: ALWAYS_ON
+    variant: 800KBPS
+    effects:
+      - addressable_rainbow:
+          name: Slow Rainbow Effect With Custom Values
+          speed: 2
+          width: 50
+      - addressable_rainbow:
+          name: Rainbow Effect With Custom Values
+          speed: 10
+          width: 50
+      - addressable_color_wipe:
+      - addressable_color_wipe:
+          name: Color Wipe Effect With Custom Values
+          colors:
+            - red: 100%
+              green: 100%
+              blue: 100%
+              num_leds: 1
+            - red: 0%
+              green: 0%
+              blue: 0%
+              num_leds: 1
+          add_led_interval: 300ms
+          reverse: False
+
+##############################################################
+# Doorbell Button Configuration
+##############################################################
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D2  # GPIO04 - Doorbell button input
+      mode: INPUT_PULLUP
+      inverted: true # Active LOW
+    name: "Doorbell Button"
+    icon: "mdi:doorbell"
+    filters:
+      - delayed_on: 100ms # Prevent false triggers
+      - delayed_off: 100ms # Prevent false resets
+    on_press:
+      then:
+        - logger.log: "Doorbell Button Pressed"
+        - light.turn_off:
+            id: doorbell_light
+        - light.turn_on:
+            id: doorbell_light
+            brightness: 100%
+            # red: 100%
+            # green: 100%
+            # blue: 100%
+            effect: "Color Wipe Effect With Custom Values"
+        - switch.turn_on: bellRelay
+        # - delay: 250ms
+        # - light.turn_on:
+        #     id: doorbell_light
+        #     brightness: 100%
+        #     red: 0%
+        #     green: 100%
+        #     blue: 0%
+        - delay: 2000ms # Inhibit pressing the button for a moment
+        - light.turn_on:
+            id: doorbell_light
+            effect: "Slow Rainbow Effect With Custom Values"
+
+
+    # on_release:
+    #   then:
+    #     - light.turn_on:
+    #         id: doorbell_light
+    #         brightness: 100%
+    #         red: 0%
+    #         green: 100%
+    #         blue: 0%
+    # on_press:
+    #   then:
+    #   - switch.turn_on: bellRelay
+    #   - delay: 500ms
+    #   - switch.turn_off: bellRelay
+    # on_double_click:
+    #   min_length: 50ms
+    #   max_length: 5000ms
+    #   then:
+    #   - switch.turn_on: bellRelay
+    #   - delay: 5000ms
+    # #   - switch.turn_off: bellRelay
+    # on_multi_click:
+    # # - timing:
+    # #     - ON for at most 1s
+    # #     - OFF for at most 10s
+    # #     - ON for at most 3s
+    # #     - OFF for at least 0.2s
+    # #   then:
+    # #     - logger.log: "Double Clicked"
+
+    # - timing:
+    #     - ON for 1s to 2s
+    #     - OFF for at least 0.5s
+    #   then:
+    #     - logger.log: "Single Long Clicked"
+    #     - switch.turn_on: bellRelay
+    #     - delay: 5000ms
+    #     - switch.turn_off: bellRelay
+    # - timing:
+    #     - ON for at most 1s
+    #     - OFF for at least 0.5s
+    #   then:
+    #     - logger.log: "Single Short Clicked"
+    #     - switch.turn_on: bellRelay
+    #     - delay: 1000ms
+    #     - switch.turn_off: bellRelay
+    
+##############################################################
+# Doorbell Relay (Controls the Chime)
+##############################################################
+
+switch:
+  # Doorbell relay output, pull low (to GND) to switch relay on.
+  # Not exposed to home assistant.
+  - platform: gpio
+    pin:
+      number: D1  # GPIO05 - Relay control
+      mode: OUTPUT_OPEN_DRAIN # As we want to sink current from the opto-isolated relay.
+      inverted: true
+    id: bellRelay
+    on_turn_on:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(homeassistant_time).now().hour > id(nighttime_start) || id(homeassistant_time).now().hour < id(nighttime_stop);'
+            then:
+              - logger.log: "Doorbell pushed at nighttime"
+              - delay: 400ms
+              - switch.turn_off: bellRelay
+            else:
+              - logger.log: "Doorbell pushed at daytime"
+              - delay: 1500ms
+              - switch.turn_off: bellRelay
+                
+    # on_turn_on:
+    # - delay: 500ms
+    # - switch.turn_off: bellRelay
+  
+
+#Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
+button:
+  - platform: template
+    name: "Ring Doorbell"
+    icon: "mdi:alarm-bell"
+    on_press:
+      - switch.turn_on: bellRelay
+      
