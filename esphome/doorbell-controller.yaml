@@ -1,49 +1,46 @@
 ##############################################################
 # Richard Huish 2025
-# ESPHome Configuration - Doorbell Controller & Electricity Monitor
+# ESPHome Configuration – Doorbell Controller
 # Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
 # Description:
-# This ESPHome configuration controls a smart doorbell system and 
-# monitors household electricity consumption using a pulse meter.
-# It integrates with Home Assistant for real-time monitoring, 
-# notifications, and automation.
-#
-# Includes shared configurations from the 'common' directory
+# ESP8266-based smart doorbell system controlling a mechanical
+# 8 V AC chime via a loft-mounted opto-isolated relay.
+# Includes illuminated Neopixel button feedback and integration
+# with Home Assistant for notifications and automation.
 #
 # Features:
-# - Smart doorbell control with an illuminated button.
-# - Neopixel LED effects for button lighting.
-# - Electricity monitoring using a phototransistor-based pulse meter.
-# - Integrates with Home Assistant for notifications & automation.
-# - Quiet hours mode to silence the bell at night.
-# - Automatic energy reset at midnight.
+# - Physical push-button detection (active low)
+# - WS2812 Neopixel illumination for doorbell button
+# - Relay driver for mechanical bell with quiet-hours logic
+# - Home Assistant integration for alerts and remote ringing
 #
 # Hardware:
-# - ESP8266 NodeMCU v2 (Wi-Fi Microcontroller)
-# - Neopixel RGB LED (2 LEDs) for Doorbell Button
-# - Relay Module for activating the doorbell chime.
-# - Phototransistor Sensor (SFH 314-2/3 Osram Opto) for electricity monitoring
+# - NodeMCU v2 (ESP8266)
+# - Loft-mounted relay module (opto-isolated, 8 V AC 1 A bell supply)
+# - Doorbell button with 2× WS2812 LEDs
+# - 5 V DC PoE-style power feed via Cat5
 #
-# Wiring for Electricity Meter Sensor:
-# - Phototransistor Model: SFH 314-2/3 Osram Opto (80° Visible Light NPN)
-# - RS Stock No. 654-8851
-# - Power: 3.3V connected to Collector.
-# - Data Output: Emitter wired to D7 (GPIO13).
-# - Pull-down Resistor: 10KΩ to GND.
-# - Pulse Logic:
-#   - When light is detected: D7 is HIGH.
-#   - When light is absent: D7 is LOW.
-# - Conversion: 1000 pulses = 1 kWh.
+# Wiring Summary:
+#   D1 (GPIO5)  → Relay control output (Green/White pair to loft relay)
+#   D2 (GPIO4)  → Doorbell button input (bare Green/White pair, active low)
+#   D4 (GPIO2)  → Neopixel data output (Blue/Grey ribbon pair)
+#   5V / GND    → LED power feed (ribbon Green+Purple = 5 V, Orange+Yellow = GND)
+#   Separate Cat5 → 8 V AC bell power (Orange/Orange-White)
+#   All grounds common between ESP, LEDs, and relay
+#
+# Quiet Hours:
+#   21:00–06:00 reduced relay activation time
 #
 ##############################################################
+
 
 # Substitutions - Easily Configurable Parameters
 substitutions:
   # Naming & Identification
-  name: doorbell-and-elect-monitor
-  friendly_name: "Doorbell and Electricity Monitor"
-  ui_comment: "Doorbell Controller and Electricity Monitor"
+  name: doorbell-controller
+  friendly_name: "Doorbell"
+  ui_comment: "Doorbell Controller"
 
   # Network Configuration (Static IP)
   ip: 192.168.2.36
@@ -57,8 +54,6 @@ substitutions:
   # Debug Logging
   log_level: DEBUG
   
-  # Electricity Meter Pulse Rate (imp/kWh)
-  pulse_rate: '1000'
 
   # Sensor Update Interval
   sensor_update_interval: 30s
@@ -83,10 +78,8 @@ packages:
 ##############################################################
 # Sub-Devices (group Electricity-related entities)            #
 ##############################################################
-esphome:
-  devices:
-    - id: electricity_device
-      name: "Electricity"
+# esphome:
+#   devices:
 
 ##############################################################
 # Quiet Hours Configuration for Doorbell
@@ -102,47 +95,7 @@ globals:
     initial_value: '6'  # Quiet hours end at 6 AM
 
 ##############################################################
-# Electricity Monitoring (Pulse Meter)
-##############################################################
-
-sensor:
-  - platform: pulse_meter
-    name: "House Power Consumption"
-    id: energy_pulse_meter
-    device_id: electricity_device
-    unit_of_measurement: 'W'
-    state_class: measurement
-    device_class: power
-    icon: mdi:flash-outline
-    accuracy_decimals: 2
-    internal_filter: 100ms
-    pin:
-      number: D7  # GPIO13 - Phototransistor input
-      mode: INPUT
-    filters:
-      - lambda: return x * ((60.0 / ${pulse_rate}) * 1000.0); # Multiplication factor of meter = (60 / imp value) * 1000
-      - throttle_average: ${sensor_update_interval} # Reduce amount of data and updates with an average
-
-  # Total Daily Energy Consumption (Resets at Midnight)
-  # Create a Utility Meter in Home Assistant and ensure periodically resetting is enabled as this value will reset on boot and also once a day.
-  - platform: total_daily_energy
-    name: 'Daily Energy Import'
-    id: sensor_total_daily_energy_import
-    power_id: energy_pulse_meter
-    device_id: electricity_device
-    unit_of_measurement: 'kWh'
-    icon: mdi:circle-slice-3
-    state_class: total_increasing
-    device_class: energy
-    accuracy_decimals: 4
-    filters:
-      - throttle: ${sensor_update_interval}  # Limit updates to this interval
-      - multiply: 0.001  # Convert W to kW (1 W = 0.001 kW)
-      - delta: 0.01  # Only send updates if consumption changes by 0.01 kW (10W)
-      - heartbeat: ${sensor_update_interval}  # Ensure an update is sent at least once per interval
-
-##############################################################
-# Time Component (For Midnight Reset & Quiet Hours)
+# Time Component (For Quiet Hours)
 ##############################################################
 time:
   - platform: homeassistant
@@ -274,7 +227,7 @@ binary_sensor:
     #     - switch.turn_off: bellRelay
     
 ##############################################################
-# Doorbell Relay (Controls the Chime)
+# Doorbell Relay (Controls the Buzzer/Chime)
 ##############################################################
 
 switch:
