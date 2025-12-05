@@ -93,18 +93,32 @@ sensor:
     clk_pin: D5   # Clock pin
     gain: 128  # Set gain for Channel A
     update_interval: ${sensor_update_interval}
+    icon: "mdi:food-drumstick-outline"
     filters:
+      # Calibrate to kg, then suppress spikes and smooth swing.
       - calibrate_linear:
           # - 118168 -> 0  # Tare weight (without feeder)
           # - 538159 -> 1.98 kg (full)
           # - 220840 -> 0  # Tare weight (empty feeder, 0.32 kg)
-          - 0 -> 0  # Tare weight without container is -96945 but its not accepting negitive
-          - 762762 -> 2.96  # Full feeder weight
-      - filter_out: 0  # Remove invalid readings
-      - median:  # Noise filtering using a moving median
-          window_size: 6
-          send_every: 4
-          send_first_at: 3
+          #
+          # All of a sudden the values have gone negitive, so re-taring.
+          # Old Values kept for reference.
+          # - 0 -> 0  # Tare weight without container is -96945 but its not accepting negitive
+          # - 762762 -> 2.96  # Full feeder weight
+          #
+          # New Dec 2025 tare.
+          # - -3053437 -> 0   # Tare weight without container
+          - -2848739 -> 0     # Tare weight with container (and some food)
+          - -2450559 -> 2.96  # Full feeder weight
+      - filter_out: 0  # Drop occasional bogus zero readings
+      - median:  # Median knocks out short bumps (pecks/swing)
+            window_size: 9
+            send_every: 5
+            send_first_at: 5
+      - moving_average:  # Further damp residual swing
+            window_size: 8
+            send_every: 4
+      - throttle_average: 90s  # Publish one calm value every 90s
     unit_of_measurement: "kg"
     state_class: measurement
     accuracy_decimals: 3
@@ -116,18 +130,24 @@ sensor:
     clk_pin: D14   # Clock pin
     gain: 128  # Set gain for Channel A
     update_interval: ${sensor_update_interval}
+    icon: "mdi:cup-water"
     filters:
+      # Calibrate to kg, then suppress spikes and smooth swing.
       - calibrate_linear:
           # - 67268 -> 0  # Tare weight (without water container)
           # - 625719 -> 2.76 kg (full)
           # - 146499 -> 0  # Tare weight (empty water container, 0.20 kg)
           - 20572 -> 0  # Tare weight without container
           - 702880 -> 2.8  # Full water weight
-      - filter_out: 0  # Remove invalid readings
-      - median:  # Noise filtering using a moving median
-          window_size: 6
-          send_every: 4
-          send_first_at: 3
+      - filter_out: 0  # Drop occasional bogus zero readings
+      - median:  # Median knocks out short bumps (pecks/swing)
+        window_size: 9
+        send_every: 5
+        send_first_at: 5
+      - moving_average:  # Further damp residual swing
+        window_size: 8
+        send_every: 4
+      - throttle_average: 90s  # Publish one calm value every 90s
     unit_of_measurement: "kg"
     state_class: measurement
     accuracy_decimals: 3
