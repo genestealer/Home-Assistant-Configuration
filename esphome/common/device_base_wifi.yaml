@@ -13,7 +13,8 @@ wifi:
         static_ip: ${ip}
         gateway: ${gateway}
         subnet: ${subnet}
-
+  min_auth_mode: WPA2
+  
   # Uncomment and add a secondary Wi-Fi network as a backup
   # - ssid: !secret IoT_VLAN_SSID_2
   #   password: !secret IoT_VLAN_SSID_Key_2
