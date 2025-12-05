@@ -71,21 +71,21 @@ packages:
 ##############################################################
 output:
   - platform: gpio
-    id: open_motor
+    id: open_button_output
     pin:
       number: D6
       inverted: true
       mode: OUTPUT_OPEN_DRAIN  # Sink current for relay/transistor control
 
   - platform: gpio
-    id: close_motor
+    id: close_button_output
     pin:
       number: D5
       inverted: true
       mode: OUTPUT_OPEN_DRAIN  # Sink current for relay/transistor control
 
   - platform: gpio
-    id: reset_motor
+    id: set_button_output
     pin:
       number: D7
       inverted: true
@@ -95,60 +95,77 @@ output:
 # Button Actions for Manual Control
 ##############################################################
 button:
+
+# Open Blinds
   - platform: template
     name: "Open Blinds"
     id: open_button
     on_press:
       - logger.log: "Opening Blinds"
-      - output.turn_on: open_motor
+      - output.turn_on: open_button_output
       - delay: 110ms
-      - output.turn_off: open_motor
+      - output.turn_off: open_button_output
 
+# Close Blinds
   - platform: template
     name: "Close Blinds"
     id: close_button
     on_press:
       - logger.log: "Closing Blinds"
-      - output.turn_on: close_motor
+      - output.turn_on: close_button_output
       - delay: 110ms
-      - output.turn_off: close_motor
+      - output.turn_off: close_button_output
 
+# Set Limits
   - platform: template
-    name: "Reset Blinds"
-    id: reset_button
+    name: "Set Blinds Limits (Reset)"
+    id: set_button
     device_class: restart
     entity_category: diagnostic
     on_press:
-      - logger.log: "Resetting Blinds"
-      - output.turn_on: reset_motor
+      - logger.log: "Resetting Blinds Limits"
+      - output.turn_on: set_button_output
       - delay: 5000ms
-      - output.turn_off: reset_motor
+      - output.turn_off: set_button_output
 
+# Set Open Position
+  - platform: template
+    name: "Set Blind Open Position"
+    id: set_open_position_button
+    entity_category: diagnostic
+    on_press:
+      - logger.log: "Setting Blinds Open Position"
+      - output.turn_on: set_button_output
+      - delay: 110ms
+      - output.turn_off: set_button_output
+
+# Tilt Open
   - platform: template
     name: "Tilt Open"
     id: tilt_open
     on_press:
       - logger.log: "Tilting Open"
-      - output.turn_on: open_motor
+      - output.turn_on: open_button_output
       - delay: 110ms
-      - output.turn_off: open_motor
+      - output.turn_off: open_button_output
       - delay: 110ms
-      - output.turn_on: open_motor
+      - output.turn_on: open_button_output
       - delay: 110ms
-      - output.turn_off: open_motor
+      - output.turn_off: open_button_output
 
+# Tilt Close
   - platform: template
     name: "Tilt Close"
     id: tilt_closed
     on_press:
       - logger.log: "Tilting Closed"
-      - output.turn_on: close_motor
+      - output.turn_on: close_button_output
       - delay: 110ms
-      - output.turn_off: close_motor
+      - output.turn_off: close_button_output
       - delay: 110ms
-      - output.turn_on: close_motor
+      - output.turn_on: close_button_output
       - delay: 110ms
-      - output.turn_off: close_motor
+      - output.turn_off: close_button_output
 
 ##############################################################
 # Global Variables for Blind State Tracking
@@ -178,9 +195,9 @@ cover:
       - globals.set:
           id: cover_opening
           value: "true"
-      - output.turn_on: open_motor
+      - output.turn_on: open_button_output
       - delay: 110ms
-      - output.turn_off: open_motor
+      - output.turn_off: open_button_output
       - delay: 5000ms
       - globals.set:
           id: cover_opening
@@ -191,9 +208,9 @@ cover:
       - globals.set:
           id: cover_closing
           value: "true"
-      - output.turn_on: close_motor
+      - output.turn_on: close_button_output
       - delay: 110ms
-      - output.turn_off: close_motor
+      - output.turn_off: close_button_output
       - delay: 5000ms
       - globals.set:
           id: cover_closing
@@ -204,9 +221,9 @@ cover:
           condition:
             lambda: 'return id(cover_opening);'
           then:
-            - output.turn_on: open_motor
+            - output.turn_on: open_button_output
             - delay: 110ms
-            - output.turn_off: open_motor
+            - output.turn_off: open_button_output
             - globals.set:
                 id: cover_opening
                 value: "false"
@@ -215,9 +232,9 @@ cover:
           condition:
             lambda: 'return id(cover_closing);'
           then:
-            - output.turn_on: close_motor
+            - output.turn_on: close_button_output
             - delay: 110ms
-            - output.turn_off: close_motor
+            - output.turn_off: close_button_output
             - globals.set:
                 id: cover_closing
                 value: "false"
