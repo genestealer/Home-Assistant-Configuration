@@ -41,6 +41,10 @@
 # - In testing, the other values are not used by the inverter and are
 #   effectively superfluous. We still populate them for completeness.
 #
+# Home Assistant Integration:
+# - A Home Assistant automation updates the emulator values several times
+#   per minute based on real-time grid consumption data from other sensors.
+#
 # Hardware:
 # - ESP32 DevKit v1 (ESP32-WROOM-32)
 # - SCM TTL to RS-485 Interface Module (automatic flow control)
@@ -110,12 +114,6 @@ esp32:
     type: arduino
 
 
-logger:
-  level: ${log_level}
-  logs:
-    # modbus: WARN
-    modbus_controller: INFO # Stop modbus spamming the logs 
-
 ##############################################################
 # Import Shared Code (Common Components)
 ##############################################################
@@ -140,12 +138,12 @@ globals:
     initial_value: '240.0'
   - id: current_val        # Register 0x0006: Line current (A)
     type: float
-    # Negative current denotes export towards grid
-    initial_value: '-1.29'
+    # Positive current denotes export towards grid
+    initial_value: '1.29'
   - id: active_power_val   # Register 0x000C: Active power (W)
     type: float
-    # Negative power denotes export (-300 W safe default)
-    initial_value: '-300.0'
+    # Positive power denotes export (300 W safe default)
+    initial_value: '300.0'
   - id: apparent_power_val # Register 0x0012: Apparent power (VA)
     type: float
     # Magnitude only (VA)
@@ -155,8 +153,8 @@ globals:
     initial_value: '0.0'
   - id: power_factor_val   # Register 0x001E: Power factor (0-1)
     type: float
-    # Negative PF to reflect export direction
-    initial_value: '-0.97'
+    # Positive PF to reflect export direction
+    initial_value: '0.97'
   - id: frequency_val      # Register 0x0046: Frequency (Hz)
     type: float
     initial_value: '50.0'
@@ -171,7 +169,7 @@ globals:
     initial_value: 'false'
   - id: phase_angle_val    # Register 0x0024: Phase angle (degrees)
     type: float
-    initial_value: '-14.0'
+    initial_value: '14.0'
 
 ##############################################################
 # Safety defaults watchdog
@@ -184,25 +182,25 @@ script:
     then:
       - lambda: |-
           id(voltage_val) = 240.0;
-          id(current_val) = -1.29;          // A (export)
-          id(active_power_val) = -300.0;    // W (export)
+          id(current_val) = 1.29;           // A (export)
+          id(active_power_val) = 300.0;     // W (export)
           id(apparent_power_val) = 310.0;   // VA
           id(reactive_power_val) = 0.0;     // VAr
-          id(power_factor_val) = -0.97;     // PF (export)
+          id(power_factor_val) = 0.97;      // PF (export)
           id(frequency_val) = 50.0;         // Hz
           id(import_energy_val) = 15.0;     // kWh
           id(export_energy_val) = 0.0;      // kWh
-          id(phase_angle_val) = -14.0;      // degrees
+          id(phase_angle_val) = 14.0;       // degrees
       # Keep HA UI controls in sync (if connected)
       - number.set:
           id: voltage_input
           value: 240.0
       - number.set:
           id: current_input
-          value: -1.29
+          value: 1.29
       - number.set:
           id: active_power_input
-          value: -300
+          value: 300
       - number.set:
           id: apparent_power_input
           value: 310
@@ -211,7 +209,7 @@ script:
           value: 0
       - number.set:
           id: power_factor_input
-          value: -0.97
+          value: 0.97
       - number.set:
           id: frequency_input
           value: 50.0
@@ -223,7 +221,7 @@ script:
           value: 0.0
       - number.set:
           id: phase_angle_input
-          value: -14.0
+          value: 14.0
 
 # Run safety defaults early on boot
 esphome:
@@ -507,8 +505,8 @@ modbus_controller:
 # Values are stored in global variables and exposed via
 # Modbus registers to the Eaton inverter.
 # Use these to simulate different power scenarios:
-#   - Solar generation (negative current/power)
-#   - Grid import (positive values)
+#   - Solar generation/export (positive current/power)
+#   - Grid import (negative values)
 #   - Different voltage conditions
 #   - Energy metering over time
 number:
@@ -526,14 +524,14 @@ number:
         - lambda: |-
             id(voltage_val) = x;
 
-  # Register 0x0006: Line current (A) - negative for export
+  # Register 0x0006: Line current (A) - positive for export
   - platform: template
     name: "Current"
     id: current_input
     min_value: -50
     max_value: 50
     step: 0.01
-    initial_value: -1.29
+    initial_value: 1.29
     optimistic: true
     set_action:
       then:
@@ -546,7 +544,7 @@ number:
     min_value: -5000
     max_value: 5000
     step: 1
-    initial_value: -300
+    initial_value: 300
     optimistic: true
     set_action:
       then:
@@ -585,7 +583,7 @@ number:
     min_value: -1
     max_value: 1
     step: 0.01
-    initial_value: -0.97
+    initial_value: 0.97
     optimistic: true
     set_action:
       then:
@@ -637,7 +635,7 @@ number:
     min_value: -180
     max_value: 180
     step: 0.1
-    initial_value: -14.0
+    initial_value: 14.0
     optimistic: true
     set_action:
       then:
