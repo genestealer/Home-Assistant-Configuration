@@ -1,8 +1,11 @@
 {
-	"folders": [
-		{
-			"path": "esphome"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "esphome"
+    },
+    {
+      "path": "C:/Users/Admin/My Drive/Projects/IoT/GIT_everblu-meters-esp8266/GIT_everblu-meters-esp8266-improved"
+    }
+  ],
+  "settings": {}
 }
