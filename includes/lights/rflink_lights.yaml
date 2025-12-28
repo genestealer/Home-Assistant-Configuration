@@ -104,7 +104,7 @@
       name: Christmas Room Stars
     # RFCustom_524643_4:
     #   name: Christmas Guest Bedroom Star
-    RFCustom_524643_2:
+    RFCustom_524643_2: # Status RCS-K09
       name: Christmas Garden Lights
 
     # These need to be joined with a healper due to the ON/OFF
