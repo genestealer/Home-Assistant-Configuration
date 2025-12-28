@@ -1,61 +1,29 @@
-- id: '1541895123592'
-  alias: 'Notify: if CCTV Goes Offline'
-  description: Notify if CCTV goes off for more than a specific length of time, originally
-    used ping detector binary sensors, but in 2022 migrated over to the camera availability,
-    provided by the axis camera component. 2022, moved back to Ping detects binary
-    sensors so that I can use the sensors for other things.
-  triggers:
-  - entity_id: binary_sensor.front_door_cctv_online
-    for: 00:10:00
-    from: 'on'
-    to: 'off'
-    trigger: state
-  - entity_id: binary_sensor.bunny_cctv_online
-    for: 00:10:00
-    from: 'on'
-    to: 'off'
-    trigger: state
-  - entity_id: binary_sensor.drive_cctv_online
-    for: 00:10:00
-    from: 'on'
-    to: 'off'
-    trigger: state
-  - entity_id: binary_sensor.garden_cctv_online
-    for: 00:10:00
-    from: 'on'
-    to: 'off'
-    trigger: state
-  - entity_id: binary_sensor.garage_cctv_online
-    for: 00:10:00
-    from: 'on'
-    to: 'off'
-    trigger: state
-  - entity_id: binary_sensor.garage_2_cctv_online
-    for: 00:10:00
-    from: 'on'
-    to: 'off'
-    trigger: state
-  conditions: []
-  actions:
-  - data:
-      title: CCTV Offline
-      message: '{{trigger.entity_id}} offline'
-    action: notify.mobile_app_rich_mob_app
 - id: '1558317969078'
   alias: CCTV Reboot Each Monday
-  trigger:
+  triggers:
   - at: 06:45
-    platform: time
-  condition:
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - mon
-  action:
+  actions:
   - action: button.press
     metadata: {}
     data: {}
     target:
-      entity_id: button.11_front_door_reboot
+      entity_id:
+      - button.drive_high_25_reboot
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.drive_long_31_reboot
   - delay:
       hours: 0
       minutes: 10
@@ -66,8 +34,7 @@
     data: {}
     target:
       entity_id:
-      - button.12_drive_long_reboot
-      - button.18_garden_reboot
+      - button.front_door_33_reboot
   - delay:
       hours: 0
       minutes: 10
@@ -77,9 +44,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id:
-      - button.13_garage_reboot
-      - button.15_chickens_reboot
+      entity_id: button.front_garden_27_reboot
   - delay:
       hours: 0
       minutes: 10
@@ -89,7 +54,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: button.16_drive_high_reboot
+      entity_id: button.garage_32_reboot
   - delay:
       hours: 0
       minutes: 10
@@ -99,7 +64,17 @@
     metadata: {}
     data: {}
     target:
-      entity_id: button.21_drive_higher_reboot
+      entity_id: button.garden_30_reboot
+  - delay:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.parking_space_onvif_reboot
 - id: '1564192629041'
   alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
   description: 'If script is turned off manually, then close valve, else it will stay
@@ -231,68 +206,6 @@
     service: switch.turn_off
   - entity_id: switch.back_garden_lawn_2_irrigation_valve
     service: switch.turn_off
-- id: '1572464632861'
-  alias: Smoke Machine Automation - Smoke
-  description: 'Don''t need to turn on and off, as RF Link signal_repetitions: xx
-    is used to set on the "on" time. Makes use of twrecked/hass-momentary Momentary
-    Switch Component for Home Assistant'
-  trigger:
-  - event_data: {}
-    event_type: smoke_machine_automation
-    platform: event
-    enabled: false
-  - type: motion
-    platform: device
-    device_id: 853ca02c816df4ce4860c07060837a6a
-    entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
-    domain: binary_sensor
-    enabled: false
-  - type: motion
-    platform: device
-    device_id: 83dd8340e23fb86fef21b09a22a57929
-    entity_id: binary_sensor.drive_higher_21_vmd4_camera1profile2
-    domain: binary_sensor
-    enabled: false
-  - platform: state
-    entity_id:
-    - switch.smoke_machine
-    to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.smoke_machine
-    enabled: false
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
-    enabled: false
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.smoke_machine
-    enabled: false
-  - event: smoke_machine_automation
-    event_data: {}
-    enabled: false
-  - service: switch.toggle
-    data: {}
-    target:
-      entity_id: switch.smoke_machine
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.smoke_machine
-    enabled: false
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-    enabled: true
 - id: '1576599112935'
   alias: Welcome home Richard
   description: 'Note: These actions can only be edited with YAML'
@@ -461,7 +374,7 @@
       message: Nest forced back to heat mode while you are at home.
     service: notify.google_cloud_notify
 - id: '1581770041173'
-  alias: 'Notify: Electricity supply voltage is LOW/HIGH'
+  alias: Electricity supply voltage is LOW/HIGH and Power Cut / Loss of Mains
   description: Send Notification when Electricity Voltage is Low or High
   triggers:
   - above: '254'
@@ -545,38 +458,6 @@
         '
       title: 'WARNING: UPS close to being depleted'
     action: notify.mobile_app_rich_mob_app
-- id: '1581773259354'
-  alias: Bunny shed status monitor notify
-  description: Monitor the health of my gateways
-  trigger:
-  - entity_id: binary_sensor.bs_status
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      message: Bunny Shed Controller has been offline for 10 mins. {{now().strftime('%Y-%m-%d
-        %I:%M %p')}}
-      title: Irrigation offline
-    service: notify.google_cloud_notify
-- id: '1581773123827'
-  alias: 'Notify: Possible DDOS attack'
-  trigger:
-  - above: '70000'
-    entity_id: sensor.pi_hole_dns_queries_today
-    platform: numeric_state
-  action:
-  - data:
-      message: 'DNS Queries: {{ states(''sensor.pi_hole_dns_queries_today'') }}
-
-        '
-      title: Possible DDOS Attack from inside network
-    service: notify.google_cloud_notify
 - id: '1581123123827'
   alias: Simulate Presence Lights - OLD
   description: Automation Simulate Presence / Occupancy Simulation. Runs single and
@@ -1388,11 +1269,11 @@
       entity_id: media_player.office_display
     data:
       media:
-        media_content_id: media-source://camera/camera.front_door_11
+        media_content_id: media-source://camera/camera.p3265_lv_0
         media_content_type: application/vnd.apple.mpegurl
         metadata:
           title: Front Door .11
-          thumbnail: /api/camera_proxy/camera.front_door_11
+          thumbnail: /api/camera_proxy/camera.p3265_lv_0
           media_class: video
           children_media_class:
           navigateIds:
@@ -1405,11 +1286,11 @@
       entity_id: media_player.living_room_display
     data:
       media:
-        media_content_id: media-source://camera/camera.front_door_11
+        media_content_id: media-source://camera/camera.p3265_lv_0
         media_content_type: application/vnd.apple.mpegurl
         metadata:
           title: Front Door .11
-          thumbnail: /api/camera_proxy/camera.front_door_11
+          thumbnail: /api/camera_proxy/camera.p3265_lv_0
           media_class: video
           children_media_class:
           navigateIds:
@@ -1439,11 +1320,11 @@
       entity_id: media_player.kitchen_display
     data:
       media:
-        media_content_id: media-source://camera/camera.front_door_11
+        media_content_id: media-source://camera/camera.p3265_lv_0
         media_content_type: application/vnd.apple.mpegurl
         metadata:
           title: Front Door .11
-          thumbnail: /api/camera_proxy/camera.front_door_11
+          thumbnail: /api/camera_proxy/camera.p3265_lv_0
           media_class: video
           children_media_class:
           navigateIds:
@@ -1473,7 +1354,7 @@
       action: media_player.play_media
     - data:
         media:
-          media_content_id: media-source://camera/camera.front_door_11
+          media_content_id: media-source://camera/camera.p3265_lv_0
           media_content_type: application/vnd.apple.mpegurl
           metadata: {}
       target:
@@ -1487,7 +1368,7 @@
         format: hls
         media_player: media_player.office_display
       target:
-        entity_id: camera.front_door_11_onvif_video
+        entity_id: camera.p3265_lv_0_onvif_video
       enabled: false
       action: camera.play_stream
     - data:
@@ -1502,7 +1383,7 @@
         media_player: media_player.office_display
       target:
         entity_id:
-        - camera.front_door_11
+        - camera.p3265_lv_0
       enabled: false
       action: camera.play_stream
     - data:
@@ -1523,11 +1404,11 @@
         entity_id: media_player.living_room_display
       data:
         media:
-          media_content_id: media-source://camera/camera.front_door_11
+          media_content_id: media-source://camera/camera.p3265_lv_0
           media_content_type: application/vnd.apple.mpegurl
           metadata:
             title: Front Door .11
-            thumbnail: /api/camera_proxy/camera.front_door_11
+            thumbnail: /api/camera_proxy/camera.p3265_lv_0
             media_class: video
             children_media_class:
             navigateIds:
@@ -1557,11 +1438,11 @@
         entity_id: media_player.office_display
       data:
         media:
-          media_content_id: media-source://camera/camera.front_door_11
+          media_content_id: media-source://camera/camera.p3265_lv_0
           media_content_type: application/vnd.apple.mpegurl
           metadata:
             title: Front Door .11
-            thumbnail: /api/camera_proxy/camera.front_door_11
+            thumbnail: /api/camera_proxy/camera.p3265_lv_0
             media_class: video
             children_media_class:
             navigateIds:
@@ -1575,11 +1456,11 @@
         entity_id: media_player.kitchen_display
       data:
         media:
-          media_content_id: media-source://camera/camera.front_door_11
+          media_content_id: media-source://camera/camera.p3265_lv_0
           media_content_type: application/vnd.apple.mpegurl
           metadata:
             title: Front Door .11
-            thumbnail: /api/camera_proxy/camera.front_door_11
+            thumbnail: /api/camera_proxy/camera.p3265_lv_0
             media_class: video
             children_media_class:
             navigateIds:
@@ -1591,7 +1472,7 @@
     enabled: false
   mode: single
 - id: '1661547535107'
-  alias: Kitchen Motion Occupancy (Rev 1) (With Christmas Tree)
+  alias: Kitchen Motion Occupancy (Rev 1)
   description: Triggered in motion, restarted on fresh motion detection (sensors set
     to 90 second timeout). On timer delay turn-off section, checks if motion is still
     being detected, to avoid issue with motion being continuity detected for entire
@@ -1661,26 +1542,9 @@
       action: light.turn_on
       target:
         device_id: c8b85bb0a92c1f69c117b9217a6c86a8
-    - action: switch.turn_on
-      metadata: {}
-      data: {}
-      target:
-        device_id: b34f59aa5f7588a139a9162093de3262
-    - if:
-      - condition: state
-        entity_id: light.christmas_tree_lights
-        state: 'off'
-        enabled: true
-      then:
-      - data: {}
-        target:
-          entity_id: light.christmas_tree_lights
-        enabled: true
-        action: light.turn_on
-      enabled: false
     - delay:
         hours: 0
-        minutes: 10
+        minutes: 30
         seconds: 0
         milliseconds: 0
     - choose:
@@ -1706,53 +1570,12 @@
         action: light.turn_off
         target:
           device_id: c8b85bb0a92c1f69c117b9217a6c86a8
-      - data: {}
-        target:
-          entity_id: light.christmas_tree_lights
-        enabled: false
-        action: light.turn_off
       - action: switch.turn_off
         metadata: {}
         data: {}
         target:
-          device_id: b34f59aa5f7588a139a9162093de3262
-  mode: restart
-- id: '1667140350137'
-  alias: Smoke Machine - Lights
-  description: ' [Restarts]
-
-    '
-  trigger:
-  - type: motion
-    platform: device
-    device_id: 853ca02c816df4ce4860c07060837a6a
-    entity_id: binary_sensor.front_door_11_vmd4_camera1profile2
-    domain: binary_sensor
-    enabled: false
-  - type: motion
-    platform: device
-    device_id: 83dd8340e23fb86fef21b09a22a57929
-    entity_id: binary_sensor.drive_higher_21_vmd4_camera1profile2
-    domain: binary_sensor
-  - platform: state
-    entity_id:
-    - switch.smoke_machine
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
-    target:
-      entity_id: switch.0x5c0272fffec8ba7e
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 15
-      milliseconds: 0
-    enabled: true
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.0x5c0272fffec8ba7e
+          device_id:
+          - 4e30ea946a5495f14d38b994caec1da0
   mode: restart
 - id: '1667142302076'
   alias: Smoke Machine Automation - Reset Switch
@@ -1812,63 +1635,6 @@
         target:
           entity_id:
           - light.christmas_garden_lights
-  mode: single
-- id: '1674941449370'
-  alias: Energenie eTRV Calibrate Once a Week
-  description: ''
-  triggers:
-  - at: 08:00:00
-    trigger: time
-  conditions:
-  - condition: time
-    weekday:
-    - sun
-  actions:
-  - device_id: 061f81b04836d8e074d7e2542b21767c
-    domain: climate
-    entity_id: 85fd7edb412d78a913c1bf7147db79a5
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: a46ff2f2479fd7381a267a77a12734ae
-    domain: climate
-    entity_id: 1dc6cd56095c82c66dc458c436527a3d
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: e79922e5a787ed8db81ee253715ea823
-    domain: climate
-    entity_id: 62b634275f68a5e6e82986ad6fe56f13
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: 55d26468639a4f1005742215878de937
-    domain: climate
-    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: f694a04cab17376f9ccbb97b67b6365d
-    domain: climate
-    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
-    domain: climate
-    entity_id: f175045657712af0731ec9edf74b1479
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: d87bf9712abd725b400a815405c374ac
-    domain: climate
-    entity_id: e46f27494a4d65b24c09f340418a9438
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
-    domain: climate
-    entity_id: b8a6f7260b91a515810a154c4bb51486
-    type: set_preset_mode
-    preset_mode: Exercise Valve
-  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
-    domain: climate
-    entity_id: c56d5518b41049387e082722202d573b
-    type: set_preset_mode
-    preset_mode: Exercise Valve
   mode: single
 - id: '1689364304362'
   alias: Irrigation Notify When Controllers Goes Offline
@@ -2004,6 +1770,7 @@
       - condition: state
         entity_id: sensor.rich_mob_app_phone_state
         state: idle
+        enabled: false
       then:
       - data:
           data:
@@ -2026,6 +1793,7 @@
       - condition: state
         entity_id: sensor.lucy_mob_app_phone_state
         state: idle
+        enabled: false
       then:
       - data:
           data:
@@ -2038,18 +1806,12 @@
             priority: high
           message: TTS
         action: notify.mobile_app_lucy_mob_app
-    - data:
-        filename: /media/frontdoor.jpg
-      target:
-        entity_id: camera.front_door_11
-      action: camera.snapshot
-      enabled: false
   - parallel:
     - data:
         data:
-          image: /api/camera_proxy/camera.front_door_11
+          image: /api/camera_proxy/camera.p3265_lv_0
           color: red
-          channel: DoorbellImage2
+          channel: Doorbell
           vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
           importance: high
           timeout: 86400
@@ -2058,13 +1820,14 @@
           ttl: 0
           priority: high
           sticky: 'true'
-        message: ' '
+        message: ' Timestamp: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}'
+        title: Doorbell
       action: notify.mobile_app_rich_mob_app
     - data:
         data:
-          image: /api/camera_proxy/camera.front_door_11
+          image: /api/camera_proxy/camera.p3265_lv_0
           color: red
-          channel: DoorbellImage2
+          channel: Doorbell
           vibrationPattern: 100,200,100,100,75,25,100,200,100,500,100,200,100,500
           importance: high
           timeout: 86400
@@ -2073,7 +1836,8 @@
           ttl: 0
           priority: high
           sticky: 'true'
-        message: ' '
+        message: ' Timestamp: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}'
+        title: Doorbell
       action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1694790204906'
@@ -2100,7 +1864,7 @@
       title: Front Door
       message: Door opened, but no one is home!
       data:
-        image: /api/camera_proxy/camera.front_door_11
+        image: /api/camera_proxy/camera.p3265_lv_0
         color: red
         channel: DoorOpen1
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2113,7 +1877,7 @@
       title: Front Door
       message: Door opened, but no one is home!
       data:
-        image: /api/camera_proxy/camera.front_door_11
+        image: /api/camera_proxy/camera.p3265_lv_0
         color: red
         channel: DoorOpen1
         vibrationPattern: 100,200,100,200,100,200,100,200
@@ -2739,74 +2503,6 @@
           entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
         enabled: false
   mode: single
-- id: '1706448756375'
-  alias: Heating Follow Radiator Demand
-  description: Run only between set hours and only if someone is home
-  triggers:
-  - entity_id:
-    - climate.living_room_radiator
-    attribute: temperature
-    trigger: state
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 2
-    enabled: true
-  - trigger: numeric_state
-    entity_id:
-    - sensor.living_room_radiator_temperature_delta
-    above: 0.2
-  - trigger: numeric_state
-    entity_id:
-    - sensor.living_room_radiator_temperature_delta
-    below: -1
-  - entity_id:
-    - climate.living_room_radiator
-    attribute: current_temperature
-    trigger: state
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    enabled: false
-  conditions:
-  - alias: Check if anyone (OR) is home
-    condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.lucy
-      zone: zone.home
-    - condition: zone
-      entity_id: person.richard
-      zone: zone.home
-      enabled: true
-  - condition: time
-    after: 09:00:00
-    before: 01:00:00
-  actions:
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.living_room_radiator_temperature_delta
-      below: -1
-    then:
-    - action: climate.set_temperature
-      target:
-        entity_id: climate.hallway
-      data:
-        temperature: '{{ (state_attr(''climate.hallway'', ''current_temperature'')|round(1))
-          + 0.5 }}'
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.living_room_radiator_temperature_delta
-      above: 0.2
-    then:
-    - action: climate.set_temperature
-      target:
-        entity_id: climate.hallway
-      data:
-        temperature: '{{ (state_attr(''climate.hallway'', ''current_temperature'')|round(0))
-          - 1 }}'
-  mode: single
 - id: '1708473467198'
   alias: Living Room Fairy Lights Follow Other Lights
   description: ''
@@ -2921,19 +2617,35 @@
     subtype: 'on'
     trigger: device
     alias: Kitchen Ikea Zigbee Button Pressed
+  - alias: Kitchen Ikea Zigbee Button Pressed
+    domain: mqtt
+    device_id: 71d5510f501b15c01210dff88a9c5e31
+    type: action
+    subtype: brightness_move_up
+    trigger: device
+    id: 'Hold Up '
   conditions: []
   actions:
-  - data:
-      message: 3 and a half minute tea timer started
-    enabled: false
-    action: notify.google_assistant_sdk
-  - repeat:
-      count: 1
-      sequence:
-      - device_id: 061e0dd32d43fd2355543b4f4db149ac
-        domain: light
-        entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
-        type: flash
+  - if:
+    - condition: trigger
+      id:
+      - 'Hold Up '
+    then:
+    - repeat:
+        count: 2
+        sequence:
+        - device_id: 061e0dd32d43fd2355543b4f4db149ac
+          domain: light
+          entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
+          type: flash
+    else:
+    - repeat:
+        count: 1
+        sequence:
+        - device_id: 061e0dd32d43fd2355543b4f4db149ac
+          domain: light
+          entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
+          type: flash
   - delay:
       hours: 0
       minutes: 3
@@ -2946,15 +2658,21 @@
         domain: light
         entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
         type: flash
-  - data:
-      message: Tea timer, beep! beep! beep!
-      target: kitchen
-    enabled: true
-    action: notify.google_assistant_sdk
-  - data:
-      message: Tea timer, bing bong dong - bang!
-    enabled: true
-    action: notify.google_assistant_sdk
+  - if:
+    - condition: trigger
+      id:
+      - 'Hold Up '
+    then: []
+    else:
+    - data:
+        message: Tea timer, beep! beep! beep!
+        target: kitchen
+      enabled: true
+      action: notify.google_assistant_sdk
+    - data:
+        message: Tea timer, bing bong dong - bang!
+      enabled: true
+      action: notify.google_assistant_sdk
   - alias: 'Send to targets separately, to avoid queuing delay '
     parallel:
     - data:
@@ -3256,7 +2974,7 @@
     data:
       temperature: 10
     target:
-      device_id: df18efe5cd5bd9cf0330bcf82def7f62
+      entity_id: climate.hallway
   mode: single
 - id: '1736544967218'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
@@ -3284,113 +3002,6 @@
           message: Battery low {{sensors}}
         action: persistent_notification.create
         enabled: false
-- id: '1736703475166'
-  alias: Energenie eTRV Diagnostics Once a Week
-  description: ''
-  triggers:
-  - at: 08:00:00
-    trigger: time
-  conditions:
-  - condition: time
-    weekday:
-    - mon
-  actions:
-  - device_id: 061f81b04836d8e074d7e2542b21767c
-    domain: climate
-    entity_id: 85fd7edb412d78a913c1bf7147db79a5
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: a46ff2f2479fd7381a267a77a12734ae
-    domain: climate
-    entity_id: 1dc6cd56095c82c66dc458c436527a3d
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: e79922e5a787ed8db81ee253715ea823
-    domain: climate
-    entity_id: 62b634275f68a5e6e82986ad6fe56f13
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: 55d26468639a4f1005742215878de937
-    domain: climate
-    entity_id: 168ee9f59e0b15f8719800c92f16f8c9
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: f694a04cab17376f9ccbb97b67b6365d
-    domain: climate
-    entity_id: a9f2ad8cd9cfb413cb59e78f56bcca5b
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
-    domain: climate
-    entity_id: f175045657712af0731ec9edf74b1479
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: d87bf9712abd725b400a815405c374ac
-    domain: climate
-    entity_id: e46f27494a4d65b24c09f340418a9438
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: 71e963eadf1071d0f777742a6fbb5cf9
-    domain: climate
-    entity_id: b8a6f7260b91a515810a154c4bb51486
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  - device_id: a9d1acaaf374a3234065ce3dca7d9f04
-    domain: climate
-    entity_id: c56d5518b41049387e082722202d573b
-    type: set_preset_mode
-    preset_mode: Request Diagnostics
-  mode: single
-- id: '1736704010332'
-  alias: Track Heating Boiler State
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - climate.hallway
-    attribute: hvac_action
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: climate.hallway
-        attribute: hvac_action
-        state: heating
-      sequence:
-      - action: light.turn_on
-        metadata: {}
-        data: {}
-        target:
-          device_id: c1a95ebc950f2879ad90251c3400caf7
-      - action: mqtt.publish
-        metadata: {}
-        data:
-          evaluate_payload: false
-          qos: '1'
-          retain: false
-          topic: energenie/boiler/state
-          payload: 'on'
-    - conditions:
-      - condition: state
-        entity_id: climate.hallway
-        attribute: hvac_action
-        state: idle
-      sequence:
-      - action: light.turn_off
-        metadata: {}
-        data: {}
-        target:
-          device_id: c1a95ebc950f2879ad90251c3400caf7
-      - action: mqtt.publish
-        metadata: {}
-        data:
-          evaluate_payload: false
-          qos: '1'
-          retain: false
-          topic: energenie/boiler/state
-          payload: 'off'
-  mode: single
 - id: '1738459474372'
   alias: Freezer Temperature Alert
   description: ''
@@ -3574,10 +3185,8 @@
             ttl: 0
             priority: high
             sticky: 'true'
-          message: 'Fridge door left open for 7 mins Sent: {{now().strftime(''%Y-%m-%d
-            %I:%M %p'')}}
-
-            '
+          message: 'Fridge door left open for 7 mins. Sent: {{now().strftime(''%Y-%m-%d
+            %I:%M %p'')}}'
           title: Fridge Door Left Open
         action: notify.mobile_app_rich_mob_app
       - data:
@@ -3895,69 +3504,62 @@
   description: 'Publish values to emulated meter via ESPHome. Note: power is inverted
     (negative = import)
 
-
     The only value we really need to send to the inverter is ''Active Power''
 
     '
   triggers:
   - entity_id:
-    - sensor.solar_panels_voltage_net_consumption_ct
-    - sensor.solar_panels_net_consumption_ct_current
     - sensor.inverter_demand_power
-    - sensor.solar_panels_reactive_power
-    - sensor.solar_panels_powerfactor_net_consumption_ct
-    - sensor.solar_panels_frequency_production_ct
     trigger: state
   conditions: []
   actions:
-  - sequence:
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_voltage
-      data:
-        value: '{{ states(''sensor.solar_panels_voltage_net_consumption_ct'') | float(240)
-          }}'
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_frequency
-      data:
-        value: '{{ states(''sensor.solar_panels_frequency_production_ct'') | float(50.0)
-          }}'
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_power_factor
-      data:
-        value: '{{ states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
-          | float(0.97) }}'
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_active_power
-      data:
-        value: '{{ (states(''sensor.inverter_demand_power'') | float(0)) * -1 }}'
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_apparent_power
-      data:
-        value: '{% set active = (states(''sensor.inverter_demand_power'') | float(0))
-          * -1 %} {% set pf = states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
-          | float(0.97) %} {{ (active / pf) | abs if pf != 0 else 0 }}
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_voltage
+    data:
+      value: '{{ states(''sensor.solar_panels_voltage_net_consumption_ct'') | float(240)
+        }}'
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_frequency
+    data:
+      value: '{{ states(''sensor.solar_panels_frequency_production_ct'') | float(50.0)
+        }}'
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_power_factor
+    data:
+      value: '{{ states(''sensor.solar_panels_powerfactor_net_consumption_ct'') |
+        float(0.97) }}'
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_active_power
+    data:
+      value: '{{ (states(''sensor.inverter_demand_power'') | float(0)) * -1 }}'
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_apparent_power
+    data:
+      value: '{% set active = (states(''sensor.inverter_demand_power'') | float(0))
+        * -1 %} {% set pf = states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
+        | float(0.97) %} {{ (active / pf) | abs if pf != 0 else 0 }}
 
-          '
-      enabled: false
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_current
-      data:
-        value: '{{ (states(''sensor.solar_panels_net_consumption_ct_current'') | float(0))
-          * -1 }}'
-      enabled: false
-    - action: number.set_value
-      target:
-        entity_id: number.sdm120ct_emulator_reactive_power
-      data:
-        value: '{{ (states(''sensor.solar_panels_reactive_power'') | float(0)) * -1
-          }}'
-      enabled: false
+        '
+    enabled: false
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_current
+    data:
+      value: '{{ (states(''sensor.solar_panels_net_consumption_ct_current'') | float(0))
+        * -1 }}'
+    enabled: false
+  - action: number.set_value
+    target:
+      entity_id: number.sdm120ct_emulator_reactive_power
+    data:
+      value: '{{ (states(''sensor.solar_panels_reactive_power'') | float(0)) * -1
+        }}'
+    enabled: false
   mode: queued
   max: 5
 - id: '1760397061139'
@@ -4018,3 +3620,192 @@
           entity_id: input_boolean.botc_muted
         action: input_boolean.turn_off
   mode: single
+- id: '1765649273376'
+  alias: 'Christmas Tree Lights Track Kitchen Lights '
+  description: ''
+  triggers:
+  - type: changed_states
+    device_id: 294f30f10444bcd2ef6ff9be250834f7
+    entity_id: ac8e60292dbb15a275d20f873030af7e
+    domain: light
+    trigger: device
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: 294f30f10444bcd2ef6ff9be250834f7
+        entity_id: ac8e60292dbb15a275d20f873030af7e
+        domain: light
+      sequence:
+      - type: turn_on
+        device_id: 4e30ea946a5495f14d38b994caec1da0
+        entity_id: 6c48f769a82fde13b91b83bdc5ddd39f
+        domain: switch
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          device_id:
+          - e117af1a8759c13997886e55fd6f04c3
+          - 4e40123db567ffb641624c13a53b16ee
+        data: {}
+    default:
+    - type: turn_off
+      device_id: 4e30ea946a5495f14d38b994caec1da0
+      entity_id: 6c48f769a82fde13b91b83bdc5ddd39f
+      domain: switch
+    - action: switch.turn_off
+      metadata: {}
+      target:
+        device_id:
+        - e117af1a8759c13997886e55fd6f04c3
+        - 4e40123db567ffb641624c13a53b16ee
+      data: {}
+  mode: single
+- id: '1766937352100'
+  alias: SDM120CT Modbus Emulator Inverter Communication
+  description: ''
+  triggers:
+  - type: problem
+    device_id: 956055ba5eb10696829a1bbd73949e54
+    entity_id: 29f823907cc2a1922cee8aa4283f0b3d
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions: []
+  actions:
+  - action: notify.mobile_app_rich_mob_app
+    metadata: {}
+    data:
+      message: 'SDM120CT Modbus Emulator Inverter Communication started detecting
+        problem. Sent: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}'
+      title: SDM120CT
+  mode: single
+- id: '1766951057635'
+  alias: Heating Boiler Control from TRVs OpenTherm
+  triggers:
+  - entity_id:
+    - binary_sensor.bedroom_radiator_heat_demanded
+    - binary_sensor.dining_room_radiator_heat_demanded
+    - binary_sensor.guest_bedroom_radiator_heat_demanded
+    - binary_sensor.hall_radiator_heat_demanded
+    - binary_sensor.kitchen_radiator_heat_demanded
+    - binary_sensor.library_radiator_heat_demanded
+    - binary_sensor.living_room_radiator_heat_demanded
+    - sensor.heating_nest_demand_offset_opentherm_friendly
+    - input_boolean.heating_master_enable
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_master_enable
+    state: 'on'
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.bedroom_radiator_heat_demanded
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.dining_room_radiator_heat_demanded
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.hall_radiator_heat_demanded
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.kitchen_radiator_heat_demanded
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.library_radiator_heat_demanded
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.living_room_radiator_heat_demanded
+          state: 'on'
+      sequence:
+      - variables:
+          base_temp: '{{ state_attr(''climate.hallway'',''current_temperature'') |
+            float(15) }}
+
+            '
+          offset: '{{ states(''sensor.heating_nest_demand_offset_opentherm_friendly'')
+            | float(0) }}
+
+            '
+          target_temp: '{{ [ [ base_temp + offset, 32 ] | min, 10 ] | max }}
+
+            '
+      - condition: template
+        value_template: '{{ target_temp != state_attr(''climate.hallway'',''temperature'')
+          | float(0) }}
+
+          '
+      - target:
+          entity_id: climate.hallway
+        data:
+          temperature: '{{ target_temp }}'
+        action: climate.set_temperature
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.bedroom_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.dining_room_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.hall_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.kitchen_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.library_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.living_room_radiator_heat_demanded
+          state: 'off'
+      sequence:
+      - delay:
+          minutes: 5
+        enabled: false
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.bedroom_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.dining_room_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.hall_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.kitchen_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.library_radiator_heat_demanded
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.living_room_radiator_heat_demanded
+          state: 'off'
+      - target:
+          entity_id: climate.hallway
+        data:
+          temperature: 12
+        action: climate.set_temperature
+  mode: restart
