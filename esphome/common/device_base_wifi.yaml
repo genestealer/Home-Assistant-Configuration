@@ -33,7 +33,6 @@ text_sensor:
       name: "IP"
       icon: "mdi:ip-network-outline"
       entity_category: "diagnostic"
-      update_interval: ${wifi_sensor_update_interval}
     mac_address:
       name: "MAC"
       icon: "mdi:access-point-network"
@@ -46,7 +45,6 @@ text_sensor:
       name: "BSSID"
       icon: "mdi:access-point-network"
       entity_category: "diagnostic"
-      update_interval: ${wifi_sensor_update_interval}
 
 
 ##################################
