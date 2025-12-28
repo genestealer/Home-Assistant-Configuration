@@ -42,8 +42,11 @@
 #   effectively superfluous. We still populate them for completeness.
 #
 # Home Assistant Integration:
-# - A Home Assistant automation updates the emulator values several times
-#   per minute based on real-time grid consumption data from other sensors.
+# - A Home Assistant automation drives the emulator by writing to the
+#   exposed template number entities (Voltage, Current, Active Power, etc.).
+# - The automation runs several times per minute using live grid import/
+#   export data from other Home Assistant sensors. The ESP itself does not
+#   measure these values; it only serves them to the inverter.
 #
 # Hardware:
 # - ESP32 DevKit v1 (ESP32-WROOM-32)
@@ -90,7 +93,7 @@ substitutions:
   # Naming & Identification
   name: sdm120ct-emulator
   friendly_name: SDM120CT Modbus Emulator
-  ui_comment: "ESP32-based SDM120CT Modbus RTU emulator"
+  ui_comment: "ESP32-based SDM120CT Modbus RTU emulator for Eaton xStorage Home inverter"
 
 
   # Network Configuration (Static IP)
@@ -170,12 +173,23 @@ globals:
   - id: phase_angle_val    # Register 0x0024: Phase angle (degrees)
     type: float
     initial_value: '14.0'
+  - id: last_update_time   # Timestamp of last update from Home Assistant
+    type: uint32_t
+    initial_value: '0'
+  - id: safe_defaults_active  # Flag indicating if safe defaults are in effect
+    type: bool
+    initial_value: 'true'
+  - id: last_modbus_comms_time  # Timestamp of last Modbus communication from inverter
+    type: uint32_t
+    initial_value: '0'
 
 ##############################################################
 # Safety defaults watchdog
 ##############################################################
-# Applies safe "export 300 W" values on boot and whenever Wi‑Fi/API
-# connectivity drops, to prevent the inverter from ramping up export.
+# Applies safe "export 300 W" values on boot and whenever:
+#   1. Wi‑Fi/API connectivity drops
+#   2. No update is received from Home Assistant for 5 minutes
+# This prevents the inverter from ramping up export when communication fails.
 script:
   - id: apply_safe_defaults
     mode: queued
@@ -222,13 +236,37 @@ script:
       - number.set:
           id: phase_angle_input
           value: 14.0
+      # Mark failsafe active AFTER number.set calls (which clear the flag)
+      - lambda: |-
+          id(safe_defaults_active) = true;
+
+  - id: check_update_watchdog
+    mode: queued
+    then:
+      - lambda: |-
+          // HA automations update template numbers; each set_action stamps last_update_time.
+          // If 5 minutes (300000 ms) pass without an update, fall back to safe defaults.
+          uint32_t now = millis();
+          uint32_t time_since_update = now - id(last_update_time);
+          if (time_since_update > 300000) {
+            ESP_LOGW("watchdog", "No update from Home Assistant for 5 minutes. Applying safe defaults.");
+            id(apply_safe_defaults).execute();
+          }
 
 # Run safety defaults early on boot
 esphome:
   on_boot:
     priority: -100.0
     then:
+      - lambda: |-
+          id(last_update_time) = millis();
       - script.execute: apply_safe_defaults
+
+# Check watchdog every minute
+interval:
+  - interval: 60s
+    then:
+      - script.execute: check_update_watchdog
 
 # Also apply safety defaults if Wi‑Fi disconnects
 wifi:
@@ -299,6 +337,7 @@ modbus_controller:
       - address: 0x0000
         value_type: FP32
         read_lambda: |-
+
           return id(voltage_val);
       
       # Gap registers 0x0002-0x0004 (not used by SDM120CT)
@@ -500,15 +539,12 @@ modbus_controller:
 ##############################################################
 # Template Numbers - Home Assistant Control Interface
 ##############################################################
-# These number entities appear in Home Assistant and allow
-# real-time control of the simulated SDM120CT meter values.
-# Values are stored in global variables and exposed via
-# Modbus registers to the Eaton inverter.
-# Use these to simulate different power scenarios:
-#   - Solar generation/export (positive current/power)
-#   - Grid import (negative values)
-#   - Different voltage conditions
-#   - Energy metering over time
+# Home Assistant automations write to these template numbers to drive the emulator.
+# Each set_action below updates globals, clears the failsafe flag, and refreshes
+# last_update_time for the 5-minute watchdog.
+#
+# Note: The only value we really need to send to the inverter is 'Active Power'.
+# The other values are provided for completeness but don't affect inverter behavior.
 number:
   # Register 0x0000: Line voltage (V)
   - platform: template
@@ -522,6 +558,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(voltage_val) = x;
 
   # Register 0x0006: Line current (A) - positive for export
@@ -536,6 +574,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(current_val) = x;
 
   - platform: template
@@ -549,6 +589,10 @@ number:
     set_action:
       then:
         - lambda: |-
+            // Update last communication timestamp when inverter polls
+            id(last_modbus_comms_time) = millis();
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(active_power_val) = x;
 
   - platform: template
@@ -562,6 +606,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(apparent_power_val) = x;
 
   - platform: template
@@ -575,6 +621,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(reactive_power_val) = x;
 
   - platform: template
@@ -588,6 +636,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(power_factor_val) = x;
 
   - platform: template
@@ -601,6 +651,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(frequency_val) = x;
 
   - platform: template
@@ -614,6 +666,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(import_energy_val) = x;
 
   - platform: template
@@ -627,6 +681,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(export_energy_val) = x;
 
   - platform: template
@@ -640,6 +696,8 @@ number:
     set_action:
       then:
         - lambda: |-
+            id(safe_defaults_active) = false;
+            id(last_update_time) = millis();
             id(phase_angle_val) = x;
 
 # Setup mode toggle
@@ -657,5 +715,25 @@ switch:
         - lambda: |-
             id(setup_mode_val) = false;
 
+##############################################################
+# Binary Sensors
+##############################################################
+binary_sensor:
+  - platform: template
+    name: "Live Updates Status"
+    id: live_updates_status
+    device_class: safety
+    lambda: |-
+      return id(safe_defaults_active);
+  
+  - platform: template
+    name: "Inverter Communication"
+    id: inverter_comms_status
+    device_class: problem
+    lambda: |-
+      uint32_t now = millis();
+      uint32_t time_since_comms = now - id(last_modbus_comms_time);
+      // Return true (problem) if no communication for 90+ seconds
+      return time_since_comms > 90000;
 
 
