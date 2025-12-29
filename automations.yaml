@@ -3686,7 +3686,25 @@
       title: SDM120CT
   mode: single
 - id: '1766951057635'
-  alias: Heating Boiler Control from TRVs OpenTherm
+  alias: Heating OpenTherm Boiler Control from TRVs
+  description: "This automation controls the boiler via the Nest thermostat using
+    OpenTherm, based on heat demand from all radiator TRVs. Each TRV exposes two normalized
+    signals so third-party devices behave consistently:\n• Heating Max Room Temperature
+    Delta (sensor.heating_max_room_temperature_delta)\n  - Largest unmet heating requirement
+    across all rooms (setpoint - room temp, negatives clamped to 0)\n  - 0 means no
+    room needs heat; larger values mean at least one room is below target\n\n• Heating
+    Nest Demand Offset (OpenTherm Friendly) (sensor.heating_nest_demand_offset_opentherm_friendly)\n
+    \ - Converts the system-wide delta into a bounded temperature offset added to
+    the Nest current temp\n  - Small deltas nudge low flow temperatures for efficient
+    burns; larger deltas speed recovery but stay capped\n  - Falls back to 0 if the
+    delta is unavailable/invalid\n\nLogic: - If any radiator demands heat and the
+    master enable is ON, set Nest target to current temp + offset\n  so the boiler
+    modulates via OpenTherm instead of just blasting on/off.\n- If no radiators demand
+    heat, wait briefly (optional) then set Nest to a low setback (12°C) so the\n  boiler
+    shuts down cleanly.\n\nThis keeps comfort/hysteresis in the TRVs, uses HA only
+    for coordination, and lets the boiler run efficiently with OpenTherm modulation
+    instead of fixed on/off control.\nUses helpers: heating_max_room_temperature_delta
+    and heating_nest_demand_offset_opentherm_friendly "
   triggers:
   - entity_id:
     - binary_sensor.bedroom_radiator_heat_demanded
@@ -3729,6 +3747,10 @@
         - condition: state
           entity_id: binary_sensor.living_room_radiator_heat_demanded
           state: 'on'
+        - condition: state
+          entity_id: binary_sensor.office_radiator_heat_demanded
+          state:
+          - 'on'
       sequence:
       - variables:
           base_temp: '{{ state_attr(''climate.hallway'',''current_temperature'') |
@@ -3776,6 +3798,10 @@
         - condition: state
           entity_id: binary_sensor.living_room_radiator_heat_demanded
           state: 'off'
+        - condition: state
+          entity_id: binary_sensor.office_radiator_heat_demanded
+          state:
+          - 'off'
       sequence:
       - delay:
           minutes: 5
