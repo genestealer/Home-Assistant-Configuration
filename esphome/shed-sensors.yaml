@@ -47,6 +47,7 @@ substitutions:
   # Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
+  dht_pin: D1
   
 ##############################################################
 # Board Configuration
@@ -63,27 +64,10 @@ packages:
   wifi: !include common/device_base_wifi.yaml
   # Uncomment below to remove the status LED:
   # status_led: !remove
+  dht22: !include common/dht22.yaml
 
 ##############################################################
 # Shed Sensor Configuration (DHT22)
 ##############################################################
-sensor:
-  # ----------------------
-  # Temperature & Humidity Sensor
-  # ----------------------
-  - platform: dht
-    pin: D1  # GPIO 5 GPIO pin 5 (NodeMCU Pin D1)
-    temperature:
-      name: "Temperature"
-      state_class: measurement
-      device_class: temperature
-      unit_of_measurement: "°C"
-      accuracy_decimals: 1
-    humidity:
-      name: "Humidity"
-      state_class: measurement
-      device_class: humidity
-      unit_of_measurement: "%"
-      accuracy_decimals: 1
-    update_interval: ${sensor_update_interval}
-    model: DHT22
+
+# Uses shared DHT22 configuration from common/dht22.yaml

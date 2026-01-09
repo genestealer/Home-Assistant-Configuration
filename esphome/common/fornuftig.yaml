@@ -1,0 +1,206 @@
+##############################################################
+# Shared IKEA FORNÜFTIG air purifier module
+#
+# Required substitutions in the including device:
+#   sensor_update_interval  - General sensor/energy update interval
+#
+# Hardware assumptions (matching your existing builds):
+#   - ADC A0 monitors the filter LED
+#   - D1, D5, D6, D7 read the rotary switch positions
+#   - D2, D3, D4 drive the fan speed inputs on the IKEA PCB
+##############################################################
+
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - lambda: |-
+          float power = 0.5;  // Default power usage when fan is off
+          if (id(fan_internal).speed == 1) power = 1.5;
+          else if (id(fan_internal).speed == 2) power = 6.5;
+          else if (id(fan_internal).speed == 3) power = 15;
+          id(power_usage).publish_state(power);
+
+##############################################################
+# Sensor Configuration (Filter Status & Power Usage)
+##############################################################
+
+sensor:
+  # Filter LED status (detects when filter needs changing)
+  - platform: adc
+    pin: A0
+    internal: true
+    id: led_internal
+    update_interval: ${sensor_update_interval}
+    accuracy_decimals: 1
+    samples: 10
+    filters:
+      - delta: 0.1
+    on_value:
+      if:
+        condition:
+          lambda: 'return x < 0.2;'
+        then:
+          - binary_sensor.template.publish:
+              id: led_sensor
+              state: OFF
+        else:
+          - binary_sensor.template.publish:
+              id: led_sensor
+              state: ON
+
+  # Power consumption based on fan speed
+  - platform: template
+    name: "Power Usage"
+    id: power_usage
+    device_class: power
+    state_class: measurement
+    unit_of_measurement: W
+    update_interval: ${sensor_update_interval}
+
+  # Total daily energy consumption (resets at midnight)
+  - platform: total_daily_energy
+    name: "Energy Today"
+    id: sensor_total_daily_energy
+    power_id: power_usage
+    unit_of_measurement: "kWh"
+    icon: "mdi:circle-slice-3"
+    state_class: total_increasing
+    device_class: energy
+    accuracy_decimals: 3
+    filters:
+      - throttle: ${sensor_update_interval}
+      - multiply: 0.001
+      - delta: 0.01
+      - heartbeat: ${sensor_update_interval}
+
+##############################################################
+# Time Component (Used for Resetting Energy Meter at Midnight)
+##############################################################
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+##############################################################
+# Binary Sensors (Filter Status & Fan Speed Buttons)
+##############################################################
+
+binary_sensor:
+  # Filter status LED
+  - platform: template
+    id: led_sensor
+    name: "Filter Status"
+    device_class: problem
+    entity_category: diagnostic
+
+  # Fan control dial (reads physical rotary positions)
+  - platform: gpio
+    internal: true
+    id: in_d1
+    name: "Fan Off"
+    pin:
+      number: D1
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - fan.turn_off:
+          id: fan_internal
+
+  - platform: gpio
+    internal: true
+    id: in_d5
+    name: "Fan Low Speed"
+    pin:
+      number: D5
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - fan.turn_on:
+          id: fan_internal
+          speed: 1
+
+  - platform: gpio
+    internal: true
+    id: in_d6
+    name: "Fan Medium Speed"
+    pin:
+      number: D6
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - fan.turn_on:
+          id: fan_internal
+          speed: 2
+
+  - platform: gpio
+    internal: true
+    id: in_d7
+    name: "Fan High Speed"
+    pin:
+      number: D7
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - fan.turn_on:
+          id: fan_internal
+          speed: 3
+
+##############################################################
+# Fan Speed Control Outputs (ESP Overrides Rotary Switch)
+##############################################################
+
+output:
+  - platform: gpio
+    pin: D2
+    id: gpio_d2
+    inverted: true
+
+  - platform: gpio
+    pin: D3
+    id: gpio_d3
+    inverted: true
+
+  - platform: gpio
+    pin: D4
+    id: gpio_d4
+    inverted: true
+
+  - platform: template
+    id: fan_out_internal
+    type: float
+    write_action:
+      - lambda: |-
+          if (state < 0.1) {
+            id(gpio_d2).turn_off();
+            id(gpio_d3).turn_off();
+            id(gpio_d4).turn_off();
+            id(power_usage).publish_state(0.5);
+          } else if (state < 0.4) {
+            id(gpio_d4).turn_on();
+            id(gpio_d3).turn_off();
+            id(gpio_d2).turn_off();
+            id(power_usage).publish_state(1.5);
+          } else if (state < 0.7) {
+            id(gpio_d4).turn_off();
+            id(gpio_d3).turn_on();
+            id(gpio_d2).turn_off();
+            id(power_usage).publish_state(6.5);
+          } else {
+            id(gpio_d4).turn_off();
+            id(gpio_d3).turn_off();
+            id(gpio_d2).turn_on();
+            id(power_usage).publish_state(15);
+          }
+
+##############################################################
+# Fan Component
+##############################################################
+
+fan:
+  - platform: speed
+    output: fan_out_internal
+    id: fan_internal
+    name: "Air Purifier Fan"
+    speed_count: 3
+    restore_mode: RESTORE_DEFAULT_OFF

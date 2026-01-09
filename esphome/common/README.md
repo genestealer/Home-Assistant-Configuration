@@ -40,9 +40,6 @@ Each device must define these substitution variables:
 - `friendly_name`: Human-readable device name
 - `ui_comment`: Description shown in ESPHome dashboard
 - `ip`, `gateway`, `subnet`: Network configuration
-- `project_name`: Unique project identifier
-- `project_version`: Version number
-- `package_import_url`: GitHub import URL
 - `log_level`: Logging level (DEBUG, INFO, WARN, ERROR)
 - `sensor_update_interval`: General sensor update frequency
 - `wifi_sensor_update_interval`: Wi-Fi diagnostic update frequency
@@ -81,3 +78,4 @@ Each device must define these substitution variables:
 - **v1.0.0** - Initial modular structure
 - **v1.1.0** - Added entity categories and improved device classes
 - **v1.2.0** - Enhanced BME280 with dew point and altitude calculations
+- **v1.3.0** - Removed unused substitutions from documentation (project_name, project_version, package_import_url)

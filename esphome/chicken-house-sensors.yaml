@@ -42,6 +42,7 @@ substitutions:
   # Sensor Update Interval
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
+  dht_pin: LED_BLUE
 
 ##############################################################
 # Board Configuration
@@ -58,24 +59,13 @@ packages:
   wifi: !include common/device_base_wifi.yaml
   # Uncomment below to remove the status LED from this device:
   # status_led: !remove
+  dht11: !include common/dht11.yaml
 
 ##############################################################
 # Air Temperature and Humidity Sensor (DHT11)
 ##############################################################
 
-sensor:
-  - platform: dht
-    pin: LED_BLUE  # GPIO for DHT11 Sensor
-    temperature:
-      name: "Temperature"
-      state_class: measurement
-      device_class: temperature
-    humidity:
-      name: "Humidity"
-      state_class: measurement
-      device_class: humidity
-    update_interval: ${sensor_update_interval}
-    model: DHT11
+# Uses shared DHT11 configuration from common/dht11.yaml
 
 ##############################################################
 # Chicken Food & Water Load Cells (HX711)
@@ -86,6 +76,7 @@ sensor:
 # The system filters out noise and spikes for better accuracy.
 # Sends alerts when food or water runs low.
 
+sensor:
   # Chicken Food Load Cell
   - platform: hx711
     name: "Food Level"

@@ -1,0 +1,29 @@
+##############################################################
+# Shared DHT11 temperature & humidity sensor module
+#
+# Required substitutions in the including device:
+#   dht_pin                 - GPIO or pin label for the DHT11 data line
+#   sensor_update_interval  - Update interval for the sensor (e.g. 5min)
+#
+# This module defines two entities on the including device:
+#   - Temperature (°C)
+#   - Humidity (%)
+##############################################################
+
+sensor:
+  - platform: dht
+    pin: ${dht_pin}
+    temperature:
+      name: "Temperature"
+      state_class: measurement
+      device_class: temperature
+      unit_of_measurement: "°C"
+      accuracy_decimals: 1
+    humidity:
+      name: "Humidity"
+      state_class: measurement
+      device_class: humidity
+      unit_of_measurement: "%"
+      accuracy_decimals: 1
+    update_interval: ${sensor_update_interval}
+    model: DHT11
