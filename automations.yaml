@@ -1472,7 +1472,7 @@
     enabled: false
   mode: single
 - id: '1661547535107'
-  alias: Kitchen Motion Occupancy (Rev 1)
+  alias: Kitchen Lights Motion Automation
   description: Triggered in motion, restarted on fresh motion detection (sensors set
     to 90 second timeout). On timer delay turn-off section, checks if motion is still
     being detected, to avoid issue with motion being continuity detected for entire
@@ -1503,7 +1503,7 @@
       sequence:
       - data:
           transition: 2
-          brightness_pct: 50
+          brightness_pct: 75
         target:
           device_id: 061e0dd32d43fd2355543b4f4db149ac
         action: light.turn_on
@@ -1544,7 +1544,7 @@
         device_id: c8b85bb0a92c1f69c117b9217a6c86a8
     - delay:
         hours: 0
-        minutes: 30
+        minutes: 15
         seconds: 0
         milliseconds: 0
     - choose:
@@ -2285,17 +2285,23 @@
 - id: '1702742847276'
   alias: Office Blinds Schedule + Remote Control
   description: "Opens in the morning, only if Richard is home. \nCloses in the evening
-    at dusk."
+    at dusk.\n\nEdited to open at sunrise even if Richard isn't home so the office
+    plants get some sunlight."
   triggers:
   - at: 09:00:00
     id: open
     trigger: time
+    enabled: false
   - domain: mqtt
     device_id: ca61296154562d84a7271001aba10aa5
     type: action
     subtype: open
     trigger: device
     id: open
+  - event: sunrise
+    id: open
+    trigger: sun
+    offset: +00:00:00
   - event: sunset
     id: close
     trigger: sun
@@ -2331,6 +2337,7 @@
       - condition: zone
         entity_id: person.richard
         zone: zone.home
+        enabled: false
       sequence:
       - data: {}
         action: cover.open_cover
@@ -2651,28 +2658,6 @@
       minutes: 3
       seconds: 30
       milliseconds: 0
-  - repeat:
-      count: 1
-      sequence:
-      - device_id: 061e0dd32d43fd2355543b4f4db149ac
-        domain: light
-        entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
-        type: flash
-  - if:
-    - condition: trigger
-      id:
-      - 'Hold Up '
-    then: []
-    else:
-    - data:
-        message: Tea timer, beep! beep! beep!
-        target: kitchen
-      enabled: true
-      action: notify.google_assistant_sdk
-    - data:
-        message: Tea timer, bing bong dong - bang!
-      enabled: true
-      action: notify.google_assistant_sdk
   - alias: 'Send to targets separately, to avoid queuing delay '
     parallel:
     - data:
@@ -2696,6 +2681,29 @@
       enabled: true
       action: notify.google_assistant_sdk
     enabled: false
+  - parallel:
+    - repeat:
+        count: 1
+        sequence:
+        - device_id: 061e0dd32d43fd2355543b4f4db149ac
+          domain: light
+          entity_id: cf6ba794fa1a1a67815ff4de4a57bb2a
+          type: flash
+    - if:
+      - condition: trigger
+        id:
+        - 'Hold Up '
+      then: []
+      else:
+      - data:
+          message: Tea timer, beep! beep! beep!
+          target: kitchen
+        enabled: true
+        action: notify.google_assistant_sdk
+      - data:
+          message: Tea timer, bing bong dong - bang!
+        enabled: true
+        action: notify.google_assistant_sdk
   mode: restart
 - id: '1720118905430'
   alias: Broadcast dinner almost ready
@@ -3380,35 +3388,8 @@
         entity_id: 80aa09f400893520a7232726cae46102
         domain: binary_sensor
       - condition: time
-        after: '23:30:00'
-        before: 05:00:00
-      sequence:
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: 276172e24d9f3a2e2b4e4a1f2ad0cbe9
-        type: set_value
-        value: 1000
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: e7b800d8566a3a708adfb511d30b5344
-        type: set_value
-        value: 95
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: 94221f4692e94c9c394220b9e208ca67
-        type: set_value
-        value: 6
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: select
-        entity_id: 8cb6de227f4654eeee815f12a7579efa
-        type: select_option
-        option: Manual Charge
-    - conditions:
-      - type: is_on
-        condition: device
-        device_id: 3912e8bcd9d950c832ebfb154138ce98
-        entity_id: 80aa09f400893520a7232726cae46102
-        domain: binary_sensor
+        after: 05:40:00
+        before: '22:00:00'
       sequence:
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: number
@@ -3674,7 +3655,7 @@
     trigger: device
     for:
       hours: 0
-      minutes: 2
+      minutes: 10
       seconds: 0
   conditions: []
   actions:
@@ -3835,3 +3816,209 @@
           temperature: 12
         action: climate.set_temperature
   mode: restart
+- id: '1767491305312'
+  alias: Office Air Purifier - Desk Power
+  description: 'Turns the office air purifier on or off based on desk power usage.
+    Above 100 W indicates the desk is in use and turns the purifier on. Below 100
+    W indicates the desk is idle and turns the purifier off.
+
+    '
+  triggers:
+  - entity_id: sensor.pc_and_desk_real_power
+    above: 100
+    trigger: numeric_state
+  - entity_id: sensor.pc_and_desk_real_power
+    below: 100
+    trigger: numeric_state
+  actions:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.pc_and_desk_real_power
+        above: 100
+      sequence:
+      - target:
+          entity_id: fan.office_air_purifier_air_purifier_fan
+        action: fan.turn_on
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.pc_and_desk_real_power
+        below: 100
+      sequence:
+      - target:
+          entity_id: fan.office_air_purifier_air_purifier_fan
+        action: fan.turn_off
+  mode: single
+- id: '1767492104023'
+  alias: Living Room Air Purifier - Power and Air Quality
+  description: 'Controls the living room air purifier using PM2.5 and TV power. PM2.5
+    controls fan speed. If PM2.5 is below 5, the fan runs at 33% only when the TV
+    is on, otherwise it turns off.
+
+    '
+  triggers:
+  - entity_id: sensor.ikea_air_quality_sensor_2_pm25
+    below: 5
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_2_pm25
+    above: 5
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_2_pm25
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_2_pm25
+    above: 30
+    trigger: numeric_state
+  - entity_id: sensor.tv_plug_real_power
+    above: 100
+    trigger: numeric_state
+  - entity_id: sensor.tv_plug_real_power
+    below: 100
+    trigger: numeric_state
+  actions:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        above: 30
+      sequence:
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        action: fan.turn_on
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        data:
+          percentage: 100
+        action: fan.set_percentage
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        above: 15
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        below: 30
+      sequence:
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        action: fan.turn_on
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        data:
+          percentage: 66
+        action: fan.set_percentage
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        above: 5
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        below: 15
+      sequence:
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        action: fan.turn_on
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        data:
+          percentage: 33
+        action: fan.set_percentage
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        below: 5
+      - condition: numeric_state
+        entity_id: sensor.tv_plug_real_power
+        above: 100
+      sequence:
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        action: fan.turn_on
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        data:
+          percentage: 33
+        action: fan.set_percentage
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_2_pm25
+        below: 5
+      - condition: numeric_state
+        entity_id: sensor.tv_plug_real_power
+        below: 100
+      sequence:
+      - target:
+          entity_id: fan.living_room_air_purifier_air_purifier_fan
+        action: fan.turn_off
+  mode: single
+- id: '1767492625891'
+  alias: Heating Master Enable - Presence Based
+  description: 'Enables or disables the heating master switch based on presence. If
+    either Lucy or Richard is home, heating is enabled. If both are away, heating
+    is disabled.
+
+    '
+  triggers:
+  - entity_id:
+    - person.richard
+    - person.lucy
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: person.richard
+          state: home
+        - condition: state
+          entity_id: person.lucy
+          state: home
+      sequence:
+      - target:
+          entity_id: input_boolean.heating_master_enable
+        action: input_boolean.turn_on
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: person.richard
+          state: not_home
+        - condition: state
+          entity_id: person.lucy
+          state: not_home
+      sequence:
+      - target:
+          entity_id: input_boolean.heating_master_enable
+        action: input_boolean.turn_off
+  mode: single
+- id: '1767492647046'
+  alias: Heating Master Enable - Presence Based
+  description: 'Enables or disables the heating master switch based on household presence.
+    If either Lucy or Richard is home, heating control is enabled. If both are away,
+    heating control is disabled to prevent the boiler running unnecessarily.
+
+    '
+  triggers:
+  - entity_id:
+    - person.richard
+    - person.lucy
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{{ is_state('person.richard', 'home')\n   or is_state('person.lucy',
+          'home') }}\n"
+      sequence:
+      - target:
+          entity_id: input_boolean.heating_master_enable
+        action: input_boolean.turn_on
+    - conditions:
+      - condition: template
+        value_template: "{{ is_state('person.richard', 'not_home')\n   and is_state('person.lucy',
+          'not_home') }}\n"
+      sequence:
+      - target:
+          entity_id: input_boolean.heating_master_enable
+        action: input_boolean.turn_off
+  mode: single
