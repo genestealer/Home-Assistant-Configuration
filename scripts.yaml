@@ -556,7 +556,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -567,7 +567,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -578,7 +578,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -589,7 +589,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -599,7 +599,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -609,7 +609,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -620,7 +620,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -631,7 +631,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -641,7 +641,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -651,7 +651,7 @@ morning_heating_mode:
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 0.1
   alias: Morning Heating Mode
   description: 'Cannot use scenes as they send mode and other data not just target
     temperature '
