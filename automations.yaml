@@ -1050,7 +1050,7 @@
     conditions:
     - condition: sun
       after: sunset
-      after_offset: 00:00:00
+      after_offset: 00:30:00
       before_offset: -00:30:00
       before: sunrise
     - condition: sun
@@ -1074,7 +1074,7 @@
         data:
           brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
             | int(0) }}'
-          color_temp: 370
+          color_temp_kelvin: 370
           transition: 5
         action: light.turn_on
       - delay:
@@ -1097,7 +1097,7 @@
         entity_id:
         - light.outside_2_down
       data:
-        color_temp: 370
+        color_temp_kelvin: 370
         brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
@@ -1202,7 +1202,7 @@
       - light.outside_4_down
       - light.outside_5_down
     data:
-      transition: 20
+      transition: 5
     action: light.turn_off
   - if:
     - condition: time
@@ -1218,7 +1218,7 @@
     - target:
         entity_id: light.outside_2_down
       data:
-        color_temp: 250
+        color_temp_kelvin: 250
         brightness_pct: 1
       action: light.turn_on
   mode: restart
@@ -1502,7 +1502,6 @@
         before: 07:00:00
       sequence:
       - data:
-          transition: 2
           brightness_pct: 75
         target:
           device_id: 061e0dd32d43fd2355543b4f4db149ac
@@ -1537,8 +1536,8 @@
             device_id: c8b85bb0a92c1f69c117b9217a6c86a8
     default:
     - data:
-        transition: 2
         brightness_pct: 100
+        transition: 1
       action: light.turn_on
       target:
         device_id: c8b85bb0a92c1f69c117b9217a6c86a8
@@ -1566,16 +1565,10 @@
           event_data: {}
       default:
       - data:
-          transition: 20
+          transition: 10
         action: light.turn_off
         target:
           device_id: c8b85bb0a92c1f69c117b9217a6c86a8
-      - action: switch.turn_off
-        metadata: {}
-        data: {}
-        target:
-          device_id:
-          - 4e30ea946a5495f14d38b994caec1da0
   mode: restart
 - id: '1667142302076'
   alias: Smoke Machine Automation - Reset Switch
@@ -2539,6 +2532,7 @@
         data: {}
         target:
           entity_id: light.fairy_lights
+          device_id: e117af1a8759c13997886e55fd6f04c3
     - conditions:
       - condition: trigger
         id:
@@ -2549,37 +2543,8 @@
         data: {}
         target:
           entity_id: light.fairy_lights
+          device_id: e117af1a8759c13997886e55fd6f04c3
   mode: restart
-- id: '1710954157058'
-  alias: Pull Water meter data every hour
-  description: Warning this will kill the battery if overused
-  triggers:
-  - minutes: '10'
-    trigger: time_pattern
-  conditions: []
-  actions:
-  - metadata: {}
-    data: {}
-    target:
-      entity_id: button.water_meter_request
-    action: button.press
-  - repeat:
-      count: 3
-      sequence:
-      - metadata: {}
-        data: {}
-        target:
-          entity_id: button.water_meter_request
-        action: button.press
-      - wait_for_trigger:
-        - type: not_running
-          device_id: 7e66c8ead1ec91a4eb0011534f720f8e
-          entity_id: 587930524e77140f4fffabeaf43a7b1b
-          domain: binary_sensor
-          trigger: device
-        continue_on_timeout: false
-    enabled: false
-  mode: single
 - id: '1714268450987'
   alias: Run off UPS
   description: ''
@@ -2786,22 +2751,14 @@
     entity_id: 3cd6c236c41a010470145e104bd7f36f
     domain: binary_sensor
     trigger: device
-  - type: occupied
-    device_id: fa69bc49d4bfe964b899661c045598c2
-    entity_id: da0967db8c828ae40c9a359bb2e0436d
-    domain: binary_sensor
-    trigger: device
-    enabled: false
   conditions:
   - condition: sun
     after: sunset
-    after_offset: '0'
     before: sunrise
   actions:
   - data:
-      kelvin: 2700
-      brightness_pct: 100
       transition: 2
+      brightness_pct: 100
     target:
       entity_id: light.garden_lights
     action: light.turn_on
@@ -2819,10 +2776,10 @@
           seconds: 0
           milliseconds: 0
   - data:
-      transition: 10
-    target:
-      device_id: d074b346c18b807df9deee8fe2408e7a
+      transition: 20
     action: light.turn_off
+    target:
+      entity_id: light.garden_lights
   mode: restart
 - id: '1727031709340'
   alias: 'Trigger bunny food announcement '
@@ -2955,34 +2912,26 @@
     action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1734033969313'
-  alias: Turn off heating when no one is home
-  description: Set the nest target temperature low if no one is home
+  alias: Heating - Nest Setback - Away
+  description: 'Immediately forces the Nest to a low setback temperature when heating
+    master enable is disabled (e.g. everyone leaves the house).
+
+    NOTE: This automation exists to guarantee a safe, immediate correction of the
+    Nest target temperature when heating authority is removed. It is intentionally
+    separate from the OpenTherm/TRV modulation logic to avoid timing issues where
+    the Nest could remain set high if no other triggers fire after leaving.
+
+    '
   triggers:
-  - trigger: zone
-    entity_id: person.lucy
-    zone: zone.home
-    event: leave
-  - trigger: zone
-    entity_id: person.richard
-    zone: zone.home
-    event: leave
-  conditions:
-  - condition: not
-    conditions:
-    - condition: zone
-      entity_id: person.lucy
-      zone: zone.home
-    - condition: zone
-      entity_id: person.richard
-      zone: zone.home
-    alias: Check if anyone is NOT home
+  - entity_id: input_boolean.heating_master_enable
+    to: 'off'
+    trigger: state
   actions:
-  - action: climate.set_temperature
-    metadata: {}
-    data:
-      temperature: 10
-    target:
+  - target:
       entity_id: climate.hallway
+    data:
+      temperature: 12
+    action: climate.set_temperature
   mode: single
 - id: '1736544967218'
   alias: Low battery level detection & notification for all battery sensors [Blueprint]
@@ -2994,7 +2943,12 @@
       day: 6
       time: '18:00:00'
       actions:
-      - data:
+      - action: notify.mobile_app_rich_mob_app
+        data:
+          title: Battery Levels Low
+          message: "The following sensors have a low battery level:\n  • {{ sensors\n
+            \      | replace(\"'Battery low: \", \"\")\n       | replace(\", \", \"\\n•
+            \")\n       | replace(\"'\", \"\")\n  }}"
           data:
             color: purple
             channel: batteries
@@ -3002,14 +2956,13 @@
             notification_icon: mdi:battery-alert-variant-outline
             ttl: 0
             sticky: 'true'
-          message: 'Joined a new Octopus Energy saving session. '
-          title: Battery Levels Low
-        action: notify.mobile_app_rich_mob_app
-      - data:
-          title: Battery Low
-          message: Battery low {{sensors}}
-        action: persistent_notification.create
-        enabled: false
+      - action: persistent_notification.create
+        enabled: true
+        data:
+          title: Low battery warning
+          message: "The following sensors have a low battery level:\n  • {{ sensors\n
+            \      | replace(\"'Battery low: \", \"\")\n       | replace(\", \", \"\\n•
+            \")\n       | replace(\"'\", \"\")\n  }}"
 - id: '1738459474372'
   alias: Freezer Temperature Alert
   description: ''
@@ -3104,35 +3057,40 @@
         action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1740623037208'
-  alias: Lucy Insulin Pump Sensor Watcher
-  description: ''
+  alias: Lucy Insulin Pump Sensor Night Watcher
+  description: Notify Lucy if pump sensor will not last the night
   triggers:
-  - type: value
-    device_id: c3baec3b4ba49f11d45ef9e1ef28a26b
-    entity_id: 562e7d0d1fd3dc62fe7f48f94555d0b1
-    domain: sensor
-    trigger: device
-    below: 10
-    enabled: false
-  - trigger: time
-    at: '23:45:00'
+  - at: '23:45:00'
+    trigger: time
   conditions:
-  - type: is_value
-    condition: device
-    device_id: c3baec3b4ba49f11d45ef9e1ef28a26b
-    entity_id: 562e7d0d1fd3dc62fe7f48f94555d0b1
-    domain: sensor
+  - condition: numeric_state
+    entity_id: sensor.carelink_lucy_huish_sensor_duration_hours
     below: 10
+  - condition: template
+    value_template: '{{ (now() - states(''sensor.carelink_lucy_huish_last_update'')
+      | as_datetime) < timedelta(hours=6) }}
+
+      '
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.carelink_lucy_huish_last_update
+      state:
+      - unavailable
+      - unknown
   actions:
-  - data:
-      message: '"Pump sensor will not last the night: {{ states(''sensor.sensor_duration_hours'')
-        }} hourls left."
+  - alias: Notify Lucy about Pump Sensor
+    action: notify.mobile_app_lucy_mob_app
+    data:
+      title: Pump sensor will not last the night
+      message: 'Pump sensor will not last the night: {{ states(''sensor.carelink_lucy_huish_sensor_duration_hours'')
+        }} hours left.
 
         '
       data:
         color: black
         channel: Pump1
-        vibrationPattern: 500,500,500,500,500,500,500,500,500,500,500,500,
+        vibrationPattern: 500,500,500,500,500,500,500,500,500,500,500,500
         importance: high
         timeout: 86400
         visibility: public
@@ -3140,15 +3098,6 @@
         ttl: 0
         priority: high
         sticky: 'true'
-      title: ' Pump will not last the night'
-    action: notify.mobile_app_lucy_mob_app
-  mode: single
-- id: '1741741446182'
-  alias: Lucy Insulin Pump Resuwar Watcher
-  description: ''
-  triggers: []
-  conditions: []
-  actions: []
   mode: single
 - id: '1742671428912'
   alias: Notify Kitchen Fridge or Freezer Door Left Open
@@ -3363,6 +3312,16 @@
 
     '
   triggers:
+  - type: turned_on
+    device_id: 3912e8bcd9d950c832ebfb154138ce98
+    entity_id: 80aa09f400893520a7232726cae46102
+    domain: binary_sensor
+    trigger: device
+    enabled: true
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
   - type: turned_off
     device_id: 3912e8bcd9d950c832ebfb154138ce98
     entity_id: 80aa09f400893520a7232726cae46102
@@ -3370,14 +3329,8 @@
     trigger: device
     for:
       hours: 0
-      minutes: 10
-      seconds: 0
-  - type: turned_on
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
-    enabled: true
+      minutes: 0
+      seconds: 20
   conditions: []
   actions:
   - choose:
@@ -3389,23 +3342,23 @@
         domain: binary_sensor
       - condition: time
         after: 05:40:00
-        before: '22:00:00'
+        before: '21:30:00'
       sequence:
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: number
-        entity_id: f74d3cb020eaacdeb1fdfe3fbec833bd
+        entity_id: 5ca05c1ef7722190111f5a5096e6a102
         type: set_value
         value: 100
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: number
-        entity_id: e7b800d8566a3a708adfb511d30b5344
+        entity_id: 4a32fe12a0ba6be0cf7e9daa955662ad
         type: set_value
-        value: 95
+        value: 85
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: number
-        entity_id: 94221f4692e94c9c394220b9e208ca67
+        entity_id: 2a30cb54d4928b25ce36b1089506b2bf
         type: set_value
-        value: 2
+        value: 3
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: select
         entity_id: 8cb6de227f4654eeee815f12a7579efa
@@ -3420,7 +3373,7 @@
       sequence:
       - device_id: 7243064af443eaae599e1a98ef6c25f7
         domain: number
-        entity_id: 007c24e6708bab3ee7b727880b5d907a
+        entity_id: c197851bac0b7f5104996b27dd7a1348
         type: set_value
         value: 12
       - device_id: 7243064af443eaae599e1a98ef6c25f7
@@ -3428,7 +3381,7 @@
         entity_id: 8cb6de227f4654eeee815f12a7579efa
         type: select_option
         option: Maximize Auto Consumption
-  mode: single
+  mode: restart
 - id: '1758208938977'
   alias: Octopus Energy - Auto Set Peak/Off-Peak Tariff
   description: 'Automatically sets tariff based on night rates and Octopus Intelligent
@@ -3667,25 +3620,31 @@
       title: SDM120CT
   mode: single
 - id: '1766951057635'
-  alias: Heating OpenTherm Boiler Control from TRVs
-  description: "This automation controls the boiler via the Nest thermostat using
-    OpenTherm, based on heat demand from all radiator TRVs. Each TRV exposes two normalized
-    signals so third-party devices behave consistently:\n• Heating Max Room Temperature
-    Delta (sensor.heating_max_room_temperature_delta)\n  - Largest unmet heating requirement
-    across all rooms (setpoint - room temp, negatives clamped to 0)\n  - 0 means no
-    room needs heat; larger values mean at least one room is below target\n\n• Heating
+  alias: Heating - OpenTherm Control - TRV Demand
+  description: "Controls the boiler via the Nest thermostat using OpenTherm modulation,
+    based on heat demand from all radiator TRVs.\nEach TRV exposes two normalised
+    signals so third party devices behave consistently and Home Assistant can coordinate
+    without owning comfort control.\nHeating Max Room Temperature Delta (sensor.heating_max_room_temperature_delta)\n
+    \ - The largest unmet heating requirement across all rooms\n    (setpoint minus
+    room temperature, negatives clamped to 0)\n  - A value of 0 means no room needs
+    heat\n  - Larger values mean at least one room is below its target\n\nHeating
     Nest Demand Offset (OpenTherm Friendly) (sensor.heating_nest_demand_offset_opentherm_friendly)\n
-    \ - Converts the system-wide delta into a bounded temperature offset added to
-    the Nest current temp\n  - Small deltas nudge low flow temperatures for efficient
-    burns; larger deltas speed recovery but stay capped\n  - Falls back to 0 if the
-    delta is unavailable/invalid\n\nLogic: - If any radiator demands heat and the
-    master enable is ON, set Nest target to current temp + offset\n  so the boiler
-    modulates via OpenTherm instead of just blasting on/off.\n- If no radiators demand
-    heat, wait briefly (optional) then set Nest to a low setback (12°C) so the\n  boiler
-    shuts down cleanly.\n\nThis keeps comfort/hysteresis in the TRVs, uses HA only
-    for coordination, and lets the boiler run efficiently with OpenTherm modulation
-    instead of fixed on/off control.\nUses helpers: heating_max_room_temperature_delta
-    and heating_nest_demand_offset_opentherm_friendly "
+    \ - Converts the system wide delta into a bounded temperature offset\n    added
+    to the Nest current temperature\n  - Small deltas encourage low flow temperatures
+    for efficient burns\n  - Larger deltas speed recovery while remaining capped\n
+    \ - Falls back to 0 if the delta is unavailable or invalid\n\nBehaviour: - If
+    any radiator demands heat and heating_master_enable is ON, the Nest\n  target
+    is set to current temperature plus the calculated offset so the\n  boiler modulates
+    via OpenTherm rather than switching on and off\n- If no radiators demand heat
+    while heating is enabled, the Nest is set\n  to a low setback temperature (12°C)
+    so the boiler shuts down cleanly\n\nArchitectural note: - This automation only
+    modulates the Nest while heating is enabled - It never forces the system off when
+    the house is unoccupied - Away behaviour and enforced setbacks are handled by
+    a separate,\n  authoritative automation to avoid stale setpoints\n\nThis keeps
+    comfort and hysteresis inside the TRVs, uses Home Assistant purely for coordination,
+    and allows the boiler to run efficiently using OpenTherm modulation instead of
+    fixed on or off control.\nUses helpers: - sensor.heating_max_room_temperature_delta
+    - sensor.heating_nest_demand_offset_opentherm_friendly\n"
   triggers:
   - entity_id:
     - binary_sensor.bedroom_radiator_heat_demanded
@@ -3695,16 +3654,15 @@
     - binary_sensor.kitchen_radiator_heat_demanded
     - binary_sensor.library_radiator_heat_demanded
     - binary_sensor.living_room_radiator_heat_demanded
+    - binary_sensor.office_radiator_heat_demanded
     - sensor.heating_nest_demand_offset_opentherm_friendly
-    - input_boolean.heating_master_enable
     trigger: state
-  conditions:
-  - condition: state
-    entity_id: input_boolean.heating_master_enable
-    state: 'on'
   actions:
   - choose:
     - conditions:
+      - condition: state
+        entity_id: input_boolean.heating_master_enable
+        state: 'on'
       - condition: or
         conditions:
         - condition: state
@@ -3730,21 +3688,14 @@
           state: 'on'
         - condition: state
           entity_id: binary_sensor.office_radiator_heat_demanded
-          state:
-          - 'on'
+          state: 'on'
       sequence:
       - variables:
           base_temp: '{{ state_attr(''climate.hallway'',''current_temperature'') |
-            float(15) }}
-
-            '
+            float(15) }}'
           offset: '{{ states(''sensor.heating_nest_demand_offset_opentherm_friendly'')
-            | float(0) }}
-
-            '
-          target_temp: '{{ [ [ base_temp + offset, 32 ] | min, 10 ] | max }}
-
-            '
+            | float(0) }}'
+          target_temp: '{{ [ [ base_temp + offset, 32 ] | min, 10 ] | max }}'
       - condition: template
         value_template: '{{ target_temp != state_attr(''climate.hallway'',''temperature'')
           | float(0) }}
@@ -3756,6 +3707,9 @@
           temperature: '{{ target_temp }}'
         action: climate.set_temperature
     - conditions:
+      - condition: state
+        entity_id: input_boolean.heating_master_enable
+        state: 'on'
       - condition: and
         conditions:
         - condition: state
@@ -3781,35 +3735,8 @@
           state: 'off'
         - condition: state
           entity_id: binary_sensor.office_radiator_heat_demanded
-          state:
-          - 'off'
+          state: 'off'
       sequence:
-      - delay:
-          minutes: 5
-        enabled: false
-      - condition: and
-        conditions:
-        - condition: state
-          entity_id: binary_sensor.bedroom_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.dining_room_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.hall_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.kitchen_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.library_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.living_room_radiator_heat_demanded
-          state: 'off'
       - target:
           entity_id: climate.hallway
         data:
@@ -3850,10 +3777,10 @@
         action: fan.turn_off
   mode: single
 - id: '1767492104023'
-  alias: Living Room Air Purifier - Power and Air Quality
-  description: 'Controls the living room air purifier using PM2.5 and TV power. PM2.5
-    controls fan speed. If PM2.5 is below 5, the fan runs at 33% only when the TV
-    is on, otherwise it turns off.
+  alias: Living Room Air Purifier - Power and Air Quality (min when occupied)
+  description: 'Controls the living room air purifier using PM2.5. PM2.5 controls
+    fan speed. If PM2.5 is below 5, keep the fan at minimum low (33%) if the cabinet
+    light is on, otherwise turn it off.
 
     '
   triggers:
@@ -3864,103 +3791,97 @@
     above: 5
     trigger: numeric_state
   - entity_id: sensor.ikea_air_quality_sensor_2_pm25
+    below: 16
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_2_pm25
     above: 15
     trigger: numeric_state
   - entity_id: sensor.ikea_air_quality_sensor_2_pm25
-    above: 30
+    below: 51
     trigger: numeric_state
-  - entity_id: sensor.tv_plug_real_power
-    above: 100
+  - entity_id: sensor.ikea_air_quality_sensor_2_pm25
+    above: 50
     trigger: numeric_state
-  - entity_id: sensor.tv_plug_real_power
-    below: 100
-    trigger: numeric_state
+  - entity_id: light.living_room_cabinets_inside
+    trigger: state
   actions:
   - choose:
     - conditions:
       - condition: numeric_state
         entity_id: sensor.ikea_air_quality_sensor_2_pm25
-        above: 30
+        above: 50
       sequence:
-      - target:
-          entity_id: fan.living_room_air_purifier_air_purifier_fan
-        action: fan.turn_on
-      - target:
+      - action: fan.turn_on
+        target:
           entity_id: fan.living_room_air_purifier_air_purifier_fan
         data:
           percentage: 100
-        action: fan.set_percentage
     - conditions:
       - condition: numeric_state
         entity_id: sensor.ikea_air_quality_sensor_2_pm25
         above: 15
-      - condition: numeric_state
-        entity_id: sensor.ikea_air_quality_sensor_2_pm25
-        below: 30
+        below: 51
       sequence:
-      - target:
-          entity_id: fan.living_room_air_purifier_air_purifier_fan
-        action: fan.turn_on
-      - target:
+      - action: fan.turn_on
+        target:
           entity_id: fan.living_room_air_purifier_air_purifier_fan
         data:
           percentage: 66
-        action: fan.set_percentage
     - conditions:
       - condition: numeric_state
         entity_id: sensor.ikea_air_quality_sensor_2_pm25
         above: 5
-      - condition: numeric_state
-        entity_id: sensor.ikea_air_quality_sensor_2_pm25
-        below: 15
+        below: 16
       sequence:
-      - target:
-          entity_id: fan.living_room_air_purifier_air_purifier_fan
-        action: fan.turn_on
-      - target:
+      - action: fan.turn_on
+        target:
           entity_id: fan.living_room_air_purifier_air_purifier_fan
         data:
           percentage: 33
-        action: fan.set_percentage
     - conditions:
       - condition: numeric_state
         entity_id: sensor.ikea_air_quality_sensor_2_pm25
         below: 5
-      - condition: numeric_state
-        entity_id: sensor.tv_plug_real_power
-        above: 100
+      - condition: state
+        entity_id: light.living_room_cabinets_inside
+        state: 'on'
       sequence:
-      - target:
-          entity_id: fan.living_room_air_purifier_air_purifier_fan
-        action: fan.turn_on
-      - target:
+      - action: fan.turn_on
+        target:
           entity_id: fan.living_room_air_purifier_air_purifier_fan
         data:
           percentage: 33
-        action: fan.set_percentage
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.ikea_air_quality_sensor_2_pm25
-        below: 5
-      - condition: numeric_state
-        entity_id: sensor.tv_plug_real_power
-        below: 100
-      sequence:
-      - target:
-          entity_id: fan.living_room_air_purifier_air_purifier_fan
-        action: fan.turn_off
+    default:
+    - action: fan.turn_off
+      target:
+        entity_id: fan.living_room_air_purifier_air_purifier_fan
   mode: single
 - id: '1767492625891'
-  alias: Heating Master Enable - Presence Based
-  description: 'Enables or disables the heating master switch based on presence. If
-    either Lucy or Richard is home, heating is enabled. If both are away, heating
-    is disabled.
+  alias: Heating - Master Enable - Presence
+  description: 'Enables or disables the heating master switch based on household presence.
+    If either Lucy or Richard is home, heating control is enabled. If both are away,
+    heating control is disabled.
+
+    NOTE: This automation only manages authority to run the heating system. It deliberately
+    does NOT attempt to control the Nest temperature directly. Turning heating_master_enable
+    off is a signal that heating must stop, but the actual Nest setback is enforced
+    by a separate automation.
 
     '
   triggers:
   - entity_id:
     - person.richard
     - person.lucy
+    from:
+    - home
+    to:
+    trigger: state
+  - entity_id:
+    - person.richard
+    - person.lucy
+    from:
+    to:
+    - home
     trigger: state
   actions:
   - choose:
@@ -3991,34 +3912,180 @@
           entity_id: input_boolean.heating_master_enable
         action: input_boolean.turn_off
   mode: single
-- id: '1767492647046'
-  alias: Heating Master Enable - Presence Based
-  description: 'Enables or disables the heating master switch based on household presence.
-    If either Lucy or Richard is home, heating control is enabled. If both are away,
-    heating control is disabled to prevent the boiler running unnecessarily.
+- id: '1769735729402'
+  alias: Lucy Insulin Pump Reservoir Night Watcher
+  description: Notify Lucy if pump reservoir will not last the night
+  triggers:
+  - at: '23:45:00'
+    trigger: time
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.carelink_lucy_huish_reservoir_remaining_units
+    below: 30
+    above: 0
+  - condition: template
+    value_template: '{{ (now() - states(''sensor.carelink_lucy_huish_last_update'')
+      | as_datetime) < timedelta(hours=6) }}
+
+      '
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: sensor.carelink_lucy_huish_last_update
+      state:
+      - unavailable
+      - unknown
+  actions:
+  - alias: Notify Lucy about Pump Reservoir
+    action: notify.mobile_app_lucy_mob_app
+    data:
+      title: Pump reservoir will not last the night
+      message: 'Pump reservoir will not last the night: {{ states(''sensor.carelink_lucy_huish_reservoir_remaining_units'')
+        }} units left.
+
+        '
+      data:
+        color: black
+        channel: Pump2
+        vibrationPattern: 500,500,500,500,500,500,500,500,500,500,500,500
+        importance: high
+        timeout: 86400
+        visibility: public
+        notification_icon: mdi:pump
+        ttl: 0
+        priority: high
+        sticky: 'true'
+  mode: single
+- id: '1769741804761'
+  alias: Charge car
+  description: ''
+  triggers:
+  - trigger: time
+    at: 09:30:00
+  conditions: []
+  actions:
+  - device_id: 593ee85f9f3fb2a5ca8afbbb0fff3917
+    domain: number
+    entity_id: bb53b2de3ae8db59d112773b0b9775c0
+    type: set_value
+    value: 100
+  mode: single
+- id: '1770260050072'
+  alias: XStorage Battery Safety Stop on Cell Imbalance
+  description: 'Monitors the battery BMS cell voltage delta and immediately issues
+    a stop command if the imbalance exceeds 100 mV. This forces the inverter to halt
+    its current operation, whether charging or discharging, to prevent further cell
+    stress.
 
     '
   triggers:
-  - entity_id:
-    - person.richard
-    - person.lucy
+  - trigger: numeric_state
+    entity_id:
+    - sensor.eaton_xstorage_home_bms_cell_voltage_delta
+    above: 100
+  conditions: []
+  actions:
+  - device_id: 7243064af443eaae599e1a98ef6c25f7
+    domain: button
+    entity_id: 52803cf974a0b58e3e858179b7ca2b32
+    type: press
+  mode: single
+- id: '1773355527426'
+  alias: Turn dishwasher on each night
+  description: Each night, turn the dishwasher on 3:35 hours before the off-peak energy
+    ends
+  triggers:
+  - trigger: time
+    at: 01:55:00
+  conditions:
+  - condition: state
+    entity_id: switch.dishwasher
+    state:
+    - 'off'
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.dishwasher
+    data: {}
+  mode: single
+- id: '1774006982984'
+  alias: Office Air Purifier - Power and Air Quality (min when occupied)
+  description: 'Controls the office air purifier using PM2.5. PM2.5 controls fan speed.
+    If PM2.5 is below 5, keep the fan at minimum low (33%) if the office lamp is on,
+    otherwise turn it off.
+
+    '
+  triggers:
+  - entity_id: sensor.ikea_air_quality_sensor_1_pm25
+    below: 5
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_1_pm25
+    above: 5
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_1_pm25
+    below: 16
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_1_pm25
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_1_pm25
+    below: 51
+    trigger: numeric_state
+  - entity_id: sensor.ikea_air_quality_sensor_1_pm25
+    above: 50
+    trigger: numeric_state
+  - entity_id: light.office_lamp
     trigger: state
   actions:
   - choose:
     - conditions:
-      - condition: template
-        value_template: "{{ is_state('person.richard', 'home')\n   or is_state('person.lucy',
-          'home') }}\n"
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_1_pm25
+        above: 50
       sequence:
-      - target:
-          entity_id: input_boolean.heating_master_enable
-        action: input_boolean.turn_on
+      - action: fan.turn_on
+        target:
+          entity_id: fan.office_air_purifier_air_purifier_fan
+        data:
+          percentage: 100
     - conditions:
-      - condition: template
-        value_template: "{{ is_state('person.richard', 'not_home')\n   and is_state('person.lucy',
-          'not_home') }}\n"
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_1_pm25
+        above: 15
+        below: 51
       sequence:
-      - target:
-          entity_id: input_boolean.heating_master_enable
-        action: input_boolean.turn_off
+      - action: fan.turn_on
+        target:
+          entity_id: fan.office_air_purifier_air_purifier_fan
+        data:
+          percentage: 66
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_1_pm25
+        above: 5
+        below: 16
+      sequence:
+      - action: fan.turn_on
+        target:
+          entity_id: fan.office_air_purifier_air_purifier_fan
+        data:
+          percentage: 33
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.ikea_air_quality_sensor_1_pm25
+        below: 5
+      - condition: state
+        entity_id: light.office_lamp
+        state: 'on'
+      sequence:
+      - action: fan.turn_on
+        target:
+          entity_id: fan.office_air_purifier_air_purifier_fan
+        data:
+          percentage: 33
+    default:
+    - action: fan.turn_off
+      target:
+        entity_id: fan.office_air_purifier_air_purifier_fan
   mode: single
