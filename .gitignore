@@ -70,3 +70,4 @@ custom_components/eaton-xstorage-home-battery-integration
 /custom_components
 carelink_logindata.json
 carelink_logindata_01KH7P84XPPZ615BXQNB307KE3.json
+/esphome/external_components/everblu_meter

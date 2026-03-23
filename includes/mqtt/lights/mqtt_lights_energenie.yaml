@@ -153,22 +153,22 @@
     via_device: "mqtt-energenie-ener314rt"
     suggested_area: "Bedroom"
 
-############################################################
-#
-# Living Room Fairy Light
-#
-############################################################
-- name: null
-  unique_id: MIHO002_socket3_697441_4
-  command_topic: energenie/ook/697441/4/command
-  optimistic: true
-  state_topic: energenie/ook/697441/4/state
-  availability_topic: energenie/availability/state
-  icon: mdi:ceiling-light
-  device:
-    name: "Fairy Lights"
-    identifiers: "miho002_socket3"
-    model: "Smart Plug (MIHO002) [697441/4]"
-    manufacturer: "Energenie [Manual]"
-    via_device: "mqtt-energenie-ener314rt"
-    suggested_area: "Living Room"
+# ############################################################
+# #
+# # Living Room Fairy Light
+# #
+# ############################################################
+# - name: null
+#   unique_id: MIHO002_socket3_697441_4
+#   command_topic: energenie/ook/697441/4/command
+#   optimistic: true
+#   state_topic: energenie/ook/697441/4/state
+#   availability_topic: energenie/availability/state
+#   icon: mdi:ceiling-light
+#   device:
+#     name: "Fairy Lights"
+#     identifiers: "miho002_socket3"
+#     model: "Smart Plug (MIHO002) [697441/4]"
+#     manufacturer: "Energenie [Manual]"
+#     via_device: "mqtt-energenie-ener314rt"
+#     suggested_area: "Living Room"
