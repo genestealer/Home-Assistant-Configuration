@@ -40,7 +40,7 @@ substitutions:
   log_level: DEBUG
 
   # Sensor Update Interval
-  sensor_update_interval: 5min
+  sensor_update_interval: 10min
   wifi_sensor_update_interval: 10min
   dht_pin: LED_BLUE
 
@@ -94,13 +94,19 @@ sensor:
           #
           # All of a sudden the values have gone negitive, so re-taring.
           # Old Values kept for reference.
-          # - 0 -> 0  # Tare weight without container is -96945 but its not accepting negitive
-          # - 762762 -> 2.96  # Full feeder weight
+          #  - 0 -> 0  # Tare weight without container is -96945 but its not accepting negitive
+          #  - 762762 -> 2.96  # Full feeder weight
           #
           # New Dec 2025 tare.
           # - -3053437 -> 0   # Tare weight without container
-          - -2848739 -> 0     # Tare weight with container (and some food)
-          - -2450559 -> 2.96  # Full feeder weight
+          #- -2 848 739 -> 0     # Tare weight with container (and some food)
+          #- -2450559 -> 2.96  # Full feeder weight
+
+          # Feb 2026
+          - -1791055 -> 0   # Tare weight without container
+          - -1341519 -> 2.96 # Full feeder weight
+
+
       - filter_out: 0  # Drop occasional bogus zero readings
       - median:  # Median knocks out short bumps (pecks/swing)
           window_size: 9

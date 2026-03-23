@@ -26,8 +26,8 @@
 # Substitutions for Easy Configuration
 substitutions:
   # Naming & Identification
-  name: bedroom-sensor
-  friendly_name: "Bedroom Sensors"
+  name: bedroom-air-sensors
+  friendly_name: "Bedroom Air Sensors"
   ui_comment: "Bedroom Environmental & Air Quality Monitoring"
 
   # Network Configuration (Static IP)

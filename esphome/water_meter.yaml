@@ -1,0 +1,227 @@
+
+# Substitutions - Easily Configurable Parameters
+substitutions:
+  # Naming & Identification
+  name: new-water-meter
+  friendly_name: "Water Meter Monitor"
+  ui_comment: "Monitors water meter via CC1101 RF module"
+
+  # Network Configuration (Static IP)
+  ip: 192.168.2.201
+  gateway: 192.168.2.1
+  subnet: 255.255.255.0
+
+  # Status LED (ESP8266 Onboard LED)
+  status_led: LED_RED  # GPIO0 (ESP8266)
+  # status_led: GPIO0  # GPIO0 (ESP8266)
+  status_led_inverted: "true"
+
+  # # Debug Logging
+  # log_level: DEBUG
+
+  # Sensor Update Interval
+  sensor_update_interval: 1min
+  wifi_sensor_update_interval: 10min
+
+  
+
+##############################################################
+# Board Configuration
+##############################################################
+esp8266:
+  board: huzzah
+
+
+##############################################################
+# Import Shared Code (Common Components)
+##############################################################
+packages:
+  device_base: !include common/device_base.yaml
+  status_led: !include common/status_led.yaml
+  wifi: !include common/device_base_wifi.yaml
+
+
+
+##############################################################
+# Sensor Configuration (Temperature, Humidity, Air Quality)
+##############################################################
+
+# Uses common configurations from the included `bme280.yaml` and `pms5003t.yaml`.
+# Automatically calculates air quality index (DAQI) based on UK standards.
+# Reduces sensor wear by limiting PMS5003T operation.
+
+# EverBlu Water Meter - Complete Example Configuration
+# This example shows all available sensors and configuration options
+
+
+# Enable logging
+logger:
+  level: DEBUG  # Or DEBUG
+  baud_rate: 115200
+  logs:
+    everblu_meter: DEBUG  # Only this component exists now
+
+
+# Time component (required for scheduled readings)
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+    on_time_sync:
+      then:
+        - logger.log: "Time synchronized with Home Assistant"
+
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/genestealer/everblu-meters-esp8266-improved
+      ref: main
+      path: ESPHOME-release
+    components: [ everblu_meter ]
+    refresh: 0d
+
+
+# EverBlu Meter Component
+
+
+# external_components:
+#   - source:
+#       type: local
+#       path: ./external_components/
+#     components: [ everblu_meter ]
+
+
+# external_components:
+#   - source:
+#       type: git
+#       url: https://github.com/genestealer/everblu-meters-esp8266-improved
+#       ref: feature/esphome-spi-integration
+#       path: ESPHOME-release
+#     components: [ everblu_meter ]
+#     refresh: 0s
+
+# external_components:
+#   - source:
+#       type: git
+#       url: https://github.com/genestealer/everblu-meters-esp8266-improved
+#       ref: fix/cc1101-fifo-overflow-tx
+#       path: ESPHOME-release
+#     components: [ everblu_meter ]
+#     refresh: 0s
+
+
+# spi:
+#   id: main_bus
+#   clk_pin: 14
+#   mosi_pin: 13
+#   miso_pin: 12
+
+everblu_meter:
+  # debug_cc1101: true
+  # spi_id: main_bus
+  # cs_pin: 15
+  gdo0_pin: 5
+
+  id: my_water_meter
+  
+  # Meter identification (REQUIRED)
+  meter_year: 20          # Last 2 digits of year (e.g., 21 for 2021)
+  meter_serial: 257750  # Your meter's serial number
+  
+
+  # Link to time component
+  time_id: homeassistant_time
+
+  timezone_offset: 0
+  
+  # Control buttons
+  request_reading_button:
+    name: "Read Meter Now"
+  frequency_scan_button:
+    name: "Scan Frequency"
+  reset_frequency_button:
+    name: "Reset Frequency Offset"
+  
+  # Volume sensors
+  volume:
+    name: "Water Volume"
+  
+  counter:
+    name: "Read Counter"
+  
+  # Battery sensor
+  battery:
+    name: "Meter Battery"
+  
+  # Radio quality sensors
+  rssi:
+    name: "Meter RSSI"
+  
+  rssi_percentage:
+    name: "RSSI Percentage"
+  
+  lqi:
+    name: "LQI"
+  
+  lqi_percentage:
+    name: "LQI Percentage"
+  
+  # Statistics sensors
+  total_attempts:
+    name: "Total Read Attempts"
+  
+  successful_reads:
+    name: "Successful Reads"
+  
+  failed_reads:
+    name: "Failed Reads"
+  
+  frequency_offset:
+    name: "Frequency Offset"
+
+  tuned_frequency:
+    name: "Tuned Frequency (MHz)"
+
+  # Diagnostic text sensors
+  meter_serial_sensor:
+    name: "Meter Serial"
+  meter_year_sensor:
+    name: "Meter Year"
+  reading_schedule_sensor:
+    name: "Reading Schedule"
+  reading_time_utc_sensor:
+    name: "Reading Time (UTC)"
+  
+  # Timing sensors (24-hour format: HH:MM)
+  time_start:
+    name: "Reading Start Time"
+  
+  time_end:
+    name: "Reading End Time"
+  
+  # Status text sensors
+  status:
+    name: "Meter Status"
+  
+  error:
+    name: "Last Error"
+  
+  radio_state:
+    name: "CC1101 State"
+  
+  timestamp:
+    name: "Last Reading Time"
+  
+  history_json:
+    name: "Meter History (JSON)"
+  
+  # Binary sensors
+  active_reading:
+    name: "Reading Active"
+  
+  radio_connected:
+    name: "CC1101 Connected"
+
+
+  # frequency_estimate:
+  #   name: "Frequency Estimate"

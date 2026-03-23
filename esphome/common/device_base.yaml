@@ -11,9 +11,9 @@ esphome:
   # Device friendly name for Home Assistant
   friendly_name: "${friendly_name}"
 
-##################################
-# Logging & Debugging
-##################################
+# ##################################
+# # Logging & Debugging
+# ##################################
 logger:
   level: ${log_level}
 
@@ -47,7 +47,7 @@ button:
   - platform: restart
     name: "Restart"
     device_class: restart
-    entity_category: "diagnostic"
+    entity_category: "config"
 
 ##################################
 # Device Availability

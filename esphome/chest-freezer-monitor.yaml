@@ -30,7 +30,7 @@ substitutions:
   subnet: 255.255.255.0
 
   # Status LED Configuration
-  status_led: LED_RED
+  status_led: LED_RED  # GPIO0 (ESP8266)
   status_led_inverted: "true"
 
   # Debug Logging
