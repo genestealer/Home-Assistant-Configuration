@@ -1,0 +1,18 @@
+##############################################################
+# M5Stack Atom Wi-Fi Fix
+# Countermeasure to the problem that CH552 applies 4v to GPIO0,
+# thus reducing WiFi sensitivity. Setting output_high adds a bias
+# of 3.3v and suppresses overvoltage.
+# From: https://github.com/m5stack/M5Unified/blob/d26d2415f409b664631ff066ceeaffd6a753a4ff/src/M5Unified.cpp#L506
+##############################################################
+
+esphome:
+  on_boot:
+    priority: 700
+    then:
+      - output.turn_on: wifi_fix_output
+
+output:
+  - platform: gpio
+    id: wifi_fix_output
+    pin: GPIO0

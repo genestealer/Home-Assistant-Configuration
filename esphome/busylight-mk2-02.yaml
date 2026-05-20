@@ -4,7 +4,7 @@
 # Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
 # Description:
-# This ESPHome configuration controls a busy light indicator and 
+# This ESPHome configuration controls a busy light indicator and
 # infrared remote functionality using an M5Stack Atom ESP32.
 # The system integrates with Home Assistant and allows remote control
 # of a Logitech Z-5500 speaker system.
@@ -42,12 +42,14 @@ substitutions:
   # Sensor Update Interval
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
-  
+
 ##############################################################
 # Board Configuration
 ##############################################################
 esp32:
   board: m5stack-atom
+  framework:
+    type: esp-idf
 
 ##############################################################
 # Import Shared Code (Common Components)
@@ -55,29 +57,48 @@ esp32:
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
+  # m5stack_atom_wifi_fix: !include common/m5stack_atom_wifi_fix.yaml
 
+##############################################################
+# Sub-Devices (group IR controls under a separate device)
+##############################################################
+esphome:
+  # Sub-device for Dyson AM07 IR remote controls
+  devices:
+    - id: dyson_remote
+      name: "Dyson AM07 Remote"
+  # Ensure the config compiles on versions that support sub-devices
+  min_version: "2025.10.0"
+
+  # on_boot:
+  #   then:
+  #     - delay: 5s
+  #     - script.execute: transmit_power_button  # turn on if off
+  #     - delay: 500ms
+  #     # reduce to minimum (01) speed
+  #     - repeat:
+  #         count: 9
+  #       then:
+  #         - script.execute: transmit_down
+  #         - delay: 500ms
+  #     # turn off
+  #     - script.execute: transmit_power_button
+  #     - delay: 500ms
+  #     # apply desired HA state
+  #     - script.execute: set_fan_state
 ##############################################################
 # Hardware Configuration
 ##############################################################
 
-# Countermeasure for CH552 GPIO0 Overvoltage Issue
-# The CH552 applies 4V to GPIO0, which reduces Wi-Fi sensitivity.
-# This fix applies a bias of 3.3V to suppress overvoltage and 
-# maintain Wi-Fi performance.
-output:
-  - platform: gpio
-    id: wifi_fix_output
-    pin: GPIO0
-
 # Neopixel RGB LED (Busy Light)
 light:
-  - platform: neopixelbus
-    type: GRB
-    variant: SK6812
+  - platform: esp32_rmt_led_strip
     pin: 27
     num_leds: 1
     name: "Busy Light"
     id: busy_light
+    chipset: SK6812
+    rgb_order: GRB
 
 # I2C Bus Configuration
 i2c:
@@ -85,3 +106,153 @@ i2c:
   scl: 21
   #scan: true
   #frequency: 200kHz
+
+# Infrared Transmitter Configuration
+remote_transmitter:
+  pin: 26 # IR transmitter output
+  carrier_duty_percent: 50%
+
+##############################################################
+# Infrared Remote Control for Dyson AM07
+##############################################################
+# ESPHome for Dyson AM07
+# https://github.com/Rjevski/esphome-dyson-am07
+
+globals:
+   - id: current_power_code
+     type: int
+     initial_value: "0"
+   - id: fan_power_state
+     type: bool
+     initial_value: "true"  # to match on_boot action
+   - id: desired_fan_speed
+     type: int
+     initial_value: "1"  
+   - id: fan_speed
+     type: int
+     initial_value: "1"  # to match on_boot action
+   - id: desired_swing_state
+     type: bool
+     initial_value: "false"
+   - id: swing_state
+     type: bool
+     initial_value: "true"  # to match on_boot action
+
+
+script:
+  - id: transmit_power_button
+    then:
+      - remote_transmitter.transmit_pronto:
+          repeat:
+            times: 2
+          data: !lambda |-
+            switch(id(current_power_code)) {
+              case 0:
+                return "0000 006D 0011 0000 0054 0022 001B 0040 001B 0021 001B 0021 001B 003F 001B 0021 001B 0021 001B 0020 001B 0023 001B 0022 001B 0021 001B 0021 001B 0021 001B 0021 001B 0021 001B 0021 001B 06C3";
+              case 1:
+                return "0000 006D 0011 0000 0054 0022 001B 0040 001B 0021 001B 0021 001B 003F 001B 0021 001B 0021 001B 0020 001B 0023 001B 0022 001B 0021 001B 0021 001B 0021 001B 0021 001B 0021 001B 003F 001B 06C3";
+              default:
+                return "0000 006D 0011 0000 0054 0022 001B 0040 001B 0021 001B 0021 001B 003F 001B 0021 001B 0021 001B 0020 001B 0023 001B 0022 001B 0021 001B 0021 001B 0021 001B 0021 001B 003F 001B 0021 001B 06C3";
+            }
+      - lambda: |-
+          switch (id(current_power_code)) {
+            case 2:
+              id(current_power_code) = 0;
+              break;
+            default:
+              id(current_power_code) += 1;
+          }
+  - id: transmit_swing_toggle
+    then:
+      - remote_transmitter.transmit_pronto:
+          repeat:
+            times: 2
+          data: "0000 006D 0011 0000 0054 0022 001C 003F 001B 0021 001C 0021 001C 003F 001C 0021 001C 0021 001C 0021 001B 0040 001C 0022 001B 003F 001B 0021 001B 003F 001B 0021 001B 003E 001B 0021 001C 06C3"
+  - id: transmit_up
+    then:
+      - remote_transmitter.transmit_pronto:
+          repeat:
+            times: 2
+          data: "0000 006D 0011 0000 0058 0022 001B 0040 001B 0022 001B 0021 001B 003F 001B 0021 001B 0021 001B 0021 001B 0023 001B 0040 001B 0022 001B 0040 001B 0021 001B 003F 001B 0021 001B 003F 001B 06C3"
+  - id: transmit_down
+    then:
+      - remote_transmitter.transmit_pronto:
+          repeat:
+            times: 2
+          data: "0000 006D 0011 0000 0053 0022 001B 0040 001B 0022 001B 0021 001B 003F 001B 0021 001B 0021 001B 0021 001B 0041 001B 0040 001B 0040 001B 0040 001B 003F 001B 003F 001B 0021 001B 0021 001B 06C3"
+  - id: set_fan_state
+    then:
+      - if:
+          condition:
+            lambda: "return (id(desired_fan_speed) > 0) != id(fan_power_state);"
+          then:
+            - script.execute: transmit_power_button
+            - globals.set:
+                id: fan_power_state
+                value: !lambda "return !id(fan_power_state);"
+            - delay: 500ms
+      - if:
+          condition:
+            lambda: "return id(fan_power_state) && (id(desired_swing_state) != id(swing_state));"
+          then:
+            - script.execute: transmit_swing_toggle
+            - globals.set:
+                id: swing_state
+                value: !lambda "return !(swing_state);"
+            - delay: 500ms
+      -  while:
+          condition:
+            lambda: "return id(fan_power_state) && (id(desired_fan_speed) != id(fan_speed));"
+          then:
+            - if:
+                condition:
+                  lambda: "return id(desired_fan_speed) > id(fan_speed);"
+                then:
+                  - script.execute: increment_fan_speed
+                else:
+                  - script.execute: decrement_fan_speed
+            - delay: 500ms
+  - id: increment_fan_speed
+    then:
+      - script.execute: transmit_up
+      - globals.set:
+          id: fan_speed
+          value: !lambda "return id(fan_speed) + 1;"
+  - id: decrement_fan_speed
+    then:
+      - script.execute: transmit_down
+      - globals.set:
+          id: fan_speed
+          value: !lambda "return id(fan_speed) - 1;"
+
+
+
+output:
+- platform: template
+  id: fan_output
+  type: float
+  write_action:
+    then:
+      - globals.set:
+          id: desired_fan_speed
+          value: !lambda "return int(state * 10);"
+      - script.execute: set_fan_state
+
+- platform: template
+  id: swing_output
+  type: binary
+  write_action:
+    then:
+      - globals.set:
+          id: desired_swing_state
+          value: !lambda "return state;"
+      - script.execute: set_fan_state
+
+fan:
+  - platform: speed
+    device_id: dyson_remote
+    output: fan_output
+    oscillation_output: swing_output
+    name: "Fan"
+    speed_count: 10
+    restore_mode: RESTORE_DEFAULT_OFF
