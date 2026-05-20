@@ -3,78 +3,58 @@
   triggers:
   - at: 06:45
     trigger: time
-  conditions:
-  - condition: time
     weekday:
     - mon
+  conditions: []
   actions:
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - button.drive_high_25_reboot
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id: button.drive_long_31_reboot
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - button.front_door_33_reboot
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id: button.front_garden_27_reboot
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id: button.garage_32_reboot
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id: button.garden_30_reboot
-  - delay:
-      hours: 0
-      minutes: 10
-      seconds: 0
-      milliseconds: 0
-  - action: button.press
-    metadata: {}
-    data: {}
-    target:
-      entity_id: button.parking_space_onvif_reboot
+  - parallel:
+    - sequence:
+      - action: button.press
+        data: {}
+        target:
+          entity_id: button.drive_high_25_reboot
+        continue_on_error: true
+    - sequence:
+      - delay:
+          minutes: 10
+      - action: button.press
+        data: {}
+        target:
+          entity_id: button.drive_long_31_reboot
+        continue_on_error: true
+    - sequence:
+      - delay:
+          minutes: 20
+      - action: button.press
+        data: {}
+        target:
+          entity_id: button.front_door_33_reboot
+        continue_on_error: true
+    - sequence:
+      - delay:
+          minutes: 30
+      - action: button.press
+        data: {}
+        target:
+          entity_id: button.front_garden_27_reboot
+        continue_on_error: true
+    - sequence:
+      - delay:
+          minutes: 40
+      - action: button.press
+        data: {}
+        target:
+          entity_id: button.garage_32_reboot
+        continue_on_error: true
+    - sequence:
+      - delay:
+          minutes: 50
+      - action: button.press
+        data: {}
+        target:
+          entity_id: button.garden_30_reboot
+        continue_on_error: true
+    continue_on_error: true
 - id: '1564192629041'
   alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
   description: 'If script is turned off manually, then close valve, else it will stay
@@ -1491,6 +1471,11 @@
     entity_id: 396dab2b22de1017ada5e53201d6abe0
     domain: binary_sensor
     trigger: device
+  - type: occupied
+    device_id: 51993e45eccefe5f8da21df171b27644
+    entity_id: 8bd6a67da60c02d91309e3debe61bec4
+    domain: binary_sensor
+    trigger: device
   - event_type: kitchen_occupied
     trigger: event
   conditions: []
@@ -2661,10 +2646,15 @@
       then: []
       else:
       - data:
-          message: Tea timer, beep! beep! beep!
-          target: kitchen
+          target:
+          - living room
+          - kitchen
+          - dining room
+          - office
+          message: Tea timer. lovely cup of tea is ready for you to enjoy.
         enabled: true
         action: notify.google_assistant_sdk
+        continue_on_error: true
       - data:
           message: Tea timer, bing bong dong - bang!
         enabled: true
@@ -2769,6 +2759,7 @@
         device_id: fa69bc49d4bfe964b899661c045598c2
         entity_id: da0967db8c828ae40c9a359bb2e0436d
         domain: binary_sensor
+        enabled: false
       sequence:
       - delay:
           hours: 0
@@ -2947,6 +2938,8 @@
         data:
           title: Battery Levels Low
           message: "The following sensors have a low battery level:\n  • {{ sensors\n
+            \      | replace(\"ACB Battery (0 %), \", \"\")\n       | replace(\",
+            ACB Battery (0 %)\", \"\")\n       | replace(\"ACB Battery (0 %)\", \"\")\n
             \      | replace(\"'Battery low: \", \"\")\n       | replace(\", \", \"\\n•
             \")\n       | replace(\"'\", \"\")\n  }}"
           data:
@@ -2961,6 +2954,8 @@
         data:
           title: Low battery warning
           message: "The following sensors have a low battery level:\n  • {{ sensors\n
+            \      | replace(\"ACB Battery (0 %), \", \"\")\n       | replace(\",
+            ACB Battery (0 %)\", \"\")\n       | replace(\"ACB Battery (0 %)\", \"\")\n
             \      | replace(\"'Battery low: \", \"\")\n       | replace(\", \", \"\\n•
             \")\n       | replace(\"'\", \"\")\n  }}"
 - id: '1738459474372'
@@ -3344,26 +3339,54 @@
         after: 05:40:00
         before: '21:30:00'
       sequence:
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: 5ca05c1ef7722190111f5a5096e6a102
-        type: set_value
-        value: 100
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: 4a32fe12a0ba6be0cf7e9daa955662ad
-        type: set_value
-        value: 85
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: 2a30cb54d4928b25ce36b1089506b2bf
-        type: set_value
-        value: 3
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: select
-        entity_id: 8cb6de227f4654eeee815f12a7579efa
-        type: select_option
-        option: Manual Charge
+      - sequence:
+        - device_id: 7243064af443eaae599e1a98ef6c25f7
+          domain: number
+          entity_id: 5ca05c1ef7722190111f5a5096e6a102
+          type: set_value
+          value: 100
+        - device_id: 7243064af443eaae599e1a98ef6c25f7
+          domain: number
+          entity_id: 4a32fe12a0ba6be0cf7e9daa955662ad
+          type: set_value
+          value: 95
+        - device_id: 7243064af443eaae599e1a98ef6c25f7
+          domain: number
+          entity_id: 2a30cb54d4928b25ce36b1089506b2bf
+          type: set_value
+          value: 4
+        - device_id: 7243064af443eaae599e1a98ef6c25f7
+          domain: select
+          entity_id: 8cb6de227f4654eeee815f12a7579efa
+          type: select_option
+          option: Manual Charge
+      - sequence:
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: PUT
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '122047098091'
+                sleep_min_soc: 95
+                sleep_max_soc: 100
+          alias: 122047098091 Charge
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: PUT
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '121917000087'
+                sleep_min_soc: 95
+                sleep_max_soc: 100
+          alias: 121917000087 Charge
     - conditions:
       - type: is_off
         condition: device
@@ -3371,16 +3394,40 @@
         entity_id: 80aa09f400893520a7232726cae46102
         domain: binary_sensor
       sequence:
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: number
-        entity_id: c197851bac0b7f5104996b27dd7a1348
-        type: set_value
-        value: 12
-      - device_id: 7243064af443eaae599e1a98ef6c25f7
-        domain: select
-        entity_id: 8cb6de227f4654eeee815f12a7579efa
-        type: select_option
-        option: Maximize Auto Consumption
+      - sequence:
+        - device_id: 7243064af443eaae599e1a98ef6c25f7
+          domain: number
+          entity_id: c197851bac0b7f5104996b27dd7a1348
+          type: set_value
+          value: 12
+        - device_id: 7243064af443eaae599e1a98ef6c25f7
+          domain: select
+          entity_id: 8cb6de227f4654eeee815f12a7579efa
+          type: select_option
+          option: Maximize Auto Consumption
+      - sequence:
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: DELETE
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '122047098091'
+          alias: 122047098091 Discharge
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: DELETE
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '121917000087'
+          alias: 121917000087 Discharge
   mode: restart
 - id: '1758208938977'
   alias: Octopus Energy - Auto Set Peak/Off-Peak Tariff
@@ -3957,7 +4004,7 @@
         sticky: 'true'
   mode: single
 - id: '1769741804761'
-  alias: Charge car
+  alias: Charge Car Octopus Hack
   description: ''
   triggers:
   - trigger: time
@@ -3969,6 +4016,11 @@
     entity_id: bb53b2de3ae8db59d112773b0b9775c0
     type: set_value
     value: 100
+  - device_id: 593ee85f9f3fb2a5ca8afbbb0fff3917
+    domain: select
+    entity_id: 451530e7b2c4a46c6b39c5539cb57bc1
+    type: select_option
+    option: '11:00'
   mode: single
 - id: '1770260050072'
   alias: XStorage Battery Safety Stop on Cell Imbalance
@@ -3982,7 +4034,11 @@
   - trigger: numeric_state
     entity_id:
     - sensor.eaton_xstorage_home_bms_cell_voltage_delta
-    above: 100
+    above: 120
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
   conditions: []
   actions:
   - device_id: 7243064af443eaae599e1a98ef6c25f7
@@ -4088,4 +4144,120 @@
     - action: fan.turn_off
       target:
         entity_id: fan.office_air_purifier_air_purifier_fan
+  mode: single
+- id: '1774803255457'
+  alias: ACB Battery - Full Charge Disconnect and 11am Reconnect
+  description: 'When the ACB battery has been at 100% for 10 minutes, the mains switch
+    is turned off to prevent over-cycling. At 11am, if the switch is still off, it
+    is turned back on ready for the 12:00 peak tariff window.
+
+    '
+  triggers:
+  - entity_id:
+    - sensor.acb_122035037761_battery
+    above: 99
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: battery_full
+    trigger: numeric_state
+  - at: '11:00:00'
+    id: reconnect_time
+    trigger: time
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: battery_full
+      sequence:
+      - target:
+          entity_id: switch.enphase_acb_battery_switch
+        action: switch.turn_off
+    - conditions:
+      - condition: trigger
+        id: reconnect_time
+      - condition: state
+        entity_id: switch.enphase_acb_battery_switch
+        state: 'off'
+      sequence:
+      - target:
+          entity_id: switch.enphase_acb_battery_switch
+        action: switch.turn_on
+  mode: single
+- id: '1775691871030'
+  alias: ACB Battery Charge
+  description: ''
+  triggers:
+  - trigger: time
+    at: '23:35:00'
+    id: Charge
+  - trigger: time
+    at: '11:00:00'
+    id: Discharge
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Charge
+      sequence:
+      - sequence:
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: PUT
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '122047098091'
+                sleep_min_soc: 95
+                sleep_max_soc: 100
+          alias: 122047098091 Charge
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: PUT
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '121917000087'
+                sleep_min_soc: 95
+                sleep_max_soc: 100
+          alias: 121917000087 Charge
+    - conditions:
+      - condition: trigger
+        id:
+        - Discharge
+      sequence:
+      - sequence:
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: DELETE
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '122047098091'
+          alias: 122047098091 Discharge
+        - action: enphase_envoy_raw_data.send_data
+          data:
+            config_entry_id: 01KNPGAK95DTK3950B33FG5JE1
+            endpoint: /admin/lib/acb_config.json
+            method: DELETE
+            risk_acknowledged: true
+            test_mode: false
+            data:
+              acb_sleep:
+              - serial_num: '121917000087'
+          alias: 121917000087 Discharge
+    - conditions: []
+      sequence: []
   mode: single
