@@ -26,6 +26,7 @@ substitutions:
   
   cc1101_cs: GPIO15
   cc1101_gdo0: GPIO5
+  cc1101_gdo2: GPIO4
   tz_offset_min: "0"
   meter_1_prefix: "Meter 1"
   meter_2_prefix: "Meter 2"
@@ -140,6 +141,9 @@ everblu_meter:
     gdo0_pin:
       number: ${cc1101_gdo0}
       allow_other_uses: true
+    gdo2_pin:
+      number: ${cc1101_gdo2}
+      allow_other_uses: true
     time_id: homeassistant_time
     timezone_offset: ${tz_offset_min}
     read_hour: 11
@@ -225,6 +229,9 @@ everblu_meter:
       allow_other_uses: true
     gdo0_pin:
       number: ${cc1101_gdo0}
+      allow_other_uses: true
+    gdo2_pin:
+      number: ${cc1101_gdo2}
       allow_other_uses: true
     time_id: homeassistant_time
     timezone_offset: ${tz_offset_min}
