@@ -308,7 +308,7 @@ uart:
 # Configures this ESP32 as a Modbus RTU server (slave)
 # responding to requests from the Eaton inverter (master)
 modbus:
-  id: modbus_server
+  id: modbus_server_01
   uart_id: uart_modbus_server
   role: server        # This device acts as Modbus server/slave
 
@@ -319,9 +319,9 @@ modbus:
 # Address: 0x01 (SDM120CT default)
 # Function Code: 04 (Read Input Registers)
 # The Eaton inverter polls 72 registers (0x00-0x47) every 2-3 seconds
-modbus_controller:
+modbus_server:
   - id: sdm120ct_server
-    modbus_id: modbus_server
+    modbus_id: modbus_server_01
     address: 0x1  # SDM120CT default Modbus address
     registers:
       ##############################################################
