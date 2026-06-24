@@ -322,8 +322,8 @@ modbus:
 modbus_controller:
   - id: sdm120ct_server
     modbus_id: modbus_server
-    address: 1  # SDM120CT default Modbus address
-    server_registers:
+    address: 0x1  # SDM120CT default Modbus address
+    registers:
       ##############################################################
       # SDM120CT Register Map Implementation
       ##############################################################
