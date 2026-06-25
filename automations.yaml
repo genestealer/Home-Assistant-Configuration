@@ -1980,24 +1980,26 @@
 - id: '1697311341807'
   alias: Turn on hallway lights for a moment when we get home
   description: ''
-  trigger:
+  triggers:
   - type: opened
-    platform: device
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
     domain: binary_sensor
-  condition:
+    trigger: device
+  conditions:
   - condition: sun
     after: sunset
-    after_offset: 00:30
+    after_offset:
+      hours: 0
+      minutes: -30
     before: sunrise
-  action:
-  - service: light.turn_on
-    data:
+  actions:
+  - data:
       transition: 20
       kelvin: 2700
     target:
-      device_id: 0e1ed242a4670cea76f671cc12039968
+      entity_id: light.downstairs_hallway
+    action: light.turn_on
   - delay:
       hours: 0
       minutes: 10
@@ -2013,19 +2015,19 @@
       sequence:
       - wait_for_trigger:
         - type: not_opened
-          platform: device
           device_id: 86b815b15cbf84a75984db3b46f6cc17
           entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
           domain: binary_sensor
+          trigger: device
         timeout:
           hours: 0
           minutes: 30
           seconds: 0
           milliseconds: 0
-      - service: light.turn_off
-        data: {}
+      - data: {}
         target:
           entity_id: light.downstairs_hallway_light
+        action: light.turn_off
     - conditions:
       - type: is_not_open
         condition: device
@@ -2033,15 +2035,15 @@
         entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
         domain: binary_sensor
       sequence:
-      - service: light.turn_off
-        data: {}
+      - data: {}
         target:
           entity_id: light.downstairs_hallway_light
+        action: light.turn_off
     enabled: false
-  - service: light.turn_off
-    data: {}
+  - data: {}
+    action: light.turn_off
     target:
-      entity_id: light.downstairs_hallway_light
+      entity_id: light.downstairs_hallway
   mode: restart
 - id: '1697311647945'
   alias: Garage door opened but no one is home
@@ -3200,7 +3202,7 @@
   mode: single
 - id: '1753465748550'
   alias: Publish Meter Data to SDM120CT Emulator via MQTT with Watchdog & Enphase
-    Polling
+    Polling (replaced with Update SDM120CT Meter Emulator Values)
   description: "This automation publishes simulated grid meter data to an MQTT topic,
     emulating a SDM120CT energy meter for inverter integration.\nIt combines data
     from multiple Home Assistant entities to estimate real-time house demand power.
@@ -3286,12 +3288,12 @@
       - sensor.solar_panels_frequency_production_ct
   mode: single
 - id: '1755724844350'
-  alias: xStorage Home Battery Smart Charging Octopus
-  description: 'Intelligently controls Eaton battery charging based on Octopus Energy''s
+  alias: Home Battery Smart Charging Octopus
+  description: 'Intelligently controls home battery charging based on Octopus Energy''s
     Intelligent Go smart dispatching algorithm.
 
     This works IN ADDITION to the standard night off-peak charging schedule configured
-    on the Eaton inverter.
+    on the home batteries.
 
 
     Smart Logic:
