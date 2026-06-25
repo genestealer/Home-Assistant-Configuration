@@ -123,7 +123,30 @@ esp32:
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-  
+
+##############################################################
+# TEMPORARY WORKAROUND - modbus_server regression in 2026.5.x
+##############################################################
+# The modbus_server component that shipped in ESPHome 2026.5.0 is incomplete:
+# the new component split landed (PR #15509) but the Modbus *parser/correctness*
+# fixes did NOT. The result is malformed/clipped frames, CRC failures and
+# "timeout after partial response" - the inverter sees the meter for a few
+# seconds, then the server stops responding correctly and the meter drops.
+#
+# This is confirmed upstream by the component author:
+#   - Issue: https://github.com/esphome/esphome/issues/16541
+#     ("Yes, this is expected. The parser fixes aren't merged yet...")
+#   - Fix in flight: https://github.com/esphome/esphome/pull/11969
+#                    https://github.com/esphome/esphome/pull/17205
+#
+# Workaround: pin the modbus stack to PR #12614, which contains the full,
+# fixed parser chain and is confirmed working on 2026.5.x. Remove this block
+# once the fixes land in a stable ESPHome release.
+external_components:
+  - source: github://pr#12614
+    components: [uart, modbus, modbus_controller, modbus_server]
+    refresh: 1h
+
 ##############################################################
 # Hardware Configuration
 ##############################################################
