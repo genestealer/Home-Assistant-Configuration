@@ -125,13 +125,12 @@ packages:
   wifi: !include common/device_base_wifi.yaml
 
 ##############################################################
-# TEMPORARY WORKAROUND - modbus_server regression in 2026.5.x
+# TEMPORARY WORKAROUND - modbus_server regression in 2026.5.x / 2026.6.x
 ##############################################################
-# The modbus_server component that shipped in ESPHome 2026.5.0 is incomplete:
-# the new component split landed (PR #15509) but the Modbus *parser/correctness*
-# fixes did NOT. The result is malformed/clipped frames, CRC failures and
-# "timeout after partial response" - the inverter sees the meter for a few
-# seconds, then the server stops responding correctly and the meter drops.
+# The modbus_server component shipped in ESPHome 2026.5.0 (and still in 2026.6.x)
+# is incomplete: the component split (PR #15509) landed but the Modbus parser/
+# correctness fixes did NOT. Symptom: the inverter reads the meter for a few
+# seconds, then CRC/parse failures begin and the meter "disappears".
 #
 # This is confirmed upstream by the component author:
 #   - Issue: https://github.com/esphome/esphome/issues/16541
@@ -139,9 +138,20 @@ packages:
 #   - Fix in flight: https://github.com/esphome/esphome/pull/11969
 #                    https://github.com/esphome/esphome/pull/17205
 #
-# Workaround: pin the modbus stack to PR #12614, which contains the full,
-# fixed parser chain and is confirmed working on 2026.5.x. Remove this block
-# once the fixes land in a stable ESPHome release.
+# CURRENT WORKAROUND (the external_components block below):
+#   - Pins uart/modbus/modbus_controller/modbus_server to PR #12614, which
+#     contains the full, fixed Modbus parser chain. Verified working.
+#   - PR #12614 PREDATES the key rename in PR #15509, so the modbus_server
+#     block further down uses the OLD key names:
+#         server_courtesy_response   (NOT courtesy_response)
+#         server_registers           (NOT registers)
+#
+# TO REVERT once the parser fixes (PR #11969 / #17205) land in a stable release:
+#   1. Delete the 'external_components:' block below.
+#   2. Rename 'server_courtesy_response' -> 'courtesy_response'.
+#   3. Rename 'server_registers'         -> 'registers'.
+#   4. Re-flash and confirm clean reads in the logs.
+# Last verified working: 2026-06-25 on ESPHome 2026.6.2 (ESP32 DevKit v1).
 external_components:
   - source: github://pr#12614
     components: [uart, modbus, modbus_controller, modbus_server]
