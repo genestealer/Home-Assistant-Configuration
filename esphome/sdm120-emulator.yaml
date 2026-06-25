@@ -323,6 +323,18 @@ modbus_server:
   - id: sdm120ct_server
     modbus_id: modbus_server_01
     address: 0x1
+    # Courtesy response: pad any undefined register with 0 instead of
+    # rejecting the entire read request with an exception.
+    # In the new modbus_server component, if the inverter reads ANY address
+    # that is not explicitly defined below (or a block that runs past the last
+    # defined register), the server returns a single ILLEGAL_DATA_ADDRESS
+    # exception for the WHOLE request - so the inverter receives no data and
+    # drops the meter. A real SDM120 simply returns 0 for those registers, so
+    # we replicate that behaviour here for robustness.
+    courtesy_response:
+      enabled: true
+      register_last_address: 0x0158  # Highest register we emulate
+      register_value: 0
     registers:
       ##############################################################
       # SDM120CT Register Map Implementation
