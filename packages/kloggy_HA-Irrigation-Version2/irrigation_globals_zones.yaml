@@ -1,4 +1,3 @@
-
 #===========
 #=== Timers
 #===========
@@ -35,16 +34,14 @@ timer:
 
   irrigation_zone16_timer:
 
-
 #==================
 #=== Input Numbers
 #==================
 input_number:
-
   #====================
   #=== Number of Zones
   #====================
-  irrigation_number_of_zones: 
+  irrigation_number_of_zones:
     name: Number of Zones
     min: 1
     max: 16
@@ -52,106 +49,104 @@ input_number:
     mode: box
     icon: mdi:numeric-1-box-multiple-outline
 
-
 #================
 #=== Input Texts
 #================
 input_text:
-
   #=======================
   #=== Previous Durations
   #=======================
-  irrigation_zone1_previous_duration_in_seconds: 
+  irrigation_zone1_previous_duration_in_seconds:
     name: Zone 1 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone2_previous_duration_in_seconds: 
+  irrigation_zone2_previous_duration_in_seconds:
     name: Zone 2 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone3_previous_duration_in_seconds: 
+  irrigation_zone3_previous_duration_in_seconds:
     name: Zone 3 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone4_previous_duration_in_seconds: 
+  irrigation_zone4_previous_duration_in_seconds:
     name: Zone 4 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone5_previous_duration_in_seconds: 
+  irrigation_zone5_previous_duration_in_seconds:
     name: Zone 5 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone6_previous_duration_in_seconds: 
+  irrigation_zone6_previous_duration_in_seconds:
     name: Zone 6 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone7_previous_duration_in_seconds: 
+  irrigation_zone7_previous_duration_in_seconds:
     name: Zone 7 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone8_previous_duration_in_seconds: 
+  irrigation_zone8_previous_duration_in_seconds:
     name: Zone 8 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone9_previous_duration_in_seconds: 
+  irrigation_zone9_previous_duration_in_seconds:
     name: Zone 9 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone10_previous_duration_in_seconds: 
+  irrigation_zone10_previous_duration_in_seconds:
     name: Zone 10 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone11_previous_duration_in_seconds: 
+  irrigation_zone11_previous_duration_in_seconds:
     name: Zone 11 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone12_previous_duration_in_seconds: 
+  irrigation_zone12_previous_duration_in_seconds:
     name: Zone 12 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone13_previous_duration_in_seconds: 
+  irrigation_zone13_previous_duration_in_seconds:
     name: Zone 13 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone14_previous_duration_in_seconds: 
+  irrigation_zone14_previous_duration_in_seconds:
     name: Zone 14 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone15_previous_duration_in_seconds: 
+  irrigation_zone15_previous_duration_in_seconds:
     name: Zone 15 Previous Duration
     min: 0
     max: 40
     icon: mdi:timer
 
-  irrigation_zone16_previous_duration_in_seconds: 
+  irrigation_zone16_previous_duration_in_seconds:
     name: Zone 16 Previous Duration
     min: 0
     max: 40
@@ -256,387 +251,463 @@ input_text:
     max: 20
     icon: mdi:alphabetical-variant
 
-
   #======================
   #=== Switch entity_ids
   #======================
   irrigation_zone1_switch_entity_id:
     name: Switch 1 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone2_switch_entity_id:
     name: Switch 2 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone3_switch_entity_id:
     name: Switch 3 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone4_switch_entity_id:
     name: Switch 4 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone5_switch_entity_id:
     name: Switch 5 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone6_switch_entity_id:
     name: Switch 6 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone7_switch_entity_id:
     name: Switch 7 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone8_switch_entity_id:
     name: Switch 8 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone9_switch_entity_id:
     name: Switch 9 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone10_switch_entity_id:
     name: Switch 10 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone11_switch_entity_id:
     name: Switch 11 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone12_switch_entity_id:
     name: Switch 12 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone13_switch_entity_id:
     name: Switch 13 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone14_switch_entity_id:
     name: Switch 14 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone15_switch_entity_id:
     name: Switch 15 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
 
   irrigation_zone16_switch_entity_id:
     name: Switch 16 Name
     min: 1
-    max: 50
+    max: 100
     icon: mdi:alphabetical-variant
-
 
 #============
 #=== Sensors
 #============
 sensor:
-
   #=================================
   #=== Zone History Sensors - TODAY
   #=================================
   - platform: history_stats
-    name: irrigation_zone1_total_time_today
+    name: Irrigation Zone1 Total Time Today
+    unique_id: irrigation_zone1_total_time_today
     entity_id: switch.garden_irrigation_relay_zone1
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone2_total_time_today
+    name: Irrigation Zone2 Total Time Today
+    unique_id: irrigation_zone2_total_time_today
     entity_id: switch.garden_irrigation_relay_zone2
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone3_total_time_today
+    name: Irrigation Zone3 Total Time Today
+    unique_id: irrigation_zone3_total_time_today
     entity_id: switch.garden_irrigation_relay_zone3
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone4_total_time_today
+    name: Irrigation Zone4 Total Time Today
+    unique_id: irrigation_zone4_total_time_today
     entity_id: switch.garden_irrigation_relay_zone4
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone5_total_time_today
+    name: Irrigation Zone5 Total Time Today
+    unique_id: irrigation_zone5_total_time_today
     entity_id: switch.garden_irrigation_relay_zone5
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone6_total_time_today
+    name: Irrigation Zone6 Total Time Today
+    unique_id: irrigation_zone6_total_time_today
     entity_id: switch.garden_irrigation_relay_zone6
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone7_total_time_today
+    name: Irrigation Zone7 Total Time Today
+    unique_id: irrigation_zone7_total_time_today
     entity_id: switch.garden_irrigation_relay_zone7
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone8_total_time_today
+    name: Irrigation Zone8 Total Time Today
+    unique_id: irrigation_zone8_total_time_today
     entity_id: switch.garden_irrigation_relay_zone8
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone9_total_time_today
-    entity_id: switch.garden_irrigation_relay_zone9
-    state: 'on'
+    name: Irrigation Zone9 Total Time Today
+    unique_id: irrigation_zone9_total_time_today
+    entity_id: switch.front_irrigation
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone10_total_time_today
+    name: Irrigation Zone10 Total Time Today
+    unique_id: irrigation_zone10_total_time_today
     entity_id: switch.garden_irrigation_relay_zone10
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone11_total_time_today
+    name: Irrigation Zone11 Total Time Today
+    unique_id: irrigation_zone11_total_time_today
     entity_id: switch.garden_irrigation_relay_zone11
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone12_total_time_today
+    name: Irrigation Zone12 Total Time Today
+    unique_id: irrigation_zone12_total_time_today
     entity_id: switch.garden_irrigation_relay_zone12
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone13_total_time_today
+    name: Irrigation Zone13 Total Time Today
+    unique_id: irrigation_zone13_total_time_today
     entity_id: switch.garden_irrigation_relay_zone13
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone14_total_time_today
+    name: Irrigation Zone14 Total Time Today
+    unique_id: irrigation_zone14_total_time_today
     entity_id: switch.garden_irrigation_relay_zone14
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone15_total_time_today
+    name: Irrigation Zone15 Total Time Today
+    unique_id: irrigation_zone15_total_time_today
     entity_id: switch.garden_irrigation_relay_zone15
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   - platform: history_stats
-    name: irrigation_zone16_total_time_today
+    name: Irrigation Zone16 Total Time Today
+    unique_id: irrigation_zone16_total_time_today
     entity_id: switch.garden_irrigation_relay_zone16
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
-    end: '{{ now() }}'
-
+    start: >
+      {{ today_at() }}
+    end: >
+      {{ now() }}
 
   #=====================================
   #=== Zone History Sensors - YESTERDAY
   #=====================================
   - platform: history_stats
-    name: irrigation_zone1_total_time_yesterday
+    name: Irrigation Zone1 Total Time Yesterday
+    unique_id: irrigation_zone1_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone1
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone2_total_time_yesterday
+    name: Irrigation Zone2 Total Time Yesterday
+    unique_id: irrigation_zone2_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone2
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone3_total_time_yesterday
+    name: Irrigation Zone3 Total Time Yesterday
+    unique_id: irrigation_zone3_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone3
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone4_total_time_yesterday
+    name: Irrigation Zone4 Total Time Yesterday
+    unique_id: irrigation_zone4_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone4
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone5_total_time_yesterday
+    name: Irrigation Zone5 Total Time Yesterday
+    unique_id: irrigation_zone5_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone5
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone6_total_time_yesterday
+    name: Irrigation Zone6 Total Time Yesterday
+    unique_id: irrigation_zone6_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone6
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone7_total_time_yesterday
+    name: Irrigation Zone7 Total Time Yesterday
+    unique_id: irrigation_zone7_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone7
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone8_total_time_yesterday
+    name: Irrigation Zone8 Total Time Yesterday
+    unique_id: irrigation_zone8_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone8
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone9_total_time_yesterday
-    entity_id: switch.garden_irrigation_relay_zone9
-    state: 'on'
+    name: Irrigation Zone9 Total Time Yesterday
+    unique_id: irrigation_zone9_total_time_yesterday
+    entity_id: switch.front_irrigation
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone10_total_time_yesterday
+    name: Irrigation Zone10 Total Time Yesterday
+    unique_id: irrigation_zone10_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone10
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone11_total_time_yesterday
+    name: Irrigation Zone11 Total Time Yesterday
+    unique_id: irrigation_zone11_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone11
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone12_total_time_yesterday
+    name: Irrigation Zone12 Total Time Yesterday
+    unique_id: irrigation_zone12_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone12
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone13_total_time_yesterday
+    name: Irrigation Zone13 Total Time Yesterday
+    unique_id: irrigation_zone13_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone13
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone14_total_time_yesterday
+    name: Irrigation Zone14 Total Time Yesterday
+    unique_id: irrigation_zone14_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone14
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone15_total_time_yesterday
+    name: Irrigation Zone15 Total Time Yesterday
+    unique_id: irrigation_zone15_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone15
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24
 
   - platform: history_stats
-    name: irrigation_zone16_total_time_yesterday
+    name: Irrigation Zone16 Total Time Yesterday
+    unique_id: irrigation_zone16_total_time_yesterday
     entity_id: switch.garden_irrigation_relay_zone16
-    state: 'on'
+    state: "on"
     type: time
-    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: >
+      {{ today_at() }}
     duration:
       hours: 24

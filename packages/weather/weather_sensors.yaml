@@ -78,7 +78,6 @@ template:
   #         Rain today: {{ state_attr('weather.home', 'forecast')[0].precipitation }} mm
   #         tomorrow: {{ state_attr('weather.home', 'forecast')[1].precipitation }} mm
 
-
 ####################################################
 # rflink 433mhz Weather Station sensors
 ####################################################
@@ -176,7 +175,7 @@ sensor:
           - dkw2012_007d_update_time
           - dkw2012_00d0_update_time
 
-# TODO: This is not working, need to check the template and the attributes.
+  # TODO: This is not working, need to check the template and the attributes.
   # https://github.com/kloggy/HA-Irrigation-Version2
   # https://github.com/kloggy/HA-Irrigation-Version2/issues/44
   - platform: template
@@ -192,8 +191,6 @@ sensor:
           <br>
           Rain today: {{ state_attr('weather.openweathermap', 'forecast')[0].precipitation }} mm
           tomorrow: {{ state_attr('weather.openweathermap', 'forecast')[1].precipitation }} mm
-
-
 
   - platform: statistics
     name: Local Rain 24 Hours Statistics Raw
