@@ -135,8 +135,11 @@ packages:
 # This is confirmed upstream by the component author:
 #   - Issue: https://github.com/esphome/esphome/issues/16541
 #     ("Yes, this is expected. The parser fixes aren't merged yet...")
-#   - Fix in flight: https://github.com/esphome/esphome/pull/11969
-#                    https://github.com/esphome/esphome/pull/17205
+#   - Fix: https://github.com/esphome/esphome/pull/11969 (the parser rewrite)
+#       MERGED to 'dev' ~2026-06-21. NOT yet in a stable release at time of
+#       writing - expected to ship in ESPHome 2026.7.0 (July 2026), possibly
+#       in a 2026.7.0bX beta first. Watch: https://github.com/esphome/esphome/releases
+#   - Follow-up: https://github.com/esphome/esphome/pull/17205
 #
 # CURRENT WORKAROUND (the external_components block below):
 #   - Pins uart/modbus/modbus_controller/modbus_server to PR #12614, which
@@ -146,11 +149,12 @@ packages:
 #         server_courtesy_response   (NOT courtesy_response)
 #         server_registers           (NOT registers)
 #
-# TO REVERT once the parser fixes (PR #11969 / #17205) land in a stable release:
-#   1. Delete the 'external_components:' block below.
-#   2. Rename 'server_courtesy_response' -> 'courtesy_response'.
-#   3. Rename 'server_registers'         -> 'registers'.
-#   4. Re-flash and confirm clean reads in the logs.
+# TO REVERT once the parser fixes are in a stable release (expected 2026.7.0):
+#   1. Confirm the release changelog mentions the modbus parser rewrite (#11969).
+#   2. Delete the 'external_components:' block below.
+#   3. Rename 'server_courtesy_response' -> 'courtesy_response'.
+#   4. Rename 'server_registers'         -> 'registers'.
+#   5. Re-flash and confirm clean reads in the logs.
 # Last verified working: 2026-06-25 on ESPHome 2026.6.2 (ESP32 DevKit v1).
 external_components:
   - source: github://pr#12614
