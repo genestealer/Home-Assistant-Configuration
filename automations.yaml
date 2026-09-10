@@ -2698,7 +2698,7 @@
       title: ADHD Medication
     action: notify.mobile_app_rich_mob_app
   mode: single
-- id: '1732231906963'
+  - id: '1732231906963'
   alias: Notify on Medication Stock Check Failure
   description: Notify if the medication stock check script encounters an error.
   triggers:
@@ -3335,27 +3335,6 @@
     enabled: false
   mode: queued
   max: 5
-- id: '1760397061139'
-  alias: Octopus Energy - Join Saving Session (Custom Actions) [Blueprint]
-  description: ''
-  use_blueprint:
-    path: BottlecapDave/octopus_energy_octoplus_join_saving_session_custom_action.yaml
-    input:
-      saving_session_event_entity: event.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session_events
-      actions:
-      - data:
-          data:
-            color: pink
-            channel: octopus
-            visibility: public
-            notification_icon: mdi:bwind-turbine
-            ttl: 0
-            sticky: 'true'
-          message: 'Joined saving session
-
-            '
-          title: Octopus Energy
-        action: notify.mobile_app_rich_mob_app
 - id: '1762891302927'
   alias: BOTC Microphone Mute State
   description: Triggered by browser userscript when the BOTC app is muted or unmuted
@@ -4402,3 +4381,15 @@
             option: maximize_auto_consumption
         continue_on_error: true
   mode: single
+- id: '1789047671875'
+  alias: Octopus Energy - Join Saving Session (Custom Actions) [Blueprint]
+  description: ''
+  use_blueprint:
+    path: BottlecapDave/octopus_energy_octoplus_join_saving_session_custom_action.yaml
+    input:
+      saving_session_event_entity: event.octopus_energy_a_dcb1af4a_octoplus_power_down_events
+      actions:
+      - data_template:
+          title: Joined Saving Session
+          message: 'Joined Octopus Energy Saving Session'
+        action: notify.mobile_app_rich_mob_app
