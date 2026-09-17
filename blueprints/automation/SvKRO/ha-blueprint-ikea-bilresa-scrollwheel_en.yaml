@@ -1,0 +1,639 @@
+blueprint:
+  name: IKEA BILRESA - Light Controller (v1.5)
+  description: 'Light control for IKEA BILRESA (Matter). Supports dynamic scrolling,
+    scene cycling, and multi-click actions for up to three channels.
+
+    '
+  domain: automation
+  input:
+    remote_device:
+      name: Remote Control
+      description: The IKEA BILRESA scroll wheel (Matter) used as the trigger.
+      selector:
+        device:
+          filter:
+          - manufacturer: IKEA of Sweden
+            model: BILRESA scroll wheel
+          multiple: false
+    header_1:
+      name: Channel 1
+      default: ''
+      selector:
+        constant:
+          value: ''
+    group_scroll_1:
+      name: Scroll Wheel Settings
+      icon: mdi:rotate-right
+      collapsed: true
+      input:
+        input_light_1:
+          name: Light / Light Group
+          description: Select the light or group to be controlled.
+          default: {}
+          selector:
+            target:
+              entity:
+              - domain:
+                - light
+        input_mode_1:
+          name: Scroll Function
+          description: Define which value is changed when turning the wheel.
+          default: brightness
+          selector:
+            select:
+              mode: dropdown
+              options:
+              - label: Brightness
+                value: brightness
+              - label: Color
+                value: hs_color
+              - label: Color temperature
+                value: temp_kelvin
+              multiple: false
+              custom_value: false
+              sort: false
+        input_sens_1:
+          name: Multiplier
+          description: Define how much the value should change with each scroll step.
+          default: 5
+          selector:
+            number:
+              min: 1.0
+              max: 50.0
+              unit_of_measurement: x
+              mode: slider
+              step: 1.0
+        input_transition_1:
+          name: Transition duration
+          description: Define how long the transition between changes should take.
+          default: 200
+          selector:
+            number:
+              min: 0.0
+              max: 5000.0
+              unit_of_measurement: ms
+              mode: slider
+              step: 1.0
+    group_single_click_1:
+      name: Single Click
+      icon: mdi:gesture-tap
+      collapsed: true
+      input:
+        input_click_mode_1:
+          name: Click Mode
+          description: Choose between a single action or cycling through scenes.
+          default: action
+          selector:
+            select:
+              mode: dropdown
+              options:
+              - label: Perform single action
+                value: action
+              - label: Scene cycler
+                value: scene_cycle
+              multiple: false
+              custom_value: false
+              sort: false
+        input_scenes_1:
+          name: Scene Selection
+          description: Select the scenes to cycle through sequentially.
+          default: []
+          selector:
+            entity:
+              domain:
+              - scene
+              multiple: true
+              reorder: false
+        input_click_1:
+          name: Action on Click
+          description: Action to perform when in 'Single Action' mode.
+          default: []
+          selector:
+            action: {}
+    group_multi_click_1:
+      name: Additional Button Functions
+      icon: mdi:plus-circle-outline
+      collapsed: true
+      input:
+        input_double_1:
+          name: Double Click
+          description: Action to perform on double press.
+          default: []
+          selector:
+            action: {}
+        input_triple_1:
+          name: Triple Click
+          description: Action to perform on triple press.
+          default: []
+          selector:
+            action: {}
+        input_long_1:
+          name: Hold
+          description: Action to perform when holding the button.
+          default: []
+          selector:
+            action: {}
+        input_release_1:
+          name: Release
+          description: Action to perform when releasing the button after a long press.
+          default: []
+          selector:
+            action: {}
+    header_2:
+      name: Channel 2
+      default: ''
+      selector:
+        constant:
+          value: ''
+    group_scroll_2:
+      name: Scroll Wheel Settings
+      icon: mdi:rotate-right
+      collapsed: true
+      input:
+        input_light_2:
+          name: Light / Light Group
+          description: Select the light or group to be controlled.
+          default: {}
+          selector:
+            target:
+              entity:
+              - domain:
+                - light
+        input_mode_2:
+          name: Scroll Function
+          description: Define which value is changed when turning the wheel.
+          default: brightness
+          selector:
+            select:
+              mode: dropdown
+              options:
+              - label: Brightness
+                value: brightness
+              - label: Color
+                value: hs_color
+              - label: Color temperature
+                value: temp_kelvin
+              multiple: false
+              custom_value: false
+              sort: false
+        input_sens_2:
+          name: Multiplier
+          description: Define how much the value should change with each scroll step.
+          default: 5
+          selector:
+            number:
+              min: 1.0
+              max: 50.0
+              unit_of_measurement: x
+              mode: slider
+              step: 1.0
+        input_transition_2:
+          name: Transition duration
+          description: Define how long the transition between changes should take.
+          default: 200
+          selector:
+            number:
+              min: 0.0
+              max: 5000.0
+              unit_of_measurement: ms
+              mode: slider
+              step: 1.0
+    group_single_click_2:
+      name: Single Click
+      icon: mdi:gesture-tap
+      collapsed: true
+      input:
+        input_click_mode_2:
+          name: Click Mode
+          description: Choose between a single action or cycling through scenes.
+          default: action
+          selector:
+            select:
+              mode: dropdown
+              options:
+              - label: Perform single action
+                value: action
+              - label: Scene cycler
+                value: scene_cycle
+              multiple: false
+              custom_value: false
+              sort: false
+        input_scenes_2:
+          name: Scene Selection
+          description: Select the scenes to cycle through sequentially.
+          default: []
+          selector:
+            entity:
+              domain:
+              - scene
+              multiple: true
+              reorder: false
+        input_click_2:
+          name: Action on Click
+          description: Action to perform when in 'Single Action' mode.
+          default: []
+          selector:
+            action: {}
+    group_multi_click_2:
+      name: Additional Button Functions
+      icon: mdi:plus-circle-outline
+      collapsed: true
+      input:
+        input_double_2:
+          name: Double Click
+          description: Action to perform on double press.
+          default: []
+          selector:
+            action: {}
+        input_triple_2:
+          name: Triple Click
+          description: Action to perform on triple press.
+          default: []
+          selector:
+            action: {}
+        input_long_2:
+          name: Hold
+          description: Action to perform when holding the button.
+          default: []
+          selector:
+            action: {}
+        input_release_2:
+          name: Release
+          description: Action to perform when releasing the button after a long press.
+          default: []
+          selector:
+            action: {}
+    header_3:
+      name: Channel 3
+      default: ''
+      selector:
+        constant:
+          value: ''
+    group_scroll_3:
+      name: Scroll Wheel Settings
+      icon: mdi:rotate-right
+      collapsed: true
+      input:
+        input_light_3:
+          name: Light / Light Group
+          description: Select the light or group to be controlled.
+          default: {}
+          selector:
+            target:
+              entity:
+              - domain:
+                - light
+        input_mode_3:
+          name: Scroll Function
+          description: Define which value is changed when turning the wheel.
+          default: brightness
+          selector:
+            select:
+              mode: dropdown
+              options:
+              - label: Brightness
+                value: brightness
+              - label: Color
+                value: hs_color
+              - label: Color temperature
+                value: temp_kelvin
+              multiple: false
+              custom_value: false
+              sort: false
+        input_sens_3:
+          name: Multiplier
+          description: Define how much the value should change with each scroll step.
+          default: 5
+          selector:
+            number:
+              min: 1.0
+              max: 50.0
+              unit_of_measurement: x
+              mode: slider
+              step: 1.0
+        input_transition_3:
+          name: Transition duration
+          description: Define how long the transition between changes should take.
+          default: 200
+          selector:
+            number:
+              min: 0.0
+              max: 5000.0
+              unit_of_measurement: ms
+              mode: slider
+              step: 1.0
+    group_single_click_3:
+      name: Single Click
+      icon: mdi:gesture-tap
+      collapsed: true
+      input:
+        input_click_mode_3:
+          name: Click Mode
+          description: Choose between a single action or cycling through scenes.
+          default: action
+          selector:
+            select:
+              mode: dropdown
+              options:
+              - label: Perform single action
+                value: action
+              - label: Scene cycler
+                value: scene_cycle
+              multiple: false
+              custom_value: false
+              sort: false
+        input_scenes_3:
+          name: Scene Selection
+          description: Select the scenes to cycle through sequentially.
+          default: []
+          selector:
+            entity:
+              domain:
+              - scene
+              multiple: true
+              reorder: false
+        input_click_3:
+          name: Action on Click
+          description: Action to perform when in 'Single Action' mode.
+          default: []
+          selector:
+            action: {}
+    group_multi_click_3:
+      name: Additional Button Functions
+      icon: mdi:plus-circle-outline
+      collapsed: true
+      input:
+        input_double_3:
+          name: Double Click
+          description: Action to perform on double press.
+          default: []
+          selector:
+            action: {}
+        input_triple_3:
+          name: Triple Click
+          description: Action to perform on triple press.
+          default: []
+          selector:
+            action: {}
+        input_long_3:
+          name: Hold
+          description: Action to perform when holding the button.
+          default: []
+          selector:
+            action: {}
+        input_release_3:
+          name: Release
+          description: Action to perform when releasing the button after a long press.
+          default: []
+          selector:
+            action: {}
+  source_url: https://gist.github.com/SvKRO/52f246362a19f0297fd18969b383181b
+mode: single
+max_exceeded: silent
+trigger_variables:
+  var_remote: !input remote_device
+  var_events: '{{ device_entities(var_remote) | select(''match'', ''event\.'') | sort
+    | list }}
+
+    '
+  temp_channel1_right: '{{ var_events[0] if var_events | length > 0 else ''none''
+    }}'
+  temp_channel1_left: '{{  var_events[1] if var_events | length > 1 else ''none''
+    }}'
+  temp_channel1_click: '{{ var_events[2] if var_events | length > 2 else ''none''
+    }}'
+  temp_channel2_right: '{{ var_events[3] if var_events | length > 3 else ''none''
+    }}'
+  temp_channel2_left: '{{  var_events[4] if var_events | length > 4 else ''none''
+    }}'
+  temp_channel2_click: '{{ var_events[5] if var_events | length > 5 else ''none''
+    }}'
+  temp_channel3_right: '{{ var_events[6] if var_events | length > 6 else ''none''
+    }}'
+  temp_channel3_left: '{{  var_events[7] if var_events | length > 7 else ''none''
+    }}'
+  temp_channel3_click: '{{ var_events[8] if var_events | length > 8 else ''none''
+    }}'
+trigger:
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel1_left }}'
+  id: trigger_channel1_left
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel1_right }}'
+  id: trigger_channel1_right
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel1_click }}'
+  id: trigger_channel1_click
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel2_left }}'
+  id: trigger_channel2_left
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel2_right }}'
+  id: trigger_channel2_right
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel2_click }}'
+  id: trigger_channel2_click
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel3_left }}'
+  id: trigger_channel3_left
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel3_right }}'
+  id: trigger_channel3_right
+- trigger: event
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ temp_channel3_click }}'
+  id: trigger_channel3_click
+action:
+- condition: template
+  value_template: "{{ trigger.event.data.old_state is not none\n   and trigger.event.data.new_state
+    is not none\n   and trigger.event.data.old_state.state not in ['unavailable',
+    'unknown']\n   and trigger.event.data.new_state.state not in ['unavailable', 'unknown']
+    }}"
+- condition: template
+  value_template: "{% if trigger.event.data.new_state is none %}\n  false\n{% else
+    %}\n  {% set old_attr = trigger.event.data.old_state.attributes if trigger.event.data.old_state
+    is not none else {} %}\n  {% set new_attr = trigger.event.data.new_state.attributes
+    %}\n  {% set old_ts = old_attr.get('last_reported', 'none') %}\n  {% set new_ts
+    = new_attr.get('last_reported', 'new') %}\n  {{ old_ts != new_ts }}\n{% endif
+    %}\n"
+- variables:
+    m_1: !input input_mode_1
+    m_2: !input input_mode_2
+    m_3: !input input_mode_3
+    s_1: !input input_sens_1
+    s_2: !input input_sens_2
+    s_3: !input input_sens_3
+    l_1: !input input_light_1
+    l_2: !input input_light_2
+    l_3: !input input_light_3
+    tr_1: !input input_transition_1
+    tr_2: !input input_transition_2
+    tr_3: !input input_transition_3
+    action_channel_id: '{{ trigger.id.split(''_'')[1] }}'
+    event_attr: '{{ trigger.event.data.new_state.attributes | to_json | from_json
+      }}'
+    ticks: '{{ event_attr.get(''totalNumberOfPressesCounted'') | int(1) }}'
+    action_event_type: '{{ event_attr.get(''event_type'') | default(''none'') }}'
+    curr_mode: '{% if action_channel_id == ''channel1'' %}{{ m_1 }}{% elif action_channel_id
+      == ''channel2'' %}{{ m_2 }}{% else %}{{ m_3 }}{% endif %}'
+    base_sens: '{% if action_channel_id == ''channel1'' %}{{ s_1 }}{% elif action_channel_id
+      == ''channel2'' %}{{ s_2 }}{% else %}{{ s_3 }}{% endif %}'
+    step_val: '{% set val = base_sens * ticks %}{{ val if trigger.id.endswith(''_right'')
+      else val * -1 }}'
+    transition_ms: '{% if action_channel_id == ''channel1'' %}{{ tr_1 }}{% elif action_channel_id
+      == ''channel2'' %}{{ tr_2 }}{% else %}{{ tr_3 }}{% endif %}'
+    transition_s: '{{ transition_ms / 1000 }}'
+    curr_target_obj: '{% if action_channel_id == ''channel1'' %}{{ l_1 }} {% elif
+      action_channel_id == ''channel2'' %}{{ l_2 }} {% else %}{{ l_3 }}{% endif %}
+
+      '
+    curr_target_list: "{% set t = curr_target_obj %} {% set ns = namespace(entities=[])
+      %}\n{% set e_ids = t.entity_id if t.entity_id is defined else [] %} {% set ns.entities
+      = [e_ids] if e_ids is string else e_ids %}\n{% set d_ids = t.device_id if t.device_id
+      is defined else [] %} {% set d_ids = [d_ids] if d_ids is string else d_ids %}
+      {% for d in d_ids %}\n  {% set ns.entities = ns.entities + (device_entities(d)
+      | select('match', 'light\\.') | list) %}\n{% endfor %}\n{% set a_ids = t.area_id
+      if t.area_id is defined else [] %} {% set a_ids = [a_ids] if a_ids is string
+      else a_ids %} {% for a in a_ids %}\n  {% set ns.entities = ns.entities + (area_entities(a)
+      | select('match', 'light\\.') | list) %}\n{% endfor %}\n{% set lb_ids = t.label_id
+      if t.label_id is defined else [] %} {% set lb_ids = [lb_ids] if lb_ids is string
+      else lb_ids %} {% for l in lb_ids %}\n  {% set ns.entities = ns.entities + (label_entities(l)
+      | select('match', 'light\\.') | list) %}\n{% endfor %}\n{{ ns.entities | unique
+      | reject('none') | list }}\n"
+    curr_target: '{{ curr_target_list | first | default(''none'') }}'
+- choose:
+  - conditions: '{{ trigger.id.endswith(''_right'') or trigger.id.endswith(''_left'')
+      }}'
+    sequence:
+    - choose:
+      - conditions: '{{ curr_mode == ''brightness'' }}'
+        sequence:
+        - variables:
+            target_value: '{% set current = state_attr(curr_target, ''brightness'')
+              | int(128) %} {{ [([current + (step_val * 2.55) | int, 0] | max), 255]
+              | min }}
+
+              '
+        - service: light.turn_on
+          target:
+            entity_id: '{{ curr_target_list }}'
+          data:
+            transition: '{{ transition_s }}'
+            brightness: '{{ target_value }}'
+      - conditions: '{{ curr_mode == ''temp_kelvin'' }}'
+        sequence:
+        - variables:
+            target_value: '{% set curr = state_attr(curr_target, ''color_temp_kelvin'')
+              | int(3000) %} {% set min_v = state_attr(curr_target, ''min_color_temp_kelvin'')
+              | int(2000) %} {% set max_v = state_attr(curr_target, ''max_color_temp_kelvin'')
+              | int(6535) %} {{ [([curr + (step_val * 10) | int, min_v] | max), max_v]
+              | min }}
+
+              '
+        - service: light.turn_on
+          target:
+            entity_id: '{{ curr_target_list }}'
+          data:
+            transition: '{{ transition_s }}'
+            color_temp_kelvin: '{{ target_value }}'
+      - conditions: '{{ curr_mode == ''hs_color'' }}'
+        sequence:
+        - variables:
+            target_value: '{% set hs = state_attr(curr_target, ''hs_color'') | default([0,
+              100], true) %} {% set cm = state_attr(curr_target, ''color_mode'') %}
+              {% set sat = hs[1] | float(100) if cm in [''hs'', ''xy'', ''rgb'', ''rgbw'',
+              ''rgbww''] else 100 %} {{ [((hs[0] | float(0) + step_val) % 360) | round(2),
+              sat] }}
+
+              '
+        - service: light.turn_on
+          target:
+            entity_id: '{{ curr_target_list }}'
+          data:
+            transition: '{{ transition_s }}'
+            hs_color: '{{ target_value }}'
+  - conditions: '{{ trigger.id.endswith(''_click'') }}'
+    sequence:
+    - variables:
+        cm_1: !input input_click_mode_1
+        cm_2: !input input_click_mode_2
+        cm_3: !input input_click_mode_3
+        cs_1: !input input_scenes_1
+        cs_2: !input input_scenes_2
+        cs_3: !input input_scenes_3
+        c_mode: '{% if action_channel_id == ''channel1'' %}{{ cm_1 }}{% elif action_channel_id
+          == ''channel2'' %}{{ cm_2 }}{% else %}{{ cm_3 }}{% endif %}'
+        c_scenes: '{% if action_channel_id == ''channel1'' %}{{ cs_1 }}{% elif action_channel_id
+          == ''channel2'' %}{{ cs_2 }}{% else %}{{ cs_3 }}{% endif %}'
+    - choose:
+      - conditions: '{{ action_event_type == ''multi_press_1'' }}'
+        sequence:
+        - choose:
+          - conditions: '{{ c_mode == ''scene_cycle'' and c_scenes | count > 0 }}'
+            sequence:
+            - service: scene.turn_on
+              target:
+                entity_id: '{% set count = c_scenes | count %}{% set idx = (as_timestamp(now())
+                  | int // 2) % count %}{{ c_scenes[idx] }}'
+          - conditions: '{{ c_mode == ''action'' }}'
+            sequence:
+            - choose:
+              - conditions: '{{ action_channel_id == ''channel1'' }}'
+                sequence: !input input_click_1
+              - conditions: '{{ action_channel_id == ''channel2'' }}'
+                sequence: !input input_click_2
+              - conditions: '{{ action_channel_id == ''channel3'' }}'
+                sequence: !input input_click_3
+      - conditions: '{{ action_event_type == ''multi_press_2'' }}'
+        sequence:
+        - choose:
+          - conditions: '{{ action_channel_id == ''channel1'' }}'
+            sequence: !input input_double_1
+          - conditions: '{{ action_channel_id == ''channel2'' }}'
+            sequence: !input input_double_2
+          - conditions: '{{ action_channel_id == ''channel3'' }}'
+            sequence: !input input_double_3
+      - conditions: '{{ action_event_type == ''multi_press_3'' }}'
+        sequence:
+        - choose:
+          - conditions: '{{ action_channel_id == ''channel1'' }}'
+            sequence: !input input_triple_1
+          - conditions: '{{ action_channel_id == ''channel2'' }}'
+            sequence: !input input_triple_2
+          - conditions: '{{ action_channel_id == ''channel3'' }}'
+            sequence: !input input_triple_3
+      - conditions: '{{ action_event_type == ''long_press'' }}'
+        sequence:
+        - choose:
+          - conditions: '{{ action_channel_id == ''channel1'' }}'
+            sequence: !input input_long_1
+          - conditions: '{{ action_channel_id == ''channel2'' }}'
+            sequence: !input input_long_2
+          - conditions: '{{ action_channel_id == ''channel3'' }}'
+            sequence: !input input_long_3
+      - conditions: '{{ action_event_type == ''long_release'' }}'
+        sequence:
+        - choose:
+          - conditions: '{{ action_channel_id == ''channel1'' }}'
+            sequence: !input input_release_1
+          - conditions: '{{ action_channel_id == ''channel2'' }}'
+            sequence: !input input_release_2
+          - conditions: '{{ action_channel_id == ''channel3'' }}'
+            sequence: !input input_release_3
