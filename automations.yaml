@@ -1,7 +1,7 @@
 - id: '1558317969078'
   alias: CCTV Reboot Each Monday
   triggers:
-  - at: 06:45
+  - at: 05:30:00
     trigger: time
     weekday:
     - mon
@@ -1344,22 +1344,15 @@
   mode: single
 - id: '1661547535107'
   alias: Kitchen Lights Motion Automation
-  description: Triggered in motion, restarted on fresh motion detection (sensors set
-    to 90 second timeout). On timer delay turn-off section, checks if motion is still
-    being detected, to avoid issue with motion being continuity detected for entire
-    delay period (otherwise lights would turn off, as no new motion events had been
-    generated, even though motion is still true). Could set the automation to only
-    turn off lights when no motion is detected, but this may risk the lights staying
-    on all the time if off-motion event is not triggered.
+  description: Triggered on motion, restarted on fresh motion detection (sensors set
+    to 90 second timeout). On the timer delay turn-off section, checks if any of the
+    four kitchen sensors are still occupied, to avoid the issue with occupancy being
+    continuously detected for the entire delay period (otherwise lights would turn
+    off, as no new motion events had been generated, even though motion is still true).
   triggers:
   - type: occupied
-    device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-    entity_id: 7183e77199aa9682d16c03a011352ead
-    domain: binary_sensor
-    trigger: device
-  - type: occupied
-    device_id: 8f93f025843a9a3da3c079739843e408
-    entity_id: 396dab2b22de1017ada5e53201d6abe0
+    device_id: 7209d489eb1d168a87711389f70568f3
+    entity_id: 0173e7704e9447734d7f42cd984335dc
     domain: binary_sensor
     trigger: device
   - type: occupied
@@ -1391,15 +1384,15 @@
         - conditions:
           - condition: or
             conditions:
-            - type: is_motion
+            - type: is_occupied
               condition: device
-              device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-              entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
+              device_id: 7209d489eb1d168a87711389f70568f3
+              entity_id: 0173e7704e9447734d7f42cd984335dc
               domain: binary_sensor
-            - type: is_motion
+            - type: is_occupied
               condition: device
-              device_id: 8f93f025843a9a3da3c079739843e408
-              entity_id: binary_sensor.kitchen_motion_sensor_2_occupancy
+              device_id: 51993e45eccefe5f8da21df171b27644
+              entity_id: 8bd6a67da60c02d91309e3debe61bec4
               domain: binary_sensor
           sequence:
           - event: kitchen_occupied
@@ -1428,13 +1421,13 @@
           conditions:
           - type: is_occupied
             condition: device
-            device_id: ae2a09aff2b5e7ef8155aa0aea2ae997
-            entity_id: 7183e77199aa9682d16c03a011352ead
+            device_id: 7209d489eb1d168a87711389f70568f3
+            entity_id: 0173e7704e9447734d7f42cd984335dc
             domain: binary_sensor
           - type: is_occupied
             condition: device
-            device_id: 8f93f025843a9a3da3c079739843e408
-            entity_id: 396dab2b22de1017ada5e53201d6abe0
+            device_id: 51993e45eccefe5f8da21df171b27644
+            entity_id: 8bd6a67da60c02d91309e3debe61bec4
             domain: binary_sensor
         sequence:
         - event: kitchen_occupied
@@ -1544,8 +1537,8 @@
   description: Snapshots the front door camera at trigger time and sends that static
     file, rather than /api/camera_proxy/<camera>, which the companion app only fetches
     when the notification is rendered - a slow push or poor signal meant the photo
-    showed the doorstep long after the caller had left. Snapshots are written to /config/www/doorbell/
-    and served from /local/doorbell/ - files under www are served WITHOUT authentication,
+    showed the doorstep long after the caller had left. Snapshots are written to /config/www/tmp/doorbell/
+    and served from /local/tmp/doorbell/ - files under www are served WITHOUT authentication,
     hence the randomised filenames. Files are unique per event so they accumulate
     and need periodic housekeeping. Jinja range() is capped at 100000 in the HA sandbox,
     so the random suffix uses range(10000, 99999).
@@ -1560,8 +1553,8 @@
   - variables:
       stamp: '{{ now().strftime(''%Y%m%d-%H%M%S'') }}-{{ range(10000, 99999) | random
         }}'
-      snapshot_file: /config/www/doorbell/front-{{ stamp }}.jpg
-      snapshot_url: /local/doorbell/front-{{ stamp }}.jpg
+      snapshot_file: /config/www/tmp/doorbell/front-{{ stamp }}.jpg
+      snapshot_url: /local/tmp/doorbell/front-{{ stamp }}.jpg
   - parallel:
     - action: camera.snapshot
       target:
@@ -1655,10 +1648,11 @@
     file, rather than /api/camera_proxy/<camera>, which the companion app only fetches
     when the notification is rendered - a slow push or poor signal meant the photo
     showed the doorway long after the person had moved on. Snapshots are written to
-    /config/www/front_door/ and served from /local/front_door/ - files under www are
-    served WITHOUT authentication, hence the randomised filenames. Files are unique
-    per event so they accumulate and need periodic housekeeping. Jinja range() is
-    capped at 100000 in the HA sandbox, so the random suffix uses range(10000, 99999).
+    /config/www/tmp/front_door/ and served from /local/tmp/front_door/ - files under
+    www are served WITHOUT authentication, hence the randomised filenames. Files are
+    unique per event so they accumulate and need periodic housekeeping. Jinja range()
+    is capped at 100000 in the HA sandbox, so the random suffix uses range(10000,
+    99999).
   triggers:
   - type: opened
     device_id: 86b815b15cbf84a75984db3b46f6cc17
@@ -1679,8 +1673,8 @@
   - variables:
       stamp: '{{ now().strftime(''%Y%m%d-%H%M%S'') }}-{{ range(10000, 99999) | random
         }}'
-      snapshot_file: /config/www/front_door/front-{{ stamp }}.jpg
-      snapshot_url: /local/front_door/front-{{ stamp }}.jpg
+      snapshot_file: /config/www/tmp/front_door/front-{{ stamp }}.jpg
+      snapshot_url: /local/tmp/front_door/front-{{ stamp }}.jpg
   - action: camera.snapshot
     target:
       entity_id: camera.p3265_lv_0
@@ -1718,7 +1712,7 @@
 - id: '1694795158536'
   alias: Back door opened but no one is home
   description: Snapshots the back garden camera at trigger time. See Front door automation
-    for full notes on the /local/ path, unauthenticated serving, and file housekeeping.
+    for full notes on the /local/tmp/ path, unauthenticated serving, and file housekeeping.
   triggers:
   - type: opened
     device_id: dd6c9ee012d55a6e6f1b0ef375270d86
@@ -1739,8 +1733,8 @@
   - variables:
       stamp: '{{ now().strftime(''%Y%m%d-%H%M%S'') }}-{{ range(10000, 99999) | random
         }}'
-      snapshot_file: /config/www/back_door/back-{{ stamp }}.jpg
-      snapshot_url: /local/back_door/back-{{ stamp }}.jpg
+      snapshot_file: /config/www/tmp/back_door/back-{{ stamp }}.jpg
+      snapshot_url: /local/tmp/back_door/back-{{ stamp }}.jpg
   - action: camera.snapshot
     target:
       entity_id: camera.p3225_lv_mk_ii_1
@@ -1908,7 +1902,7 @@
 - id: '1697311647945'
   alias: Garage door opened but no one is home
   description: Snapshots the garage camera at trigger time. See Front door automation
-    for full notes on the /local/ path, unauthenticated serving, and file housekeeping.
+    for full notes on the /local/tmp/ path, unauthenticated serving, and file housekeeping.
   triggers:
   - type: opened
     device_id: 6d3f659d3b1cf6534dc09fa4fcca868d
@@ -1929,8 +1923,8 @@
   - variables:
       stamp: '{{ now().strftime(''%Y%m%d-%H%M%S'') }}-{{ range(10000, 99999) | random
         }}'
-      snapshot_file: /config/www/garage/garage-{{ stamp }}.jpg
-      snapshot_url: /local/garage/garage-{{ stamp }}.jpg
+      snapshot_file: /config/www/tmp/garage/garage-{{ stamp }}.jpg
+      snapshot_url: /local/tmp/garage/garage-{{ stamp }}.jpg
   - action: camera.snapshot
     target:
       entity_id: camera.p3224_lve_0
@@ -2029,105 +2023,125 @@
   mode: single
 - id: '1697572691572'
   alias: Simulate Presence Lights When Away
-  description: Automation Simulate Presence / Occupancy Simulation. Runs single and
-    if we get home it will turn off all the lights (cancel the run)
+  description: 'Occupancy simulation. While the house is empty after dark, one light
+    is picked at random from light.presence_simulation_lights_group, left on for 10
+    to 29 minutes, then everything is switched off and event_simulate_presence_loop
+    is fired back at this automation to start the next cycle.
+
+    The gating is done with conditions inside the action sequence rather than at the
+    top, so the loop simply ends whenever the house is no longer empty or the window
+    has passed, and it always ends with the lights off.
+
+    Presence is tested as "not home" rather than "== not_home" because a person entity
+    reports the zone name (Work, Gym, etc.) whenever it is inside a defined zone,
+    so a not_home comparison silently fails and the simulation never runs.
+
+    Four of the six group members are dimmable Zigbee lamps, the other two (library
+    light on 433MHz RFLink, upstairs hallway on Energenie MQTT) are on/off only. Home
+    Assistant drops brightness_pct for lights that do not support it, so the 50% is
+    sent to all of them regardless. The short settle delays are there only because
+    the RF lights are fire-and-forget with 10 signal repetitions.
+
+    continue_on_error is used throughout because a single failed command must not
+    kill the loop - nothing would restart it until the next sunset.
+
+    '
   triggers:
-  - event_type: event_simulate_presence_loop
+  - alias: Loop back round for the next light
+    event_type: event_simulate_presence_loop
     trigger: event
-    enabled: true
-  - event: sunset
+  - alias: Start after dark
+    event: sunset
     offset: +00:30:00
     trigger: sun
-  - entity_id:
+  - alias: Someone has been away for 20 minutes
+    trigger: state
+    entity_id:
     - person.richard
-    from: home
-    to: not_home
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
-    trigger: state
-  - entity_id:
     - person.lucy
-    from: home
-    to: not_home
+    not_to: home
     for:
       hours: 0
       minutes: 20
       seconds: 0
+  - alias: Someone has come home
     trigger: state
-  conditions:
-  - condition: state
-    entity_id: input_boolean.simulate_presence_enable
-    state: 'on'
-    enabled: false
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  - condition: time
-    enabled: true
-    before: 01:30:00
-    after: '14:00:00'
-  - condition: state
-    entity_id: person.richard
-    state: not_home
-  - condition: state
-    entity_id: person.lucy
-    state: not_home
+    entity_id:
+    - person.richard
+    - person.lucy
+    to: home
+    id: arrived_home
+  - alias: Pick the loop back up after a restart
+    trigger: homeassistant
+    event: start
+  conditions: []
   actions:
-  - action: light.turn_off
-    metadata: {}
-    data: {}
+  - alias: Someone is home - clear down and stop
+    if:
+    - condition: trigger
+      id: arrived_home
+    then:
+    - alias: Only clear down after dark, when a cycle could have been running
+      if:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      then:
+      - action: light.turn_off
+        target:
+          entity_id: light.presence_simulation_lights_group
+        continue_on_error: true
+    - stop: Someone is home
+  - alias: The house is empty
+    condition: not
+    conditions:
+    - condition: state
+      entity_id: person.richard
+      state: home
+    - condition: state
+      entity_id: person.lucy
+      state: home
+  - alias: It is dark and still within the simulation window
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - condition: time
+      after: '14:00:00'
+      before: 01:30:00
+  - alias: Start each cycle from a known state
+    action: light.turn_off
     target:
       entity_id: light.presence_simulation_lights_group
-    alias: 'Perform action ''Light: Turn off'' - Do this first in case the automation
-      gets restarted'
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 20
-      milliseconds: 0
-    alias: Wait for RF to send commands
-  - data_template:
-      entity_id: '{{ state_attr(''light.presence_simulation_lights_group'', ''entity_id'')
-        | random }}'
+    continue_on_error: true
+  - alias: Let the RF off commands get out before sending an on command
+    delay: 00:00:02
+  - variables:
+      members: '{{ expand(''light.presence_simulation_lights_group'') | map(attribute=''entity_id'')
+        | list }}'
+  - alias: Give up quietly if the group is empty or unavailable
+    condition: template
+    value_template: '{{ members | count > 0 }}'
+  - alias: Turn on one light picked at random from the group
     action: light.turn_on
-    alias: 'Light: Turn on - Select light at random from light group'
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 20
-      milliseconds: 0
-    alias: Wait for RF to send commands
-  - delay: 00:{{ (range(10, 30) | random) }}:00
-    alias: Delay for random amount of time
-  - action: light.turn_off
-    metadata: {}
-    data: {}
     target:
-      entity_id: light.presence_simulation_lights_group
-  - action: light.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: light.presence_simulation_lights_group
-    alias: 'Perform action ''Light: Turn off'' - Do this first in case the automation
-      gets restarted'
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 20
-      milliseconds: 0
-    alias: Wait for RF to send commands
-  - event: event_simulate_presence_loop
-    enabled: true
-  - action: automation.trigger
-    metadata: {}
+      entity_id: '{{ members | random }}'
     data:
-      skip_condition: true
+      brightness_pct: 50
+    continue_on_error: true
+  - alias: Leave it on for a random length of time
+    delay:
+      minutes: '{{ range(10, 30) | random }}'
+  - alias: Turn everything off again
+    action: light.turn_off
     target:
-      entity_id: automation.simulate_presence_lights_dev
-    enabled: false
+      entity_id: light.presence_simulation_lights_group
+    continue_on_error: true
+  - alias: Let the RF off commands get out before looping
+    delay: 00:00:02
+  - alias: Fire the loop event to start the next cycle
+    event: event_simulate_presence_loop
   mode: restart
 - id: '1702742847276'
   alias: Office Blinds Schedule + Remote Control
@@ -2698,7 +2712,7 @@
       title: ADHD Medication
     action: notify.mobile_app_rich_mob_app
   mode: single
-  - id: '1732231906963'
+- id: '1732231906963'
   alias: Notify on Medication Stock Check Failure
   description: Notify if the medication stock check script encounters an error.
   triggers:
@@ -2717,7 +2731,7 @@
     action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1734033969313'
-  alias: Heating - Nest Setback - Away
+  alias: Heating - Nest Setback - Away (BROKEN)
   description: 'Immediately forces the Nest to a low setback temperature when heating
     master enable is disabled (e.g. everyone leaves the house).
 
@@ -3012,75 +3026,6 @@
           title: Freezer Door Left Open
         action: notify.mobile_app_lucy_mob_app
   mode: single
-- id: '1753465748550'
-  alias: Publish Meter Data to SDM120CT Emulator via MQTT with Watchdog & Enphase
-    Polling (replaced with Update SDM120CT Meter Emulator Values)
-  description: "This automation publishes simulated grid meter data to an MQTT topic,
-    emulating a SDM120CT energy meter for inverter integration.\nIt combines data
-    from multiple Home Assistant entities to estimate real-time house demand power.
-    These include:\n  - sensor.solar_panels_current_net_power_consumption_watts\n
-    \ - input_number.inverter_power_offset\n  - input_number.maximum_inverter_power_limit\n
-    \ - sensor.storage_battery_power_production\n\nThe logic:\n  1. Measures the home's
-    net power.\n  2. Applies a configurable offset (input_number.inverter_power_offset)
-    to reduce grid export.\n  3. Subtracts any current inverter output (from battery).\n
-    \ 4. Caps the result to the maximum inverter power limit.\n\nThe result is inverted
-    (multiplied by -1) because the inverter interprets negative power values as import.
-    This helps prioritize battery discharge or minimize grid feed-in.\nThe MQTT payload
-    also includes voltage, current, power factor, and frequency to fully emulate the
-    energy meter.\nA watchdog trigger ensures a fallback value is sent every 10 minutes
-    in case the source sensor goes offline. Additionally, on Home Assistant shutdown,
-    it sends a fallback payload to prevent stale data in the inverter.\n⚠️ The fallback
-    payload uses a small **simulated grid import** (e.g., -100W). In eco mode, the
-    inverter ignores grid imports below 300W — so this prevents the inverter from
-    charging or discharging during failure or shutdown. Sending 0W or a positive value
-    might cause it to stay active or switch to charge."
-  triggers:
-  - id: loop
-    entity_id: sensor.solar_panels_current_net_power_consumption_watts
-    enabled: true
-    trigger: state
-  - id: watchdog
-    minutes: /10
-    seconds: 0
-    trigger: time_pattern
-    enabled: false
-  - id: shutdown
-    event: shutdown
-    trigger: homeassistant
-  conditions: []
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: loop
-      sequence:
-      - action: mqtt.publish
-        alias: 'Publish MQTT to emulated meter. Note: power is inverted (negative
-          = import)'
-        data:
-          topic: homeassistant/sensor/sdm120ct/meter_data
-          payload: "{\n  \"voltage\": \"{{ states('sensor.solar_panels_voltage_net_consumption_ct')
-            | float }}\",\n  \"current\": \"{{ (states('sensor.solar_panels_net_consumption_ct_current')
-            | float) * -1 }}\",\n  \"activePower\": \"{{ (states('sensor.inverter_demand_power')
-            | float) * -1 }}\",\n  \"reactivePower\": \"{{ (states('sensor.solar_panels_reactive_power')
-            | float) * -1 }}\",\n  \"powerFactor\": \"{{ states('sensor.solar_panels_powerfactor_net_consumption_ct')
-            | float }}\",\n  \"frequency\": \"{{ states('sensor.solar_panels_frequency_production_ct')
-            | float }}\"\n}"
-        enabled: false
-    default:
-    - action: button.press
-      alias: Send stop signal direct to inverter
-      target:
-        entity_id: button.stop_current_operation
-    - action: mqtt.publish
-      alias: Send -100W to inverter (simulated import) to prevent charge or discharge
-        in eco mode (below 300W threshold = idle).
-      data:
-        topic: homeassistant/sensor/sdm120ct/meter_data
-        payload: "{\n  \"voltage\": 240,\n  \"current\": -0.42,\n  \"activePower\":
-          -100,\n  \"reactivePower\": 0,\n  \"powerFactor\": 1,\n  \"frequency\":
-          50\n}"
-  mode: single
 - id: '1753538167634'
   alias: Enphase Envoy custom local polling interval
   description: ''
@@ -3271,106 +3216,6 @@
         target:
           device_id: b76ae102907a3f706f8894e0bcc16a1a
         alias: Set Peak Rate
-  mode: single
-- id: '1759961235381'
-  alias: Update SDM120CT Meter Emulator Values
-  description: 'Publish values to emulated meter via ESPHome. Note: power is inverted
-    (negative = import)
-
-    The only value we really need to send to the inverter is ''Active Power''
-
-    '
-  triggers:
-  - entity_id:
-    - sensor.inverter_demand_power
-    trigger: state
-  conditions: []
-  actions:
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_voltage
-    data:
-      value: '{{ states(''sensor.solar_panels_voltage_net_consumption_ct'') | float(240)
-        }}'
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_frequency
-    data:
-      value: '{{ states(''sensor.solar_panels_frequency_production_ct'') | float(50.0)
-        }}'
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_power_factor
-    data:
-      value: '{{ states(''sensor.solar_panels_powerfactor_net_consumption_ct'') |
-        float(0.97) }}'
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_active_power
-    data:
-      value: '{{ (states(''sensor.inverter_demand_power'') | float(0)) * -1 }}'
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_apparent_power
-    data:
-      value: '{% set active = (states(''sensor.inverter_demand_power'') | float(0))
-        * -1 %} {% set pf = states(''sensor.solar_panels_powerfactor_net_consumption_ct'')
-        | float(0.97) %} {{ (active / pf) | abs if pf != 0 else 0 }}
-
-        '
-    enabled: false
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_current
-    data:
-      value: '{{ (states(''sensor.solar_panels_net_consumption_ct_current'') | float(0))
-        * -1 }}'
-    enabled: false
-  - action: number.set_value
-    target:
-      entity_id: number.sdm120ct_emulator_reactive_power
-    data:
-      value: '{{ (states(''sensor.solar_panels_reactive_power'') | float(0)) * -1
-        }}'
-    enabled: false
-  mode: queued
-  max: 5
-- id: '1762891302927'
-  alias: BOTC Microphone Mute State
-  description: Triggered by browser userscript when the BOTC app is muted or unmuted
-  triggers:
-  - webhook_id: botc_mute_state
-    trigger: webhook
-  actions:
-  - variables:
-      mute_state: '{{ trigger.json.muted }}'
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ mute_state == true }}'
-      sequence:
-      - target:
-          entity_id: light.desk_lamp
-        data:
-          color_name: red
-          brightness: 255
-        action: light.turn_on
-      - target:
-          entity_id: input_boolean.botc_muted
-        action: input_boolean.turn_on
-    - conditions:
-      - condition: template
-        value_template: '{{ mute_state == false }}'
-      sequence:
-      - target:
-          entity_id: light.desk_lamp
-        data:
-          color_name: green
-          brightness: 255
-        action: light.turn_on
-      - target:
-          entity_id: input_boolean.botc_muted
-        action: input_boolean.turn_off
   mode: single
 - id: '1766937352100'
   alias: SDM120CT Modbus Emulator Inverter Communication
@@ -3731,27 +3576,6 @@
         priority: high
         sticky: 'true'
   mode: single
-- id: '1769741804761'
-  alias: Charge Car Octopus Hack
-  description: ''
-  triggers:
-  - trigger: time
-    at: 09:45:00
-  conditions: []
-  actions:
-  - action: number.set_value
-    metadata: {}
-    target:
-      entity_id: number.octopus_energy_00000000_0002_4000_8020_0000001117b0_intelligent_charge_target
-    data:
-      value: '100'
-  - action: select.select_option
-    metadata: {}
-    target:
-      entity_id: select.octopus_energy_00000000_0002_4000_8020_0000001117b0_intelligent_target_time
-    data:
-      option: '11:00'
-  mode: single
 - id: '1770260050072'
   alias: XStorage Battery Safety Stop on Cell Imbalance
   description: 'Monitors the battery BMS cell voltage delta and immediately issues
@@ -3773,7 +3597,7 @@
   actions:
   - device_id: 7243064af443eaae599e1a98ef6c25f7
     domain: button
-    entity_id: 52803cf974a0b58e3e858179b7ca2b32
+    entity_id: bf97b96db39a2bb857389ed9cacca815
     type: press
   mode: single
 - id: '1773355527426'
@@ -4060,10 +3884,10 @@
   description: "Notifies both phones, with photos, when the parcel box is opened.
     Rev 3 replaces /api/camera_proxy/<camera> with camera.snapshot taken at trigger
     time, because the companion app only fetched the proxy URL when the notification
-    was rendered, so a slow push showed an empty doorstep. \n\nSnapshots go to /config/www/parcel_box/
-    (served unauthenticated from /local/, hence the randomised filenames) and accumulate,
-    so they need periodic housekeeping. Jinja range() is capped at 100000 in the HA
-    sandbox, so the random suffix uses range(10000, 99999)."
+    was rendered, so a slow push showed an empty doorstep. \n\nSnapshots go to /config/www/tmp/parcel_box/
+    (served unauthenticated from /local/tmp/, hence the randomised filenames) and
+    accumulate, so they need periodic housekeeping. Jinja range() is capped at 100000
+    in the HA sandbox, so the random suffix uses range(10000, 99999)."
   triggers:
   - entity_id:
     - binary_sensor.parcel_box_contact
@@ -4075,10 +3899,10 @@
   - variables:
       stamp: '{{ now().strftime(''%Y%m%d-%H%M%S'') }}-{{ range(10000, 99999) | random
         }}'
-      file_1: /config/www/parcel_box/garage-{{ stamp }}.jpg
-      file_2: /config/www/parcel_box/p3224-{{ stamp }}.jpg
-      url_1: /local/parcel_box/garage-{{ stamp }}.jpg
-      url_2: /local/parcel_box/p3224-{{ stamp }}.jpg
+      file_1: /config/www/tmp/parcel_box/garage-{{ stamp }}.jpg
+      file_2: /config/www/tmp/parcel_box/p3224-{{ stamp }}.jpg
+      url_1: /local/tmp/parcel_box/garage-{{ stamp }}.jpg
+      url_2: /local/tmp/parcel_box/p3224-{{ stamp }}.jpg
   - parallel:
     - action: camera.snapshot
       target:
@@ -4157,17 +3981,18 @@
 
 
     When the battery falls to 30% the charge target is set to 100% with a target time
-    2 hours ahead, which forces Octopus to allocate extra off-peak slots. A separate
-    automation handles switching the xStorage between charge and discharge as the
-    rate changes. When the battery reaches 80% the charge target drops back to 30%
-    so no further slots are requested.
+    1 hour ahead, which forces Octopus to allocate extra off-peak slots. One hour
+    is enough because the xStorage takes about 50 minutes to charge from 30% to 80%.
+    A separate automation handles switching the xStorage between charge and discharge
+    as the rate changes. When the battery reaches 80% the charge target drops back
+    to 30% so no further slots are requested.
 
 
     This automation is blocked between 23:30 and 05:30 so it never interferes with
     the standard off-peak window if the EV genuinely needs to charge. A catch-up trigger
     at 05:30 re-evaluates the battery in case a threshold was crossed overnight while
-    the automation was blocked. Because the target time is then calculated 2 hours
-    ahead it will land at 07:30 or later, well outside the standard window, which
+    the automation was blocked. Because the target time is then calculated 1 hour
+    ahead it will land at 06:30 or later, well outside the standard window, which
     is exactly what triggers the extra slots.
 
 
@@ -4177,7 +4002,7 @@
 
     A manual run (Run Actions in the GUI, or the automation.trigger action) always
     takes the second branch regardless of the state of charge, so it can be used to
-    force a 100% charge target with a target time 2 hours ahead on demand.
+    force a 100% charge target with a target time 1 hour ahead on demand.
 
 
     The only template in this automation is the target time, which has to be calculated
@@ -4245,7 +4070,7 @@
           entity_id: number.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_charge_target
         data:
           value: 30
-    - alias: Battery low or manual run - request a full charge within the next 2 hours
+    - alias: Battery low or manual run - request a full charge within the next hour
       note: Setting a near-term target time with a 100% target is what makes Octopus
         allocate extra off-peak slots outside the standard window. A manual run always
         matches here so the charge can be forced on demand.
@@ -4259,17 +4084,19 @@
           condition: template
           value_template: '{{ manual_run | bool(false) }}'
       sequence:
-      - alias: Set Intelligent Target Time to 2 hours ahead
-        note: Octopus only accepts half-hour slots, so the time is rounded down to
-          the nearest 30 minutes. If the computed slot is not in the entity's options
-          list the last available option is used instead. This has to be a template
-          because the select needs a literal time string that only exists at runtime.
+      - alias: Set Intelligent Target Time to 1 hour ahead
+        note: One hour is enough because the xStorage charges from 30% to 80% in about
+          50 minutes. Octopus only accepts half-hour slots, so the time is rounded
+          down to the nearest 30 minutes. If the computed slot is not in the entity's
+          options list the last available option is used instead. This has to be a
+          template because the select needs a literal time string that only exists
+          at runtime.
         action: select.select_option
         target:
           entity_id: select.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_target_time
         data:
-          option: '{% set opts = state_attr(''select.octopus_energy_00000000_0002_4000_8020_0000001117b0_intelligent_target_time'',
-            ''options'') or [] %} {% set t = now() + timedelta(hours=2) %} {% set
+          option: '{% set opts = state_attr(''select.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_target_time'',
+            ''options'') or [] %} {% set t = now() + timedelta(hours=1) %} {% set
             slot = ''{:02d}:{:02d}''.format(t.hour, 30 if t.minute >= 30 else 0) %}
             {{ slot if slot in opts else (opts | last if opts | count > 0 else slot)
             }}'
@@ -4391,5 +4218,23 @@
       actions:
       - data_template:
           title: Joined Saving Session
-          message: 'Joined Octopus Energy Saving Session'
+          message: 'Joined Octopus Energy Saving Session
+
+            '
         action: notify.mobile_app_rich_mob_app
+- id: '1789388728880'
+  alias: IKEA BILRESA - Light Controller (v1.5)
+  description: ''
+  use_blueprint:
+    path: SvKRO/ha-blueprint-ikea-bilresa-scrollwheel_en.yaml
+    input:
+      remote_device: f80ba0c32b381bd715958b19d2e0b38a
+      input_light_1:
+        entity_id: light.office_lamp
+      input_click_1:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.office_lamp
+        data: {}
+      input_mode_1: hs_color
