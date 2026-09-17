@@ -23,7 +23,12 @@ substitutions:
   sensor_update_interval: 1min
   wifi_sensor_update_interval: 10min
 
-  
+  # CC1101 pins.
+  # GPIO15 is an ESP8266 strapping pin and must read LOW at boot, but the Adafruit
+  # HUZZAH carries an onboard 10k pull-down on it, so CS here is safe on this board.
+  # If you move to a bare ESP-12 module (no pull-down), fit your own 10k to GND or
+  # switch CS to GPIO16, which has no boot-strapping role:
+  #   cc1101_cs: GPIO16
   cc1101_cs: GPIO15
   cc1101_gdo0: GPIO5
   cc1101_gdo2: GPIO4
@@ -186,7 +191,10 @@ everblu_meter:
     request_reading_button:
       name: "${meter_1_prefix} Read Meter Now"
       device_id: water_meter_device_1
-    frequency: 433.82
+    frequency: 433.88293
+    scan_button:
+      name: "${meter_1_prefix} Frequency Scan"
+      device_id: water_meter_device_1
     deep_scan_button:
       name: "${meter_1_prefix} Deep Frequency Scan"
       device_id: water_meter_device_1
@@ -313,7 +321,10 @@ everblu_meter:
     stop_reading_button:
       name: "${meter_2_prefix} Stop Reading"
       device_id: water_meter_device_2
-    frequency: 433.82
+    frequency: 433.87698
+    scan_button:
+      name: "${meter_2_prefix} Frequency Scan"
+      device_id: water_meter_device_2
     deep_scan_button:
       name: "${meter_2_prefix} Deep Frequency Scan"
       device_id: water_meter_device_2
@@ -425,10 +436,12 @@ everblu_meter:
     timezone_offset: ${tz_offset_min}
     read_hour: 11
     read_minute: 50
-    frequency: 433.82
 
     request_reading_button:
       name: "${meter_3_prefix} Read Meter Now"
+      device_id: water_meter_device_3
+    scan_button:
+      name: "${meter_3_prefix} Frequency Scan"
       device_id: water_meter_device_3
     deep_scan_button:
       name: "${meter_3_prefix} Deep Frequency Scan"
@@ -470,6 +483,12 @@ everblu_meter:
       device_id: water_meter_device_3
     failed_reads:
       name: "${meter_3_prefix} Failed Reads"
+      device_id: water_meter_device_3
+    frequency_offset:
+      name: "${meter_3_prefix} Frequency Offset"
+      device_id: water_meter_device_3
+    tuned_frequency:
+      name: "${meter_3_prefix} Tuned Frequency (MHz)"
       device_id: water_meter_device_3
     frequency_estimate:
       name: "${meter_3_prefix} Frequency Estimate"
@@ -521,120 +540,3 @@ everblu_meter:
 
 
 
-
-
-
-
-
-
-# everblu_meter:
-#   debug_cc1101: true
-#   spi_id: main_bus
-#   cs_pin: GPIO15          # CC1101 CS / NSS on ESP8266 Huzzah GPIO15
-#   gdo0_pin: GPIO5             # GPIO connected to CC1101 GDO0 on ESP8266 Huzzah GPIO5
-
-#   id: my_water_meter
-  
-#   # Meter identification (REQUIRED)
-#   meter_year: 20  
-#   meter_serial: 257750  
-  
-
-#   # Link to time component
-#   time_id: homeassistant_time
-
-#   timezone_offset: 0
-  
-#   # Control buttons
-#   request_reading_button:
-#     name: "Read Meter Now"
-#   frequency_scan_button:
-#     name: "Scan Frequency"
-#   reset_frequency_button:
-#     name: "Reset Frequency Offset"
-  
-#   # Volume sensors
-#   volume:
-#     name: "Water Volume"
-  
-#   counter:
-#     name: "Read Counter"
-  
-#   # Battery sensor
-#   battery:
-#     name: "Meter Battery"
-  
-#   # Radio quality sensors
-#   rssi:
-#     name: "Meter RSSI"
-  
-#   rssi_percentage:
-#     name: "RSSI Percentage"
-  
-#   lqi:
-#     name: "LQI"
-  
-#   lqi_percentage:
-#     name: "LQI Percentage"
-  
-#   # Statistics sensors
-#   total_attempts:
-#     name: "Total Read Attempts"
-  
-#   successful_reads:
-#     name: "Successful Reads"
-  
-#   failed_reads:
-#     name: "Failed Reads"
-  
-#   frequency_offset:
-#     name: "Frequency Offset"
-
-#   tuned_frequency:
-#     name: "Tuned Frequency (MHz)"
-
-#   # Diagnostic text sensors
-#   meter_serial_sensor:
-#     name: "Meter Serial"
-#   meter_year_sensor:
-#     name: "Meter Year"
-#   reading_schedule_sensor:
-#     name: "Reading Schedule"
-#   reading_time_utc_sensor:
-#     name: "Reading Time (UTC)"
-  
-#   # Timing sensors (24-hour format: HH:MM)
-#   time_start:
-#     name: "Reading Start Time"
-  
-#   time_end:
-#     name: "Reading End Time"
-  
-#   # Status text sensors
-#   status:
-#     name: "Meter Status"
-  
-#   error:
-#     name: "Last Error"
-  
-#   radio_state:
-#     name: "CC1101 State"
-  
-#   timestamp:
-#     name: "Last Reading Time"
-  
-#   history_json:
-#     name: "Meter History (JSON)"
-  
-#   # Binary sensors
-#   active_reading:
-#     name: "Reading Active"
-  
-#   radio_connected:
-#     name: "CC1101 Connected"
-
-#   firmware_version:
-#     name: "Firmware Version"
-    
-#   frequency_estimate:
-#     name: "Frequency Estimate"
