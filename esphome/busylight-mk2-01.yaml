@@ -57,6 +57,7 @@ esp32:
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
+  m5stack_atom_wifi_fix: !include common/m5stack_atom_wifi_fix.yaml
 
 ##############################################################
 # Sub-Devices (group IR controls under a separate device)
@@ -68,22 +69,10 @@ esphome:
       name: "Logitech Z-5500 Remote"
   # Ensure the config compiles on versions that support sub-devices
   min_version: "2025.10.0"
-  on_boot: 
-    priority: 700
-    then: 
-      - output.turn_on: wifi_fix_output
 
 ##############################################################
 # Hardware Configuration
 ##############################################################
-
-output:
-  # Countermeasure to the problem that CH552 applies 4v to GPIO0, thus reducing WiFi sensitivity.
-  # Setting output_high adds a bias of 3.3v and suppresses overvoltage.
-  # From: https://github.com/m5stack/M5Unified/blob/d26d2415f409b664631ff066ceeaffd6a753a4ff/src/M5Unified.cpp#L506
-  - platform: gpio
-    id: wifi_fix_output
-    pin: GPIO0
 
 # Neopixel RGB LED (Busy Light)
 # Neopixel RGB LED (Busy Light) - use ESP32 RMT driver (ESP-IDF compatible)
@@ -94,7 +83,7 @@ light:
     name: "Busy Light"
     id: busy_light
     chipset: SK6812
-    rgb_order: GRB
+    channel_colors: GRB
 
 # I2C Bus Configuration
 i2c:

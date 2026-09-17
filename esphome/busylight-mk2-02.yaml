@@ -1,26 +1,27 @@
 ##############################################################
-# Richard Huish 2025
-# ESPHome Configuration - Busy Light 2
+# Richard Huish 2026
+# ESPHome Configuration - Busy Light 2 (Kitchen)
 # Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
 # Description:
-# This ESPHome configuration controls a busy light indicator and
-# infrared remote functionality using an M5Stack Atom ESP32.
-# The system integrates with Home Assistant and allows remote control
-# of a Logitech Z-5500 speaker system.
+# This ESPHome configuration drives a kitchen status indicator built
+# on an M5Stack Atom ESP32. A Neopixel LED shows the current energy
+# state (Octopus off-peak, solar, battery) and an OLED unit displays
+# Octopus off-peak windows plus car/house battery and power figures.
 #
 # Includes shared configurations from the 'common' directory
 #
 # Features:
-# - Neopixel LED Busy Light for presence indication.
-# - Infrared remote transmitter for controlling Logitech Z-5500.
-# - Optimized ESP32 setup with GPIO voltage compensation.
+# - Neopixel LED Busy Light for energy/presence indication.
+# - 1.3" OLED with rotating Octopus and power/battery pages.
+# - Presence-based blanking and burn-in protection (auto-invert).
 # - Wi-Fi connectivity for Home Assistant integration.
+# - M5Stack Atom GPIO0 voltage compensation for Wi-Fi sensitivity.
 #
 # Hardware:
 # - M5Stack Atom ESP32 (Wi-Fi Microcontroller)
-# - M5Stack Mini Infrared Emitter & Receiver Unit (IR Transmission)
 # - SK6812 Neopixel RGB LED (Presence Indicator)
+# - M5Stack OLED Unit 1.3" (U119), SH1107 128x64, I2C on Grove Port A
 #
 ##############################################################
 
@@ -29,7 +30,7 @@ substitutions:
   # Naming & Identification
   name: busy-light-mk2-2
   friendly_name: "Busy Light 2"
-  ui_comment: "Busy Light 2 Kichen"
+  ui_comment: "Busy Light 2 Kitchen"
 
   # Network Configuration (Static IP)
   ip: 192.168.2.53
@@ -37,7 +38,9 @@ substitutions:
   subnet: 255.255.255.0
 
   # Debug Logging
-  log_level: WARN
+  # TEMPORARY: DEBUG while chasing the OLED flicker - watch for i2c/ssd1306
+  # write errors and brownout resets. Set back to WARN once diagnosed.
+  log_level: DEBUG
 
   # Sensor Update Interval
   sensor_update_interval: 1min
@@ -57,38 +60,18 @@ esp32:
 packages:
   device_base: !include common/device_base.yaml
   wifi: !include common/device_base_wifi.yaml
-  # m5stack_atom_wifi_fix: !include common/m5stack_atom_wifi_fix.yaml
+  m5stack_atom_wifi_fix: !include common/m5stack_atom_wifi_fix.yaml
 
 ##############################################################
-# Sub-Devices (group IR controls under a separate device)
+# Sub-Devices (group the OLED entities under a separate device)
 ##############################################################
 esphome:
-  # Sub-device for Dyson AM07 IR remote controls (IR hardware removed)
   devices:
-    # - id: dyson_remote
-    #   name: "Dyson AM07 Remote"
-    # Sub-device for the OLED display
     - id: oled_display_device
       name: "OLED Display"
   # Ensure the config compiles on versions that support sub-devices
   min_version: "2025.10.0"
 
-  # on_boot:
-  #   then:
-  #     - delay: 5s
-  #     - script.execute: transmit_power_button  # turn on if off
-  #     - delay: 500ms
-  #     # reduce to minimum (01) speed
-  #     - repeat:
-  #         count: 9
-  #       then:
-  #         - script.execute: transmit_down
-  #         - delay: 500ms
-  #     # turn off
-  #     - script.execute: transmit_power_button
-  #     - delay: 500ms
-  #     # apply desired HA state
-  #     - script.execute: set_fan_state
 ##############################################################
 # Hardware Configuration
 ##############################################################
@@ -101,7 +84,7 @@ light:
     name: "Busy Light"
     id: busy_light
     chipset: SK6812
-    rgb_order: GRB
+    channel_colors: GRB
 
 # I2C Bus Configuration
 # M5Stack Atom Grove Port A: SDA = GPIO26, SCL = GPIO32
@@ -109,7 +92,8 @@ i2c:
   sda: 26
   scl: 32
   scan: true
-  # Fast-mode I2C so the display can refresh quickly for smooth animation.
+  # Fast-mode. A full 1KB frame takes ~180ms at the 50kHz default, which is slow
+  # enough to see the redraw tear across the panel; ~23ms here.
   frequency: 400kHz
 
 ##############################################################
@@ -173,15 +157,23 @@ binary_sensor:
       - script.execute: update_busy_light
   # Kitchen presence -> used to blank the OLED when empty (burn-in protection)
   - platform: homeassistant
-    id: kitchen_occupancy
-    entity_id: binary_sensor.kitchen_motion_sensor_1_occupancy
-    on_state:
-      - script.execute: update_busy_light
+    id: kitchen_occupancy_1
+    entity_id: binary_sensor.kitchen_motion_detector_1_presence
   - platform: homeassistant
-    id: kitchen_presence
-    entity_id: binary_sensor.kitchen_motion_detector_presence
+    id: kitchen_occupancy_2
+    entity_id: binary_sensor.kitchen_motion_detector_2_presence
+  # Either detector, held on for 10 minutes after the last motion so the OLED
+  # and Busy Light do not blink off during short gaps in detection.
+  - platform: template
+    id: kitchen_active
+    internal: true
+    lambda: |-
+      return id(kitchen_occupancy_1).state || id(kitchen_occupancy_2).state;
+    filters:
+      - delayed_off: 10min
     on_state:
       - script.execute: update_busy_light
+
 
 text_sensor:
   - platform: homeassistant
@@ -204,12 +196,6 @@ text_sensor:
   - platform: homeassistant
     id: house_mode
     entity_id: select.eaton_xstorage_home_current_operation_mode
-  # Energy-saving mode active normally means the house is running from solar.
-  - platform: homeassistant
-    id: energy_saving_mode
-    entity_id: sensor.eaton_xstorage_home_energy_saving_mode_activated
-    on_value:
-      - script.execute: update_busy_light
   # Sun state ('above_horizon' / 'below_horizon') -> LED brightness.
   # Full brightness during daylight so the light stays visible in a bright
   # kitchen; dimmed after dark.
@@ -218,6 +204,18 @@ text_sensor:
     entity_id: sun.sun
     on_value:
       - script.execute: update_busy_light
+  # TEMPORARY: flicker diagnostics. A brownout reset here means the 5V rail is
+  # sagging, which also explains a panel that never re-initialises.
+  - platform: debug
+    reset_reason:
+      name: "Reset Reason"
+      entity_category: "diagnostic"
+
+##############################################################
+# TEMPORARY: flicker diagnostics - remove once the OLED is stable
+##############################################################
+debug:
+  update_interval: 30s
 
 ##############################################################
 # Battery / charging sensors (imported from Home Assistant)
@@ -248,6 +246,14 @@ sensor:
   - platform: homeassistant
     id: grid_power
     entity_id: sensor.solar_panels_current_net_power_consumption_watts
+  # TEMPORARY: loop_time spikes show the display write blocking the main loop.
+  - platform: debug
+    free:
+      name: "Heap Free"
+      entity_category: "diagnostic"
+    loop_time:
+      name: "Loop Time"
+      entity_category: "diagnostic"
 
 ##############################################################
 # Display burn-in protection - periodic colour inversion
@@ -295,8 +301,7 @@ script:
   - id: update_busy_light
     then:
       - lambda: |-
-          bool present = id(kitchen_occupancy).state || id(kitchen_presence).state;
-          if (!present) {
+          if (!id(kitchen_active).state) {
             id(busy_light).turn_off().perform();
             return;
           }
@@ -305,19 +310,11 @@ script:
           bool daytime = id(sun_state).has_state() &&
                          id(sun_state).state == "above_horizon";
           call.set_brightness(daytime ? 1.0f : 0.5f);
-          // Energy-saving mode active normally means the house is running from
-          // solar -> yellow. Otherwise, if the house battery is discharging we
-          // are running from battery -> pink. Fall back to the Octopus off-peak
-          // status (green/red, or blue when no data yet).
-          bool energy_saving = false;
-          if (id(energy_saving_mode).has_state()) {
-            std::string s = id(energy_saving_mode).state;
-            energy_saving = (s == "true" || s == "True" || s == "on" || s == "ON");
-          }
+          // If the house battery is discharging we are running from battery ->
+          // pink. Otherwise fall back to the Octopus off-peak status
+          // (green/red, or blue when no data yet).
           bool on_battery = id(house_power).has_state() && id(house_power).state > 10.0f;
-          if (energy_saving) {
-            call.set_rgb(1.0f, 1.0f, 0.0f);   // yellow = running from solar
-          } else if (on_battery) {
+          if (on_battery) {
             call.set_rgb(1.0f, 0.0f, 0.5f);   // pink  = running from battery
           } else if (!id(octopus_off_peak).has_state()) {
             call.set_rgb(0.0f, 0.0f, 1.0f);   // blue  = no data from HA yet
@@ -365,9 +362,6 @@ display:
     address: 0x3C
     id: oled_display
     rotation: 0°
-    # Slow, calm refresh. Fast refreshes made the battery flow animation look
-    # like the whole panel was flashing left-to-right.
-    update_interval: 500ms
     # M5Stack 1.3" SH1107 panel needs these to avoid the shifted/half-corrupted
     # image. See: https://github.com/esphome/issues/issues/2913
     flip_x: false
@@ -385,7 +379,7 @@ display:
           // Burn-in protection: keep the screen blank while the kitchen is empty.
           // ESPHome clears the buffer before each render, so returning here leaves
           // every pixel off (no light = no burn-in).
-          if (!id(kitchen_occupancy).state && !id(kitchen_presence).state) {
+          if (!id(kitchen_active).state) {
             return;
           }
 
@@ -435,7 +429,7 @@ display:
       - id: page_batteries
         lambda: |-
           // Burn-in protection: keep the screen blank while the kitchen is empty.
-          if (!id(kitchen_occupancy).state && !id(kitchen_presence).state) {
+          if (!id(kitchen_active).state) {
             return;
           }
 
@@ -553,37 +547,10 @@ display:
             it.printf(0, 111, id(font_roboto), fg, " %.1fkW", id(car_charge_power).state);
           }
 
-# Infrared Transmitter Configuration (IR hardware removed)
-# remote_transmitter:
-#   pin: 26 # IR transmitter output
-#   carrier_duty_percent: 50%
-
 ##############################################################
-# Infrared Remote Control for Dyson AM07
+# Globals
 ##############################################################
-# ESPHome for Dyson AM07
-# https://github.com/Rjevski/esphome-dyson-am07
-
 globals:
-   # --- IR/Dyson globals disabled (IR hardware removed) ---
-   # - id: current_power_code
-   #   type: int
-   #   initial_value: "0"
-   # - id: fan_power_state
-   #   type: bool
-   #   initial_value: "true"  # to match on_boot action
-   # - id: desired_fan_speed
-   #   type: int
-   #   initial_value: "1"
-   # - id: fan_speed
-   #   type: int
-   #   initial_value: "1"  # to match on_boot action
-   # - id: desired_swing_state
-   #   type: bool
-   #   initial_value: "false"
-   # - id: swing_state
-   #   type: bool
-   #   initial_value: "true"  # to match on_boot action
    # Message shown on the OLED, set from Home Assistant. Persisted across reboots.
    - id: display_message
      type: std::string
@@ -599,121 +566,3 @@ globals:
      type: int
      restore_value: false
      initial_value: "0"
-
-
-# --- IR/Dyson scripts, outputs and fan disabled (IR hardware removed) ---
-# script:
-#   - id: transmit_power_button
-#     then:
-#       - remote_transmitter.transmit_pronto:
-#           repeat:
-#             times: 2
-#           data: !lambda |-
-#             switch(id(current_power_code)) {
-#               case 0:
-#                 return "0000 006D 0011 0000 0054 0022 001B 0040 001B 0021 001B 0021 001B 003F 001B 0021 001B 0021 001B 0020 001B 0023 001B 0022 001B 0021 001B 0021 001B 0021 001B 0021 001B 0021 001B 0021 001B 06C3";
-#               case 1:
-#                 return "0000 006D 0011 0000 0054 0022 001B 0040 001B 0021 001B 0021 001B 003F 001B 0021 001B 0021 001B 0020 001B 0023 001B 0022 001B 0021 001B 0021 001B 0021 001B 0021 001B 0021 001B 003F 001B 06C3";
-#               default:
-#                 return "0000 006D 0011 0000 0054 0022 001B 0040 001B 0021 001B 0021 001B 003F 001B 0021 001B 0021 001B 0020 001B 0023 001B 0022 001B 0021 001B 0021 001B 0021 001B 0021 001B 003F 001B 0021 001B 06C3";
-#             }
-#       - lambda: |-
-#           switch (id(current_power_code)) {
-#             case 2:
-#               id(current_power_code) = 0;
-#               break;
-#             default:
-#               id(current_power_code) += 1;
-#           }
-#   - id: transmit_swing_toggle
-#     then:
-#       - remote_transmitter.transmit_pronto:
-#           repeat:
-#             times: 2
-#           data: "0000 006D 0011 0000 0054 0022 001C 003F 001B 0021 001C 0021 001C 003F 001C 0021 001C 0021 001C 0021 001B 0040 001C 0022 001B 003F 001B 0021 001B 003F 001B 0021 001B 003E 001B 0021 001C 06C3"
-#   - id: transmit_up
-#     then:
-#       - remote_transmitter.transmit_pronto:
-#           repeat:
-#             times: 2
-#           data: "0000 006D 0011 0000 0058 0022 001B 0040 001B 0022 001B 0021 001B 003F 001B 0021 001B 0021 001B 0021 001B 0023 001B 0040 001B 0022 001B 0040 001B 0021 001B 003F 001B 0021 001B 003F 001B 06C3"
-#   - id: transmit_down
-#     then:
-#       - remote_transmitter.transmit_pronto:
-#           repeat:
-#             times: 2
-#           data: "0000 006D 0011 0000 0053 0022 001B 0040 001B 0022 001B 0021 001B 003F 001B 0021 001B 0021 001B 0021 001B 0041 001B 0040 001B 0040 001B 0040 001B 003F 001B 003F 001B 0021 001B 0021 001B 06C3"
-#   - id: set_fan_state
-#     then:
-#       - if:
-#           condition:
-#             lambda: "return (id(desired_fan_speed) > 0) != id(fan_power_state);"
-#           then:
-#             - script.execute: transmit_power_button
-#             - globals.set:
-#                 id: fan_power_state
-#                 value: !lambda "return !id(fan_power_state);"
-#             - delay: 500ms
-#       - if:
-#           condition:
-#             lambda: "return id(fan_power_state) && (id(desired_swing_state) != id(swing_state));"
-#           then:
-#             - script.execute: transmit_swing_toggle
-#             - globals.set:
-#                 id: swing_state
-#                 value: !lambda "return !(swing_state);"
-#             - delay: 500ms
-#       -  while:
-#           condition:
-#             lambda: "return id(fan_power_state) && (id(desired_fan_speed) != id(fan_speed));"
-#           then:
-#             - if:
-#                 condition:
-#                   lambda: "return id(desired_fan_speed) > id(fan_speed);"
-#                 then:
-#                   - script.execute: increment_fan_speed
-#                 else:
-#                   - script.execute: decrement_fan_speed
-#             - delay: 500ms
-#   - id: increment_fan_speed
-#     then:
-#       - script.execute: transmit_up
-#       - globals.set:
-#           id: fan_speed
-#           value: !lambda "return id(fan_speed) + 1;"
-#   - id: decrement_fan_speed
-#     then:
-#       - script.execute: transmit_down
-#       - globals.set:
-#           id: fan_speed
-#           value: !lambda "return id(fan_speed) - 1;"
-
-# output:
-# - platform: template
-#   id: fan_output
-#   type: float
-#   write_action:
-#     then:
-#       - globals.set:
-#           id: desired_fan_speed
-#           value: !lambda "return int(state * 10);"
-#       - script.execute: set_fan_state
-#
-# - platform: template
-#   id: swing_output
-#   type: binary
-#   write_action:
-#     then:
-#       - globals.set:
-#           id: desired_swing_state
-#           value: !lambda "return state;"
-#       - script.execute: set_fan_state
-
-# fan:
-#   - platform: speed
-#     device_id: dyson_remote
-#     output: fan_output
-#     oscillation_output: swing_output
-#     name: "Fan"
-#     speed_count: 10
-#     restore_mode: RESTORE_DEFAULT_OFF
