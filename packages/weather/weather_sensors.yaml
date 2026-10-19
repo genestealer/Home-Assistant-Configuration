@@ -3,16 +3,6 @@
 ####################################################
 
 binary_sensor:
-  # # Sun2 Sensor https://github.com/pnbruckner/ha-sun2
-  # # For https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
-  # #__sun2.__ This is a custom component (installable through HACS using the repository `https://github.com/pnbruckner/ha-sun2`) that provides lots of solar information and
-  # #  creates `binary_sensor.above_horizon` which is used in the graphs.
-
-  # # This has to be created via "Add Integration", but will also name it "binary_sensor.home_sun_above_horizon" rather than "binary_sensor.above_horizon".
-  # - platform: sun2
-  #   monitored_conditions:
-  #     - elevation
-
   - platform: trend
     sensors:
       local_rainfall_trend:
@@ -24,66 +14,70 @@ binary_sensor:
 # New style Template sensors
 ####################################################
 template:
-  # - sensor:
-  #     # ...
-  - binary_sensor:
-      # Used by kloggy/HA-Irrigation-Version2
-      - name: Raining Now
-        state: "{{ is_state('sensor.internet_precipitation_kind', 'Rain') }}"
+  - sensor:
+      # Shown on the kloggy/HA-Irrigation-Version2 cycle header; forecast sensors live in includes/template/weather.yaml
+      - default_entity_id: sensor.irrigation_weather_outlook
+        unique_id: irrigation_weather_outlook
+        name: "Irrigation weather outlook"
+        icon: mdi:flower-outline
+        availability: >-
+          {{ has_value('sensor.openweathermap_forecast_temperature_high')
+             and has_value('sensor.openweathermap_forecast_temperature_low')
+             and has_value('sensor.openweathermap_forecast_precipitation')
+             and has_value('sensor.openweathermap_forecast_precipitation_tomorrow') }}
+        state: |-
+          High {{ states('sensor.openweathermap_forecast_temperature_high') | float | round(0) }}°C, Low {{ states('sensor.openweathermap_forecast_temperature_low') | float | round(0) }}°C
+          Rain today {{ states('sensor.openweathermap_forecast_precipitation') | float | round(1) }} mm
+          Rain tomorrow {{ states('sensor.openweathermap_forecast_precipitation_tomorrow') | float | round(1) }} mm
 
-  #  Track if an irrigation Controllers goes offline. Used in the alert and kloggy/HA-Irrigation-Version2
-  - binary_sensor:
-      # https://github.com/kloggy/HA-Irrigation-Version2
-      - name: All Irrigation Controllers Online
-        state: "{{ is_state('binary_sensor.ic_back_status', 'on') and is_state('binary_sensor.ic_front_status', 'on') }}"
+      # The rain gauge is cumulative, so the statistics "change" over a window gives rainfall in that window.
+      - default_entity_id: sensor.template_rain_last_24_hours
+        unique_id: template_rain_last_24_hours
+        name: "Local Rain 24 Hours"
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        state_class: measurement
+        availability: "{{ has_value('sensor.local_rain_24_hours_statistics_raw') }}"
+        state: "{{ states('sensor.local_rain_24_hours_statistics_raw') | float | round(2) }}"
 
-  # https://github.com/kloggy/HA-Irrigation-Version2
-  # If rain data has changed in the last 30 mins, then its raining.
-  # - platform: template
-  #   sensors:
-  #     raining_now:
-  #       friendly_name: "Raining Now"
-  #       value_template: >-
-  #         {{ state_attr('sensor.local_rain_30_min_statistics_raw', 'change')|float > 0 }}
+      - default_entity_id: sensor.template_rain_last_24_to_48_hours
+        unique_id: template_rain_last_24_to_48_hours
+        name: "Local Rain Previous 24 Hours"
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        state_class: measurement
+        availability: >-
+          {{ has_value('sensor.local_rain_48_hours_statistics_raw')
+             and has_value('sensor.local_rain_24_hours_statistics_raw') }}
+        state: >-
+          {{ (states('sensor.local_rain_48_hours_statistics_raw') | float
+              - states('sensor.local_rain_24_hours_statistics_raw') | float) | round(2) }}
 
-  # Triggered template sensor that records each day’s maximum, to show yesterdays total rain.
-  - trigger:
-      - trigger: time_pattern
-        # This will update every night
-        hours: "23"
-        minutes: "59"
-        seconds: "50"
-    sensor:
       - name: "Yesterdays Local Total Rain"
         unique_id: yesterdays_local_total_rain
-        state: "{{ states('sensor.daily_rain_meter') }}"
+        unit_of_measurement: "mm"
+        device_class: precipitation
+        state_class: measurement
+        availability: "{{ state_attr('sensor.local_daily_rain_meter', 'last_period') is not none }}"
+        state: "{{ state_attr('sensor.local_daily_rain_meter', 'last_period') | float | round(2) }}"
 
-  # - trigger:
-  #     - trigger: time_pattern
-  #       hours: /1
-  #   action:
-  #     - action: weather.get_forecasts
-  #       data:
-  #         type: hourly
-  #       target:
-  #         entity_id: weather.home
-  #       response_variable: hourly
-  #   sensor:
-  #     - name: "Irrigation weather outlook"
-  #       unique_id: irrigation_weather_outlook
-  #       state: >
-  #         Weather Outlook:
-  #         High: {{ state_attr('weather.home', 'forecast')[0].temperature }}°C
-  #         Low: {{ state_attr('weather.home', 'forecast')[0].templow }}°C
-  #         Rain today: {{ state_attr('weather.home', 'forecast')[0].precipitation }} mm
-  #         tomorrow: {{ state_attr('weather.home', 'forecast')[1].precipitation }} mm
+  # Used by kloggy/HA-Irrigation-Version2; All Irrigation Controllers Online also drives the alert below.
+  - binary_sensor:
+      - name: Raining Now
+        unique_id: raining_now
+        state: "{{ is_state('sensor.internet_precipitation_kind', 'Rain') }}"
+
+      - name: All Irrigation Controllers Online
+        unique_id: all_irrigation_controllers_online
+        state: "{{ is_state('binary_sensor.ic_back_status', 'on') and is_state('binary_sensor.ic_front_status', 'on') }}"
 
 ####################################################
 # rflink 433mhz Weather Station sensors
 ####################################################
-sensor:
-  - platform: rflink
+rflink:
+  sensor:
     devices:
+      # RFLINK misidentifies the UV sensor as a temperature sensor
       alectov5_00a3_temp:
         sensor_type: uv_intensity
         name: "Local UV Intensity"
@@ -91,6 +85,7 @@ sensor:
           - alectov5_30d1_temp
           - alectov5_0046_temp
 
+      # RFLINK misidentifies the rain sensor as a light intensity sensor
       alectov5_00a3_rain:
         sensor_type: light_intensity
         name: "Local Light Intensity"
@@ -98,19 +93,12 @@ sensor:
           - alectov5_30d1_rain
           - alectov5_0046_rain
 
-      alectov5_00a3_update_time:
-        sensor_type: timestamp
-        name: "Weather Station Update Time A"
-        aliases:
-          - alectov5_30d1_update_time
-          - alectov5_0046_update_time
-
-      alectov5_00a3_bat:
-        sensor_type: battery
-        name: "Weather Station Battery A"
-        aliases:
-          - alectov5_30d1_bat
-          - alectov5_0046_bat
+      # alectov5_00a3_update_time:
+      #   sensor_type: timestamp
+      #   name: "Weather Station Update Time A"
+      #   aliases:
+      #     - alectov5_30d1_update_time
+      #     - alectov5_0046_update_time
 
       dkw2012_0045_temp:
         sensor_type: temperature
@@ -118,6 +106,8 @@ sensor:
         aliases:
           - dkw2012_007d_temp
           - dkw2012_00d0_temp
+          - dkw2012_003b_temp
+          - dkw2012_002c_temp
 
       dkw2012_0045_hum:
         sensor_type: humidity
@@ -125,13 +115,18 @@ sensor:
         aliases:
           - dkw2012_007d_hum
           - dkw2012_00d0_hum
+          - dkw2012_003b_hum
+          - dkw2012_002c_hum
 
-      dkw2012_0045_winsp:
+      # python-rflink reports WINSP readings under the "_wind" suffix, so "_winsp" never arrives
+      dkw2012_0045_wind:
         sensor_type: windspeed
         name: "Local Wind Speed"
         aliases:
-          - dkw2012_007d_winsp
-          - dkw2012_00d0_winsp
+          - dkw2012_007d_wind
+          - dkw2012_00d0_wind
+          - dkw2012_003b_wind
+          - dkw2012_002c_wind
 
       dkw2012_0045_wings:
         sensor_type: windgusts
@@ -139,6 +134,8 @@ sensor:
         aliases:
           - dkw2012_007d_wings
           - dkw2012_00d0_wings
+          - dkw2012_003b_wings
+          - dkw2012_002c_wings
 
       dkw2012_0045_rain:
         sensor_type: total_rain
@@ -146,6 +143,8 @@ sensor:
         aliases:
           - dkw2012_007d_rain
           - dkw2012_00d0_rain
+          - dkw2012_003b_rain
+          - dkw2012_002c_rain
 
       dkw2012_0045_windir:
         sensor_type: winddirection
@@ -153,94 +152,50 @@ sensor:
         aliases:
           - dkw2012_007d_windir
           - dkw2012_00d0_windir
+          - dkw2012_003b_windir
+          - dkw2012_002c_windir
 
-      dkw2012_0045_wind:
-        sensor_type: winddirection
-        name: "Local Wind Direction"
-        aliases:
-          - dkw2012_007d_wind
-          - dkw2012_00d0_wind
+
 
       dkw2012_0045_bat:
         sensor_type: battery
-        name: "Weather Station Battery B"
+        name: "Weather Station Battery"
         aliases:
           - dkw2012_007d_bat
           - dkw2012_00d0_bat
+          - dkw2012_003b_bat
+          - dkw2012_002c_bat
 
-      dkw2012_0045_update_time:
+      dkw2012_002c_update_time:
         sensor_type: timestamp
-        name: "Weather Station Update Time B"
+        name: "Weather Station Update Time"
         aliases:
           - dkw2012_007d_update_time
           - dkw2012_00d0_update_time
+          - dkw2012_003b_update_time
+          - dkw2012_0045_update_time
 
-  # TODO: This is not working, need to check the template and the attributes.
-  # https://github.com/kloggy/HA-Irrigation-Version2
-  # https://github.com/kloggy/HA-Irrigation-Version2/issues/44
-  - platform: template
-    sensors:
-      irrigation_weather_outlook:
-        friendly_name: "Irrigation weather outlook"
-        icon_template: mdi:flower-outline
-        value_template:
-          | # "keep": keep the line feed, keep trailing blank lines. https://stackoverflow.com/questions/3790454/how-do-i-break-a-string-in-yaml-over-multiple-lines
-          Weather Outlook: 
-          High: {{ state_attr('weather.openweathermap', 'forecast')[0].temperature }}°C
-          Low: {{ state_attr('weather.openweathermap', 'forecast')[0].templow }}°C
-          <br>
-          Rain today: {{ state_attr('weather.openweathermap', 'forecast')[0].precipitation }} mm
-          tomorrow: {{ state_attr('weather.openweathermap', 'forecast')[1].precipitation }} mm
-
+sensor:
   - platform: statistics
     name: Local Rain 24 Hours Statistics Raw
+    unique_id: local_rain_24_hours_statistics_raw
     entity_id: sensor.local_total_rain
     state_characteristic: change
     sampling_size: 4320 # Enough for 3 readings a minute
     max_age:
       hours: 24
-  - platform: statistics # Raw values for 24 hours
+  - platform: statistics
     name: Local Rain 48 Hours Statistics Raw
+    unique_id: local_rain_48_hours_statistics_raw
     entity_id: sensor.local_total_rain
     state_characteristic: change
-    sampling_size: 8320 # Enough for 3 readings a minute
+    sampling_size: 8640 # Enough for 3 readings a minute
     max_age:
       hours: 48
 
-  # Rain values are cumulative, need to extract the "rate of change" to see the actual value.
-  - platform: template
-    sensors:
-      template_rain_last_24_hours:
-        friendly_name: "Local Rain 24 Hours"
-        unit_of_measurement: "mm"
-        value_template: "{{ state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
-
-  # # NEW - Working
-  # - platform: template
-  #   sensors:
-  #     rain_day_0:
-  #       friendly_name: "Rain Last 24 Hours"
-  #       unit_of_measurement: "mm"
-  #       value_template: "{{ state_attr('sensor.openweathermap_history', 'day_0_rain') }}"
-  # # NEW - Working
-  # - platform: template
-  #   sensors:
-  #     rain_day_1:
-  #       friendly_name: "Rain Last 24-48 hours"
-  #       unit_of_measurement: "mm"
-  #       value_template: "{{ state_attr('sensor.openweathermap_history', 'day_1_rain') }}"
-
-  # Difference between the 48 hours and 24 hours, to give the previous 24 hours.
-  - platform: template
-    sensors:
-      template_rain_last_24_to_48_hours:
-        friendly_name: "Local Rain Previous 24 Hours"
-        unit_of_measurement: "mm"
-        value_template: "{{ state_attr('sensor.local_rain_48_hours_statistics_raw', 'change') - state_attr('sensor.local_rain_24_hours_statistics_raw', 'change') }}"
-
-  # This sensor is converted into a binary sensor via a template, to create a true/false state from the last xx mins of rain (rate of change sensor).
   - platform: statistics
     name: Local Rain 30 Min Statistics Raw
+    unique_id: local_rain_30_min_statistics_raw
     entity_id: sensor.local_total_rain
     state_characteristic: change
     sampling_size: 180
@@ -268,14 +223,16 @@ utility_meter:
 alert:
   irrigation_controller_alert:
     name: Irrigation Controllers Alert
-    done_message: Irrigation contollers are back online
+    done_message: Irrigation controllers are back online
     message: >
-      {% if not is_state('binary_sensor.ic_back_status', 'on') -%}
-        Back garden irrigation contoller went offline
-      {%- elif not is_state('binary_sensor.ic_front_status', 'on') -%}
-        Front garden irrigation contoller went offline
+      {% set back = is_state('binary_sensor.ic_back_status', 'on') %}
+      {% set front = is_state('binary_sensor.ic_front_status', 'on') %}
+      {% if not back and not front %}Back and front garden irrigation controllers are offline
+      {%- elif not back %}Back garden irrigation controller went offline
+      {%- elif not front %}Front garden irrigation controller went offline
+      {%- else %}Irrigation controller went offline
       {%- endif %}
-    entity_id: binary_sensor.irrigation_controllers_online
+    entity_id: binary_sensor.all_irrigation_controllers_online
     state: "off"
     repeat:
       - 60

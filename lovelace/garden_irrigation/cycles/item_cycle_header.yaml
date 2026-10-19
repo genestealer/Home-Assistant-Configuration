@@ -52,6 +52,8 @@ cards:
         - justify-self: start
         - padding-left: 0.4em
         - padding-top: 0.5em
+        - white-space: pre-line
+        - overflow: visible
 
     #=== ALLOW CYCLE NAME TO BE EDITED
     tap_action:
