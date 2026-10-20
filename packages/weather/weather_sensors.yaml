@@ -69,7 +69,7 @@ template:
 
       - name: All Irrigation Controllers Online
         unique_id: all_irrigation_controllers_online
-        state: "{{ is_state('binary_sensor.ic_back_status', 'on') and is_state('binary_sensor.ic_front_status', 'on') }}"
+        state: "{{ is_state('binary_sensor.back_garden_irrigation_controller_online', 'on') and is_state('binary_sensor.front_garden_irrigation_controller_online', 'on') }}"
 
 ####################################################
 # rflink 433mhz Weather Station sensors
@@ -225,8 +225,8 @@ alert:
     name: Irrigation Controllers Alert
     done_message: Irrigation controllers are back online
     message: >
-      {% set back = is_state('binary_sensor.ic_back_status', 'on') %}
-      {% set front = is_state('binary_sensor.ic_front_status', 'on') %}
+      {% set back = is_state('binary_sensor.back_garden_irrigation_controller_online', 'on') %}
+      {% set front = is_state('binary_sensor.front_garden_irrigation_controller_online', 'on') %}
       {% if not back and not front %}Back and front garden irrigation controllers are offline
       {%- elif not back %}Back garden irrigation controller went offline
       {%- elif not front %}Front garden irrigation controller went offline
