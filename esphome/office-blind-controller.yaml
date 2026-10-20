@@ -7,7 +7,7 @@
 # This ESPHome configuration allows automated control of office blinds 
 # using a WeMos D1 Mini (ESP8266). It supports:
 # - Open, Close, and Stop actions
-# - Tilt Open & Tilt Close adjustments
+# - Tilt Open & Tilt Close adjustments (via the cover's tilt controls)
 # - Reset function for calibration
 # - Manual control via Home Assistant
 #
@@ -139,33 +139,35 @@ button:
       - delay: 110ms
       - output.turn_off: set_button_output
 
-# Tilt Open
-  - platform: template
-    name: "Tilt Open"
-    id: tilt_open
-    on_press:
-      - logger.log: "Tilting Open"
-      - output.turn_on: open_button_output
-      - delay: 110ms
-      - output.turn_off: open_button_output
-      - delay: 110ms
-      - output.turn_on: open_button_output
-      - delay: 110ms
-      - output.turn_off: open_button_output
-
-# Tilt Close
-  - platform: template
-    name: "Tilt Close"
-    id: tilt_closed
-    on_press:
-      - logger.log: "Tilting Closed"
-      - output.turn_on: close_button_output
-      - delay: 110ms
-      - output.turn_off: close_button_output
-      - delay: 110ms
-      - output.turn_on: close_button_output
-      - delay: 110ms
-      - output.turn_off: close_button_output
+##############################################################
+# Tilt Scripts (double-tap on open/close nudges the slats)
+##############################################################
+script:
+  - id: tilt_script
+    mode: queued
+    parameters:
+      open: bool
+      steps: int
+    then:
+      - logger.log:
+          format: "Tilting %s by %d steps"
+          args: ['open ? "open" : "closed"', 'steps']
+      - repeat:
+          count: !lambda 'return steps;'
+          then:
+            - lambda: |-
+                if (open) id(open_button_output).turn_on(); else id(close_button_output).turn_on();
+            - delay: 110ms
+            - lambda: |-
+                if (open) id(open_button_output).turn_off(); else id(close_button_output).turn_off();
+            - delay: 110ms
+            - lambda: |-
+                if (open) id(open_button_output).turn_on(); else id(close_button_output).turn_on();
+            - delay: 110ms
+            - lambda: |-
+                if (open) id(open_button_output).turn_off(); else id(close_button_output).turn_off();
+            # Gap so the blind registers each double-tap separately.
+            - delay: 300ms
 
 ##############################################################
 # Global Variables for Blind State Tracking
@@ -189,6 +191,14 @@ cover:
     device_class: blind
     optimistic: true
     assumed_state: true
+
+    # Runs before the optimistic update, so id(blinds).tilt is still the previous value.
+    # One double-tap moves the slats roughly 10%.
+    tilt_action:
+      - script.execute:
+          id: tilt_script
+          open: !lambda 'return tilt > id(blinds).tilt;'
+          steps: !lambda 'return (int) roundf(fabsf(tilt - id(blinds).tilt) * 10.0f);'
 
     open_action:
       - logger.log: "Opening Blinds"
@@ -217,6 +227,9 @@ cover:
           value: "false"
 
     stop_action:
+      - script.stop: tilt_script
+      - output.turn_off: open_button_output
+      - output.turn_off: close_button_output
       - if:
           condition:
             lambda: 'return id(cover_opening);'
