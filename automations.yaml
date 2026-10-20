@@ -3996,6 +3996,18 @@
     is exactly what triggers the extra slots.
 
 
+    At 23:25 the charge target is always reset to 30%, whatever the battery level,
+    so a 100% request left over from the evening cannot make Octopus schedule the
+    car overnight if it is plugged in later. No new 100% request is made from 23:24
+    onwards (one minute of margin so a run in progress cannot swallow the reset, as
+    the mode is single).
+
+
+    Plugging in the Skoda Enyaq also re-evaluates the battery, because if it is already
+    below 30% the numeric state trigger will not fire again until it rises and falls
+    back through the threshold.
+
+
     The branches are decided purely from the current state of charge rather than from
     trigger IDs. If the battery is between 30% and 80% nothing happens.
 
@@ -4027,17 +4039,35 @@
       while this automation was blocked by the time condition below.
     trigger: time
     at: 05:30:00
+  - alias: End of day reset before the standard off-peak window
+    trigger: time
+    at: '23:25:00'
+    id: end_of_day_reset
+  - alias: Car plugged in
+    note: Re-evaluates the battery when the EV is connected, since the battery may
+      already be below 30% and the numeric state trigger would not fire again. The
+      short delay lets Octopus register the plug-in before the targets are changed.
+    trigger: state
+    entity_id: binary_sensor.skoda_enyaq_charger_connected
+    from: 'off'
+    to: 'on'
+    for: 00:01:00
   conditions:
   - alias: Battery sensor is reporting a usable value
     note: Guards against the Eaton integration dropping out, which would otherwise
-      make the numeric state conditions in the actions behave unpredictably.
-    condition: not
+      make the numeric state conditions in the actions behave unpredictably. The end
+      of day reset does not use the battery level, so it always runs.
+    condition: or
     conditions:
-    - condition: state
-      entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-      state:
-      - unknown
-      - unavailable
+    - condition: trigger
+      id: end_of_day_reset
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
+        state:
+        - unknown
+        - unavailable
   - alias: Outside the standard off-peak window
     note: Blocks the automation between 23:30 and 05:30 so it never competes with
       the EV for the guaranteed off-peak hours. Note that Run Actions in the editor
@@ -4053,6 +4083,17 @@
       that a manual run is forced down the second branch. Between 30% and 80% neither
       branch matches and nothing is changed.
     choose:
+    - alias: End of day - clear any outstanding 100% request
+      conditions:
+      - condition: trigger
+        id: end_of_day_reset
+      sequence:
+      - alias: Set Intelligent Charge Target to 30%
+        action: number.set_value
+        target:
+          entity_id: number.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_charge_target
+        data:
+          value: 30
     - alias: Battery full enough - stop requesting off-peak slots
       note: Dropping the charge target to 30% tells Octopus no further charging is
         needed, so it stops allocating bonus off-peak slots until the battery is drawn
@@ -4083,6 +4124,9 @@
         - alias: Automation was run manually
           condition: template
           value_template: '{{ manual_run | bool(false) }}'
+      - alias: Not after the end of day reset
+        condition: time
+        before: '23:24:00'
       sequence:
       - alias: Set Intelligent Target Time to 1 hour ahead
         note: One hour is enough because the xStorage charges from 30% to 80% in about
