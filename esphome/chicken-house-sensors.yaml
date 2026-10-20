@@ -42,6 +42,8 @@ substitutions:
   # Sensor Update Interval
   sensor_update_interval: 10min
   wifi_sensor_update_interval: 10min
+  # Load cell filter chains assume seconds between samples (at 10min they lag 7-10 hours)
+  load_cell_update_interval: 5s
   dht_pin: LED_BLUE
 
 ##############################################################
@@ -83,7 +85,7 @@ sensor:
     dout_pin: D4  # Data out
     clk_pin: D5   # Clock pin
     gain: 128  # Set gain for Channel A
-    update_interval: ${sensor_update_interval}
+    update_interval: ${load_cell_update_interval}
     icon: "mdi:food-drumstick-outline"
     filters:
       # Calibrate to kg, then suppress spikes and smooth swing.
@@ -126,7 +128,7 @@ sensor:
     dout_pin: D12  # Data out
     clk_pin: D14   # Clock pin
     gain: 128  # Set gain for Channel A
-    update_interval: ${sensor_update_interval}
+    update_interval: ${load_cell_update_interval}
     icon: "mdi:cup-water"
     filters:
       # Calibrate to kg, then suppress spikes and smooth swing.
