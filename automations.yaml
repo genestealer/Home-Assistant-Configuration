@@ -536,47 +536,60 @@
   description: Front Lawn Anti Cat Defence
   triggers:
   - type: motion
-    device_id: 87201d5d821a2cdd3af103bf786ea9dd
+    device_id: bfae5d6861e747fddfd53ab43bd71cca
     entity_id: 41fd6784968fd61214cd2430a8e33d7e
     domain: binary_sensor
     trigger: device
   conditions:
-  - condition: time
-    after: input_datetime.fld_active_start
-    before: input_datetime.fld_active_till
-  - type: is_no_motion
-    condition: device
-    device_id: 62df1233f7995b1bf37b76783642c7e1
-    entity_id: fe73852fb367e4e940be6013fdecfdb9
-    domain: binary_sensor
-  - condition: device
-    type: is_off
-    device_id: fb68d2173fd8575a3da86c0b9ad1781c
-    entity_id: 6d5a3e09e8f10af0f688a9707d038de7
-    domain: light
-  - condition: numeric_state
-    entity_id: sensor.internet_temperature
-    above: 6
   - type: is_not_open
     condition: device
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
     domain: binary_sensor
+  - condition: numeric_state
+    entity_id: sensor.internet_temperature
+    above: 6
+  - condition: time
+    after: input_datetime.fld_active_start
+    before: input_datetime.fld_active_till
+    enabled: false
+  - condition: device
+    type: is_off
+    device_id: fb68d2173fd8575a3da86c0b9ad1781c
+    entity_id: 6d5a3e09e8f10af0f688a9707d038de7
+    domain: light
+    enabled: false
   - type: is_not_occupied
     condition: device
     device_id: a4d9035dcf8d5c8cad4f0a74d46b0c86
     entity_id: c0aa981ae14899cc5d0ad845e5dfddb9
     domain: binary_sensor
+    enabled: true
   actions:
-  - entity_id: switch.front_garden_lawn_irrigation_valve
-    action: switch.turn_on
+  - action: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.front_garden_irrigation_controller_lawn_valve_switch
   - delay:
       hours: 0
       minutes: 0
       seconds: '{{ states(''input_number.fld_water_on_time'')|float }}'
       milliseconds: 0
-  - entity_id: switch.front_garden_lawn_irrigation_valve
-    action: switch.turn_off
+    enabled: false
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - action: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.front_garden_irrigation_controller_lawn_valve_switch
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
   mode: restart
 - id: '1607604378569'
   alias: AutoHotKey - Webhook Driven - Busy Light - Process Presence Incoming Webhook

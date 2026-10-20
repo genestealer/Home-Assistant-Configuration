@@ -4,91 +4,91 @@
 #
 ############################################################
 
-############################################################
-#
-# Front Garden MQTT Irrigation Switch 1
-#
-############################################################
+# ############################################################
+# #
+# # Front Garden MQTT Irrigation Switch 1
+# #
+# ############################################################
 
-- name: "Front Garden Lawn Irrigation Valve"
-  state_topic: "HUISHS/Irrigation1/StatusJSON"
-  value_template: "{{ value_json.Valve1 }}"
-  payload_on: "1"
-  payload_off: "0"
-  command_topic: "HUISHS/Irrigation1/OutputOne/Command"
-  availability_topic: "HUISHS/Irrigation1/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  optimistic: false
-  retain: false
+# - name: "Front Garden Lawn Irrigation Valve"
+#   state_topic: "HUISHS/Irrigation1/StatusJSON"
+#   value_template: "{{ value_json.Valve1 }}"
+#   payload_on: "1"
+#   payload_off: "0"
+#   command_topic: "HUISHS/Irrigation1/OutputOne/Command"
+#   availability_topic: "HUISHS/Irrigation1/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   optimistic: false
+#   retain: false
 
-############################################################
-#
-# Front Garden MQTT Irrigation Switch 2
-#
-############################################################
-- name: "Front Garden Pot Irrigation Valve"
-  state_topic: "HUISHS/Irrigation1/StatusJSON"
-  value_template: "{{ value_json.Valve2 }}"
-  command_topic: "HUISHS/Irrigation1/OutputTwo/Command"
-  payload_on: "1"
-  payload_off: "0"
-  availability_topic: "HUISHS/Irrigation1/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  optimistic: false
-  retain: false
+# ############################################################
+# #
+# # Front Garden MQTT Irrigation Switch 2
+# #
+# ############################################################
+# - name: "Front Garden Pot Irrigation Valve"
+#   state_topic: "HUISHS/Irrigation1/StatusJSON"
+#   value_template: "{{ value_json.Valve2 }}"
+#   command_topic: "HUISHS/Irrigation1/OutputTwo/Command"
+#   payload_on: "1"
+#   payload_off: "0"
+#   availability_topic: "HUISHS/Irrigation1/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   optimistic: false
+#   retain: false
 
-############################################################
-#
-# Back Garden MQTT Irrigation Switch 1
-#
-############################################################
+# ############################################################
+# #
+# # Back Garden MQTT Irrigation Switch 1
+# #
+# ############################################################
 
-- name: "Back Garden Irrigation Valve"
-  state_topic: "HUISHS/Irrigation2/StatusJSON"
-  value_template: "{{ value_json.Valve1 }}"
-  payload_on: "1"
-  payload_off: "0"
-  command_topic: "HUISHS/Irrigation2/OutputOne/Command"
-  availability_topic: "HUISHS/Irrigation2/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  optimistic: false
-  retain: false
+# - name: "Back Garden Irrigation Valve"
+#   state_topic: "HUISHS/Irrigation2/StatusJSON"
+#   value_template: "{{ value_json.Valve1 }}"
+#   payload_on: "1"
+#   payload_off: "0"
+#   command_topic: "HUISHS/Irrigation2/OutputOne/Command"
+#   availability_topic: "HUISHS/Irrigation2/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   optimistic: false
+#   retain: false
 
-############################################################
-#
-# Back Garden MQTT Irrigation Switch 2
-#
-############################################################
+# ############################################################
+# #
+# # Back Garden MQTT Irrigation Switch 2
+# #
+# ############################################################
 
-- name: "Back Garden Lawn 1 Irrigation Valve"
-  state_topic: "HUISHS/Irrigation2/StatusJSON"
-  value_template: "{{ value_json.Valve2 }}"
-  payload_on: "1"
-  payload_off: "0"
-  command_topic: "HUISHS/Irrigation2/OutputTwo/Command"
-  availability_topic: "HUISHS/Irrigation2/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  optimistic: false
-  retain: false
+# - name: "Back Garden Lawn 1 Irrigation Valve"
+#   state_topic: "HUISHS/Irrigation2/StatusJSON"
+#   value_template: "{{ value_json.Valve2 }}"
+#   payload_on: "1"
+#   payload_off: "0"
+#   command_topic: "HUISHS/Irrigation2/OutputTwo/Command"
+#   availability_topic: "HUISHS/Irrigation2/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   optimistic: false
+#   retain: false
 
-############################################################
-#
-# Back Garden MQTT Irrigation Switch 3
-#
-############################################################
+# ############################################################
+# #
+# # Back Garden MQTT Irrigation Switch 3
+# #
+# ############################################################
 
-- name: "Back Garden Lawn 2 Irrigation Valve"
-  state_topic: "HUISHS/Irrigation2/StatusJSON"
-  value_template: "{{ value_json.Valve3 }}"
-  payload_on: "1"
-  payload_off: "0"
-  command_topic: "HUISHS/Irrigation2/OutputThree/Command"
-  availability_topic: "HUISHS/Irrigation2/Status"
-  payload_available: "online"
-  payload_not_available: "offline"
-  optimistic: false
-  retain: false
+# - name: "Back Garden Lawn 2 Irrigation Valve"
+#   state_topic: "HUISHS/Irrigation2/StatusJSON"
+#   value_template: "{{ value_json.Valve3 }}"
+#   payload_on: "1"
+#   payload_off: "0"
+#   command_topic: "HUISHS/Irrigation2/OutputThree/Command"
+#   availability_topic: "HUISHS/Irrigation2/Status"
+#   payload_available: "online"
+#   payload_not_available: "offline"
+#   optimistic: false
+#   retain: false
