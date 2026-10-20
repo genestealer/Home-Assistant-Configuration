@@ -13,19 +13,13 @@
 #
 ############################################################
 
-# 433MHz automated add
-- platform: rflink
-  automatic_add: true
-  device_defaults:
-    signal_repetitions: 20
-    fire_event: true
+# Included under rflink: switch: in configuration.yaml
+# Switches cannot be auto-added by RFLink, so automatic_add was dropped.
+device_defaults:
+  signal_repetitions: 20
+  fire_event: true
 
-# 433MHz switchs
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 20
-    fire_event: true
-  devices:
+devices:
     EMW100_a140_0: # Ikea ANSLUTA E1202
       name: Kitchen Extractor Fan
       aliases: emw100_a140_00
@@ -35,29 +29,22 @@
     #   name: Wax Melter
     # RFCustom_524643_4: # Status RCS-K09
     #   name: Plug-In Air Freshener
-    Eurodomest_0d25be_01: # Energenie MIHO002 plug in socket
-      name: Plug-In Air Freshener 1
-    Eurodomest_0d25be_00: # Energenie MIHO002 plug in socket
-      name: Plug-In Air Freshener 2
+    # Eurodomest_0d25be_01: # Energenie MIHO002 plug in socket
+    #   name: Plug-In Air Freshener 1
+    # Eurodomest_0d25be_00: # Energenie MIHO002 plug in socket
+    #   name: Plug-In Air Freshener 2
 
-- platform: rflink
-  device_defaults:
-    signal_repetitions: 10
-    fire_event: true
-  devices:
     tristate_0aaaa0_0:
       name: Smoke Machine
+      signal_repetitions: 10
 
 # Not used
-# # Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
-# # Will genirate a 20;xx;CMD UNKNOWN; reponce
-# - platform: rflink
-#   device_defaults:
-#     signal_repetitions: 1
-#     fire_event: false
-#   devices:
-#     fake_fake_0:
-#         name: RFLink Fake Keep Alive Switch
+    # # Fake switch to keep TCP link optn to the RFLink gateway, else after 5 mins it will close!
+    # # Will genirate a 20;xx;CMD UNKNOWN; reponce
+    # fake_fake_0:
+    #   name: RFLink Fake Keep Alive Switch
+    #   signal_repetitions: 1
+    #   fire_event: false
 
 # Feb 2018: Removed and moved to "mqtt_switch.yaml" using my 433mhz MQTT controller
 # https://github.com/Genestealer/ESP8266-433Mhz-Controller-Gateway
@@ -67,9 +54,6 @@
 #
 
 # Ikea two button round remote
-- platform: rflink
-  device_defaults:
-    fire_event: true
-  devices:
     emw100_d018_00:
       name: Button 1
+      signal_repetitions: 1

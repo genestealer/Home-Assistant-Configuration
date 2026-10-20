@@ -147,6 +147,10 @@ logger:
     # axis: debug
     # homeassistant.components.axis: debug
     homeassistant.components.rest: debug
+  filters:
+    # RFLink answers RFDEBUG with no OK, so the keep-alive is always reported as failed
+    homeassistant.components.rflink.services:
+      - "Failed Rflink command for .*'rfdebug'"
 
 # System Health integration
 system_health:
@@ -194,26 +198,37 @@ rflink:
   reconnect_interval: 10 # seconds
   tcp_keepalive_idle_timer: 60 # seconds
   ignore_devices:
-    - owl_cm113_ead1_current3
-    - owl_cm113_ead1_current1
-    - ev1527_*
-    - wh3_*
-    - wt122*
-    # - sensor.owl_cm113_ea7f_current2
-    # - sensor.owl_cm113_ea7f_current3
-    # - sensor.owl_cm113_ea9f_current2
-    # - sensor.owl_cm113_ea9f_current3
-    # - sensor.owl_cm130_007f_kwatt
+    # - owl_cm113_ead1_current3
+    # - owl_cm113_ead1_current1
+    # - ev1527_*
+    # - wh3_*
+    # - wt122*
+    # - keeloq_*
+    # - drayton_*
+    # - elrodb_*
 
-    - sensor.v2phoenix_*
-    - light.drayton_*
-    - light.elrodb_*
-    - light.mertik_*
-    - light.drayton_*
-    - light.btf_*
-    - light.v2phoenix*
-    - fineoffset_0000_*
+    # - sensor.v2phoenix_*
+    # - light.drayton_*
+    # - light.elrodb_*
+    # - light.mertik_*
+    # - light.drayton_*
+    # - light.btf_*
+    # - light.v2phoenix*
+    # - fineoffset_0000_*
+  light: !include includes/rflink/light.yaml
+  switch: !include includes/rflink/switch.yaml
+  # binary_sensor: !include includes/rflink/binary_sensor.yaml
+  # Weather station devices are merged in from packages/weather/weather_sensors.yaml
+  sensor:
+    automatic_add: true
+    # devices:
+    #   # OWL CM113 sends current in hex; see includes/sensors/rflink_sensor.yaml for the hex-to-dec template
+    #   owl_cm113_ea23_current2:
+    #     sensor_type: current_phase_1
+    #     name: 'Unscaled House Consumption Current'
+    #     unit_of_measurement: A in HEX
 
+# --- Input text helpers ---
 # Define values that can be controlled via the frontend and can be used within conditions of automation
 # Needed for kloggy/HA-Irrigation-Version2 https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
 input_text:

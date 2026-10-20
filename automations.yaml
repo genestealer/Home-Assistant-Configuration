@@ -4238,3 +4238,19 @@
           entity_id: light.office_lamp
         data: {}
       input_mode_1: hs_color
+- id: '1792506393728'
+  alias: RFLink keep-alive
+  description: The RFLink ethernet bridge drops the TCP connection after 5 min idle,
+    making every RFLink entity flap unavailable. Sends a harmless RFDEBUG=OFF every
+    4 min to keep it busy. I have disabled this as there is a custom integration that
+    has a built-in ping keepalive function I am testing https://github.com/guanaco0403/Home-Assistant-Rflink-UI
+  triggers:
+  - trigger: time_pattern
+    minutes: /4
+  conditions: []
+  actions:
+  - action: rflink.send_command
+    data:
+      device_id: rfdebug
+      command: 'off'
+  mode: single
