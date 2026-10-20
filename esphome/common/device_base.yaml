@@ -29,8 +29,9 @@ api:
 # OTA Updates
 ##################################
 ota:
-  password: !secret esphome_ota_pass
+  # password: !secret esphome_ota_pass
   platform: esphome
+  encryption:
 
 ##################################
 # Safe Mode (Prevents Boot Loops)
