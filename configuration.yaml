@@ -4,11 +4,10 @@
 # See Readme for info: https://github.com/genestealer/Home-Assistant-Configuration/blob/master/README.md
 #######################################
 
-############################################################
-#
-# Homeassistant Configuration
+# =============================================================================
+# Home Assistant core
+# =============================================================================
 # https://www.home-assistant.io/integrations/homeassistant/
-############################################################
 homeassistant:
   # Customization file
   customize: !include customize.yaml
@@ -26,11 +25,10 @@ homeassistant:
     - type: homeassistant
   auth_mfa_modules:
     - type: totp
-############################################################
-#
-# Standard Configuration Elements
-#
-############################################################
+
+# =============================================================================
+# Frontend and dashboards
+# =============================================================================
 
 # Enables the frontend
 frontend:
@@ -58,25 +56,18 @@ lovelace:
       icon: mdi:flower
       show_in_sidebar: true
       filename: myirrigation.yaml
+
+# =============================================================================
+# Core integrations
+# =============================================================================
+
 # Enables configuration UI
 config:
 
 #Home Assistant Cloud - NOPE!
 cloud:
 
-# Enable web interface https://www.home-assistant.io/integrations/http
-http:
-  server_port: 8123
-  cors_allowed_origins:
-    - https://google.com
-    - https://www.home-assistant.io
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 10.0.0.200 # Add the IP address of the proxy server - Home Assistant Community Add-on: Nginx Proxy Manager
-    - 172.30.33.0/24 # docker network
-
-  ip_ban_enabled: true
-  login_attempts_threshold: 20
+# HTTP config is managed in the UI: Settings > System > Network
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -171,24 +162,21 @@ my:
 # through supported media players like Google Cast.
 media_source:
 
-############################################################
-#
-# Components
-#
-############################################################
+# =============================================================================
+# YAML-configured integrations and helpers
+# =============================================================================
 
 # Track the sun.
 sun:
   # elevation: !secret elevation
 
-#################################################
-# Text to speech.
+# --- Text to speech ---
 tts:
   - platform: google_translate
     service_name: google_translate_say
 
-#################################################
-# Use external MQTT broker.
+# --- MQTT ---
+# Use the external MQTT broker.
 mqtt:
   binary_sensor: !include_dir_merge_list includes/mqtt/binary_sensors/
   cover: !include_dir_merge_list includes/mqtt/covers/
@@ -197,8 +185,8 @@ mqtt:
   light: !include_dir_merge_list includes/mqtt/lights/
   climate: !include_dir_merge_list includes/mqtt/climates/
 
-#################################################
-# RFLink with keep alive fix https://github.com/home-assistant/home-assistant.io/pull/16527
+# --- RFLink ---
+# Keep-alive fix: https://github.com/home-assistant/home-assistant.io/pull/16527
 rflink:
   host: !secret RF_Link_IP
   port: !secret RF_Link_Port
@@ -236,8 +224,7 @@ input_text:
     min: 0
     max: 20
 
-#################################################
-# Google Assistant integration.
+# --- Google Assistant ---
 google_assistant:
   project_id: google-assistant-hass
   service_account: !include private/huishhass-15113e9b368f.json
@@ -273,16 +260,14 @@ google_assistant:
     - valve
     # - water_heater
 
-#################################################
-# Proxy video live streams through Home Assistant
+# --- Stream ---
+# Proxy video live streams through Home Assistant.
 stream:
   # ll_hls: true
   # part_duration: 1.5
   # segment_duration: 10
 
-#################################################
-# Device trackers.
-device_tracker:
+# --- Device trackers (inactive examples) ---
 #  Google Maps migrated to ha-google-maps https://github.com/pnbruckner/ha-google-maps
 
 # # google_maps - Uses cookie file
@@ -295,25 +280,21 @@ device_tracker:
 # - platform: owntracks
 #   max_gps_accuracy: 250
 
-#################################################
-# Bluetooth
+# --- Bluetooth ---
 # See bluetooth-proxy-m5stack-atom-lite.yaml
 bluetooth:
 
-############################################################
-#
-# Includes
+# =============================================================================
+# Included configuration
+# =============================================================================
 # Merge named https://home-assistant.io/docs/configuration/splitting_configuration/
-#
-############################################################
 
-# Single Files
+# --- Single files ---
 # zone: !include includes/zone.yaml
-shell_command: !include includes/shell_commands.yaml
 automation ui: !include automations.yaml # Cannot change location or filename as the automations editors only creates here!
 script ui: !include scripts.yaml
 
-# Merge List
+# --- Merge list ---
 # Merges all YAML files into a single list (-)
 # Used when each file contains a list (- item) instead of a dictionary (key: value).
 # Best for automations, scripts, and other list-based configurations.
@@ -327,7 +308,7 @@ cover: !include_dir_merge_list includes/cover
 template: !include_dir_merge_list includes/template
 input_boolean: !include_dir_merge_list includes/input_boolean
 
-# Merge named dir
+# --- Merge named directory ---
 # Merges YAML files into a dictionary (key: value).
 # Used when each file contains a dictionary (key: value) instead of a list (- item).
 # Best for packages, sensors, input_ helpers, and configurations that use key-value pairs*.
@@ -336,19 +317,16 @@ input_select: !include_dir_merge_named includes/input_select
 input_number: !include_dir_merge_named includes/input_number
 rest_command: !include_dir_merge_named includes/rest_commands
 
-# # Merge Named
+# --- Inactive example ---
 # group: !include includes/groups.yaml
 
-# https://www.home-assistant.io/integrations/alert/
-alert: !include includes/alert.yaml
-
-# https://www.home-assistant.io/integrations/universal/
-media_player: !include includes/media_player.yaml
-
+# --- Scenes ---
 scene: !include scenes.yaml
-###################################################################################################################################################
-# OLD OLD
-# #################################################
+
+# =============================================================================
+# Inactive legacy configuration examples
+# =============================================================================
+
 # # Push notification providers.
 # notify:
 #   - name: Google Cloud Notify
