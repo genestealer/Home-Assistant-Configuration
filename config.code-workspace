@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.yaml": "home-assistant",
+			"compose.yml": "yaml",
+			"compose.yaml": "yaml",
+			"compose.*.yml": "yaml",
+			"compose.*.yaml": "yaml",
+			"docker-compose.yml": "yaml",
+			"docker-compose.yaml": "yaml",
+			"docker-compose.*.yml": "yaml",
+			"docker-compose.*.yaml": "yaml",
+			"esphome/**/*.yml": "esphome",
+			"esphome/**/*.yaml": "esphome"
+		},
+		"codeQL.githubDatabase.download": "never"
+	}
+}
