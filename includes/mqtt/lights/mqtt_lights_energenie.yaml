@@ -56,43 +56,6 @@
     via_device: "mqtt-energenie-ener314rt"
     suggested_area: "Hallway"
 
-    # - name: "Upstairs"
-    #   unique_id: MIHO009_light_hallway_up
-    #   command_topic: energenie/ook/87/1/command
-    #   optimistic: true
-    #   state_topic: energenie/ook/87/1/state
-    #   availability_topic: energenie/availability/state
-    #   device:
-    #     name: "Hallways"
-    #     identifiers: "miho009_light_hallway"
-    #     model: "2-Gang Light Switch (MIHO009) [87/1]"
-    #     manufacturer: "Energenie [Manual]"
-    #     via_device: "mqtt-energenie-ener314rt"
-    #     suggested_area: "Hallway"
-
-    # - name: "Downstairs"
-    #   unique_id: MIHO009_light_hallway_down
-    #   command_topic: energenie/ook/87/2/command
-    #   optimistic: true
-    #   state_topic: energenie/ook/87/2/state
-    #   availability_topic: energenie/availability/state
-    #   device:
-    #     identifiers: "miho009_light_hallway"
-
-    # Not used
-    # - name: "All Hallway Lights"
-    #   unique_id: MIHO008_light_hallway_all
-    #   command_topic: energenie/ook/87/0/command
-    #   optimistic: true
-    #   state_topic: energenie/ook/87/0/state
-    #   availability_topic: energenie/availability/state
-    #   device:
-    #     name: "All Hallway Lights"
-    #     identifiers: "miho009_light_hallway_all"
-    #     model: "2-Gang Light Switch (MIHO009) [87/0]"
-    #     manufacturer: "Energenie [Manual]"
-    #     via_device: "mqtt-energenie-ener314rt"
-
 ############################################################
 #
 # Living Room Ceiling Light
@@ -152,6 +115,58 @@
     manufacturer: "Energenie [Manual]"
     via_device: "mqtt-energenie-ener314rt"
     suggested_area: "Bedroom"
+
+#########################################################################################
+#
+# ARCHIVE - Commented out / unused entities
+#
+#########################################################################################
+
+# ############################################################
+# #
+# # Hallway Lights (old combined device)
+# #
+# ############################################################
+# - name: "Upstairs"
+#   unique_id: MIHO009_light_hallway_up
+#   command_topic: energenie/ook/87/1/command
+#   optimistic: true
+#   state_topic: energenie/ook/87/1/state
+#   availability_topic: energenie/availability/state
+#   device:
+#     name: "Hallways"
+#     identifiers: "miho009_light_hallway"
+#     model: "2-Gang Light Switch (MIHO009) [87/1]"
+#     manufacturer: "Energenie [Manual]"
+#     via_device: "mqtt-energenie-ener314rt"
+#     suggested_area: "Hallway"
+
+# - name: "Downstairs"
+#   unique_id: MIHO009_light_hallway_down
+#   command_topic: energenie/ook/87/2/command
+#   optimistic: true
+#   state_topic: energenie/ook/87/2/state
+#   availability_topic: energenie/availability/state
+#   device:
+#     identifiers: "miho009_light_hallway"
+
+# ############################################################
+# #
+# # All Hallway Lights (not used)
+# #
+# ############################################################
+# - name: "All Hallway Lights"
+#   unique_id: MIHO008_light_hallway_all
+#   command_topic: energenie/ook/87/0/command
+#   optimistic: true
+#   state_topic: energenie/ook/87/0/state
+#   availability_topic: energenie/availability/state
+#   device:
+#     name: "All Hallway Lights"
+#     identifiers: "miho009_light_hallway_all"
+#     model: "2-Gang Light Switch (MIHO009) [87/0]"
+#     manufacturer: "Energenie [Manual]"
+#     via_device: "mqtt-energenie-ener314rt"
 
 # ############################################################
 # #
