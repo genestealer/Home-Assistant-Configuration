@@ -14,4 +14,5 @@
     - name: "ESP-Link Gateway Status"
       unique_id: "esp_link_status"
       device_class: "connectivity"
-      state: "{% if is_state('sensor.esp_link_controller_signal_strength', 'unknown') %}false{% else %}true{% endif %}"
+      # RSSI sensor uses expire_after, so it drops to unavailable when the gateway stops reporting
+      state: "{{ has_value('sensor.esp_link_controller_rssi') }}"
