@@ -79,18 +79,6 @@ history:
 recorder:
   purge_keep_days: 64
   exclude:
-    # domains:
-    #   - automation
-    #   - updater
-    # entities:
-    #   - sensor.date
-    #   - sensor.time
-    #   - sensor.date_time
-    #   - sensor.date_time_utc
-    #   - sensor.time_date
-    #   - sensor.time_utc
-    #   - sensor.date_time_iso
-    #   - sensor.internet_time
     entities:
       - sensor.date
       - sensor.time
@@ -99,11 +87,9 @@ recorder:
       - sensor.time_date
       - sensor.time_utc
       - sensor.date_time_iso
-      - sensor.internet_time
-      - sensor.server_server_power_on_time
-      - sensor.cc_cpu_temperature
-      - sensor.cc_cpu_load
+      - automation.enphase_envoy_custom_local_polling_interval
       - automation.process_presence_incoming_webhook
+      - automation.rflink_keep_alive
 
     entity_globs:
       - input_number.irrigation* #https://github.com/kloggy/HA-Irrigation-Version2/blob/master/Pre-Requisites.md
@@ -111,31 +97,19 @@ recorder:
       - sensor.*_last_seen # mqtt-energenie-ener314rt
       - sensor.*_retries # mqtt-energenie-ener314rt
       - sensor.*_last_reported # mqtt-energenie-ener314rt
+      - sensor.*_linkquality # Zigbee2MQTT
 
 # View all events in a logbook. Depends on the recorder integration for storing the data.
+# Recorder excludes apply here too; only add logbook excludes for entities that should still be recorded.
 logbook:
-  exclude:
-    entities:
-      - sensor.date
-      - sensor.time
-      - sensor.date_time
-      - sensor.date_time_utc
-      - sensor.time_date
-      - sensor.time_utc
-      - sensor.date_time_iso
-      - sensor.internet_time
-      - sensor.server_server_power_on_time
-      - sensor.cc_cpu_temperature
-      - sensor.cc_cpu_load
-      - automation.process_presence_incoming_webhook
+  # exclude:
+  #   entities:
+  #     - automation.example_polling_automation
+  #     - binary_sensor.hallway_motion
+  #   entity_globs:
+  #     - binary_sensor.*_motion
+  #     - switch.*_led_indicator
 
-    entity_globs:
-      - sensor.adguard_*
-      - sensor.*_last_seen # mqtt-energenie-ener314rt
-      - sensor.*_retries # mqtt-energenie-ener314rt
-      - sensor.*_last_reported # mqtt-energenie-ener314rt
-
-# https://github.com/home-assistant/home-assistant/issues/1806
 logger:
   default: error
   logs:
