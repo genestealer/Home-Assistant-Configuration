@@ -220,7 +220,7 @@ google_assistant:
   report_state: true
   # secure_devices_pin: !secret google_assistant_secure_devices_pin
 
-  entity_config: !include_dir_named includes/google_assistant_entity_config.yaml
+  entity_config: !include includes/google_assistant_entity_config.yaml
   # expose_by_default: true # Expose devices in all supported domains by default. If exposed_domains domains is set, only those domains are exposed by default.
   # exposed_domains has no effect if expose_by_default is set to false.
   exposed_domains:
