@@ -1,3 +1,5 @@
+# ARCHIVED 2026-10-20 - not loaded. Its automations are archived in archive/automations.yaml
+# (ids 1732218748464, 1732218791930, 1732231906963). To restore, move this file back to /config/pyscript/.
 # ==============================================================================
 # check_stock.py
 # ==============================================================================

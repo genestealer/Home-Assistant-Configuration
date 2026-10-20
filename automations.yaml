@@ -67,159 +67,6 @@
           - button.parking_space_onvif_reboot
         continue_on_error: true
     continue_on_error: true
-- id: '1564192629041'
-  alias: 'Irrigation: Pot Irrigation Script Off to Valve Off'
-  description: 'If script is turned off manually, then close valve, else it will stay
-    open. '
-  trigger:
-  - entity_id: script.front_garden_pot_irrigation_timer
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: switch.front_garden_pot_irrigation_valve
-    service: switch.turn_off
-- id: '1564192623451'
-  alias: 'Irrigation: Irrigate Front Garden Pots at Sunrise'
-  trigger:
-  - platform: template
-    value_template: '{{states(''sensor.time'') == states(''sensor.front_garden_pot_irrigation_next_run'')[19:24]}}'
-  condition:
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{states(''sensor.front_garden_pot_irrigation_next_run'')[5:15]
-        == now().date().strftime(''%d-%m-%Y'')}}'
-    - condition: state
-      entity_id: sensor.front_garden_pots_irrigation_interlock
-      state: Uninhibited
-  action:
-  - entity_id: script.front_garden_pot_irrigation_timer
-    service: script.front_garden_pot_irrigation_timer
-- id: '1564192123451'
-  alias: 'Irrigation: Irrigate Back Garden at Sunrise'
-  description: With editable offset
-  trigger:
-  - platform: template
-    value_template: '{{states(''sensor.time'') == states(''sensor.back_garden_irrigation_next_run'')[19:24]}}'
-  condition:
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{states(''sensor.back_garden_irrigation_next_run'')[5:15]
-        == now().date().strftime(''%d-%m-%Y'')}}'
-    - condition: state
-      entity_id: sensor.back_garden_irrigation_interlock
-      state: Uninhibited
-  action:
-  - entity_id: script.back_garden_irrigation_timer
-    service: script.back_garden_irrigation_timer
-- id: '1564192123123'
-  alias: 'Irrigation: Irrigate Back Garden Lawn at Sunrise'
-  trigger:
-  - platform: template
-    value_template: '{{states(''sensor.time'') == states(''sensor.back_garden_lawn_irrigation_next_run'')[19:24]}}'
-  condition:
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{states(''sensor.back_garden_lawn_irrigation_next_run'')[5:15]
-        == now().date().strftime(''%d-%m-%Y'')}}'
-    - condition: state
-      entity_id: sensor.back_garden_lawn_irrigation_interlock
-      state: Uninhibited
-  action:
-  - delay:
-      hours: 1
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  - entity_id: script.back_garden_lawn_irrigation_timer
-    service: script.back_garden_lawn_irrigation_timer
-- id: '1564192623452'
-  alias: 'Irrigation: Irrigate Front Lawn at Sunrise'
-  trigger:
-  - platform: template
-    value_template: '{{states(''sensor.time'') == states(''sensor.front_garden_lawn_irrigation_next_run'')[19:24]}}'
-  condition:
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{{states(''sensor.front_garden_lawn_irrigation_next_run'')[5:15]
-        == now().date().strftime(''%d-%m-%Y'')}}'
-    - condition: state
-      entity_id: sensor.front_garden_lawn_irrigation_interlock
-      state: Uninhibited
-  action:
-  - entity_id: script.front_garden_lawn_irrigation_timer
-    service: script.front_garden_lawn_irrigation_timer
-- id: '1564234217905'
-  alias: 'Irrigation: Lawn Irrigation Script Off to Valve Off'
-  description: 'If script is turned off manually, then close valve, else it will stay
-    open. '
-  trigger:
-  - entity_id: script.front_garden_lawn_irrigation_timer
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: switch.front_garden_lawn_irrigation_valve
-    service: switch.turn_off
-- id: '1512334217905'
-  alias: 'Irrigation: Garden Irrigation Script Off to Valve Off'
-  description: 'If script is turned off manually, then close valve, else it will stay
-    open. '
-  trigger:
-  - entity_id: script.back_garden_irrigation_timer
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - data:
-      entity_id: switch.back_garden_irrigation_valve
-    service: switch.turn_off
-- id: '1512331237905'
-  alias: 'Irrigation: Garden Lawn Irrigation Script Off to Valve Off'
-  description: 'If script is turned off manually, then close valve, else it will stay
-    open. '
-  trigger:
-  - entity_id: script.back_garden_lawn_irrigation_timer
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition: []
-  action:
-  - entity_id: switch.back_garden_lawn_1_irrigation_valve
-    service: switch.turn_off
-  - entity_id: switch.back_garden_lawn_2_irrigation_valve
-    service: switch.turn_off
-- id: '1576599112935'
-  alias: Welcome home Richard
-  description: 'Note: These actions can only be edited with YAML'
-  trigger:
-  - entity_id: person.richard
-    for: 00:05:00
-    from: not_home
-    platform: state
-    to: home
-  condition: []
-  action:
-  - data_template:
-      cache: false
-      entity_id: media_player.ground_floor
-      message: "Welcome home Richard. {% if is_state('person.lucy', 'home')  %} Lucy
-        is also at home and needs cuddles! {%- else -%}\n    Lucy is away at {{state_attr('device_tracker.google_maps_114635444798949098363',
-        'address')}}.\n {%- endif %}\n    Outside {{states('sensor.dark_sky_temperature')|
-        round(0)}}C {{states('sensor.dark_sky_humidity')| round(0) }}% Inside {{states('sensor.entryway_thermostat_temperature')|
-        round(0)}}C \n{{states('sensor.entryway_thermostat_humidity')| round(0)}}%
-        {% if is_state('climate.entryway', 'heat') %} Heating on and set to {{state_attr('climate.entryway',
-        'temperature')| round(0) }}°C\n{%- endif %}\n"
-    service: tts.google_translate_say
 - id: '1576601014597'
   alias: Plug-in Air Freshener - On-Off Automation
   description: 'Turn on in the morning when someone is home as long as it between
@@ -300,53 +147,6 @@
         - switch.plug_in_air_freshener_1_2
         - switch.plug_in_air_freshener_2_2
   mode: restart
-- id: '1576601770197'
-  alias: Welcome home Lucy
-  description: 'Note: These actions can only be edited with YAML'
-  trigger:
-  - entity_id: person.lucy
-    for: 00:05:00
-    from: not_home
-    platform: state
-    to: home
-  condition: []
-  action:
-  - data_template:
-      cache: false
-      entity_id: media_player.ground_floor
-      message: "Welcome home Lucy. {% if is_state(\"person.richard\", \"home\")  %}
-        Richard is also at home, please see him for cuddles! {%- else -%}\n    Richard
-        is currently {{states('person.richard')}}, at\n{{states('sensor.richard_street_location')}}.
-        {%- endif %} The heating is set to {{states('climate.entryway')}} at {{state_attr('climate.entryway',
-        'temperature')| round(0) }}°C\n"
-    service: tts.google_translate_say
-- id: '1576602219341'
-  alias: Keep Nest thermostat aware of our presence
-  description: contindion template {{ state_attr('climate.entryway', 'preset_mode')
-    == Away and Eco }}
-  trigger:
-  - minutes: /10
-    platform: time_pattern
-  - event: start
-    platform: homeassistant
-  - entity_id: binary_sensor.huishs_away
-    from: 'off'
-    platform: state
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: group.mobiles_group
-    state: home
-  - condition: state
-    entity_id: binary_sensor.huishs_away
-    state: 'on'
-  action:
-  - data:
-      away_mode: home
-    service: nest.set_away_mode
-  - data:
-      message: Nest forced back to heat mode while you are at home.
-    service: notify.google_cloud_notify
 - id: '1581770041173'
   alias: Electricity supply voltage is LOW/HIGH and Power Cut / Loss of Mains
   description: Send Notification when Electricity Voltage is Low or High
@@ -819,43 +619,6 @@
             seconds: 0
             milliseconds: 0
   mode: restart
-- id: '1626459943924'
-  alias: Water on off
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - switch.button_1
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id:
-    - switch.button_1
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: switch.button_1
-        state: 'on'
-      sequence:
-      - service: switch.turn_on
-        target:
-          entity_id: switch.back_garden_irrigation_valve
-        data: {}
-    - conditions:
-      - condition: state
-        entity_id: switch.button_1
-        state: 'off'
-      sequence:
-      - service: switch.turn_off
-        target:
-          entity_id: switch.back_garden_irrigation_valve
-        data: {}
-    default: []
-  mode: single
 - id: '1634179399421'
   alias: Notify when Lucy leaves her pump at home
   description: ''
@@ -1496,10 +1259,10 @@
 - id: '1689364304362'
   alias: Irrigation Notify When Controllers Goes Offline
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id:
-    - binary_sensor.ic_back_status
+    - binary_sensor.back_garden_irrigation_controller_online
     to:
     from: 'on'
     for:
@@ -1508,17 +1271,16 @@
       seconds: 0
   - platform: state
     entity_id:
-    - binary_sensor.ic_front_status
+    - binary_sensor.front_garden_irrigation_controller_online
     to:
     from: 'on'
     for:
       hours: 0
       minutes: 10
       seconds: 0
-  condition: []
-  action:
-  - service: notify.mobile_app_rich_mob_app
-    data:
+  conditions: []
+  actions:
+  - data:
       message: Irrigation Controller Offline
       data:
         channel: Irrigation
@@ -1526,6 +1288,7 @@
         visibility: public
         notification_icon: mdi:water-alert-outline
     enabled: true
+    action: notify.mobile_app_rich_mob_app
   mode: queued
 - id: '1694727006658'
   alias: House Doorbell - External Notify
@@ -2639,113 +2402,6 @@
     data: {}
     target:
       entity_id: script.announce_bunny_food_time
-  mode: single
-- id: '1732218748464'
-  alias: Check Medication Stock - With Location
-  description: This automation periodically triggers the pyscript.check_stock script
-    to check for medication availability at nearby pharmacies based on the current
-    location of person.richard. It retrieves the latitude and longitude from the person.richard
-    entity and passes them, along with a configurable search radius, to the script.
-  triggers:
-  - at: 07:00:00
-    trigger: time
-  - at: 07:30:00
-    trigger: time
-  - at: 08:00:00
-    trigger: time
-  - at: 08:30:00
-    trigger: time
-  - at: 09:00:00
-    trigger: time
-  - at: 09:30:00
-    trigger: time
-  - at: '10:00:00'
-    trigger: time
-  - at: '10:30:00'
-    trigger: time
-  - at: '11:00:00'
-    trigger: time
-  - at: '11:30:00'
-    trigger: time
-  - at: '12:00:00'
-    trigger: time
-  - at: '13:30:00'
-    trigger: time
-  - at: '14:00:00'
-    trigger: time
-  - at: '14:30:00'
-    trigger: time
-  - at: '15:00:00'
-    trigger: time
-  - at: '15:30:00'
-    trigger: time
-  - at: '16:00:00'
-    trigger: time
-  - at: '16:30:00'
-    trigger: time
-  - at: '17:00:00'
-    trigger: time
-  - at: '17:30:00'
-    trigger: time
-  - at: '18:00:00'
-    trigger: time
-  - at: '18:30:00'
-    trigger: time
-  conditions: []
-  actions:
-  - data_template:
-      base_lat: '{{ state_attr(''person.richard'', ''latitude'') }}'
-      base_lon: '{{ state_attr(''person.richard'', ''longitude'') }}'
-      distance: 60
-    action: pyscript.check_stock
-  mode: single
-- id: '1732218791930'
-  alias: Notify When Medication is in Stock
-  description: This automation monitors the sensor.adhd_medication_stock entity, which
-    is updated by the pyscript.check_stock script. When the sensor state changes to
-    on, indicating that medication is available within the specified distance from
-    the current location of person.richard, a notification is sent to the user.
-  triggers:
-  - entity_id:
-    - sensor.adhd_medication_stock
-    to: 'on'
-    trigger: state
-  actions:
-  - data:
-      data:
-        color: blue
-        channel: ADHD
-        vibrationPattern: 100,500,100,500,100,500,100,500
-        importance: high
-        visibility: public
-        notification_icon: mdi:pill
-        ttl: 0
-        priority: high
-        sticky: 'true'
-      message: 'The following stores have stock: {{ state_attr(''sensor.adhd_medication_stock'',
-        ''stores'') | map(attribute=''displayName'') | join(''. '') }}
-
-        '
-      title: ADHD Medication
-    action: notify.mobile_app_rich_mob_app
-  mode: single
-- id: '1732231906963'
-  alias: Notify on Medication Stock Check Failure
-  description: Notify if the medication stock check script encounters an error.
-  triggers:
-  - entity_id:
-    - binary_sensor.adhd_medication_check_error
-    to: 'on'
-    trigger: state
-    from: 'off'
-  actions:
-  - data_template:
-      title: Medication Stock Check Error
-      message: 'The stock check script failed with the following error: {{ state_attr(''sensor.adhd_medication_stock'',
-        ''error'') }}
-
-        '
-    action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1734033969313'
   alias: Heating - Nest Setback - Away
