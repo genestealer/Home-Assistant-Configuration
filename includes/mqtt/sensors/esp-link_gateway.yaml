@@ -1,0 +1,18 @@
+############################################################
+#
+# Home Assistant MQTT Sensors
+#
+############################################################
+
+############################################################
+#
+# ESP-Link Controller Status
+#
+############################################################
+
+- state_topic: "HUISHS/esp-link"
+  name: "ESP-Link Controller RSSI"
+  unit_of_measurement: "dBm"
+  expire_after: 125 # MQTT messages are only every 60 seconds, so 125 will permit it to miss two messages.
+  value_template: "{{ value_json.rssi }}"
+  icon: mdi:signal-variant
