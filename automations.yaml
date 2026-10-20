@@ -225,33 +225,32 @@
   description: 'Turn on in the morning when someone is home as long as it between
     certain times. Also turns back on after returning home. Turn off in the evening
     or when no one is home. Repeat as it sometimes does not work '
-  trigger:
-  - platform: time
-    at: input_datetime.air_freshener_on_time
-  - platform: time
-    at: input_datetime.air_freshener_off_time
-  - platform: zone
-    entity_id: person.richard
+  triggers:
+  - at: input_datetime.air_freshener_on_time
+    trigger: time
+  - at: input_datetime.air_freshener_off_time
+    trigger: time
+  - entity_id: person.richard
     zone: zone.home
     event: leave
     enabled: false
-  - platform: zone
-    entity_id: person.richard
+    trigger: zone
+  - entity_id: person.richard
     zone: zone.home
     event: enter
     enabled: false
-  - platform: zone
-    entity_id: person.lucy
+    trigger: zone
+  - entity_id: person.lucy
     zone: zone.home
     event: enter
     enabled: false
-  - platform: zone
-    entity_id: person.lucy
+    trigger: zone
+  - entity_id: person.lucy
     zone: zone.home
     event: leave
     enabled: false
-  - platform: state
-    entity_id:
+    trigger: zone
+  - entity_id:
     - person.lucy
     to:
     for:
@@ -259,8 +258,8 @@
       minutes: 5
       seconds: 0
     enabled: true
-  - platform: state
-    entity_id:
+    trigger: state
+  - entity_id:
     - person.richard
     to:
     for:
@@ -268,8 +267,9 @@
       minutes: 5
       seconds: 0
     enabled: true
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: and
@@ -286,37 +286,19 @@
             entity_id: person.richard
             state: home
       sequence:
-      - service: switch.turn_on
-        target:
+      - target:
           entity_id:
-          - switch.plug_in_air_freshener_1
+          - switch.plug_in_air_freshener_1_2
+          - switch.plug_in_air_freshener_2_2
         data: {}
-      - delay:
-          hours: 0
-          minutes: 1
-          seconds: 0
-          milliseconds: 0
-      - service: switch.turn_on
-        target:
-          entity_id:
-          - switch.plug_in_air_freshener_2
-        data: {}
+        action: switch.turn_on
     default:
-    - service: switch.turn_off
+    - data: {}
+      action: switch.turn_off
       target:
         entity_id:
-        - switch.plug_in_air_freshener_1
-      data: {}
-    - delay:
-        hours: 0
-        minutes: 1
-        seconds: 0
-        milliseconds: 0
-    - service: switch.turn_off
-      target:
-        entity_id:
-        - switch.plug_in_air_freshener_2
-      data: {}
+        - switch.plug_in_air_freshener_1_2
+        - switch.plug_in_air_freshener_2_2
   mode: restart
 - id: '1576601770197'
   alias: Welcome home Lucy
@@ -746,16 +728,16 @@
   alias: Outside Lights - House Number Sign Light Schedule
   description: ' Use wait to ensure the Choose action for time is after the trigger
     time, not on the time.'
-  trigger:
-  - platform: sun
-    event: sunset
+  triggers:
+  - event: sunset
     offset: +00:30:00
     id: Turn On
-  - platform: time
-    at: input_datetime.house_sign_light_off_time
+    trigger: sun
+  - at: input_datetime.house_sign_light_off_time
     id: Turn Off
-  condition: []
-  action:
+    trigger: time
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: trigger
@@ -914,11 +896,12 @@
   description: Main Lights Profile
   triggers:
   - type: motion
-    device_id: 99689212065c11ebbd2ecbef1587dfe1
-    entity_id: binary_sensor.drive_high_16_vmd4_camera1profile3
+    device_id: bfae5d6861e747fddfd53ab43bd71cca
+    entity_id: 8548bc07135f7cbd17076dea5f544840
     domain: binary_sensor
     trigger: device
     enabled: false
+    note: This seems to get triggered a lot by spiders
   - type: opened
     device_id: 86b815b15cbf84a75984db3b46f6cc17
     entity_id: f0cb1ec8ad721e92bd29b0684af17fe6
@@ -929,6 +912,13 @@
     entity_id: c0aa981ae14899cc5d0ad845e5dfddb9
     domain: binary_sensor
     trigger: device
+  - trigger: motion.detected
+    target:
+      device_id: 7c1b0975c5878f8f8b0e8d7929845cb5
+    options:
+      behavior: each
+      for: 00:00:00
+    enabled: false
   conditions:
   - condition: or
     conditions:
@@ -1076,15 +1066,7 @@
           | int(0) }}'
   - target:
       entity_id:
-      - light.outside_1_up
-      - light.outside_1_down
-      - light.outside_2_up
-      - light.outside_2_down
-      - light.outside_3_up
-      - light.outside_3_down
-      - light.outside_4_up
-      - light.outside_4_down
-      - light.outside_5_down
+      - light.outside_lights
     data:
       transition: 5
     action: light.turn_off
@@ -1653,7 +1635,14 @@
           sticky: 'true'
         message: ' Timestamp: {{now().strftime(''%Y-%m-%d %I:%M %p'')}}'
         title: Doorbell
-      action: notify.mobile_app_lucy_mob_app
+      action: notify.mobile_app_rich_mob_app
+    - action: notify.mobile_app_rich_mob_app
+      data:
+        title: Camera Motion Detected
+        message: Tap to view the live camera stream.
+        data:
+          clickAction: app://ipcent.com/onvifer/streaming/0dbaf549-2453-4a38-a2c3-e991d2c2bcee
+      enabled: false
   mode: single
 - id: '1694790204906'
   alias: Front door opened with no one home
@@ -1788,31 +1777,46 @@
 
     '
   triggers:
-  - type: changed_states
-    device_id: 99a89cc7d2a737c382a99397821a0522
-    entity_id: bff78da4f1f7d24e59e81c86729d0ceb
-    domain: media_player
-    trigger: device
+  - trigger: media_player.turned_on
+    target:
+      entity_id: media_player.shield
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
+  - trigger: media_player.turned_off
+    target:
+      entity_id: media_player.shield
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 2
   conditions: []
   actions:
   - choose:
     - conditions:
-      - condition: device
-        device_id: 99a89cc7d2a737c382a99397821a0522
-        domain: media_player
-        entity_id: bff78da4f1f7d24e59e81c86729d0ceb
-        type: is_on
+      - condition: media_player.is_on
+        target:
+          entity_id: media_player.shield
+        options:
+          behavior: any
+          for: 00:00:00
       sequence:
       - data: {}
-        target:
-          device_id: 8c3077e0600e4f78a7427ec178ee4e36
         action: switch.turn_on
+        target:
+          entity_id: switch.tv_speakers
     - conditions:
-      - condition: device
-        device_id: 99a89cc7d2a737c382a99397821a0522
-        domain: media_player
-        entity_id: bff78da4f1f7d24e59e81c86729d0ceb
-        type: is_off
+      - condition: media_player.is_off
+        target:
+          entity_id: media_player.shield
+        options:
+          behavior: any
+          for: 00:00:00
       sequence:
       - delay:
           hours: 0
@@ -1822,7 +1826,7 @@
         alias: Delay to avoid bouncing off and on
       - data: {}
         target:
-          device_id: 8c3077e0600e4f78a7427ec178ee4e36
+          entity_id: switch.tv_speakers
         action: switch.turn_off
     enabled: true
   mode: restart
@@ -2744,7 +2748,7 @@
     action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1734033969313'
-  alias: Heating - Nest Setback - Away (BROKEN)
+  alias: Heating - Nest Setback - Away
   description: 'Immediately forces the Nest to a low setback temperature when heating
     master enable is disabled (e.g. everyone leaves the house).
 
