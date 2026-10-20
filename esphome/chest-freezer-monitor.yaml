@@ -21,7 +21,7 @@
 substitutions:
   # Naming & Identification
   name: chest-freezer-monitor
-  friendly_name: "Freezer Monitor"
+  friendly_name: "Chest Freezer Monitor"
   ui_comment: "Multiple DS18B20 temperature sensors to monitor chest freezer"
 
   # Network Configuration (Static IP)
@@ -40,6 +40,9 @@ substitutions:
   sensor_update_interval: 5min
   wifi_sensor_update_interval: 10min
 
+  # DHT22 Data Pin
+  dht_pin: GPIO13
+
   # High Temperature Thresholds
   high_temp_threshold_bottom: "-18"
   high_temp_threshold_top: "-10"
@@ -57,6 +60,7 @@ packages:
   device_base: !include common/device_base.yaml
   status_led: !include common/status_led.yaml
   wifi: !include common/device_base_wifi.yaml
+  dht22: !include common/dht22.yaml
   # Uncomment below to remove the status LED from this device:
   # status_led: !remove
 
@@ -89,7 +93,7 @@ sensor:
     address: 0x333C01F09571DC28
     name: "Bottom Temperature"
     id: temperaturebottom
-    accuracy_decimals: 2
+    accuracy_decimals: 1
     unit_of_measurement: "°C"
     icon: "mdi:thermometer"
     device_class: "temperature"
@@ -101,7 +105,7 @@ sensor:
     address: 0xE43C01F095DFBB28
     name: "Top Temperature"
     id: temperaturetop
-    accuracy_decimals: 2
+    accuracy_decimals: 1
     unit_of_measurement: "°C"
     icon: "mdi:thermometer"
     device_class: "temperature"
