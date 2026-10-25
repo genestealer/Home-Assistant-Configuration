@@ -1316,7 +1316,7 @@
   - parallel:
     - action: camera.snapshot
       target:
-        entity_id: camera.p3265_lv_0
+        entity_id: camera.front_door_33
       data:
         filename: '{{ snapshot_file }}'
       continue_on_error: true
@@ -1330,7 +1330,7 @@
       - condition: state
         entity_id: sensor.rich_mob_app_phone_state
         state: idle
-        enabled: false
+        enabled: true
       then:
       - data:
           data:
@@ -1353,7 +1353,7 @@
       - condition: state
         entity_id: sensor.lucy_mob_app_phone_state
         state: idle
-        enabled: false
+        enabled: true
       then:
       - data:
           data:
@@ -2742,6 +2742,10 @@
     The Enphase ACB batteries have no such schedule, so they are always put to sleep
     at 95-100% whenever off-peak starts.
 
+
+    Daytime Manual Charge stops at 70% (Charge Target SOC) to keep the xStorage out
+    of its high cell imbalance range. Only the overnight two-stage charge goes higher.
+
     '
   triggers:
   - type: turned_on
@@ -2790,7 +2794,7 @@
             domain: number
             entity_id: 9e013b6267f57d77c33e066e1d22a5b0
             type: set_value
-            value: 95
+            value: 70
           - device_id: 7243064af443eaae599e1a98ef6c25f7
             domain: number
             entity_id: 29fcd3398a551dd0574bc71aea4438ff
@@ -3011,21 +3015,25 @@
         - condition: state
           entity_id: binary_sensor.dining_room_radiator_heat_demanded
           state: 'off'
+          enabled: false
         - condition: state
           entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
           state: 'off'
+          enabled: false
         - condition: state
           entity_id: binary_sensor.hall_radiator_heat_demanded
           state: 'off'
         - condition: state
           entity_id: binary_sensor.kitchen_radiator_heat_demanded
           state: 'off'
+          enabled: false
         - condition: state
           entity_id: binary_sensor.library_radiator_heat_demanded
           state: 'off'
         - condition: state
           entity_id: binary_sensor.living_room_radiator_heat_demanded
           state: 'off'
+          enabled: false
         - condition: state
           entity_id: binary_sensor.office_radiator_heat_demanded
           state: 'off'
@@ -3254,14 +3262,14 @@
   description: 'Monitors the battery BMS cell voltage delta and immediately issues
     a stop command if the imbalance exceeds 100 mV. This forces the inverter to halt
     its current operation, whether charging or discharging, to prevent further cell
-    stress.
+    stress, then notifies Rich.
 
     '
   triggers:
   - trigger: numeric_state
     entity_id:
     - sensor.eaton_xstorage_home_bms_cell_voltage_delta
-    above: 120
+    above: 100
     for:
       hours: 0
       minutes: 1
@@ -3272,6 +3280,23 @@
     domain: button
     entity_id: bf97b96db39a2bb857389ed9cacca815
     type: press
+  - action: notify.mobile_app_rich_mob_app
+    data:
+      title: xStorage Safety Stop
+      message: 'Cell voltage delta is {{ states(''sensor.eaton_xstorage_home_bms_cell_voltage_delta'')
+        }} mV (limit 100 mV) with the battery at {{ states(''sensor.eaton_xstorage_home_battery_state_of_charge'')
+        }}%. The xStorage has been stopped. Sent: {{ now().strftime(''%Y-%m-%d %I:%M
+        %p'') }}'
+      data:
+        color: red
+        channel: XStorageSafety
+        vibrationPattern: 100,500,100,500,100,500
+        importance: high
+        visibility: public
+        notification_icon: mdi:battery-alert
+        ttl: 0
+        priority: high
+        sticky: 'true'
   mode: single
 - id: '1773355527426'
   alias: Turn dishwasher on each night
@@ -3577,12 +3602,14 @@
     state of charge.
 
 
-    When the battery falls to 30% the charge target is set to 100% with a target time
-    1 hour ahead, which forces Octopus to allocate extra off-peak slots. One hour
-    is enough because the xStorage takes about 50 minutes to charge from 30% to 80%.
-    A separate automation handles switching the xStorage between charge and discharge
-    as the rate changes. When the battery reaches 80% the charge target drops back
-    to 30% so no further slots are requested.
+    When the battery falls to 33% the charge target is set to 100% with a target time
+    1 hour ahead, which forces Octopus to allocate extra off-peak slots. 33% leaves
+    a margin above the 30% battery backup level, which is the daytime discharge floor.
+    One hour is enough because the xStorage takes about 30 minutes to charge from
+    33% to 70%. A separate automation handles switching the xStorage between charge
+    and discharge as the rate changes, and caps daytime charging at 70%. When the
+    battery reaches 70% the charge target drops back to 30% so no further slots are
+    requested.
 
 
     This automation is blocked between 23:30 and 05:30 so it never interferes with
@@ -3593,6 +3620,13 @@
     is exactly what triggers the extra slots.
 
 
+    If the battery is still below 33% when the requested target time arrives, the
+    request is repeated with a new target time 1 hour ahead. This covers Octopus not
+    allocating a slot at all, or a slot being wasted because the charge was interrupted
+    (for example by the cell imbalance safety stop). It keeps retrying until the battery
+    charges or the 23:24 cut-off is reached.
+
+
     At 23:25 the charge target is always reset to 30%, whatever the battery level,
     so a 100% request left over from the evening cannot make Octopus schedule the
     car overnight if it is plugged in later. No new 100% request is made from 23:24
@@ -3601,12 +3635,12 @@
 
 
     Plugging in the Skoda Enyaq also re-evaluates the battery, because if it is already
-    below 30% the numeric state trigger will not fire again until it rises and falls
+    below 33% the numeric state trigger will not fire again until it rises and falls
     back through the threshold.
 
 
     The branches are decided purely from the current state of charge rather than from
-    trigger IDs. If the battery is between 30% and 80% nothing happens.
+    trigger IDs. If the battery is between 33% and 70% nothing happens.
 
 
     A manual run (Run Actions in the GUI, or the automation.trigger action) always
@@ -3617,32 +3651,38 @@
     The only template in this automation is the target time, which has to be calculated
     at runtime because the select entity needs a literal time string.'
   triggers:
-  - alias: Battery reaches 80%
-    note: Threshold is 79.9 rather than 80 because a numeric state trigger only fires
-      on crossing the value, so above 80 would not fire until the sensor reported
-      81%.
+  - alias: Battery reaches 70%
+    note: Threshold is 69.9 rather than 70 because a numeric state trigger only fires
+      on crossing the value, and the daytime charge stops at exactly 70%.
     trigger: numeric_state
     entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-    above: 79.9
-  - alias: Battery falls to 30%
-    note: Threshold is 30.1 rather than 30 because a numeric state trigger only fires
-      on crossing the value, so below 30 would not fire until the sensor reported
-      29%.
+    above: 69.9
+  - alias: Battery falls to 33%
+    note: Threshold is 33.1 rather than 33 because a numeric state trigger only fires
+      on crossing the value, so below 33 would not fire until the sensor reported
+      32%.
     trigger: numeric_state
     entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-    below: 30.1
+    below: 33.1
   - alias: Catch-up at end of the standard off-peak window
     note: Re-evaluates the battery at 05:30 in case a threshold was crossed overnight
       while this automation was blocked by the time condition below.
     trigger: time
     at: 05:30:00
+  - alias: Requested target time reached
+    note: Retries if the deadline passes with the battery still below 33%, since the
+      numeric state trigger will not fire again. A template is needed because the
+      target time is a text option on a select, which a time trigger cannot read.
+    trigger: template
+    value_template: '{{ now().strftime(''%H:%M'') == states(''select.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_target_time'')
+      }}'
   - alias: End of day reset before the standard off-peak window
     trigger: time
     at: '23:25:00'
     id: end_of_day_reset
   - alias: Car plugged in
     note: Re-evaluates the battery when the EV is connected, since the battery may
-      already be below 30% and the numeric state trigger would not fire again. The
+      already be below 33% and the numeric state trigger would not fire again. The
       short delay lets Octopus register the plug-in before the targets are changed.
     trigger: state
     entity_id: binary_sensor.skoda_enyaq_charger_connected
@@ -3677,7 +3717,7 @@
   actions:
   - alias: Decide the charge target from the current state of charge
     note: Both branches test the live sensor value rather than a trigger ID, except
-      that a manual run is forced down the second branch. Between 30% and 80% neither
+      that a manual run is forced down the second branch. Between 33% and 70% neither
       branch matches and nothing is changed.
     choose:
     - alias: End of day - clear any outstanding 100% request
@@ -3698,7 +3738,7 @@
       conditions:
       - condition: numeric_state
         entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-        above: 79.9
+        above: 69.9
       - condition: template
         value_template: '{{ not (manual_run | bool(false)) }}'
       sequence:
@@ -3717,7 +3757,7 @@
         conditions:
         - condition: numeric_state
           entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-          below: 30.1
+          below: 33.1
         - alias: Automation was run manually
           condition: template
           value_template: '{{ manual_run | bool(false) }}'
@@ -3726,8 +3766,8 @@
         before: '23:24:00'
       sequence:
       - alias: Set Intelligent Target Time to 1 hour ahead
-        note: One hour is enough because the xStorage charges from 30% to 80% in about
-          50 minutes. Octopus only accepts half-hour slots, so the time is rounded
+        note: One hour is enough because the xStorage charges from 33% to 70% in about
+          30 minutes. Octopus only accepts half-hour slots, so the time is rounded
           down to the nearest 30 minutes. If the computed slot is not in the entity's
           options list the last available option is used instead. This has to be a
           template because the select needs a literal time string that only exists
