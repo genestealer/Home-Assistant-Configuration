@@ -2746,36 +2746,62 @@
     Daytime Manual Charge stops at 70% (Charge Target SOC) to keep the xStorage out
     of its high cell imbalance range. Only the overnight two-stage charge goes higher.
 
+
+    Octoplus Free Electricity sessions (calendar) are treated like off-peak: charge
+    at the session start, and only return to normal at the end if off-peak is not
+    active (and vice versa).
+
+
+    For 3 hours before a free session (binary_sensor.octoplus_free_session_pre_discharge_window)
+    off-peak dispatches are ignored and the batteries are returned to normal when
+    the window starts, so they are as empty as possible when the free session begins.
+
     '
   triggers:
-  - type: turned_on
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
-    enabled: true
+  - trigger: state
+    entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+    from: 'off'
+    to: 'on'
     for:
-      hours: 0
-      minutes: 0
       seconds: 20
-  - type: turned_off
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
+    id: off_peak_start
+  - trigger: state
+    entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+    from: 'on'
+    to: 'off'
     for:
-      hours: 0
-      minutes: 0
       seconds: 20
+    id: off_peak_end
+  - trigger: calendar
+    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
+    event: start
+    id: free_session_start
+  - trigger: calendar
+    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
+    event: end
+    id: free_session_end
+  - trigger: state
+    entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
+    from: 'off'
+    to: 'on'
+    id: pre_free_session
   conditions: []
   actions:
   - choose:
     - conditions:
-      - type: is_on
-        condition: device
-        device_id: 3912e8bcd9d950c832ebfb154138ce98
-        entity_id: 80aa09f400893520a7232726cae46102
-        domain: binary_sensor
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: free_session_start
+        - alias: Off-peak, but not in the pre-discharge window before a free session
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+            state: 'on'
+          - condition: state
+            entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
+            state: 'off'
       sequence:
       - alias: xStorage Manual Charge - skipped from 23:00 onwards as the last useful
           Octopus slot ends at 23:30 and the built-in night schedule then takes over
@@ -2819,11 +2845,25 @@
           target:
             entity_id: button.garage_acb_sleep
     - conditions:
-      - type: is_off
-        condition: device
-        device_id: 3912e8bcd9d950c832ebfb154138ce98
-        entity_id: 80aa09f400893520a7232726cae46102
-        domain: binary_sensor
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: pre_free_session
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+            state: 'off'
+          - alias: Free session ended, or no free session running
+            condition: or
+            conditions:
+            - condition: trigger
+              id: free_session_end
+            - condition: not
+              conditions:
+              - condition: state
+                entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
+                state: 'on'
       sequence:
       - sequence:
         - device_id: 7243064af443eaae599e1a98ef6c25f7
@@ -3648,6 +3688,12 @@
     force a 100% charge target with a target time 1 hour ahead on demand.
 
 
+    For 3 hours before an Octoplus Free Electricity session (binary_sensor.octoplus_free_session_pre_discharge_window)
+    no 100% request is made, and when that window starts the charge target is reset
+    to 30% so any outstanding request is cancelled and the battery discharges before
+    the free session.
+
+
     The only template in this automation is the target time, which has to be calculated
     at runtime because the select entity needs a literal time string.'
   triggers:
@@ -3680,6 +3726,12 @@
     trigger: time
     at: '23:25:00'
     id: end_of_day_reset
+  - alias: Pre-discharge window before a free session starts
+    trigger: state
+    entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
+    from: 'off'
+    to: 'on'
+    id: pre_free_session
   - alias: Car plugged in
     note: Re-evaluates the battery when the EV is connected, since the battery may
       already be below 33% and the numeric state trigger would not fire again. The
@@ -3697,7 +3749,9 @@
     condition: or
     conditions:
     - condition: trigger
-      id: end_of_day_reset
+      id:
+      - end_of_day_reset
+      - pre_free_session
     - condition: not
       conditions:
       - condition: state
@@ -3720,10 +3774,12 @@
       that a manual run is forced down the second branch. Between 33% and 70% neither
       branch matches and nothing is changed.
     choose:
-    - alias: End of day - clear any outstanding 100% request
+    - alias: End of day or before a free session - clear any outstanding 100% request
       conditions:
       - condition: trigger
-        id: end_of_day_reset
+        id:
+        - end_of_day_reset
+        - pre_free_session
       sequence:
       - alias: Set Intelligent Charge Target to 30%
         action: number.set_value
@@ -3764,6 +3820,10 @@
       - alias: Not after the end of day reset
         condition: time
         before: '23:24:00'
+      - alias: Not in the pre-discharge window before a free session
+        condition: state
+        entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
+        state: 'off'
       sequence:
       - alias: Set Intelligent Target Time to 1 hour ahead
         note: One hour is enough because the xStorage charges from 33% to 70% in about
