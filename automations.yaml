@@ -560,7 +560,7 @@
           - light.outside_2_down
         data:
           brightness_pct: 1
-          kelvin: 6500
+          color_temp_kelvin: 4000
   mode: single
 - id: '1621103260448'
   alias: Ice Maker - On-Off Automation
@@ -701,19 +701,27 @@
         after: input_datetime.outside_lights_late_night_start_time
         before: input_datetime.outside_lights_late_night_end_time
       sequence:
-      - target:
-          entity_id:
-          - light.outside_1_down
-          - light.outside_2_down
-          - light.outside_3_down
-          - light.outside_4_down
-          - light.outside_5_down
-        data:
-          brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
-            | int(0) }}'
-          color_temp_kelvin: 370
-          transition: 5
-        action: light.turn_on
+      - parallel:
+        - target:
+            entity_id:
+            - light.outside_1_down
+            - light.outside_3_down
+            - light.outside_4_down
+            - light.outside_5_down
+          data:
+            brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
+              | int(0) }}'
+            transition: 5
+          action: light.turn_on
+        - target:
+            entity_id:
+            - light.outside_2_down
+          data:
+            brightness_pct: '{{ states(''input_number.outside_lights_late_night_brightness'')
+              | int(0) }}'
+            color_temp_kelvin: 2700
+            transition: 5
+          action: light.turn_on
       - delay:
           minutes: '{{ states(''input_number.outside_lights_late_night_time_on_minutes'')
             | int(0) }}'
@@ -734,7 +742,7 @@
         entity_id:
         - light.outside_2_down
       data:
-        color_temp_kelvin: 370
+        color_temp_kelvin: 2700
         brightness_pct: '{{ states(''input_number.outside_lights_early_night_brightness'')
           | int(0) }}'
         transition: '{{ states(''input_number.outside_lights_early_night_per_light_transition_time_seconds'')
@@ -847,7 +855,7 @@
     - target:
         entity_id: light.outside_2_down
       data:
-        color_temp_kelvin: 250
+        color_temp_kelvin: 4000
         brightness_pct: 1
       action: light.turn_on
   mode: restart
@@ -3839,8 +3847,8 @@
           value: 30
     - alias: Saving session coming - request a full charge ready 30 minutes before
         it
-      note: Skipped at 70% or above, which falls through to the branch below and
-        clears any request instead.
+      note: Skipped at 70% or above, which falls through to the branch below and clears
+        any request instead.
       conditions:
       - condition: trigger
         id: pre_saving_session
@@ -4087,3 +4095,4 @@
       device_id: rfdebug
       command: 'off'
   mode: single
+  
