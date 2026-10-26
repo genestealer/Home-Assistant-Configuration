@@ -487,8 +487,7 @@ morning_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - a46ff2f2479fd7381a267a77a12734ae
+      entity_id: climate.bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -498,8 +497,7 @@ morning_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - 55d26468639a4f1005742215878de937
+      entity_id: climate.guest_bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -519,7 +517,7 @@ morning_heating_mode:
     data:
       temperature: 15
     target:
-      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+      entity_id: climate.living_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -529,8 +527,7 @@ morning_heating_mode:
     data:
       temperature: 12
     target:
-      device_id:
-      - d87bf9712abd725b400a815405c374ac
+      entity_id: climate.kitchen_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -540,8 +537,7 @@ morning_heating_mode:
     data:
       temperature: 12
     target:
-      device_id:
-      - e79922e5a787ed8db81ee253715ea823
+      entity_id: climate.dining_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -598,8 +594,7 @@ evening_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - a46ff2f2479fd7381a267a77a12734ae
+      entity_id: climate.bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -609,8 +604,7 @@ evening_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - 55d26468639a4f1005742215878de937
+      entity_id: climate.guest_bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -630,7 +624,7 @@ evening_heating_mode:
     data:
       temperature: 22
     target:
-      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+      entity_id: climate.living_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -640,8 +634,7 @@ evening_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - d87bf9712abd725b400a815405c374ac
+      entity_id: climate.kitchen_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -651,8 +644,7 @@ evening_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - e79922e5a787ed8db81ee253715ea823
+      entity_id: climate.dining_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -709,8 +701,7 @@ bedtime_heating_mode:
     data:
       temperature: 22
     target:
-      device_id:
-      - a46ff2f2479fd7381a267a77a12734ae
+      entity_id: climate.bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -720,8 +711,7 @@ bedtime_heating_mode:
     data:
       temperature: 20
     target:
-      device_id:
-      - 55d26468639a4f1005742215878de937
+      entity_id: climate.guest_bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -741,7 +731,7 @@ bedtime_heating_mode:
     data:
       temperature: 5
     target:
-      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+      entity_id: climate.living_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -751,8 +741,7 @@ bedtime_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - d87bf9712abd725b400a815405c374ac
+      entity_id: climate.kitchen_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -762,8 +751,7 @@ bedtime_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - e79922e5a787ed8db81ee253715ea823
+      entity_id: climate.dining_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -820,8 +808,7 @@ night_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - a46ff2f2479fd7381a267a77a12734ae
+      entity_id: climate.bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -831,8 +818,7 @@ night_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - 55d26468639a4f1005742215878de937
+      entity_id: climate.guest_bedroom_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -852,7 +838,7 @@ night_heating_mode:
     data:
       temperature: 5
     target:
-      device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
+      entity_id: climate.living_room_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -862,8 +848,7 @@ night_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - d87bf9712abd725b400a815405c374ac
+      entity_id: climate.kitchen_radiator
   - delay:
       hours: 0
       minutes: 0
@@ -873,8 +858,7 @@ night_heating_mode:
     data:
       temperature: 5
     target:
-      device_id:
-      - e79922e5a787ed8db81ee253715ea823
+      entity_id: climate.dining_room_radiator
   - delay:
       hours: 0
       minutes: 0

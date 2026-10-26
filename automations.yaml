@@ -1744,38 +1744,13 @@
   description: ''
   triggers:
   - type: problem
-    device_id: a46ff2f2479fd7381a267a77a12734ae
-    entity_id: cb5fcb489d2672ac9dad67779d1b5c08
-    domain: binary_sensor
-    trigger: device
-  - type: problem
-    device_id: e79922e5a787ed8db81ee253715ea823
-    entity_id: 240181bd9a3ee5f41a115bad8769841b
-    domain: binary_sensor
-    trigger: device
-  - type: problem
     device_id: 061f81b04836d8e074d7e2542b21767c
     entity_id: a050971712c4335b998b67489b3e07b8
     domain: binary_sensor
     trigger: device
   - type: problem
-    device_id: 55d26468639a4f1005742215878de937
-    entity_id: c8108715bdfc512a18dfbbe5124bee96
-    domain: binary_sensor
-    trigger: device
-  - type: problem
     device_id: f694a04cab17376f9ccbb97b67b6365d
     entity_id: a1222f8d5b3d6a922a9e71ab061f2292
-    domain: binary_sensor
-    trigger: device
-  - type: problem
-    device_id: 9fb3ba0a224918b6c1b43afbcc3c1f23
-    entity_id: 8e53453c39e12d27442ff5b35a6deced
-    domain: binary_sensor
-    trigger: device
-  - type: problem
-    device_id: d87bf9712abd725b400a815405c374ac
-    entity_id: 7065503bc93ebbeb606463976d04f999
     domain: binary_sensor
     trigger: device
   - type: problem
@@ -2714,7 +2689,7 @@
       - sensor.solar_panels_current_net_power_consumption
   mode: single
 - id: '1755724844350'
-  alias: Home Battery Smart Charging Octopus
+  alias: Octopus Energy - Home Battery Smart Charging
   description: 'Intelligently controls home battery charging based on Octopus Energy''s
     Intelligent Go smart dispatching algorithm.
 
@@ -2756,6 +2731,13 @@
     off-peak dispatches are ignored and the batteries are returned to normal when
     the window starts, so they are as empty as possible when the free session begins.
 
+
+    Does nothing during an Octoplus Saving (Power Down) session (handled by the Home
+    Battery Saving Session Octopus automation). In the 2 hour pre-charge window before
+    one (binary_sensor.octoplus_saving_session_pre_charge_window) off-peak dispatches
+    charge as normal, but outside them the batteries hold their charge (xStorage Basic
+    Mode, ACB asleep) instead of discharging, so they are full when the session starts.
+
     '
   triggers:
   - trigger: state
@@ -2785,7 +2767,18 @@
     from: 'off'
     to: 'on'
     id: pre_free_session
-  conditions: []
+  - trigger: state
+    entity_id: binary_sensor.octoplus_saving_session_pre_charge_window
+    from: 'off'
+    to: 'on'
+    id: pre_saving_session
+  conditions:
+  - alias: Not during a saving session
+    condition: not
+    conditions:
+    - condition: state
+      entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_down
+      state: 'on'
   actions:
   - choose:
     - conditions:
@@ -2844,6 +2837,38 @@
           metadata: {}
           target:
             entity_id: button.garage_acb_sleep
+    - alias: Saving session pre-charge window, no dispatch - hold the charge
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.octoplus_saving_session_pre_charge_window
+        state: 'on'
+      sequence:
+      - alias: xStorage Basic Mode - neither charges nor discharges
+        sequence:
+        - action: number.set_value
+          target:
+            entity_id: number.eaton_xstorage_home_run_duration
+          data:
+            value: 3
+        - action: select.select_option
+          target:
+            entity_id: select.eaton_xstorage_home_current_operation_mode
+          data:
+            option: basic_mode
+        continue_on_error: true
+      - alias: Enphase ACB asleep at 95-100%
+        sequence:
+        - action: select.select_option
+          target:
+            entity_id: select.garage_acb_battery_sleep_soc_target
+          data:
+            option: 95-100
+        - action: button.press
+          target:
+            entity_id: button.garage_acb_sleep
     - conditions:
       - condition: or
         conditions:
@@ -2870,7 +2895,7 @@
           domain: number
           entity_id: 7a0f09fc8bf4e63c9f78eaea0b9363b3
           type: set_value
-          value: 12
+          value: 2
         - device_id: 7243064af443eaae599e1a98ef6c25f7
           domain: select
           entity_id: 21ffd38d355c25562522dc095f2b7313
@@ -2883,6 +2908,46 @@
           entity_id: button.garage_acb_wake
         data: {}
   mode: restart
+- id: '1792999200000'
+  alias: Octopus Energy - Home Battery Saving Session
+  description: 'Discharges the home batteries into the house load during an Octoplus
+    Saving (Power Down) session.
+
+
+    The batteries are filled beforehand with off-peak energy, not peak-rate grid charging:
+    in the 2 hour pre-charge window (binary_sensor.octoplus_saving_session_pre_charge_window)
+    the Intelligent Go cycle charge target automation requests a 100% charge ready
+    30 minutes before the session, Home Battery Smart Charging charges on the resulting
+    dispatches and holds the charge between them.
+
+
+    When the session starts the xStorage returns to Maximize Auto Consumption and
+    the ACB batteries are woken, so both cover the house load during the session.
+
+    '
+  triggers:
+  - trigger: calendar
+    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_down
+    event: start
+  conditions: []
+  actions:
+  - alias: Saving session started - discharge into the house load
+    sequence:
+    - action: number.set_value
+      target:
+        entity_id: number.eaton_xstorage_home_run_duration
+      data:
+        value: '2'
+    - action: select.select_option
+      target:
+        entity_id: select.eaton_xstorage_home_current_operation_mode
+      data:
+        option: maximize_auto_consumption
+    continue_on_error: true
+  - action: button.press
+    target:
+      entity_id: button.garage_acb_wake
+  mode: single
 - id: '1758208938977'
   alias: Octopus Energy - Auto Set Peak/Off-Peak Tariff
   description: 'Automatically sets tariff based on night rates and Octopus Intelligent
@@ -2959,73 +3024,64 @@
 - id: '1766951057635'
   alias: Heating - OpenTherm Control - TRV Demand
   description: "Controls the boiler via the Nest thermostat using OpenTherm modulation,
-    based on heat demand from all radiator TRVs.\nEach TRV exposes two normalised
-    signals so third party devices behave consistently and Home Assistant can coordinate
-    without owning comfort control.\nHeating Max Room Temperature Delta (sensor.heating_max_room_temperature_delta)\n
-    \ - The largest unmet heating requirement across all rooms\n    (setpoint minus
-    room temperature, negatives clamped to 0)\n  - A value of 0 means no room needs
-    heat\n  - Larger values mean at least one room is below its target\n\nHeating
-    Nest Demand Offset (OpenTherm Friendly) (sensor.heating_nest_demand_offset_opentherm_friendly)\n
-    \ - Converts the system wide delta into a bounded temperature offset\n    added
-    to the Nest current temperature\n  - Small deltas encourage low flow temperatures
-    for efficient burns\n  - Larger deltas speed recovery while remaining capped\n
-    \ - Falls back to 0 if the delta is unavailable or invalid\n\nBehaviour: - If
-    any radiator demands heat and heating_master_enable is ON, the Nest\n  target
-    is set to current temperature plus the calculated offset so the\n  boiler modulates
-    via OpenTherm rather than switching on and off\n- If no radiators demand heat
-    while heating is enabled, the Nest is set\n  to a low setback temperature (12°C)
-    so the boiler shuts down cleanly\n\nArchitectural note: - This automation only
-    modulates the Nest while heating is enabled - It never forces the system off when
-    the house is unoccupied - Away behaviour and enforced setbacks are handled by
-    a separate,\n  authoritative automation to avoid stale setpoints\n\nThis keeps
-    comfort and hysteresis inside the TRVs, uses Home Assistant purely for coordination,
-    and allows the boiler to run efficiently using OpenTherm modulation instead of
-    fixed on or off control.\nUses helpers: - sensor.heating_max_room_temperature_delta
-    - sensor.heating_nest_demand_offset_opentherm_friendly\n"
+    based on heat demand from the radiator TRVs (a mix of Zigbee TRVZB and Energenie
+    MIHO013 valves).\n\nHeat demand comes straight from each valve's climate entity:
+    the hvac_action attribute is 'heating' while the valve is calling for heat. Both
+    valve types report it, so no per-room heat demanded helpers are needed. The upstairs
+    bathroom is deliberately left out (the towel rail script drives the Nest itself).\n\nHeating
+    Max Room Temperature Delta (sensor.heating_max_room_temperature_delta)\n  - Min/Max
+    helper (max) over each room's Temperature Delta sensor\n    (setpoint minus room
+    temperature). The MIHO013 valves provide this sensor\n    themselves; each TRVZB
+    has a template helper linked to its device.\n\nHeating Nest Demand Offset (OpenTherm
+    Friendly) (sensor.heating_nest_demand_offset_opentherm_friendly)\n  - Converts
+    the max delta into a bounded offset added to the Nest\n    current temperature.
+    Deltas of 0 or below give 0.\n\nBehaviour:\n- If any valve is heating, the Nest
+    target is set to its current temperature\n  plus the offset so the boiler modulates
+    via OpenTherm.\n- If no valve is heating, the Nest is set back to 12°C so the
+    boiler shuts\n  down cleanly.\n- Only runs while heating_master_enable is on.
+    Away setbacks are handled\n  by the separate Heating - Nest Setback - Away automation.\n\nAdding
+    or swapping a valve: add its climate entity to the trigger and to the\nThermostat
+    is heating condition, and add its Temperature Delta sensor to the\nHeating Max
+    Room Temperature Delta helper.\n"
   triggers:
-  - entity_id:
-    - binary_sensor.bedroom_radiator_heat_demanded
-    - binary_sensor.dining_room_radiator_heat_demanded
-    - binary_sensor.guest_bedroom_radiator_heat_demanded
-    - binary_sensor.hall_radiator_heat_demanded
-    - binary_sensor.kitchen_radiator_heat_demanded
-    - binary_sensor.library_radiator_heat_demanded
-    - binary_sensor.living_room_radiator_heat_demanded
-    - binary_sensor.office_radiator_heat_demanded
-    - sensor.heating_nest_demand_offset_opentherm_friendly
+  - alias: A valve started or stopped calling for heat
     trigger: state
+    entity_id:
+    - climate.office_radiator
+    - climate.bedroom_radiator
+    - climate.guest_bedroom_radiator
+    - climate.kitchen_radiator
+    - climate.dining_room_radiator
+    - climate.living_room_radiator
+    - climate.hall_radiator
+    - climate.library_radiator
+    - climate.downstairs_bathroom_radiator
+    attribute: hvac_action
+  - alias: Demand offset changed
+    trigger: state
+    entity_id: sensor.heating_nest_demand_offset_opentherm_friendly
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_master_enable
+    state: 'on'
   actions:
   - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.heating_master_enable
-        state: 'on'
-      - condition: or
-        conditions:
-        - condition: state
-          entity_id: binary_sensor.bedroom_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.dining_room_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.hall_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.kitchen_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.library_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.living_room_radiator_heat_demanded
-          state: 'on'
-        - condition: state
-          entity_id: binary_sensor.office_radiator_heat_demanded
-          state: 'on'
+    - alias: At least one valve is heating
+      conditions:
+      - condition: climate.is_heating
+        target:
+          entity_id:
+          - climate.office_radiator
+          - climate.bedroom_radiator
+          - climate.guest_bedroom_radiator
+          - climate.kitchen_radiator
+          - climate.dining_room_radiator
+          - climate.living_room_radiator
+          - climate.hall_radiator
+          - climate.library_radiator
+          - climate.downstairs_bathroom_radiator
+        options:
+          behavior: any
       sequence:
       - variables:
           base_temp: '{{ state_attr(''climate.hallway'',''current_temperature'') |
@@ -3043,46 +3099,13 @@
         data:
           temperature: '{{ target_temp }}'
         action: climate.set_temperature
-    - conditions:
-      - condition: state
-        entity_id: input_boolean.heating_master_enable
-        state: 'on'
-      - condition: and
-        conditions:
-        - condition: state
-          entity_id: binary_sensor.bedroom_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.dining_room_radiator_heat_demanded
-          state: 'off'
-          enabled: false
-        - condition: state
-          entity_id: binary_sensor.guest_bedroom_radiator_heat_demanded
-          state: 'off'
-          enabled: false
-        - condition: state
-          entity_id: binary_sensor.hall_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.kitchen_radiator_heat_demanded
-          state: 'off'
-          enabled: false
-        - condition: state
-          entity_id: binary_sensor.library_radiator_heat_demanded
-          state: 'off'
-        - condition: state
-          entity_id: binary_sensor.living_room_radiator_heat_demanded
-          state: 'off'
-          enabled: false
-        - condition: state
-          entity_id: binary_sensor.office_radiator_heat_demanded
-          state: 'off'
-      sequence:
-      - target:
-          entity_id: climate.hallway
-        data:
-          temperature: 12
-        action: climate.set_temperature
+    default:
+    - alias: No valve is heating - set the Nest back
+      target:
+        entity_id: climate.hallway
+      data:
+        temperature: 12
+      action: climate.set_temperature
   mode: restart
 - id: '1767491305312'
   alias: Office Air Purifier - Desk Power
@@ -3670,8 +3693,9 @@
     At 23:25 the charge target is always reset to 30%, whatever the battery level,
     so a 100% request left over from the evening cannot make Octopus schedule the
     car overnight if it is plugged in later. No new 100% request is made from 23:24
-    onwards (one minute of margin so a run in progress cannot swallow the reset, as
-    the mode is single).
+    onwards (one minute of margin before the reset). The mode is queued so triggers
+    that land on the same minute (for example the target time retry and a session
+    window starting) run in turn instead of one being dropped.
 
 
     Plugging in the Skoda Enyaq also re-evaluates the battery, because if it is already
@@ -3692,6 +3716,17 @@
     no 100% request is made, and when that window starts the charge target is reset
     to 30% so any outstanding request is cancelled and the battery discharges before
     the free session.
+
+
+    No 100% request is made during an Octoplus Saving (Power Down) session, and the
+    charge target is reset to 30% when one starts, so nothing is dispatched during
+    the session.
+
+
+    When the 2 hour pre-charge window before a saving session starts (binary_sensor.octoplus_saving_session_pre_charge_window)
+    a 100% charge target is requested with the target time 30 minutes before the session,
+    so Octopus dispatches off-peak slots to fill the battery for it. The normal low
+    battery request is skipped during that window so it cannot move the target time.
 
 
     The only template in this automation is the target time, which has to be calculated
@@ -3732,6 +3767,17 @@
     from: 'off'
     to: 'on'
     id: pre_free_session
+  - alias: Saving session starts
+    trigger: calendar
+    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_down
+    event: start
+    id: saving_session_start
+  - alias: Pre-charge window before a saving session starts
+    trigger: state
+    entity_id: binary_sensor.octoplus_saving_session_pre_charge_window
+    from: 'off'
+    to: 'on'
+    id: pre_saving_session
   - alias: Car plugged in
     note: Re-evaluates the battery when the EV is connected, since the battery may
       already be below 33% and the numeric state trigger would not fire again. The
@@ -3752,6 +3798,8 @@
       id:
       - end_of_day_reset
       - pre_free_session
+      - saving_session_start
+      - pre_saving_session
     - condition: not
       conditions:
       - condition: state
@@ -3774,12 +3822,14 @@
       that a manual run is forced down the second branch. Between 33% and 70% neither
       branch matches and nothing is changed.
     choose:
-    - alias: End of day or before a free session - clear any outstanding 100% request
+    - alias: End of day or before a free/saving session - clear any outstanding 100%
+        request
       conditions:
       - condition: trigger
         id:
         - end_of_day_reset
         - pre_free_session
+        - saving_session_start
       sequence:
       - alias: Set Intelligent Charge Target to 30%
         action: number.set_value
@@ -3787,6 +3837,37 @@
           entity_id: number.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_charge_target
         data:
           value: 30
+    - alias: Saving session coming - request a full charge ready 30 minutes before
+        it
+      note: Skipped at 70% or above, which falls through to the branch below and
+        clears any request instead.
+      conditions:
+      - condition: trigger
+        id: pre_saving_session
+      - condition: numeric_state
+        entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
+        below: 69.9
+      sequence:
+      - alias: Set Intelligent Target Time to 30 minutes before the session
+        note: Rounded down to the half-hour slot. Falls back to the last option if
+          the slot is not in the list.
+        action: select.select_option
+        target:
+          entity_id: select.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_target_time
+        data:
+          option: '{% set opts = state_attr(''select.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_target_time'',
+            ''options'') or [] %} {% set t = as_local(as_datetime(state_attr(''calendar.octopus_energy_a_dcb1af4a_octoplus_power_down'',
+            ''start_time''))) - timedelta(minutes=30) %} {% set slot = ''{:02d}:{:02d}''.format(t.hour,
+            30 if t.minute >= 30 else 0) %} {{ slot if slot in opts else (opts | last
+            if opts | count > 0 else slot) }}'
+      - alias: Brief pause before changing the charge target
+        delay: 00:00:05
+      - alias: Set Intelligent Charge Target to 100%
+        action: number.set_value
+        target:
+          entity_id: number.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_charge_target
+        data:
+          value: 100
     - alias: Battery full enough - stop requesting off-peak slots
       note: Dropping the charge target to 30% tells Octopus no further charging is
         needed, so it stops allocating bonus off-peak slots until the battery is drawn
@@ -3824,6 +3905,16 @@
         condition: state
         entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
         state: 'off'
+      - alias: Not in the pre-charge window before a saving session
+        condition: state
+        entity_id: binary_sensor.octoplus_saving_session_pre_charge_window
+        state: 'off'
+      - alias: Not during a saving session
+        condition: not
+        conditions:
+        - condition: state
+          entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_down
+          state: 'on'
       sequence:
       - alias: Set Intelligent Target Time to 1 hour ahead
         note: One hour is enough because the xStorage charges from 33% to 70% in about
@@ -3851,7 +3942,8 @@
           entity_id: number.octopus_energy_00000000_0002_4000_8020_00000011db21_intelligent_charge_target
         data:
           value: 100
-  mode: single
+  mode: queued
+  max: 5
   max_exceeded: silent
 - id: '1787873367801'
   alias: XStorage Battery - Overnight Two-Stage Charge
