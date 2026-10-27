@@ -1450,7 +1450,7 @@
       snapshot_url: /local/tmp/front_door/front-{{ stamp }}.jpg
   - action: camera.snapshot
     target:
-      entity_id: camera.p3265_lv_0
+      entity_id: camera.front_door_33
     data:
       filename: '{{ snapshot_file }}'
     continue_on_error: true
@@ -1509,11 +1509,11 @@
       snapshot_file: /config/www/tmp/back_door/back-{{ stamp }}.jpg
       snapshot_url: /local/tmp/back_door/back-{{ stamp }}.jpg
   - action: camera.snapshot
-    target:
-      entity_id: camera.p3225_lv_mk_ii_1
     data:
       filename: '{{ snapshot_file }}'
     continue_on_error: true
+    target:
+      entity_id: camera.garden_30
   - parallel:
     - data:
         title: Back Door
@@ -1715,7 +1715,7 @@
       snapshot_url: /local/tmp/garage/garage-{{ stamp }}.jpg
   - action: camera.snapshot
     target:
-      entity_id: camera.p3224_lve_0
+      entity_id: camera.garage_32
     data:
       filename: '{{ snapshot_file }}'
     continue_on_error: true
@@ -3601,13 +3601,13 @@
   - parallel:
     - action: camera.snapshot
       target:
-        entity_id: camera.garage_32_accc8e9a8378
+        entity_id: camera.garage_32
       data:
         filename: '{{ file_1 }}'
       continue_on_error: true
     - action: camera.snapshot
       target:
-        entity_id: camera.p3224_lve_0
+        entity_id: camera.drive_high_25
       data:
         filename: '{{ file_2 }}'
       continue_on_error: true
