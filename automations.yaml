@@ -2726,8 +2726,10 @@
     at 95-100% whenever off-peak starts.
 
 
-    Daytime Manual Charge stops at 70% (Charge Target SOC) to keep the xStorage out
-    of its high cell imbalance range. Only the overnight two-stage charge goes higher.
+    Daytime Manual Charge stops at 85% (Charge Target SOC). Two weeks of BMS data
+    showed the cell voltage delta is lowest above 70% and worst below 35%, and the
+    ''battery voltage high'' alerts only occur at 93-100%, so 85% stays clear of both.
+    Only the overnight two-stage charge goes higher.
 
 
     Octoplus Free Electricity sessions (calendar) are treated like off-peak: charge
@@ -2821,7 +2823,7 @@
             domain: number
             entity_id: 9e013b6267f57d77c33e066e1d22a5b0
             type: set_value
-            value: 70
+            value: 85
           - device_id: 7243064af443eaae599e1a98ef6c25f7
             domain: number
             entity_id: 29fcd3398a551dd0574bc71aea4438ff
@@ -3676,10 +3678,10 @@
     When the battery falls to 33% the charge target is set to 100% with a target time
     1 hour ahead, which forces Octopus to allocate extra off-peak slots. 33% leaves
     a margin above the 30% battery backup level, which is the daytime discharge floor.
-    One hour is enough because the xStorage takes about 30 minutes to charge from
-    33% to 70%. A separate automation handles switching the xStorage between charge
-    and discharge as the rate changes, and caps daytime charging at 70%. When the
-    battery reaches 70% the charge target drops back to 30% so no further slots are
+    One hour is enough because the xStorage takes about 35 minutes to charge from
+    33% to 85%. A separate automation handles switching the xStorage between charge
+    and discharge as the rate changes, and caps daytime charging at 85%. When the
+    battery reaches 85% the charge target drops back to 30% so no further slots are
     requested.
 
 
@@ -3712,7 +3714,7 @@
 
 
     The branches are decided purely from the current state of charge rather than from
-    trigger IDs. If the battery is between 33% and 70% nothing happens.
+    trigger IDs. If the battery is between 33% and 85% nothing happens.
 
 
     A manual run (Run Actions in the GUI, or the automation.trigger action) always
@@ -3740,12 +3742,12 @@
     The only template in this automation is the target time, which has to be calculated
     at runtime because the select entity needs a literal time string.'
   triggers:
-  - alias: Battery reaches 70%
-    note: Threshold is 69.9 rather than 70 because a numeric state trigger only fires
-      on crossing the value, and the daytime charge stops at exactly 70%.
+  - alias: Battery reaches 85%
+    note: Threshold is 84.9 rather than 85 because a numeric state trigger only fires
+      on crossing the value, and the daytime charge stops at exactly 85%.
     trigger: numeric_state
     entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-    above: 69.9
+    above: 84.9
   - alias: Battery falls to 33%
     note: Threshold is 33.1 rather than 33 because a numeric state trigger only fires
       on crossing the value, so below 33 would not fire until the sensor reported
@@ -3827,7 +3829,7 @@
   actions:
   - alias: Decide the charge target from the current state of charge
     note: Both branches test the live sensor value rather than a trigger ID, except
-      that a manual run is forced down the second branch. Between 33% and 70% neither
+      that a manual run is forced down the second branch. Between 33% and 85% neither
       branch matches and nothing is changed.
     choose:
     - alias: End of day or before a free/saving session - clear any outstanding 100%
@@ -3847,14 +3849,14 @@
           value: 30
     - alias: Saving session coming - request a full charge ready 30 minutes before
         it
-      note: Skipped at 70% or above, which falls through to the branch below and clears
+      note: Skipped at 85% or above, which falls through to the branch below and clears
         any request instead.
       conditions:
       - condition: trigger
         id: pre_saving_session
       - condition: numeric_state
         entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-        below: 69.9
+        below: 84.9
       sequence:
       - alias: Set Intelligent Target Time to 30 minutes before the session
         note: Rounded down to the half-hour slot. Falls back to the last option if
@@ -3883,7 +3885,7 @@
       conditions:
       - condition: numeric_state
         entity_id: sensor.eaton_xstorage_home_battery_state_of_charge
-        above: 69.9
+        above: 84.9
       - condition: template
         value_template: '{{ not (manual_run | bool(false)) }}'
       sequence:
@@ -3925,8 +3927,8 @@
           state: 'on'
       sequence:
       - alias: Set Intelligent Target Time to 1 hour ahead
-        note: One hour is enough because the xStorage charges from 33% to 70% in about
-          30 minutes. Octopus only accepts half-hour slots, so the time is rounded
+        note: One hour is enough because the xStorage charges from 33% to 85% in about
+          35 minutes. Octopus only accepts half-hour slots, so the time is rounded
           down to the nearest 30 minutes. If the computed slot is not in the entity's
           options list the last available option is used instead. This has to be a
           template because the select needs a literal time string that only exists
