@@ -1,5 +1,5 @@
 - id: '1558317969078'
-  alias: CCTV Reboot Each Monday
+  alias: CCTV - Weekly reboot
   triggers:
   - at: 05:30:00
     trigger: time
@@ -68,7 +68,7 @@
         continue_on_error: true
     continue_on_error: true
 - id: '1576601014597'
-  alias: Plug-in Air Freshener - On-Off Automation
+  alias: Air Fresheners - Schedule with presence
   description: 'Turn on in the morning when someone is home as long as it between
     certain times. Also turns back on after returning home. Turn off in the evening
     or when no one is home. Repeat as it sometimes does not work '
@@ -148,7 +148,7 @@
         - switch.plug_in_air_freshener_2_2
   mode: restart
 - id: '1581770041173'
-  alias: Electricity supply voltage is LOW/HIGH and Power Cut / Loss of Mains
+  alias: Mains Supply - Notify voltage low/high
   description: Send Notification when Electricity Voltage is Low or High
   triggers:
   - above: '254'
@@ -207,7 +207,7 @@
           title: Electricity Voltage High
         action: notify.mobile_app_rich_mob_app
 - id: '1581770321118'
-  alias: 'Notify: UPS is close to being depleted'
+  alias: UPS - Notify nearly depleted
   description: Send Notification when UPS is about to shutdown (10 mins left)
   triggers:
   - below: 600
@@ -233,7 +233,7 @@
       title: 'WARNING: UPS close to being depleted'
     action: notify.mobile_app_rich_mob_app
 - id: '1590103997253'
-  alias: 'Server Getting Hot '
+  alias: Server - Notify high temperature
   description: ''
   trigger:
   - above: '65'
@@ -245,7 +245,7 @@
       message: Server is getting HOT!
     service: notify.google_cloud_notify
 - id: '1601037277352'
-  alias: Proximity/Perimeter Warning System - Primary and Secondary Zone Failure
+  alias: Perimeter - Notify zone breach
   description: ''
   trigger:
   - platform: zone
@@ -314,7 +314,7 @@
         service: tts.google_translate_say
   mode: single
 - id: '1601317646616'
-  alias: Front Lawn Anti Cat Defences
+  alias: Front Lawn - Cat deterrent sprinkler
   description: Front Lawn Anti Cat Defence
   triggers:
   - type: motion
@@ -374,7 +374,7 @@
       milliseconds: 0
   mode: restart
 - id: '1607604378569'
-  alias: AutoHotKey - Webhook Driven - Busy Light - Process Presence Incoming Webhook
+  alias: Busy Light - Receive Teams status
   description: 'If the automation is not restarted within 6 minutes due to a new incoming
     webhook, the status is changed to offline.  Ref: https://github.com/ajobbins/AHK-Teams-Presence'
   trigger:
@@ -397,7 +397,7 @@
     entity_id: input_text.autohotkey1
   mode: restart
 - id: '1607605238090'
-  alias: AutoHotKey - Webhook Driven - Busy Light - Change Busy Light Colours
+  alias: Busy Light - Set colour from status
   description: 'Change an RGB light to signal presence. Ref: https://github.com/ajobbins/AHK-Teams-Presence'
   triggers:
   - entity_id: input_text.autohotkey1
@@ -525,7 +525,7 @@
       action: light.turn_off
   mode: restart
 - id: '1619906809678'
-  alias: Outside Lights - House Number Sign Light Schedule
+  alias: Outside Lights - House sign schedule
   description: ' Use wait to ensure the Choose action for time is after the trigger
     time, not on the time.'
   triggers:
@@ -563,7 +563,7 @@
           color_temp_kelvin: 4000
   mode: single
 - id: '1621103260448'
-  alias: Ice Maker - On-Off Automation
+  alias: Ice Maker - Schedule with presence
   description: 'On-Off Schedule with presence awareness, state restoration and high
     temperature alarm (Turn on the ice maker for a set time if the water temperature
     goes above a set threshold. Only run if ice maker is not already on). Removes
@@ -620,7 +620,7 @@
             milliseconds: 0
   mode: restart
 - id: '1634179399421'
-  alias: Notify when Lucy leaves her pump at home
+  alias: Lucy Pump - Notify left at home
   description: ''
   trigger:
   - platform: state
@@ -655,7 +655,7 @@
     action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1635187432504'
-  alias: Outside Lights Motion Slow Fade
+  alias: Outside Lights - Motion slow fade
   description: Main Lights Profile
   triggers:
   - type: motion
@@ -860,7 +860,7 @@
       action: light.turn_on
   mode: restart
 - id: '1652210144322'
-  alias: House Doorbell - Local Notify
+  alias: Doorbell - Announce in house
   description: CCTV needs to have anonymous viewer enabled or I need to pass the username
     in the media_content_id. Note, during testing you need to turn off the media_player
     device after each test, else is will not show the video again. (local media-source
@@ -1109,7 +1109,7 @@
     enabled: false
   mode: single
 - id: '1661547535107'
-  alias: Kitchen Lights Motion Automation
+  alias: Kitchen Lights - Motion
   description: Triggered on motion, restarted on fresh motion detection (sensors set
     to 90 second timeout). On the timer delay turn-off section, checks if any of the
     four kitchen sensors are still occupied, to avoid the issue with occupancy being
@@ -1206,23 +1206,23 @@
           device_id: c8b85bb0a92c1f69c117b9217a6c86a8
   mode: restart
 - id: '1667142302076'
-  alias: Smoke Machine Automation - Reset Switch
+  alias: Smoke Machine - Reset switch
   description: Remote is "Off" only, so this resets the switch back to "On"
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - switch.smoke_machine
     to: 'off'
-  condition: []
-  action:
-  - service: switch.turn_on
-    data: {}
+    trigger: state
+  conditions: []
+  actions:
+  - data: {}
     target:
       entity_id: switch.smoke_machine
     enabled: false
+    action: switch.turn_on
   mode: single
 - id: '1671628022949'
-  alias: Christmas Lights Timer
+  alias: Christmas Lights - Schedule
   description: ''
   triggers:
   - event: sunset
@@ -1265,7 +1265,7 @@
           - light.christmas_garden_lights
   mode: single
 - id: '1689364304362'
-  alias: Irrigation Notify When Controllers Goes Offline
+  alias: Irrigation - Notify controller offline
   description: ''
   triggers:
   - platform: state
@@ -1299,7 +1299,7 @@
     action: notify.mobile_app_rich_mob_app
   mode: queued
 - id: '1694727006658'
-  alias: House Doorbell - External Notify
+  alias: Doorbell - Notify phones
   description: Snapshots the front door camera at trigger time and sends that static
     file, rather than /api/camera_proxy/<camera>, which the companion app only fetches
     when the notification is rendered - a slow push or poor signal meant the photo
@@ -1416,7 +1416,7 @@
       enabled: false
   mode: single
 - id: '1694790204906'
-  alias: Front door opened with no one home
+  alias: Front Door - Notify opened while away
   description: Snapshots the front door camera at trigger time and sends that static
     file, rather than /api/camera_proxy/<camera>, which the companion app only fetches
     when the notification is rendered - a slow push or poor signal meant the photo
@@ -1483,7 +1483,7 @@
       action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1694795158536'
-  alias: Back door opened but no one is home
+  alias: Back Door - Notify opened while away
   description: Snapshots the back garden camera at trigger time. See Front door automation
     for full notes on the /local/tmp/ path, unauthenticated serving, and file housekeeping.
   triggers:
@@ -1543,7 +1543,7 @@
       action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1696178796762'
-  alias: Living Room TV Speakers Auto On-Off
+  alias: TV Speakers - Follow Shield
   description: 'Turn on living room speakers when Samsung Smart TV is turned on.
 
     '
@@ -1602,27 +1602,27 @@
     enabled: true
   mode: restart
 - id: '1697309989912'
-  alias: Lucy Location Watchdog
+  alias: Lucy - Location watchdog
   description: Lucy has no mobile data on her phone, so when she is away without wifi,
     the location automations at home will continue to think she is at home, causing
     issues. This automation sets Lucy as away after a time of no location updates,
     to ensure the automations work.
-  trigger:
-  - platform: template
-    value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
+  triggers:
+  - value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
       | int) > 1200 %}true{% endif %}'
-  condition:
+    trigger: template
+  conditions:
   - condition: template
     value_template: '{% if ((as_timestamp( now()) - as_timestamp(states.person.lucy.last_updated))
       | int) > 1200 %}true{% endif %}'
-  action:
-  - service: device_tracker.see
-    data:
+  actions:
+  - data:
       dev_id: google_maps_114635444798949098363
       location_name: not_home
+    action: device_tracker.see
   mode: single
 - id: '1697311341807'
-  alias: Turn on hallway lights for a moment when we get home
+  alias: Hallway Lights - Front door arrival
   description: ''
   triggers:
   - type: opened
@@ -1688,7 +1688,7 @@
       entity_id: light.downstairs_hallway
   mode: restart
 - id: '1697311647945'
-  alias: Garage door opened but no one is home
+  alias: Garage Door - Notify opened while away
   description: Snapshots the garage camera at trigger time. See Front door automation
     for full notes on the /local/tmp/ path, unauthenticated serving, and file housekeeping.
   triggers:
@@ -1748,7 +1748,7 @@
       action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1697388186314'
-  alias: Energenie eTRV Error Handler
+  alias: Energenie TRVs - Notify error
   description: ''
   triggers:
   - type: problem
@@ -1785,7 +1785,7 @@
     action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1697572691572'
-  alias: Simulate Presence Lights When Away
+  alias: Presence Simulation - Random lights when away
   description: 'Occupancy simulation. While the house is empty after dark, one light
     is picked at random from light.presence_simulation_lights_group, left on for 10
     to 29 minutes, then everything is switched off and event_simulate_presence_loop
@@ -1907,7 +1907,7 @@
     event: event_simulate_presence_loop
   mode: restart
 - id: '1702742847276'
-  alias: Office Blinds Schedule + Remote Control
+  alias: Office Blinds - Schedule and remote
   description: "Opens in the morning, only if Richard is home. \nCloses in the evening
     at dusk.\n\nEdited to open at sunrise even if Richard isn't home so the office
     plants get some sunlight."
@@ -1979,7 +1979,7 @@
         data: {}
   mode: single
 - id: '1705695753761'
-  alias: Bathroom Audio Remote - Google Home Speaker
+  alias: Bathroom Speaker - Remote control
   description: 'Triggered by an IKEA five-button Zigbee remote through zigbee2mqtt,
     this automation controls the Bluetooth functionality of a Google Home/Nest Mini
     speaker.
@@ -2135,7 +2135,7 @@
         enabled: false
   mode: single
 - id: '1708473467198'
-  alias: Living Room Fairy Lights Follow Other Lights
+  alias: Living Room Fairy Lights - Follow lamps
   description: ''
   triggers:
   - type: turned_on
@@ -2175,7 +2175,7 @@
           device_id: e117af1a8759c13997886e55fd6f04c3
   mode: restart
 - id: '1714268450987'
-  alias: Run off UPS
+  alias: UPS - Weekly calibration
   description: ''
   trigger:
   - platform: time
@@ -2190,7 +2190,7 @@
     domain: nut
   mode: single
 - id: '1720117742034'
-  alias: Tea Brewing Timer
+  alias: Kitchen Button - Tea timer
   description: ''
   triggers:
   - domain: mqtt
@@ -2261,7 +2261,7 @@
     continue_on_error: true
   mode: restart
 - id: '1720118905430'
-  alias: Broadcast dinner almost ready
+  alias: Kitchen Button - Announce dinner
   description: ''
   trigger:
   - platform: device
@@ -2290,7 +2290,7 @@
     enabled: false
   mode: single
 - id: '1720571709980'
-  alias: Reboot bathroom speaker twice a day
+  alias: Bathroom Speaker - Reboot twice daily
   description: For some reason my Google home seems to get stuck in a loop and becomes
     unresponsive. This automation forces it to reboot as a workaround.
   trigger:
@@ -2312,7 +2312,7 @@
     action: google_home.reboot_device
   mode: single
 - id: '1721088060009'
-  alias: Remote control activate bedtime lights
+  alias: Bedtime Lights - Remote activation
   description: ''
   trigger:
   - platform: device
@@ -2333,7 +2333,7 @@
       entity_id: scene.bedtime_mode
   mode: single
 - id: '1722123544585'
-  alias: Garden Lights Motion
+  alias: Garden Lights - Back door opened
   description: ''
   triggers:
   - type: opened
@@ -2364,7 +2364,7 @@
       entity_id: light.garden_lights
   mode: restart
 - id: '1727031709340'
-  alias: 'Trigger bunny food announcement '
+  alias: Bunnies - Announce feeding time
   description: ''
   trigger:
   - type: turned_on
@@ -2387,7 +2387,7 @@
       entity_id: script.announce_bunny_food_time
   mode: single
 - id: '1734033969313'
-  alias: Heating - Nest Setback - Away
+  alias: Nest - Setback when away
   description: 'Immediately forces the Nest to a low setback temperature when heating
     master enable is disabled (e.g. everyone leaves the house).
 
@@ -2409,7 +2409,7 @@
     action: climate.set_temperature
   mode: single
 - id: '1736544967218'
-  alias: Low battery level detection & notification for all battery sensors [Blueprint]
+  alias: Batteries - Weekly low battery report
   description: ''
   use_blueprint:
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
@@ -2443,7 +2443,7 @@
             \      | replace(\"'Battery low: \", \"\")\n       | replace(\", \", \"\\n•
             \")\n       | replace(\"'\", \"\")\n  }}"
 - id: '1738459474372'
-  alias: Freezer Temperature Alert
+  alias: Chest Freezer - Notify high temp or offline
   description: ''
   triggers:
   - type: problem
@@ -2536,7 +2536,7 @@
         action: notify.mobile_app_rich_mob_app
   mode: single
 - id: '1740623037208'
-  alias: Lucy Insulin Pump Sensor Night Watcher
+  alias: Lucy Pump - Sensor will not last the night
   description: Notify Lucy if pump sensor will not last the night
   triggers:
   - at: '23:45:00'
@@ -2579,7 +2579,7 @@
         sticky: 'true'
   mode: single
 - id: '1742671428912'
-  alias: Notify Kitchen Fridge or Freezer Door Left Open
+  alias: Kitchen Fridge - Notify door left open
   description: ''
   triggers:
   - type: opened
@@ -2683,7 +2683,7 @@
         action: notify.mobile_app_lucy_mob_app
   mode: single
 - id: '1753538167634'
-  alias: Enphase Envoy custom local polling interval
+  alias: Solar - Fast Envoy polling
   description: ''
   triggers:
   - trigger: time_pattern
@@ -2697,7 +2697,7 @@
       - sensor.solar_panels_current_net_power_consumption
   mode: single
 - id: '1755724844350'
-  alias: Octopus Energy - Home Battery Smart Charging
+  alias: Home Battery - Smart charging
   description: 'Intelligently controls home battery charging based on Octopus Energy''s
     Intelligent Go smart dispatching algorithm.
 
@@ -2917,7 +2917,7 @@
         data: {}
   mode: restart
 - id: '1792999200000'
-  alias: Octopus Energy - Home Battery Saving Session
+  alias: Home Battery - Saving session discharge
   description: 'Discharges the home batteries into the house load during an Octoplus
     Saving (Power Down) session.
 
@@ -2957,7 +2957,7 @@
       entity_id: button.garage_acb_wake
   mode: single
 - id: '1758208938977'
-  alias: Octopus Energy - Auto Set Peak/Off-Peak Tariff
+  alias: Tariff - Set peak/off-peak
   description: 'Automatically sets tariff based on night rates and Octopus Intelligent
     dispatching.
 
@@ -3008,7 +3008,7 @@
         alias: Set Peak Rate
   mode: single
 - id: '1766937352100'
-  alias: SDM120CT Modbus Emulator Inverter Communication
+  alias: SDM120 Emulator - Notify comms problem
   description: ''
   triggers:
   - type: problem
@@ -3030,7 +3030,7 @@
       title: SDM120CT
   mode: single
 - id: '1766951057635'
-  alias: Heating - OpenTherm Control - TRV Demand
+  alias: Nest - OpenTherm TRV demand
   description: "Controls the boiler via the Nest thermostat using OpenTherm modulation,
     based on heat demand from the radiator TRVs (a mix of Zigbee TRVZB and Energenie
     MIHO013 valves).\n\nHeat demand comes straight from each valve's climate entity:
@@ -3116,7 +3116,7 @@
       action: climate.set_temperature
   mode: restart
 - id: '1767491305312'
-  alias: Office Air Purifier - Desk Power
+  alias: Office Purifier - Follow desk power
   description: 'Turns the office air purifier on or off based on desk power usage.
     Above 100 W indicates the desk is in use and turns the purifier on. Below 100
     W indicates the desk is idle and turns the purifier off.
@@ -3149,7 +3149,7 @@
         action: fan.turn_off
   mode: single
 - id: '1767492104023'
-  alias: Living Room Air Purifier - Power and Air Quality (min when occupied)
+  alias: Living Room Purifier - PM2.5 speed
   description: 'Controls the living room air purifier using PM2.5. PM2.5 controls
     fan speed. If PM2.5 is below 5, keep the fan at minimum low (33%) if the cabinet
     light is on, otherwise turn it off.
@@ -3229,7 +3229,7 @@
         entity_id: fan.living_room_air_purifier_air_purifier_fan
   mode: single
 - id: '1767492625891'
-  alias: Heating - Master Enable - Presence
+  alias: Heating Master Enable - Follow presence
   description: 'Enables or disables the heating master switch based on household presence.
     If either Lucy or Richard is home, heating control is enabled. If both are away,
     heating control is disabled.
@@ -3285,7 +3285,7 @@
         action: input_boolean.turn_off
   mode: single
 - id: '1769735729402'
-  alias: Lucy Insulin Pump Reservoir Night Watcher
+  alias: Lucy Pump - Reservoir will not last the night
   description: Notify Lucy if pump reservoir will not last the night
   triggers:
   - at: '23:45:00'
@@ -3329,7 +3329,7 @@
         sticky: 'true'
   mode: single
 - id: '1770260050072'
-  alias: XStorage Battery Safety Stop on Cell Imbalance
+  alias: Home Battery - Safety stop on cell imbalance
   description: 'Monitors the battery BMS cell voltage delta and immediately issues
     a stop command if the imbalance exceeds 100 mV. This forces the inverter to halt
     its current operation, whether charging or discharging, to prevent further cell
@@ -3370,7 +3370,7 @@
         sticky: 'true'
   mode: single
 - id: '1773355527426'
-  alias: Turn dishwasher on each night
+  alias: Dishwasher - Start overnight
   description: Each night, turn the dishwasher on 3:35 hours before the off-peak energy
     ends
   triggers:
@@ -3389,7 +3389,7 @@
     data: {}
   mode: single
 - id: '1774006982984'
-  alias: Office Air Purifier - Power and Air Quality (min when occupied)
+  alias: Office Purifier - PM2.5 speed
   description: 'Controls the office air purifier using PM2.5. PM2.5 controls fan speed.
     If PM2.5 is below 5, keep the fan at minimum low (33%) if the office lamp is on,
     otherwise turn it off.
@@ -3469,7 +3469,7 @@
         entity_id: fan.office_air_purifier_air_purifier_fan
   mode: single
 - id: '1785606041263'
-  alias: Notify that tumble dryer finished
+  alias: Tumble Dryer - Notify finished
   description: Notify when the tumble dryer cycle has completed
   triggers:
   - trigger: state
@@ -3521,7 +3521,7 @@
         sticky: 'true'
   mode: single
 - id: '1785606560191'
-  alias: Notify that washing machine finished
+  alias: Washing Machine - Notify finished
   description: Notify when the tumble dryer cycle has completed
   triggers:
   - trigger: state
@@ -3573,7 +3573,7 @@
         sticky: 'true'
   mode: single
 - id: '1785705892310'
-  alias: Parcel Box Opened Notify - Rev 3
+  alias: Parcel Box - Notify opened
   description: "Notifies both phones, with photos, when the parcel box is opened.
     Rev 3 replaces /api/camera_proxy/<camera> with camera.snapshot taken at trigger
     time, because the companion app only fetched the proxy URL when the notification
@@ -3667,7 +3667,7 @@
     action: notify.google_assistant_sdk
   mode: single
 - id: '1785863849285'
-  alias: Octopus Intelligent Go - Cycle Charge Target for Home Battery
+  alias: Home Battery - Cycle Intelligent Go charge target
   description: 'Maximises off-peak slots on Octopus Intelligent Go by cycling the
     Intelligent Charge Target between 100% and 30% based on the Eaton xStorage battery
     state of charge.
@@ -3954,7 +3954,7 @@
   max: 5
   max_exceeded: silent
 - id: '1787873367801'
-  alias: XStorage Battery - Overnight Two-Stage Charge
+  alias: Home Battery - Overnight two-stage charge
   description: 'Two-stage overnight charge for the Eaton xStorage. Stage 1 at midnight:
     charge to 80% at 40% inverter power for 2 hours. Stage 2 at 02:00: continue to
     95%, still at 40% power. At 05:30 the battery is returned to Maximize Auto Consumption.
@@ -4050,7 +4050,7 @@
         continue_on_error: true
   mode: single
 - id: '1789047671875'
-  alias: Octopus Energy - Join Saving Session (Custom Actions) [Blueprint]
+  alias: Saving Session - Auto join
   description: ''
   use_blueprint:
     path: BottlecapDave/octopus_energy_octoplus_join_saving_session_custom_action.yaml
@@ -4064,7 +4064,7 @@
             '
         action: notify.mobile_app_rich_mob_app
 - id: '1789388728880'
-  alias: IKEA BILRESA - Light Controller (v1.5)
+  alias: Office Lamp - BILRESA dial
   description: ''
   use_blueprint:
     path: SvKRO/ha-blueprint-ikea-bilresa-scrollwheel_en.yaml
@@ -4080,7 +4080,7 @@
         data: {}
       input_mode_1: hs_color
 - id: '1792506393728'
-  alias: RFLink keep-alive
+  alias: RFLink - Keep-alive
   description: The RFLink ethernet bridge drops the TCP connection after 5 min idle,
     making every RFLink entity flap unavailable. Sends a harmless RFDEBUG=OFF every
     4 min to keep it busy. I have disabled this as there is a custom integration that
@@ -4095,4 +4095,3 @@
       device_id: rfdebug
       command: 'off'
   mode: single
-  
