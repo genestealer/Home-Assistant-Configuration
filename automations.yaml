@@ -2749,8 +2749,19 @@
     charge as normal, but outside them the batteries hold their charge (xStorage Basic
     Mode, ACB asleep) instead of discharging, so they are full when the session starts.
 
+
+    After an HA restart or automation reload the current state is re-applied, because
+    a reload cancels the 20 s wait on the off-peak triggers and the dispatch would
+    otherwise be missed (28 Oct 21:35).
+
     '
   triggers:
+  - trigger: homeassistant
+    event: start
+    id: resync
+  - trigger: event
+    event_type: automation_reloaded
+    id: resync
   - trigger: state
     entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
     from: 'off'
@@ -2797,6 +2808,10 @@
         conditions:
         - condition: trigger
           id: free_session_start
+        - alias: Free session running
+          condition: state
+          entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
+          state: 'on'
         - alias: Off-peak, but not in the pre-discharge window before a free session
           condition: and
           conditions:
