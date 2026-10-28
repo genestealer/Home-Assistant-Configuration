@@ -2714,7 +2714,8 @@
     determines optimal charging periods
 
     - Returns battery to ''Maximize Auto Consumption'' when the smart dispatch period
-    ends
+    ends. The run duration is 12 h because the xStorage default mode is Basic Mode
+    (idle): a shorter run drops it to idle when it expires.
 
 
     The xStorage has its own built-in slow charging schedule for the standard night
@@ -2905,7 +2906,7 @@
           domain: number
           entity_id: 7a0f09fc8bf4e63c9f78eaea0b9363b3
           type: set_value
-          value: 2
+          value: 12
         - device_id: 7243064af443eaae599e1a98ef6c25f7
           domain: select
           entity_id: 21ffd38d355c25562522dc095f2b7313
@@ -2947,7 +2948,7 @@
       target:
         entity_id: number.eaton_xstorage_home_run_duration
       data:
-        value: '2'
+        value: 12
     - action: select.select_option
       target:
         entity_id: select.eaton_xstorage_home_current_operation_mode
