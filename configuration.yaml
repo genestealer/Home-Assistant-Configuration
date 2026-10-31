@@ -121,6 +121,7 @@ logger:
     # axis: debug
     # homeassistant.components.axis: debug
     homeassistant.components.rest: debug
+    homeassistant.components.http.ban: warning
   filters:
     # RFLink answers RFDEBUG with no OK, so the keep-alive is always reported as failed
     homeassistant.components.rflink.services:
@@ -229,7 +230,7 @@ google_assistant:
     - camera
     - climate
     - cover
-    # - event
+    - event # Only doorbell-class events are supported; announces doorbell presses on Nest devices
     - fan
     # - group
     # - humidifier

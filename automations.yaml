@@ -2289,28 +2289,6 @@
       message: Hello sweetie, dinner is almost ready. Just wanted to let you know.
     enabled: false
   mode: single
-- id: '1720571709980'
-  alias: Bathroom Speaker - Reboot twice daily
-  description: For some reason my Google home seems to get stuck in a loop and becomes
-    unresponsive. This automation forces it to reboot as a workaround.
-  trigger:
-  - platform: time
-    at: '11:00:00'
-  - platform: time
-    at: 00:00:01
-  condition:
-  - condition: device
-    device_id: 30e5174b145711eb88da47ba37409372
-    domain: media_player
-    entity_id: 92395fa37a44ae46a95d786ecf933dd3
-    type: is_off
-  action:
-  - metadata: {}
-    data: {}
-    target:
-      device_id: 127737e2a86b116da4274dcb735b0349
-    action: google_home.reboot_device
-  mode: single
 - id: '1721088060009'
   alias: Bedtime Lights - Remote activation
   description: ''
@@ -4112,4 +4090,101 @@
     data:
       device_id: rfdebug
       command: 'off'
+  mode: single
+- id: '1793404800000'
+  alias: Doorbell - Announce in house (Rev 2)
+  description: 'Shows the front door camera on the Nest displays when the doorbell
+    is pressed, then clears them after 90 s so the next press casts a fresh stream.
+    The spoken announcement is no longer needed here: the Front Door doorbell event
+    is exposed to Google Assistant, so Nest speakers and displays chime and announce
+    it themselves. Only runs when someone is home (zone.home count above 0). Unavailable
+    displays are skipped. camera.front_door_33 has Preload camera stream enabled so
+    the cast starts quickly; expect a few seconds of HLS delay. Replaces Doorbell
+    - Announce in house (Rev 1).'
+  triggers:
+  - options:
+      event_type:
+      - ring
+    target:
+      entity_id: event.doorbell_front_door
+    trigger: event.received
+  conditions:
+  - alias: Someone is home
+    condition: numeric_state
+    above: 0
+    entity_id: zone.home
+  actions:
+  - alias: Cast the front door camera to the displays
+    parallel:
+    - action: camera.play_stream
+      target:
+        entity_id: camera.front_door_33
+      data:
+        media_player: media_player.office_display
+        format: hls
+      continue_on_error: true
+    - action: camera.play_stream
+      target:
+        entity_id: camera.front_door_33
+      data:
+        media_player: media_player.living_room_display
+        format: hls
+      continue_on_error: true
+    - action: camera.play_stream
+      target:
+        entity_id: camera.front_door_33
+      data:
+        media_player: media_player.kitchen_display
+        format: hls
+      continue_on_error: true
+    - action: camera.play_stream
+      target:
+        entity_id: camera.front_door_33
+      data:
+        media_player: media_player.dining_room_display
+        format: hls
+      continue_on_error: true
+  - delay:
+      seconds: 90
+    alias: Leave it on screen for 90 seconds
+  - alias: Clear the displays
+    target:
+      entity_id:
+      - media_player.office_display
+      - media_player.living_room_display
+      - media_player.kitchen_display
+      - media_player.dining_room_display
+    action: media_player.turn_off
+    continue_on_error: true
+  mode: restart
+- id: '1793408400000'
+  alias: Nest Devices - Weekly reboot
+  description: Reboots every Google Nest display and speaker every Monday at 12:00.
+    The displays' Cast control port (TCP 8009) sometimes stops accepting connections,
+    which leaves them unavailable in HA so camera casting fails, while they still
+    work for Google. Uses the reboot buttons from the Google Home custom integration
+    (leikoilja/ha-google-home), which follow the device rather than its IP. The SHIELD
+    is deliberately left out.
+  triggers:
+  - at: '12:00:00'
+    weekday:
+    - mon
+    trigger: time
+  conditions: []
+  actions:
+  - alias: Reboot all Nest devices
+    action: button.press
+    target:
+      entity_id:
+      - button.kitchen_display_reboot
+      - button.living_room_display_reboot
+      - button.dining_room_display_reboot
+      - button.bedroom_display_reboot
+      - button.office_display_reboot
+      - button.guest_bedroom_speaker_reboot
+      - button.bathroom_speaker_reboot
+      - button.office_speakers_reboot
+      - button.garage_reboot
+      - button.libary_speaker_reboot
+    continue_on_error: true
   mode: single

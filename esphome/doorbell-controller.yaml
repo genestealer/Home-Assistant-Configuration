@@ -1,5 +1,5 @@
 ##############################################################
-# Richard Huish 2025
+# Richard Huish 2026
 # ESPHome Configuration – Doorbell Controller
 # Repository: https://github.com/genestealer/Home-Assistant-Configuration
 #
@@ -14,20 +14,50 @@
 # - WS2812 Neopixel illumination for doorbell button
 # - Relay driver for mechanical bell with quiet-hours logic
 # - Home Assistant integration for alerts and remote ringing
+# - Triggers Axis front door camera I/O input; camera rule makes a SIP video call
+# - "Front Door" event (device_class doorbell) exposed to Google Assistant for Nest announcements
 #
 # Hardware:
 # - NodeMCU v2 (ESP8266)
 # - Loft-mounted relay module (opto-isolated, 8 V AC 1 A bell supply)
 # - Doorbell button with 2× WS2812 LEDs
 # - 5 V DC PoE-style power feed via Cat5
+# - Axis P3265-LV front door camera (192.168.4.33), 4-pin I/O terminal block
 #
 # Wiring Summary:
 #   D1 (GPIO5)  → Relay control output (Green/White pair to loft relay)
 #   D2 (GPIO4)  → Doorbell button input (bare Green/White pair, active low)
 #   D4 (GPIO2)  → Neopixel data output (Blue/Grey ribbon pair)
+#   D5 (GPIO14) ← Camera pin 4, digital output (White, grey multicore; open drain to pin 1 when active, ESP pull-up)
+#   D6 (GPIO12) → Camera pin 3, digital input (Green, grey multicore; active when pulled to pin 1)
+#   GND         → Camera pin 1, DC ground (3× Black, grey multicore; required for both camera signals)
+#   Camera pin 2 (12 V DC out) → NOT connected; would damage the ESP (Red in grey multicore is spare)
 #   5V / GND    → LED power feed (ribbon Green+Purple = 5 V, Orange+Yellow = GND)
 #   Separate Cat5 → 8 V AC bell power (Orange/Orange-White)
-#   All grounds common between ESP, LEDs, and relay
+#   All grounds common between ESP, LEDs, relay and camera
+#
+# Camera I/O ports (fixed, not configurable):
+#   Port 1 = pin 3 input  → binary_sensor.front_door_33_port_1, triggers SIP call rule
+#   Port 2 = pin 4 output → switch.front_door_33_port_2, read as "Front Door CCTV Output"
+#   Axis System → Accessories: both ports normal state = open circuit, Port 1 supervised off.
+#   Plain config: I0 input generates when circuit Closed; I1 output Active = Closed, Bistable.
+#
+# Video Call (SIP) – no Home Assistant in the call path (full setup: /config/docs/doorbell-sip-video-call.md):
+#   Button press → D6 pulses camera Port 1 low for 1 s (also via "Trigger CCTV Call" button)
+#   → Axis event rule (Digital input Port 1 active → Make call)
+#   → camera's own SIP account on sip.linphone.org (NAT traversal ICE/STUN/TURN off; via + contact rewrite on)
+#   → phone account on sip.linphone.org; Linphone app on each signed-in phone rings (push)
+#   Video is H.264 only (Axis SIP limit). Two-way audio: camera built-in mic + external powered speaker.
+#   SIP video must be max 704x576, H.264 Baseline profile, 15 fps; higher resolution or other profiles give no video.
+#   (Camera's SIP offer is fixed at profile-level-id=42000d = Baseline level 1.3, video TIAS 768 kbps.)
+#   Linphone shows the video preview before answering.
+#   Tested alternative: local Asterisk App (extensions 104 camera / 105 phone) in
+#   /addon_configs/3e533915_asterisk/asterisk/custom/pjsip_custom.conf.
+#
+# Home Assistant notifications on each press (in parallel with the SIP call):
+#   - "Front Door" event → Google Assistant (hass-ga-manual-ui) → Nest speakers/displays chime and announce
+#   - HA automation "Doorbell - Notify phones" → push notification to both phones with a still
+#     snapshot from camera.front_door_33 taken at the moment of the press
 #
 # Quiet Hours:
 #   21:00–06:00 reduced relay activation time
@@ -167,6 +197,10 @@ binary_sensor:
             # blue: 100%
             effect: "Color Wipe Effect With Custom Values"
         - switch.turn_on: bellRelay
+        - switch.turn_on: cctvSipCallTrigger
+        - event.trigger:
+            id: doorbell_event
+            event_type: ring
         # - delay: 250ms
         # - light.turn_on:
         #     id: doorbell_light
@@ -178,6 +212,14 @@ binary_sensor:
         - light.turn_on:
             id: doorbell_light
             effect: "Slow Rainbow Effect With Custom Values"
+
+  - platform: gpio
+    pin:
+      number: D5  # GPIO14 - From Axis I/O output
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "Front Door CCTV Output"
+    icon: "mdi:cctv"
 
 
     # on_release:
@@ -227,6 +269,17 @@ binary_sensor:
     #     - switch.turn_off: bellRelay
     
 ##############################################################
+# Doorbell Event (Google Home announces it as a doorbell press)
+##############################################################
+event:
+  - platform: template
+    id: doorbell_event
+    name: "Front Door"
+    device_class: doorbell
+    event_types:
+      - ring
+
+##############################################################
 # Doorbell Relay (Controls the Buzzer/Chime)
 ##############################################################
 
@@ -256,6 +309,20 @@ switch:
     # on_turn_on:
     # - delay: 500ms
     # - switch.turn_off: bellRelay
+
+  # Pulses the Axis front door camera I/O input; an Axis event rule makes the SIP call.
+  # Not exposed to home assistant.
+  - platform: gpio
+    pin:
+      number: D6  # GPIO12 - Direct to Axis I/O input
+      mode: OUTPUT_OPEN_DRAIN
+      inverted: true
+    id: cctvSipCallTrigger
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      then:
+        - delay: 1000ms
+        - switch.turn_off: cctvSipCallTrigger
   
 
 #Manual method to make the bell ring, Timed on time for activating the doorbell ringer  
@@ -265,4 +332,10 @@ button:
     icon: "mdi:alarm-bell"
     on_press:
       - switch.turn_on: bellRelay
+
+  - platform: template
+    name: "Trigger CCTV Call"
+    icon: "mdi:phone-outgoing"
+    on_press:
+      - switch.turn_on: cctvSipCallTrigger
       

@@ -1,0 +1,24 @@
+############################################################
+#
+# Front Door Camera: REST Commands - Axis Virtual Input
+#
+############################################################
+
+# NOT USED: no automation or script calls these; the doorbell ESP triggers the camera's I/O port directly.
+# VAPIX virtual input 1 on the front door P3265-LV (192.168.4.33); an Axis event rule makes the SIP call.
+# Optional HA path for the doorbell SIP call; see /config/docs/doorbell-sip-video-call.md.
+axis_front_door_virtual_input_on:
+  url: "http://192.168.4.33/axis-cgi/virtualinput/activate.cgi?schemaversion=1&port=1"
+  method: get
+  authentication: digest
+  username: !secret axis_front_door_username
+  password: !secret axis_front_door_password
+  timeout: 5
+
+axis_front_door_virtual_input_off:
+  url: "http://192.168.4.33/axis-cgi/virtualinput/deactivate.cgi?schemaversion=1&port=1"
+  method: get
+  authentication: digest
+  username: !secret axis_front_door_username
+  password: !secret axis_front_door_password
+  timeout: 5
