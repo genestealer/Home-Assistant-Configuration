@@ -6,8 +6,9 @@
 
 # Replaces the ONVIF Reboot buttons. restart.cgi needs a VAPIX Administrator account;
 # the "hass" account used by the Axis integration is only an Operator.
+# Firmware 5.x (M3024-L .15) needs path: /axis-cgi/admin/restart.cgi
 axis_camera_restart:
-  url: "http://{{ host }}/axis-cgi/restart.cgi"
+  url: "http://{{ host }}{{ path | default('/axis-cgi/restart.cgi') }}"
   method: get
   authentication: digest
   username: !secret axis_admin_username

@@ -55,6 +55,15 @@
         data:
           host: 192.168.4.29
         continue_on_error: true
+    - sequence:
+      - delay:
+          hours: 1
+          minutes: 10
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.15
+          path: /axis-cgi/admin/restart.cgi
+        continue_on_error: true
     continue_on_error: true
 - id: '1576601014597'
   alias: Air Fresheners - Schedule with presence
