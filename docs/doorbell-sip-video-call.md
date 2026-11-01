@@ -61,7 +61,7 @@ Lesson learned: D5 and D6 were first set the wrong way round in the ESP config. 
 
 The **Doorbell - Notify phones** automation still sends the push notification with a snapshot. It acts as the fallback if the SIP call fails.
 
-**Optional HA path:** `rest_command.axis_front_door_virtual_input_on` / `_off` toggle Axis virtual input 1 over the camera's HTTP API (VAPIX). It's defined in [includes/rest_commands/axis_front_door.yaml](../includes/rest_commands/axis_front_door.yaml). It needs the `axis_front_door_username` / `axis_front_door_password` secrets updated (they were out of date and returned 401) and a second camera rule on Virtual input 1.
+**Optional HA path:** `rest_command.axis_front_door_virtual_input_on` / `_off` toggle Axis virtual input 1 over the camera's HTTP API (VAPIX). It's defined in [includes/rest_commands/axis_front_door.yaml](../includes/rest_commands/axis_front_door.yaml). It needs the `axis_admin_username` / `axis_admin_password` secrets updated (they were out of date and returned 401) and a second camera rule on Virtual input 1.
 
 ## Axis camera settings
 

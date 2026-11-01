@@ -11,14 +11,14 @@ axis_front_door_virtual_input_on:
   url: "http://192.168.4.33/axis-cgi/virtualinput/activate.cgi?schemaversion=1&port=1"
   method: get
   authentication: digest
-  username: !secret axis_front_door_username
-  password: !secret axis_front_door_password
+  username: !secret axis_admin_username
+  password: !secret axis_admin_password
   timeout: 5
 
 axis_front_door_virtual_input_off:
   url: "http://192.168.4.33/axis-cgi/virtualinput/deactivate.cgi?schemaversion=1&port=1"
   method: get
   authentication: digest
-  username: !secret axis_front_door_username
-  password: !secret axis_front_door_password
+  username: !secret axis_admin_username
+  password: !secret axis_admin_password
   timeout: 5
