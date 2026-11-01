@@ -15,6 +15,7 @@
 # - Relay driver for mechanical bell with quiet-hours logic
 # - Home Assistant integration for alerts and remote ringing
 # - Triggers Axis front door camera I/O input; camera rule makes a SIP video call
+# - Button pulses white while the camera output (Port 2) reports someone at the door
 # - "Front Door" event (device_class doorbell) exposed to Google Assistant for Nest announcements
 #
 # Hardware:
@@ -39,6 +40,7 @@
 # Camera I/O ports (fixed, not configurable):
 #   Port 1 = pin 3 input  → binary_sensor.front_door_33_port_1, triggers SIP call rule
 #   Port 2 = pin 4 output → switch.front_door_33_port_2, read as "Front Door CCTV Output"
+#     Axis rule "On motion trigger doorbell flash": VMD 4 Any Profile → Toggle I/O Port 2 while rule is active
 #   Axis System → Accessories: both ports normal state = open circuit, Port 1 supervised off.
 #   Plain config: I0 input generates when circuit Closed; I1 output Active = Closed, Bistable.
 #
@@ -123,6 +125,10 @@ globals:
     type: int
     restore_value: no
     initial_value: '6'  # Quiet hours end at 6 AM
+  - id: attention_active
+    type: bool
+    restore_value: no
+    initial_value: 'false'
 
 ##############################################################
 # Time Component (For Quiet Hours)
@@ -146,6 +152,12 @@ light:
     restore_mode: ALWAYS_ON
     variant: 800KBPS
     effects:
+      - pulse:
+          name: "Attention Pulse"
+          transition_length: 500ms
+          update_interval: 500ms
+          min_brightness: 10%
+          max_brightness: 100%
       - addressable_rainbow:
           name: Slow Rainbow Effect With Custom Values
           speed: 2
@@ -187,6 +199,9 @@ binary_sensor:
     on_press:
       then:
         - logger.log: "Doorbell Button Pressed"
+        - globals.set:
+            id: attention_active
+            value: 'false'
         - light.turn_off:
             id: doorbell_light
         - light.turn_on:
@@ -220,6 +235,35 @@ binary_sensor:
       inverted: true
     name: "Front Door CCTV Output"
     icon: "mdi:cctv"
+    # Camera rule holds Port 2 active while someone is at the door: pulse the button to draw attention.
+    filters:
+      - delayed_off: 5s # Bridge short detection drop-outs
+    on_press:
+      then:
+        - globals.set:
+            id: attention_active
+            value: 'true'
+        - light.turn_on:
+            id: doorbell_light
+            brightness: 100%
+            red: 100%
+            green: 100%
+            blue: 100%
+            effect: "Attention Pulse"
+    on_release:
+      then:
+        # Skip if the button was pressed meanwhile; its own sequence has already set the light.
+        - if:
+            condition:
+              lambda: 'return id(attention_active);'
+            then:
+              - globals.set:
+                  id: attention_active
+                  value: 'false'
+              - light.turn_on:
+                  id: doorbell_light
+                  brightness: 100%
+                  effect: "Slow Rainbow Effect With Custom Values"
 
 
     # on_release:

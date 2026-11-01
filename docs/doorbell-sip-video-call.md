@@ -42,7 +42,7 @@ Lesson learned: D5 and D6 were first set the wrong way round in the ESP config. 
 
 ## ESPHome (doorbell-controller.yaml)
 - `cctvSipCallTrigger`: D6, open-drain output, inverted. The doorbell press turns it on for 1 s, pulling camera Port 1 low. Internal only, not shown in HA
-- **Front Door CCTV Output** (binary sensor): D5, input with pull-up, inverted. Reads camera Port 2. Spare channel for future camera → ESP or HA signalling
+- **Front Door CCTV Output** (binary sensor): D5, input with pull-up, inverted, 5 s off delay. Reads camera Port 2. While it's on, the button LEDs pulse white ("Attention Pulse") so visitors notice the bell; when it turns off they go back to the slow rainbow. A button press cancels the pulse
 - **Trigger CCTV Call** (button): pulses D6 without ringing the chime. Use it to test the call
 - **Front Door** (`event.doorbell_front_door`, device class `doorbell`, event type `ring`): fires on each press. Exposed to Google Assistant so Nest speakers and displays announce the doorbell and Google Home sends a phone notification
   - Exposure is managed by the **Assistant UI for Google Assistant (Manual Setup)** custom integration (`hass-ga-manual-ui`): entity → Settings → Voice assistants → Expose → **Google Assistant (Manual)** on. The `event` line in `google_assistant` → `exposed_domains` alone was not enough
@@ -122,6 +122,13 @@ The directions are fixed by the hardware; the camera has no setting to change th
 - Name: Doorbell SIP call
 - Condition: I/O → Digital input, Port 1, Active, used as trigger
 - Action: Calls → Make call, SIP account = camera account, recipient = `sip:<phone-account>@sip.linphone.org`
+
+- Name: On motion trigger doorbell flash
+- Wait between actions: 00:00:00
+- Condition: VMD 4: Any Profile. **Use this condition as a trigger** unticked, so the rule stays active for as long as motion is detected
+- Action: Toggle I/O while the rule is active, Port 2, state Active
+- Result: the doorbell button pulses white while there's motion, and goes back to the rainbow about 5 s after it stops (ESP off delay)
+- If false alarms are a problem (shadows, plants, headlights, rain), narrow VMD to a profile covering only the path to the door, or switch the condition to the Object Analytics person scenario
 
 **SIP video stream limits**
 - Resolution: 704×576 maximum. Higher resolutions give no video
