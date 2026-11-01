@@ -1,0 +1,15 @@
+############################################################
+#
+# Axis Cameras: REST Command - Restart (VAPIX)
+#
+############################################################
+
+# Replaces the ONVIF Reboot buttons. restart.cgi needs a VAPIX Administrator account;
+# the "hass" account used by the Axis integration is only an Operator.
+axis_camera_restart:
+  url: "http://{{ host }}/axis-cgi/restart.cgi"
+  method: get
+  authentication: digest
+  username: !secret axis_admin_username
+  password: !secret axis_admin_password
+  timeout: 10

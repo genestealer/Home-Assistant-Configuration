@@ -9,62 +9,51 @@
   actions:
   - parallel:
     - sequence:
-      - action: button.press
-        data: {}
-        target:
-          entity_id: button.drive_high_25_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.25
         continue_on_error: true
     - sequence:
       - delay:
           minutes: 10
-      - action: button.press
-        data: {}
-        target:
-          entity_id: button.drive_long_31_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.31
         continue_on_error: true
     - sequence:
       - delay:
           minutes: 20
-      - action: button.press
-        data: {}
-        target:
-          entity_id: button.front_door_33_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.33
         continue_on_error: true
     - sequence:
       - delay:
           minutes: 30
-      - action: button.press
-        data: {}
-        target:
-          entity_id: button.front_garden_27_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.27
         continue_on_error: true
     - sequence:
       - delay:
           minutes: 40
-      - action: button.press
-        data: {}
-        target:
-          entity_id: button.garage_32_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.32
         continue_on_error: true
     - sequence:
       - delay:
           minutes: 50
-      - action: button.press
-        data: {}
-        target:
-          entity_id: button.garden_30_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.30
         continue_on_error: true
     - sequence:
       - delay:
           hours: 1
-          minutes: 0
-          seconds: 0
-          milliseconds: 0
-      - action: button.press
-        data: {}
-        target:
-          entity_id:
-          - button.parking_space_onvif_reboot
+      - action: rest_command.axis_camera_restart
+        data:
+          host: 192.168.4.29
         continue_on_error: true
     continue_on_error: true
 - id: '1576601014597'
