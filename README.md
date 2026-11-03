@@ -1,175 +1,213 @@
 # Home Assistant Configuration
 
-This repository holds my Home Assistant configuration and, centrally, a single collection of ESPHome device configurations so others can find, reuse, and adapt these projects without hunting through separate repositories.
+This is the Home Assistant configuration for my house in the UK. It runs solar panels, a home battery and an EV on an Octopus tariff, about 90 Zigbee devices, 17 ESPHome devices I built, a garden irrigation system, and a few chickens and rabbits.
 
-## What you'll find here
-
-- Home Assistant configuration (automations, scripts, sensors, packages) under `includes/`, `packages/`, and top-level YAML files.
-- A consolidated `esphome/` directory with many ESPHome YAML device definitions and shared templates in `esphome/common/`.
-- Images and fonts used by displays and dashboards in `esphome/images/` and `esphome/fonts/`.
-- Several homemade hardware projects with links to supporting repositories.
-
-## Quick links
-
-- ESPHome directory: `esphome/`
-- ESPHome common templates: `esphome/common/` (shared components, device base files)
-- ESPHome images: `esphome/images/`
-- Home Assistant includes: `includes/` (automations, sensors, etc.)
-
-## Highlights — ESPHome devices (pick and reuse)
-
-This section is a short catalog of the most reusable and interesting ESPHome projects in this repo. Each entry includes a brief description and the YAML filename (in the `esphome/` folder) so you can copy and adapt it quickly.
-
-- Busylight (office presence indicator)
-  - What: A multi-device setup — a controller and one or more lights — that shows presence/status (busy/available) with Neopixels and a small controller UI.
-  - Files: `esphome/busylight-mk2-01.yaml`, `esphome/busylight-mk2-02.yaml`
-  - Why reuse: Good example of multi-device coordination, MQTT/Home Assistant integration, and LED effects.
-
-- Doorbell with Neopixel buttons and external sounder
-  - What: Doorbell controller with Neopixel buttons, button automation and optional external sounder.
-  - File: `esphome/doorbell-controller.yaml`
-  - Why reuse: Demonstrates handling buttons, LEDs, and integrating with Home Assistant events.
-
-- Non-invasive power / current sensors
-  - What: Current clamp based sensors and SDM120 emulator examples for monitoring mains energy.
-  - Files: `esphome/CU-current-clamps.yaml`, `esphome/sdm120_emulator.yaml`
-  - Why reuse: Useful starting point for wiring CT clamps, MQTT/Modbus bridging and energy monitoring.
-
-- Air quality & multi-sensor nodes
-  - What: PM / VOC / temperature/humidity sensor setups for rooms, lofts and sheds.
-  - Files: `esphome/air-quality-sensor-1.yaml`, `esphome/loft-sensors.yaml`, `esphome/shed-sensors.yaml`, `esphome/bedroom-sensors.yaml`
-  - Why reuse: Shows robust sensor wiring, filtering, and Home Assistant sensor integration.
-
-- Chest freezer / fridge monitors
-  - What: Temperature monitors and alerting patterns for freezers and fridges.
-  - Files: `esphome/chest-freezer-monitor.yaml` (and archived examples in `esphome/Archive/`)
-
-- Office blind & air purifier controllers
-  - What: Motor / relay control and sensor-driven automation for blinds and air purifiers.
-  - Files: `esphome/office-blind-controller.yaml`, `esphome/office-IKEA-Fornuftig-air-purifier.yaml`, `esphome/living-rm-IKEA-Fornuftig-air-purifier.yaml`
-
-There are many other devices and archived experiments in `esphome/Archive/` for inspiration.
-
-## Reuse guide — quick steps to adapt a YAML for your device
-
-1. Install ESPHome or use the Home Assistant ESPHome add-on.
-2. Copy the YAML file you want from this repo into your ESPHome projects folder (or use the dashboard's "Import" feature).
-3. Update `name:` and `friendly_name:` to something unique.
-4. Update WiFi/OTA/`secrets:` references. This repo uses shared base includes in `esphome/common/` — either reuse them or replace them with your own wifi/credentials block.
-   - Common templates: `esphome/common/device_base.yaml`, `esphome/common/device_base_wifi.yaml` and other component snippets in `esphome/common/`.
-5. Wire sensors/actuators the same way or adapt GPIO pins in the YAML to match your hardware.
-6. Compile and flash with the ESPHome dashboard (USB or OTA). Start with a wired USB flash if you are uncertain.
-7. Test sensors and automations in Home Assistant, then iterate.
-
-Tips and gotchas
-
-- Secrets: don't commit your WiFi passwords or API keys — use the `secrets:` mechanism. This repo keeps secrets out of the main YAMLs and expects them to be provided locally.
-- Device templates: use `esphome/common/` templates to keep YAMLs DRY. If you copy a YAML into another repo, copy or adapt the `common/` includes it depends on.
-- Fonts & images: display projects use fonts in `esphome/fonts/` and images in `esphome/images/` — copy these if your device needs them.
-
-## Common components and templates
-
-Shared building blocks live in `esphome/common/`:
-
-- `device_base.yaml` and `device_base_wifi.yaml` — base includes for all devices (name, logger, ota, api, wifi)
-- Sensor templates like `bme280.yaml` and `pms5003t.yaml` — plug-and-play sensor configs
-- `status_led.yaml` — a standard status LED configuration used by many devices
-
-If you're publishing or forking specific devices, keep the `common/` folder or update includes to point to your own shared templates.
-
-## Other highlights (Home Assistant side)
-
-- RFLink gateway controller and a number of RF-controlled devices (Energenie, Maclean, Status plug sockets, hacked Ikea remotes). See `includes/` and `packages/` for automations and integrations.
-- Homemade hardware projects and supporting repos:
-  - `ESP8266-433Mhz-Controller-Gateway` — 433MHz MQTT transmitter gateway
-  - `Bunny-Shed-Climate-Control` — 433MHz-based bunny shed heater controller
-  - `Home-Assistant-RFLink-Gateway-ESP8266` — RFLink gateway firmware
-  - `Controllino-Irrigation` and `Irrigation-Controller`
-
-## How to contribute or reuse code
-
-- If you found a device useful, please copy the YAML into your own project and adapt it — keep secrets out.
-- If you want me to pull a specific device into its own repo or add better docs for a device, open an issue or send a PR with the improvements you suggest.
-
-## License
-
-This repo follows the licensing indicated in `LICENSE.txt` — please check that file before reusing code in a product.
-
-## Screenshots
+I publish it so you can borrow from it. The ESPHome configs in [esphome/](esphome/) are the most reusable part.
 
 ![Home Assistant](git_photos/example_screen.PNG)
 
----
+## Contents
 
-If you'd like, I can also:
+- [Platform](#platform)
+- [What it does](#what-it-does)
+- [Repository layout](#repository-layout)
+- [ESPHome devices](#esphome-devices)
+- [Zigbee, Matter and RF](#zigbee-matter-and-rf)
+- [Integrations and cards](#integrations-and-cards)
+- [Reusing an ESPHome config](#reusing-an-esphome-config)
+- [Homemade hardware](#homemade-hardware)
+- [History](#history)
 
-- Generate short READMEs per device inside `esphome/` (e.g., `esphome/README.md` or `esphome/busylight-README.md`) so each device has usage/ wiring/flash notes.
-- Add a simple index file `esphome/INDEX.md` that lists every YAML with one-line descriptions (useful for web search and reuse).
+## Platform
 
-Let me know which of those you'd like me to add next and I can create them.
+- Home Assistant OS in a Hyper-V virtual machine on Windows, built from the official Home Assistant VHDX image and kept on the current release.
+- Apps (add-ons): Mosquitto, Zigbee2MQTT, ESPHome Device Builder, Matter Server, Nginx Proxy Manager, AdGuard Home, Network UPS Tools, Vaultwarden, Uptime Kuma, Tautulli, chrony, Samba, Studio Code Server, changedetection.io and the CareLink Token Generator.
+- Login uses TOTP multi-factor authentication.
+- The recorder keeps 64 days of history and excludes noisy entities (link quality, last seen, AdGuard counters, irrigation inputs).
 
-## Inspiration and Support
+## What it does
+
+UI-managed automations live in [automations.yaml](automations.yaml), around 60 of them, named `Area - Action` so you can find them. Bigger features live in [packages/](packages/).
+
+### Energy, solar and battery
+
+- Enphase Envoy solar, with Forecast.Solar for production forecasts.
+- Eaton xStorage Home battery. Automations set the charge target from the Octopus Intelligent Go schedule, run a two-stage overnight charge, discharge during Octopus saving sessions, and stop the battery if the cells go out of balance.
+- The Eaton inverter reads grid power from an ESPHome device that pretends to be an Eastron SDM120CT Modbus meter. See [esphome/sdm120-emulator.yaml](esphome/sdm120-emulator.yaml).
+- Octopus Energy rates, a peak/off-peak tariff sensor, and automatic sign-up to Octoplus saving sessions.
+- Whole-house power from CT clamps on the consumer unit and Zigbee DIN-rail meters. Powercalc estimates about 45 more devices, and utility meters roll everything up into daily and monthly totals.
+- Skoda EV through MySkoda, and grid carbon intensity from CO2 Signal.
+- The dishwasher starts overnight on cheap power. The washing machine and tumble dryer send a notification when they finish.
+
+### Heating and air
+
+- Nest thermostat with an away setback. Zigbee radiator valves raise heating demand, and presence controls a heating master switch.
+- A Midea air conditioner in the bedroom, controlled locally over ESPHome.
+- Two IKEA FÖRNUFTIG air purifiers converted to ESPHome. Fan speed follows PM2.5, and the office one follows my desk power.
+- Temperature, humidity and particulate sensors in most rooms, the loft and the shed, plus a mould indicator and Google Air Quality.
+
+### Lighting
+
+- Adaptive Lighting adjusts brightness and colour temperature through the day.
+- Motion lighting in the kitchen and outside, with slow fades. Hallway lights come on when we arrive at the front door. Garden lights come on when the back door opens.
+- Presence simulation switches random lights on and off while we're away.
+- Zigbee remotes and an IKEA BILRESA dial, a bedtime scene, a house sign schedule and Christmas light schedules.
+
+### Doorbell, security and cameras
+
+- Axis IP cameras, streamed through go2rtc, with a weekly reboot.
+- An ESPHome doorbell rings the chime, announces on the house speakers, pushes a phone notification and makes the Axis camera place a SIP video call to our phones. Setup notes: [docs/doorbell-sip-video-call.md](docs/doorbell-sip-video-call.md).
+- Front door, back door, garage and parcel box sensors notify us when opened while we're out. A perimeter zone alerts on a breach.
+
+### Garden
+
+- [kloggy's HA-Irrigation-Version2](https://github.com/kloggy/HA-Irrigation-Version2) runs the garden zones and adjusts for rain and temperature from OpenWeatherMap. It lives in [packages/kloggy_HA-Irrigation-Version2/](packages/kloggy_HA-Irrigation-Version2/) with a YAML dashboard in [lovelace/](lovelace/).
+- An alert fires if the irrigation controller goes offline.
+- A sprinkler on the front lawn scares off cats.
+
+### Health
+
+- Medtronic CareLink monitoring for an insulin pump. It warns if the sensor or reservoir won't last the night, or if the pump gets left at home.
+- A medication watchdog. A Zigbee contact sensor on the bottle starts a six-hour timer to prevent a double dose. See [packages/medication_watchdog/](packages/medication_watchdog/).
+
+### Animals
+
+- Chicken house: load cells weigh the food and water, and Home Assistant alerts when either runs low. See [packages/chickens/](packages/chickens/).
+- Rabbits: climate sensors in the indoor bunny house and a feeding-time announcement.
+
+### Around the house
+
+- UPS through NUT, with low-battery alerts and a weekly calibration run. Mains voltage and server temperature alerts.
+- Chest freezer and fridge alerts for high temperature, offline sensors or a door left open.
+- A weekly low-battery report for every battery-powered sensor.
+- A busy light outside my office shows my Microsoft Teams status.
+- A kitchen button starts a tea timer or announces dinner.
+- Office blinds run on a schedule and a remote.
+- Google Assistant and Google Home, a Gemini conversation agent for Assist, and the MCP server.
+
+## Repository layout
+
+| Path | Contents |
+| --- | --- |
+| [configuration.yaml](configuration.yaml) | Core config. Loads packages, YAML includes, MQTT, RFLink, Google Assistant and the recorder. |
+| [automations.yaml](automations.yaml), [scripts.yaml](scripts.yaml), [scenes.yaml](scenes.yaml) | UI-managed automations, scripts and scenes. |
+| [packages/](packages/) | Self-contained features: irrigation, weather, chickens, medication watchdog. |
+| [includes/](includes/) | Older YAML split by domain: MQTT entities, RFLink, template sensors, Axis REST commands. |
+| [esphome/](esphome/) | ESPHome devices, shared templates in `common/`, fonts and images. |
+| [blueprints/](blueprints/) | Blueprints, including the low-battery report and Octopus saving sessions. |
+| [lovelace/](lovelace/), [myirrigation.yaml](myirrigation.yaml) | The YAML irrigation dashboard. |
+| [themes/](themes/) | The `dark_teal` theme. |
+| [docs/](docs/) | Setup notes. |
+| [archive/](archive/) | Retired automations and scripts. |
+
+Git ignores secrets, `.storage`, `custom_components`, `www` and the Zigbee2MQTT data, so you won't find them here.
+
+## ESPHome devices
+
+Each file starts with a header comment describing the hardware and features.
+
+| File | Hardware | What it does |
+| --- | --- | --- |
+| [air-quality-sensor-1.yaml](esphome/air-quality-sensor-1.yaml) | NodeMCU ESP8266 | BME280 and PMS5003T air quality, with UK DAQI. |
+| [bedroom-sensors.yaml](esphome/bedroom-sensors.yaml) | NodeMCU ESP8266 | BME280 and PMS5003T for the bedroom. |
+| [bedroom-air-conditioner.yaml](esphome/bedroom-air-conditioner.yaml) | SMARTLIGHT SLWF-01pro | Local control of a Midea air conditioner over UART. |
+| [busylight-mk2-01.yaml](esphome/busylight-mk2-01.yaml) | M5Stack Atom ESP32 | Office busy light, plus an IR remote for Logitech Z-5500 speakers. |
+| [busylight-mk2-02.yaml](esphome/busylight-mk2-02.yaml) | M5Stack Atom ESP32 | Kitchen energy light and OLED: Octopus off-peak windows, solar, house and car battery. |
+| [chest-freezer-monitor.yaml](esphome/chest-freezer-monitor.yaml) | Feather HUZZAH ESP8266 | DS18B20 probes inside the chest freezer. |
+| [chicken-house-sensors.yaml](esphome/chicken-house-sensors.yaml) | Feather HUZZAH ESP8266 | DHT11 and two HX711 load cells for food and water. |
+| [CU-current-clamps.yaml](esphome/CU-current-clamps.yaml) | Feather HUZZAH ESP8266 | SCT-013 CT clamp through an ADS1115 for whole-house power. |
+| [doorbell-controller.yaml](esphome/doorbell-controller.yaml) | NodeMCU ESP8266 | Neopixel button, relay for the AC chime, Axis camera I/O trigger. |
+| [indoor-bunny-house-sensors.yaml](esphome/indoor-bunny-house-sensors.yaml) | NodeMCU ESP8266 | BME280 in the rabbit house. |
+| [living-rm-IKEA-Fornuftig-air-purifier.yaml](esphome/living-rm-IKEA-Fornuftig-air-purifier.yaml) | NodeMCU ESP8266 | Fan speed and filter LED for an IKEA FÖRNUFTIG. |
+| [office-IKEA-Fornuftig-air-purifier.yaml](esphome/office-IKEA-Fornuftig-air-purifier.yaml) | NodeMCU ESP8266 | Same purifier mod for the office. |
+| [loft-sensors.yaml](esphome/loft-sensors.yaml) | NodeMCU ESP8266 | DHT22 in the loft. |
+| [shed-sensors.yaml](esphome/shed-sensors.yaml) | NodeMCU ESP8266 | DHT22 in the shed. |
+| [office-blind-controller.yaml](esphome/office-blind-controller.yaml) | WeMos D1 Mini | Relays for open, close, stop and tilt on the office blind. |
+| [sdm120-emulator.yaml](esphome/sdm120-emulator.yaml) | ESP32 | Emulates an Eastron SDM120CT so the Eaton inverter can read grid power. |
+| [water_meter.yaml](esphome/water_meter.yaml) | Feather HUZZAH ESP8266 | Reads an Itron EverBlu Cyble water meter over 433 MHz with a CC1101. |
+
+Shared templates in [esphome/common/](esphome/common/) keep the device files short:
+
+- `device_base.yaml`, `device_base_wifi.yaml`: API, OTA, Wi-Fi, restart button and diagnostics.
+- `status_led.yaml`: status LED, removable with `!remove`.
+- `bme280.yaml`, `dht11.yaml`, `dht22.yaml`, `pms5003t.yaml`: sensor blocks.
+- `daqi.yaml`: UK Daily Air Quality Index from PM readings.
+- `fornuftig.yaml`: the IKEA purifier mod.
+- `m5stack_atom_wifi_fix.yaml`: Wi-Fi fix for the M5Stack Atom.
+
+[esphome/common/README.md](esphome/common/README.md) lists the substitutions each template expects.
+
+## Zigbee, Matter and RF
+
+- Zigbee2MQTT on an Ember network coordinator runs about 90 devices: lights, motion and contact sensors, remotes, smart plugs, radiator valves, DIN-rail energy meters and IKEA air quality sensors.
+- ZHA runs a second network on a SONOFF Dongle-M.
+- Matter and Thread are set up for newer devices.
+- An RFLink gateway still drives older 433 MHz devices, with a keep-alive automation: an Energenie MIHO026 wall switch, Maclean and Status remote sockets, and a hacked IKEA E1201C remote that runs the kitchen extractor fan. Energenie MiHome devices also come in over MQTT.
+
+## Integrations and cards
+
+Built-in integrations doing the heavy lifting: ESPHome, MQTT, Zigbee (ZHA), Matter, Nest, Axis, Enphase Envoy, Forecast.Solar, Google Assistant, Google Cast, Android TV, SmartThings, Tuya, Synology DSM, NUT, AdGuard, OpenWeatherMap, Met.no, and plenty of template, utility meter and integration helpers.
+
+Custom integrations from HACS:
+
+- [Octopus Energy](https://github.com/BottlecapDave/HomeAssistant-OctopusEnergy)
+- Eaton Battery Storage
+- MySkoda
+- CareLink
+- Powercalc
+- Adaptive Lighting
+- Scheduler
+- Sun2
+- Browser Mod
+- Google Home
+- Google Maps
+- RFLink UI
+- Google Assistant manual UI
+
+Dashboard cards include Mushroom, Bubble Card, card-mod, ApexCharts, auto-entities, layout-card, mini-graph-card, Power Flow Card Plus, Energy Flow Card Plus, Sankey Chart, the Octopus Energy rates card and the scheduler card.
+
+## Reusing an ESPHome config
+
+1. Copy the device YAML and the `common/` files it includes into your ESPHome folder.
+2. Change `name`, `friendly_name` and the network substitutions.
+3. Add your own `secrets.yaml` with Wi-Fi, API and OTA keys. None are in this repo.
+4. Change the GPIO pins to match your wiring.
+5. Flash over USB the first time, then OTA.
+
+Display projects need the matching files from [esphome/fonts/](esphome/fonts/) and [esphome/images/](esphome/images/).
+
+| Busy light controller | Busy light |
+| --- | --- |
+| ![Busy light controller](esphome/images/busylight_controller.jpg) | ![Busy light](esphome/images/busylight_light.jpg) |
+
+| Doorbell with Neopixel button | Early non-invasive meter sensor |
+| --- | --- |
+| <img src="esphome/images/doorbell.jpg" height="300"> | <img src="esphome/images/metersensor.jpg" height="300"> |
+
+## Homemade hardware
+
+These projects have their own repositories:
+
+- [SDM120CT-Modbus-Emulator-ESP32](https://github.com/genestealer/SDM120CT-Modbus-Emulator-ESP32): the original Arduino version of the SDM120 emulator.
+- `Home-Assistant-RFLink-Gateway-ESP8266`: firmware for the RFLink gateway.
+- `ESP8266-433Mhz-Controller-Gateway`: a 433 MHz MQTT transmitter.
+- `Bunny-Shed-Climate-Control`: a 433 MHz heater controller for the rabbit shed.
+- `Controllino-Irrigation` and `Irrigation-Controller`: earlier irrigation hardware.
+
+## History
+
+1. Python on Windows 10, inside Hyper-V on Windows Server 2016.
+2. A Python virtual environment on Ubuntu Server 16.04, managed with [hassctl](https://github.com/dale3h/hassctl).
+3. Hass.io in Docker on Ubuntu Server 18.04.
+4. Hass.io on a Raspberry Pi 4.
+5. Home Assistant OS in a Hyper-V virtual machine, using the official image.
+
+## Inspiration and support
 
 - [Graeme Smith](https://github.com/Instagraeme)
 - [Johan Bloemberg](https://github.com/aequitas)
+- [kloggy](https://github.com/kloggy) for the irrigation package
 
-## My Setup
+## License
 
-- Original OS: Windows 10 32-bit virtualization on Windows Server 2016 Hyper-V
-- Original Home Assistant: Python folder, home assistant run command run at start-up from shortcut in Windows start-up folder.
-- 2nd OS: Ubuntu Server 16.04.1 LTS virtualization on Windows Server 2016 Hyper-V.
-- 2nd Home Assistant: Python virtual environment with homeassistant user. As per [Manual installation on a Raspberry Pi](https://www.home-assistant.io/docs/installation/raspberry-pi/). [HASSCTL](https://github.com/dale3h/hassctl) Used for management.
-- 3rd OS: Ubuntu Server 18.04.1 LTS virtualization on Windows Server 2016 Hyper-V
-- 3rd Home Assistant: Hass.IO in Docker on Ubuntu Server 18.04, as per [these instructions](https://bonani.tech/how-to-install-hass.io-on-ubuntu-server-18.04/)
-- Current OS: HASS.IO on Raspberry Pi 4 Model B
-- Current Home Assistant: Hass.IO for Raspberry Pi 4 Model B 32bit
-
-### HASSIO Add-ons
-- MQTT: [Mosquitto broker](https://github.com/home-assistant/hassio-addons/tree/master/mosquitto) MQTT broker add.
-- HTTPS Certificate: [Nginx Proxy Manager](https://github.com/hassio-addons/addon-nginx-proxy-manager)
-- OLD HTTPS Certificate originally generated via by home assistant via [Let's Encript Instructions](https://home-assistant.io/docs/ecosystem/certificates/lets_encrypt/), with scripts to auto-update and automations to alert via HTML5 push notification if renew date threshold is close. (Search my repository for `ssl_cert.yaml`)
-- [Dasshio](https://github.com/danimtb/dasshio) Hass.io add-on to easily use Amazon Dash Buttons with Home Assistant
-- [ESPHome](https://esphome.io/) ESPHome is a system to control your ESP8266/ESP32 by simple yet powerful configuration files and control them remotely through Home Automation systems. Also required MariaDB to be installed.
-- [Samba share](https://home-assistant.io/addons/samba/)
-- [APC UPS Daemon (No USB)](https://github.com/korylprince/hassio-apcupsd/tree/master/apcupsd_net) View information from APC Network UPSs.
-- [AdGuard Home](https://github.com/hassio-addons/addon-adguard-home) Network-wide ads & trackers blocking DNS server.
-
-### ESPHome Things (original examples)
-- Busylight, I built so my family can know when I'm busy and working in my Home Office. See `esphome/busylight-mk2-01.yaml` and `esphome/busylight-mk2-02.yaml`.
-
-| BusyLight Controller  | BusyLight Light |
-| ------------- | ------------- |
-| ![Diagram](esphome/images/busylight_controller.jpg)  | ![Diagram](esphome/images/busylight_light.jpg)  |
-
-- Doorbell with Neopixel LED buttons and external sounder bell. See `esphome/doorbell-controller.yaml`.
-
-- Non-Invasive Power Meter for House Electricity with visible light phototransistor on LED of electricity meter.
-
-| Doorbell with Neopixel  | Non-Invasive Power Meter |
-| ------------- | ------------- |
-| <img src="esphome/images/doorbell.jpg" height="300">   | <img src="esphome/images/metersensor.jpg" height="300">  |
-
-## Devices
-
-- APC UPS - APC UPS Daemon
-- Google Chromecast Audio
-- Google Chromecast
-- Nest Thermostat
-- Plex Media Server
-- Amazon Dash Button 
-- Axis IP CCTV Cameras
-- Raspberry Pi 3 IP CCTV (motion)
-- IKEA Trådfri (Tradfri)
-
-#### Items controlled via my `Home-Assistant-RFLink-Gateway-ESP8266`
-- Energenie Wall Light Switch MIHO026
-- Room lamps plugged into Maclean MCE07GB and Status RCS-K09 remote sockets
-- Hacked Ikea E1201C Remote 'relay' for kitchen extractor fan
-- Ikea Ansluta Lights with CC2500 Transceiver
-
-## Homemade hardware
-- `ESP8266-433Mhz-Controller-Gateway` — Homemade 433Mhz MQTT transmitter gateway
-- `Bunny-Shed-Climate-Control` — Homemade 433Mhz bunny shed heating controller
-- `Home-Assistant-RFLink-Gateway-ESP8266` — Home Assistant to RFLink Gateway Controller
-- `Controllino-Irrigation` — Controllino based irrigation project
-- `Irrigation-Controller` — Irrigation controller
+See [LICENSE.txt](LICENSE.txt) before reusing code in a product.
