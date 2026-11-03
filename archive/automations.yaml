@@ -376,3 +376,162 @@
         '
     action: notify.mobile_app_rich_mob_app
   mode: single
+
+# Archived 2026-11-03 (broken: IKEA remote 0x000b57fffe38a445 and Bathroom Speaker cast device were deleted, automation was unavailable). Was automation.bathroom_audio_remote; category: Media; labels: Remote
+# Toggled input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant, which a Google Home automation watches
+- id: '1705695753761'
+  alias: Bathroom Speaker - Remote control
+  description: 'Triggered by an IKEA five-button Zigbee remote through zigbee2mqtt,
+    this automation controls the Bluetooth functionality of a Google Home/Nest Mini
+    speaker.
+
+
+    Due to limitations in Home Assistant, direct control of a Google Home/Nest speaker''s
+    Bluetooth is not possible. To circumvent this, a toggle "helper" is employed,
+    acting as a trigger within a Google Home Automation to react to changes in the
+    toggle''s state and controls the Bluetooth state.
+
+
+    Once my phone is Bluetooth-paired to the Google Home/Nest speaker, volume control
+    commands issued to the speaker through Home Assistant are seamlessly relayed to
+    the phone. However, it''s important to note that these commands are presently
+    limited to pause and volume adjustments within Home Assistant, even though voice
+    commands can be used to control next/previous track functions. This is a limitation
+    of Google Home/Nest Mini, next/previous track works with Home Home/Nest Hubs just
+    fine.'
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_up_click
+    discovery_id: 0x000b57fffe38a445 action_brightness_up_click
+    id: up_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_down_click
+    discovery_id: 0x000b57fffe38a445 action_brightness_down_click
+    id: down_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: toggle
+    discovery_id: 0x000b57fffe38a445 action_toggle
+    id: middle_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_left_click
+    discovery_id: 0x000b57fffe38a445 action_arrow_left_click
+    id: left_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_right_click
+    discovery_id: 0x000b57fffe38a445 action_arrow_right_click
+    id: right_click
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_up_hold
+    discovery_id: 0x000b57fffe38a445 action_brightness_up_hold
+    id: hold_up
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_left_hold
+    discovery_id: 0x000b57fffe38a445 action_arrow_left_hold
+    id: hold_left
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: arrow_right_hold
+    discovery_id: 0x000b57fffe38a445 action_arrow_right_hold
+    id: hold_right
+  - platform: device
+    domain: mqtt
+    device_id: 18318fe5e7eaecbbd0d63380720d9706
+    type: action
+    subtype: brightness_down_hold
+    discovery_id: 0x000b57fffe38a445 action_brightness_down_hold
+    id: hold_down
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - up_click
+      sequence:
+      - service: media_player.volume_up
+        metadata: {}
+        data: {}
+        target:
+          device_id: 30e5174b145711eb88da47ba37409372
+    - conditions:
+      - condition: trigger
+        id:
+        - down_click
+      sequence:
+      - service: media_player.volume_down
+        metadata: {}
+        data: {}
+        target:
+          device_id: 30e5174b145711eb88da47ba37409372
+    - conditions:
+      - condition: trigger
+        id:
+        - middle_click
+      sequence:
+      - service: media_player.media_play_pause
+        metadata: {}
+        data: {}
+        target:
+          device_id: 30e5174b145711eb88da47ba37409372
+    - conditions:
+      - condition: trigger
+        id:
+        - left_click
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+    - conditions:
+      - condition: trigger
+        id:
+        - right_click
+      sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+    - conditions:
+      - condition: trigger
+        id:
+        - hold_up
+      sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+        enabled: false
+    - conditions:
+      - condition: trigger
+        id:
+        - hold_down
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.bathroom_audio_remote_proxy_bridge_for_google_assistant
+        enabled: false
+  mode: single
