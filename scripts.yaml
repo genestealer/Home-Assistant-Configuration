@@ -886,3 +886,80 @@ night_heating_mode:
   alias: Night Heating Mode
   description: 'Cannot use scenes as they send mode and other data not just target
     temperature '
+notify:
+  alias: Notify
+  description: Central notification script called by the kloggy irrigation package.
+    `show` creates a persistent notification; `tell` (Richard or Lucy) sends a phone
+    push.
+  mode: parallel
+  max: 10
+  fields:
+    title:
+      name: Title
+      selector:
+        text:
+    message:
+      name: Message
+      required: true
+      selector:
+        text:
+          multiline: true
+    tell:
+      name: Tell
+      description: User name to push to (matches input_text.notifications_userN_name).
+      selector:
+        select:
+          options:
+          - Richard
+          - Lucy
+    type:
+      name: Type
+      description: Accepted for kloggy compatibility; only app_notification is used.
+      selector:
+        text:
+    show:
+      name: Show persistent notification
+      default: false
+      selector:
+        boolean:
+    notification_id:
+      name: Persistent notification ID
+      selector:
+        text:
+    mobile_app_tag:
+      name: Mobile app tag
+      description: Replaces an earlier push with the same tag.
+      selector:
+        text:
+  sequence:
+  - variables:
+      who: '{{ tell | default('''') | lower | trim }}'
+      push_data: '{{ {''tag'': mobile_app_tag} if mobile_app_tag is defined else {} }}'
+  - if:
+    - condition: template
+      value_template: '{{ show | default(false) | bool }}'
+    then:
+    - action: persistent_notification.create
+      data:
+        title: '{{ title | default('''') }}'
+        message: '{{ message }}'
+        notification_id: '{{ notification_id | default(''irrigation_'' ~ now().timestamp()) | trim }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ who == ''richard'' }}'
+      sequence:
+      - action: notify.mobile_app_rich_mob_app
+        data:
+          title: '{{ title | default('''') }}'
+          message: '{{ message }}'
+          data: '{{ push_data }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ who == ''lucy'' }}'
+      sequence:
+      - action: notify.mobile_app_lucy_mob_app
+        data:
+          title: '{{ title | default('''') }}'
+          message: '{{ message }}'
+          data: '{{ push_data }}'
