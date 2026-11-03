@@ -133,8 +133,8 @@
       sequence:
       - target:
           entity_id:
-          - switch.plug_in_air_freshener_1_2
-          - switch.plug_in_air_freshener_2_2
+          - switch.plug_in_air_freshener_1
+          - switch.plug_in_air_freshener_2
         data: {}
         action: switch.turn_on
     default:
@@ -142,8 +142,8 @@
       action: switch.turn_off
       target:
         entity_id:
-        - switch.plug_in_air_freshener_1_2
-        - switch.plug_in_air_freshener_2_2
+        - switch.plug_in_air_freshener_1
+        - switch.plug_in_air_freshener_2
   mode: restart
 - id: '1581770041173'
   alias: Mains Supply - Notify voltage low/high
@@ -245,7 +245,7 @@
 - id: '1601037277352'
   alias: Perimeter - Notify zone breach
   description: ''
-  trigger:
+  triggers:
   - platform: zone
     entity_id: device_tracker.google_maps_113691586554404814686
     zone: zone.outer_perimeter
@@ -254,7 +254,7 @@
     entity_id: device_tracker.google_maps_113691586554404814686
     zone: zone.inner_perimeter
     event: enter
-  condition:
+  conditions:
   - condition: or
     conditions:
     - condition: zone
@@ -263,53 +263,59 @@
     - condition: zone
       entity_id: person.lucy
       zone: zone.home
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: zone
         entity_id: device_tracker.google_maps_113691586554404814686
         zone: zone.inner_perimeter
       sequence:
-      - service: notify.google_cloud_notify
-        data:
+      - data:
           message: '!!Primary Zone Failure - Inner Perimeter!!'
-      - service: notify.pushover_notify
-        data:
+        action: notify.google_cloud_notify
+      - data:
           message: '!!Primary Zone Failure - Inner Perimeter!!'
           title: '!!Primary Zone Failure - Inner Perimeter!!'
           data:
             sound: alien
             priority: 1
-      - service: script.flash_dining_room_lights
-      - service: script.flash_dining_room_lights
-      - data:
+        action: notify.pushover_notify
+      - action: script.flash_dining_room_lights
+      - action: script.flash_dining_room_lights
+      - action: tts.speak
+        target:
+          entity_id: tts.google_translate_en_co_uk
+        data:
+          media_player_entity_id:
+          - media_player.whole_house
           cache: false
-          entity_id: media_player.whole_house
           message: WOOP! WOOP! WOOP! WOOP! WOOP! ALERT:Warning! Primary Zone Failure!
             Warning! Primary Zone Failure! Warning! Primary Zone Failure! Close the
             fucking doors and windows for the love of bunnies hide! Arg!!!!
-        service: tts.google_translate_say
     - conditions:
       - condition: zone
         entity_id: device_tracker.google_maps_113691586554404814686
         zone: zone.outer_perimeter
       sequence:
-      - service: notify.google_cloud_notify
-        data:
+      - data:
           message: Secondary Zone Failure - Outer Perimeter
-      - service: notify.pushover_notify
-        data:
+        action: notify.google_cloud_notify
+      - data:
           message: Secondary Zone Failure - Outer Perimeter
           title: Secondary Zone Failure - Outer Perimeter
           data:
             sound: tugboat
             priority: 0
-      - data:
+        action: notify.pushover_notify
+      - action: tts.speak
+        target:
+          entity_id: tts.google_translate_en_co_uk
+        data:
+          media_player_entity_id:
+          - media_player.whole_house
           cache: false
-          entity_id: media_player.whole_house
           message: Notice! Secondary Zone Failure! Secondary Zone Failure - Outer
             Perimeter - Outer Perimeter
-        service: tts.google_translate_say
   mode: single
 - id: '1601317646616'
   alias: Front Lawn - Cat deterrent sprinkler
@@ -1021,12 +1027,17 @@
         - camera.p3265_lv_0
       enabled: false
       action: camera.play_stream
-    - data:
+    - action: tts.speak
+      target:
+        entity_id: tts.google_translate_en_co_uk
+      data:
+        media_player_entity_id:
+        - media_player.bathroom_speaker
+        - media_player.garage
+        - media_player.guest_bedroom
         message: Ding! Dong! Someone is at the door
-        entity_id: media_player.bathroom_speaker, media_player.garage, media_player.guest_bedroom
         cache: true
       enabled: false
-      action: tts.google_translate_say
     - data:
         message: Ding! Dong! Someone is at the door
         target:
