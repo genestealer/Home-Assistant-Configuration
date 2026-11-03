@@ -117,7 +117,6 @@ logger:
     rflink.protocol: error #fatal
     homeassistant.components.sensor.plex: fatal
     urllib3.connectionpool: error
-    homeassistant.components.recorder: fatal
     # axis: debug
     # homeassistant.components.axis: debug
     homeassistant.components.rest: debug
@@ -148,11 +147,6 @@ media_source:
 # Track the sun.
 sun:
   # elevation: !secret elevation
-
-# --- Text to speech ---
-tts:
-  - platform: google_translate
-    service_name: google_translate_say
 
 # --- MQTT ---
 # Use the external MQTT broker.

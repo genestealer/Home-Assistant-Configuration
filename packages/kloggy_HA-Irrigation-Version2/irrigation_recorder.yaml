@@ -6,5 +6,6 @@ recorder:
 
   exclude:
     entity_globs:
-      - input_text.*
-      - input_number.*
+      - input_text.irrigation_*
+      - input_number.irrigation_*
+      - input_text.notifications_user* # kloggy user names, defined in configuration.yaml
