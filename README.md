@@ -8,15 +8,27 @@ I publish it so you can borrow from it. The ESPHome configs in [esphome/](esphom
 
 ## Contents
 
-- [Platform](#platform)
-- [What it does](#what-it-does)
-- [Repository layout](#repository-layout)
-- [ESPHome devices](#esphome-devices)
-- [Zigbee, Matter and RF](#zigbee-matter-and-rf)
-- [Integrations and cards](#integrations-and-cards)
-- [Reusing an ESPHome config](#reusing-an-esphome-config)
-- [Homemade hardware](#homemade-hardware)
-- [History](#history)
+- [Home Assistant Configuration](#home-assistant-configuration)
+  - [Contents](#contents)
+  - [Platform](#platform)
+  - [What it does](#what-it-does)
+    - [Energy, solar and battery](#energy-solar-and-battery)
+    - [Heating and air](#heating-and-air)
+    - [Lighting](#lighting)
+    - [Doorbell, security and cameras](#doorbell-security-and-cameras)
+    - [Garden](#garden)
+    - [Health](#health)
+    - [Animals](#animals)
+    - [Around the house](#around-the-house)
+  - [Repository layout](#repository-layout)
+  - [ESPHome devices](#esphome-devices)
+  - [Zigbee, Matter and RF](#zigbee-matter-and-rf)
+  - [Integrations and cards](#integrations-and-cards)
+  - [Reusing an ESPHome config](#reusing-an-esphome-config)
+  - [Homemade hardware](#homemade-hardware)
+  - [History](#history)
+  - [Inspiration and support](#inspiration-and-support)
+  - [License](#license)
 
 ## Platform
 
