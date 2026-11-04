@@ -2489,9 +2489,12 @@
     Only the overnight two-stage charge goes higher.
 
 
-    Octoplus Free Electricity sessions (calendar) are treated like off-peak: charge
-    at the session start, and only return to normal at the end if off-peak is not
-    active (and vice versa).
+    Triggers off the electricity meter tariff (select.master_grid_import), which the
+    Tariff - Set peak/off-peak automation sets to Off-Peak for off-peak dispatches
+    and Octoplus Power Up (free electricity) sessions, so both charge the batteries
+    and return to normal only when neither is active. If off-peak is already active
+    when a free session starts the tariff does not change, so the pre-discharge window
+    turning off (at the session start) also triggers a charge.
 
 
     For 3 hours before a free session (binary_sensor.octoplus_free_session_pre_discharge_window)
@@ -2507,45 +2510,47 @@
 
 
     After an HA restart or automation reload the current state is re-applied, because
-    a reload cancels the 20 s wait on the off-peak triggers and the dispatch would
-    otherwise be missed (28 Oct 21:35).
+    a reload cancels the 20 s wait on the tariff triggers and the dispatch would otherwise
+    be missed (28 Oct 21:35).
 
     '
   triggers:
-  - trigger: homeassistant
+  - alias: HA started - re-apply current state
+    trigger: homeassistant
     event: start
     id: resync
-  - trigger: event
+  - alias: Automations reloaded - re-apply current state
+    trigger: event
     event_type: automation_reloaded
     id: resync
-  - trigger: state
-    entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
-    from: 'off'
-    to: 'on'
+  - alias: Tariff switched to Off-Peak
+    trigger: state
+    entity_id: select.master_grid_import
+    to: Off-Peak
     for:
       seconds: 20
     id: off_peak_start
-  - trigger: state
-    entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
-    from: 'on'
-    to: 'off'
+  - alias: Tariff switched to Peak
+    trigger: state
+    entity_id: select.master_grid_import
+    to: Peak
     for:
       seconds: 20
     id: off_peak_end
-  - trigger: calendar
-    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
-    event: start
-    id: free_session_start
-  - trigger: calendar
-    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
-    event: end
-    id: free_session_end
-  - trigger: state
+  - alias: Power Up pre-discharge window starts (3 h before a free session)
+    trigger: state
     entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
     from: 'off'
     to: 'on'
     id: pre_free_session
-  - trigger: state
+  - alias: Free session starts (pre-discharge window ends)
+    trigger: state
+    entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
+    from: 'on'
+    to: 'off'
+    id: free_session_start
+  - alias: Saving session pre-charge window starts (2 h before a Power Down session)
+    trigger: state
     entity_id: binary_sensor.octoplus_saving_session_pre_charge_window
     from: 'off'
     to: 'on'
@@ -2560,23 +2565,16 @@
   actions:
   - choose:
     - conditions:
-      - condition: or
+      - alias: Off-peak or Power Up session, but not in the pre-discharge window before
+          a free session
+        condition: and
         conditions:
-        - condition: trigger
-          id: free_session_start
-        - alias: Free session running
-          condition: state
-          entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
-          state: 'on'
-        - alias: Off-peak, but not in the pre-discharge window before a free session
-          condition: and
-          conditions:
-          - condition: state
-            entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
-            state: 'on'
-          - condition: state
-            entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
-            state: 'off'
+        - condition: state
+          entity_id: select.master_grid_import
+          state: Off-Peak
+        - condition: state
+          entity_id: binary_sensor.octoplus_free_session_pre_discharge_window
+          state: 'off'
       sequence:
       - alias: xStorage Manual Charge - skipped from 23:00 onwards as the last useful
           Octopus slot ends at 23:30 and the built-in night schedule then takes over
@@ -2622,8 +2620,8 @@
     - alias: Saving session pre-charge window, no dispatch - hold the charge
       conditions:
       - condition: state
-        entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
-        state: 'off'
+        entity_id: select.master_grid_import
+        state: Peak
       - condition: state
         entity_id: binary_sensor.octoplus_saving_session_pre_charge_window
         state: 'on'
@@ -2656,21 +2654,9 @@
         conditions:
         - condition: trigger
           id: pre_free_session
-        - condition: and
-          conditions:
-          - condition: state
-            entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
-            state: 'off'
-          - alias: Free session ended, or no free session running
-            condition: or
-            conditions:
-            - condition: trigger
-              id: free_session_end
-            - condition: not
-              conditions:
-              - condition: state
-                entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_free_electricity_session
-                state: 'on'
+        - condition: state
+          entity_id: select.master_grid_import
+          state: Peak
       sequence:
       - sequence:
         - device_id: 7243064af443eaae599e1a98ef6c25f7
@@ -2735,52 +2721,65 @@
   description: 'Automatically sets tariff based on night rates and Octopus Intelligent
     dispatching.
 
+
+    Octoplus Power Up (free electricity) sessions are also set to Off-Peak. Although
+    this doesn''t reflect the true free nature of those sessions, it is better to
+    have the electricity meter set to off-peak than to have it set to peak rate.
+
     '
   triggers:
-  - type: turned_on
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
-    id: Night Off Peak Rate
-  - type: turned_off
-    device_id: 3912e8bcd9d950c832ebfb154138ce98
-    entity_id: 80aa09f400893520a7232726cae46102
-    domain: binary_sensor
-    trigger: device
-    id: Day Peak Rate
+  - trigger: state
+    entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+    to: 'on'
+    id: off_peak_start
+  - trigger: state
+    entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+    to: 'off'
+    id: off_peak_end
+  - trigger: calendar
+    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_up
+    event: start
+    id: power_up_start
+  - trigger: calendar
+    entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_up
+    event: end
+    id: power_up_end
   conditions: []
   actions:
   - choose:
     - conditions:
-      - type: is_on
-        condition: device
-        device_id: 3912e8bcd9d950c832ebfb154138ce98
-        entity_id: 80aa09f400893520a7232726cae46102
-        domain: binary_sensor
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.octopus_energy_electricity_22l3177538_1413225971001_off_peak
+          state: 'on'
+        - condition: trigger
+          id: power_up_start
+        - alias: Power Up session running (calendar may still read on at its end trigger)
+          condition: and
+          conditions:
+          - condition: state
+            entity_id: calendar.octopus_energy_a_dcb1af4a_octoplus_power_up
+            state: 'on'
+          - condition: not
+            conditions:
+            - condition: trigger
+              id: power_up_end
       sequence:
-      - action: select.select_option
-        metadata: {}
+      - alias: Set Off-Peak Rate
+        action: select.select_option
+        target:
+          entity_id: select.master_grid_import
         data:
           option: Off-Peak
-        target:
-          device_id: b76ae102907a3f706f8894e0bcc16a1a
-        alias: Set Off-Peak Rate
-    - conditions:
-      - type: is_off
-        condition: device
-        device_id: 3912e8bcd9d950c832ebfb154138ce98
-        entity_id: 80aa09f400893520a7232726cae46102
-        domain: binary_sensor
-      sequence:
-      - action: select.select_option
-        metadata: {}
-        data:
-          option: Peak
-        target:
-          device_id: b76ae102907a3f706f8894e0bcc16a1a
-        alias: Set Peak Rate
-  mode: single
+    default:
+    - alias: Set Peak Rate
+      action: select.select_option
+      target:
+        entity_id: select.master_grid_import
+      data:
+        option: Peak
+  mode: queued
 - id: '1766937352100'
   alias: SDM120 Emulator - Notify comms problem
   description: ''
